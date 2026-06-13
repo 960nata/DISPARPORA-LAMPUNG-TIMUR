@@ -75,13 +75,13 @@ export default function DestinationsSection() {
   const cardVariants = {
     hidden: (index: number) => {
       const isInitiallyVisible = index >= N && index < N + visibleCount;
-      return isInitiallyVisible ? { opacity: 0, x: 60 } : { opacity: 1, x: 0 };
+      return isInitiallyVisible ? { opacity: 0, y: 50 } : { opacity: 1, y: 0 };
     },
     visible: (index: number) => {
       const isInitiallyVisible = index >= N && index < N + visibleCount;
       return {
         opacity: 1,
-        x: 0,
+        y: 0,
         transition: isInitiallyVisible 
           ? {
               delay: (index - N) * 0.1,

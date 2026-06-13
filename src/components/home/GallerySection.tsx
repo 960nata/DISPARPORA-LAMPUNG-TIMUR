@@ -92,21 +92,29 @@ const row2Items = [
   }
 ];
 
-const rowVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: (custom: number) => ({
+const imageVariants = {
+  hidden: (i: number) => ({
+    opacity: 0,
+    y: 50,
+    x: i % 2 === 0 ? -25 : 25,
+    rotate: i % 2 === 0 ? -3 : 3,
+    scale: 0.96
+  }),
+  visible: (i: number) => ({
     opacity: 1,
     y: 0,
+    x: 0,
+    rotate: 0,
+    scale: 1,
     transition: {
-      delay: custom * 0.2,
-      duration: 0.8,
+      delay: (i % 6) * 0.08,
+      duration: 0.75,
       ease: [0.25, 0.8, 0.25, 1] as [number, number, number, number]
     }
   })
 };
 
 export default function GallerySection() {
-  // Seamless loop requires duplicating the row contents
   const extendedRow1 = [...row1Items, ...row1Items];
   const extendedRow2 = [...row2Items, ...row2Items];
 
@@ -131,18 +139,16 @@ export default function GallerySection() {
       {/* Marquee Viewport Wrapper (Full bleed left to right) */}
       <div className="marquee-container">
         {/* Row 1: Scrolling Left */}
-        <motion.div 
-          className="marquee-row"
-          custom={0}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={rowVariants}
-        >
+        <div className="marquee-row">
           <div className="marquee-track-left">
             {extendedRow1.map((item, index) => (
-              <div
+              <motion.div
                 key={`row1-${item.title}-${index}`}
+                custom={index}
+                variants={imageVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }}
                 style={{
                   width: item.width,
                   height: "280px",
@@ -179,24 +185,22 @@ export default function GallerySection() {
                     {item.title}
                   </h4>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Row 2: Scrolling Right */}
-        <motion.div 
-          className="marquee-row"
-          custom={1}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={rowVariants}
-        >
+        <div className="marquee-row">
           <div className="marquee-track-right">
             {extendedRow2.map((item, index) => (
-              <div
+              <motion.div
                 key={`row2-${item.title}-${index}`}
+                custom={index}
+                variants={imageVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }}
                 style={{
                   width: item.width,
                   height: "280px",
@@ -233,10 +237,10 @@ export default function GallerySection() {
                     {item.title}
                   </h4>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
