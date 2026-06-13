@@ -164,7 +164,7 @@ export default function DestinationsSection() {
         style={{ marginBottom: "2rem" }}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: false, margin: "-100px" }}
         transition={{ duration: 0.6 }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "2rem" }}>
@@ -197,7 +197,8 @@ export default function DestinationsSection() {
                 custom={index}
                 variants={cardVariants}
                 initial="hidden"
-                animate="visible"
+                whileInView="visible"
+                viewport={{ once: false, margin: "-80px" }}
                 whileHover={{ y: -6, transition: { duration: 0.2 } }}
                 style={{
                   position: "relative",

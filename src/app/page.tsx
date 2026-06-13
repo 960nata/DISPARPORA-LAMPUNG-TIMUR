@@ -76,7 +76,7 @@ export default function Home() {
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-120px" }}
+        viewport={{ once: false, margin: "-120px" }}
         variants={sectionVariants}
       >
         <PidatoSection />
@@ -92,7 +92,7 @@ export default function Home() {
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-120px" }}
+        viewport={{ once: false, margin: "-120px" }}
         variants={sectionVariants}
       >
         <NewsSection posts={latestNews} />
@@ -105,7 +105,7 @@ export default function Home() {
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-120px" }}
+        viewport={{ once: false, margin: "-120px" }}
         variants={sectionVariants}
       >
         <EventsSection />
@@ -115,7 +115,7 @@ export default function Home() {
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-120px" }}
+        viewport={{ once: false, margin: "-120px" }}
         variants={sectionVariants}
       >
         <TestimonialsSection />
@@ -125,7 +125,7 @@ export default function Home() {
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-120px" }}
+        viewport={{ once: false, margin: "-120px" }}
         variants={sectionVariants}
       >
         <PartnersSection partners={partners} />
@@ -135,7 +135,7 @@ export default function Home() {
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-120px" }}
+        viewport={{ once: false, margin: "-120px" }}
         variants={sectionVariants}
       >
         <CalloutSection />

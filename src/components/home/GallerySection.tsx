@@ -126,7 +126,7 @@ export default function GallerySection() {
         style={{ textAlign: "center", marginBottom: "3.5rem" }}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: false, margin: "-100px" }}
         transition={{ duration: 0.6 }}
       >
         <span className="badge badge-success" style={{ marginBottom: "0.75rem" }}>Galeri Foto</span>
@@ -148,7 +148,7 @@ export default function GallerySection() {
                 variants={imageVariants}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
+                viewport={{ once: false, margin: "-40px" }}
                 style={{
                   width: item.width,
                   height: "280px",
@@ -200,7 +200,7 @@ export default function GallerySection() {
                 variants={imageVariants}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
+                viewport={{ once: false, margin: "-40px" }}
                 style={{
                   width: item.width,
                   height: "280px",
