@@ -12,9 +12,9 @@ interface PartnersSectionProps {
 
 const defaultPartners: Partner[] = [
   { id: "part_1", name: "Kemenparekraf RI", logoUrl: "/group_1.avif" },
-  { id: "part_2", name: "Pemerintah Provinsi Lampung", logoUrl: "/group_2.avif" },
+  { id: "part_2", name: "Pemerintah Provinsi Lampung", logoUrl: "/group_4.avif" },
   { id: "part_3", name: "Pemerintah Kabupaten Lampung Timur", logoUrl: "/group_3.avif" },
-  { id: "part_4", name: "Taman Nasional Way Kambas", logoUrl: "/group_4.avif" },
+  { id: "part_4", name: "Taman Nasional Way Kambas", logoUrl: "/group_2.avif" },
   { id: "part_5", name: "Bank Lampung", logoUrl: "/group_5.avif" },
   { id: "part_6", name: "Pokdarwis Lampung Timur", logoUrl: "/group_6.avif" },
   { id: "part_7", name: "Dinas Pariwisata Lampung Timur", logoUrl: "/group_7.avif" }
@@ -58,7 +58,7 @@ export default function PartnersSection({ partners = [] }: PartnersSectionProps)
               ? p.logoUrl.replace(".avif", ".png") 
               : p.logoUrl;
               
-            const isWayKambas = p.name.toLowerCase().includes("way kambas") || p.logoUrl.includes("group_4");
+            const isWayKambas = p.name.toLowerCase().includes("way kambas") || p.logoUrl.includes("group_2");
             const logoHeight = isWayKambas ? "46px" : "60px";
               
             return (
