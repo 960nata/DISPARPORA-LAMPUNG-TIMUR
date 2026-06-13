@@ -53,15 +53,24 @@ export default function PartnersSection({ partners = [] }: PartnersSectionProps)
 
       <div className="marquee-container" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="marquee-content">
-          {doubledPartners.map((p, idx) => (
-            <div key={idx} style={{ display: "flex", alignItems: "center" }}>
-              <img
-                src={p.logoUrl}
-                alt={p.name}
-                className="partner-logo-item"
-              />
-            </div>
-          ))}
+          {doubledPartners.map((p, idx) => {
+            const fallbackPng = p.logoUrl.includes(".avif") 
+              ? p.logoUrl.replace(".avif", ".png") 
+              : p.logoUrl;
+              
+            return (
+              <div key={idx} style={{ display: "flex", alignItems: "center" }}>
+                <picture style={{ display: "flex", alignItems: "center" }}>
+                  <source srcSet={p.logoUrl} type="image/avif" />
+                  <img
+                    src={fallbackPng}
+                    alt={p.name}
+                    className="partner-logo-item"
+                  />
+                </picture>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

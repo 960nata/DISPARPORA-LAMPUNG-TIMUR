@@ -197,11 +197,13 @@ class JsonDbEngine {
 
     // 4. Seed Partner Logos
     const seedPartners: Partner[] = [
-      { id: "part_1", name: "Kemenparekraf RI", logoUrl: "https://images.unsplash.com/photo-1599305445671-ac291c95aba9?auto=format&fit=crop&w=150&q=80" },
-      { id: "part_2", name: "Taman Nasional Way Kambas", logoUrl: "https://images.unsplash.com/photo-1599305445671-ac291c95aba9?auto=format&fit=crop&w=150&q=80" },
-      { id: "part_3", name: "Bank Lampung", logoUrl: "https://images.unsplash.com/photo-1599305445671-ac291c95aba9?auto=format&fit=crop&w=150&q=80" },
-      { id: "part_4", name: "Pokdarwis Lampung Timur", logoUrl: "https://images.unsplash.com/photo-1599305445671-ac291c95aba9?auto=format&fit=crop&w=150&q=80" },
-      { id: "part_5", name: "Pemerintah Provinsi Lampung", logoUrl: "https://images.unsplash.com/photo-1599305445671-ac291c95aba9?auto=format&fit=crop&w=150&q=80" }
+      { id: "part_1", name: "Kemenparekraf RI", logoUrl: "/group_1.avif" },
+      { id: "part_2", name: "Pemerintah Provinsi Lampung", logoUrl: "/group_2.avif" },
+      { id: "part_3", name: "Pemerintah Kabupaten Lampung Timur", logoUrl: "/group_3.avif" },
+      { id: "part_4", name: "Taman Nasional Way Kambas", logoUrl: "/group_4.avif" },
+      { id: "part_5", name: "Bank Lampung", logoUrl: "/group_5.avif" },
+      { id: "part_6", name: "Pokdarwis Lampung Timur", logoUrl: "/group_6.avif" },
+      { id: "part_7", name: "Dinas Pariwisata Lampung Timur", logoUrl: "/group_7.avif" }
     ];
 
     this.data = {
