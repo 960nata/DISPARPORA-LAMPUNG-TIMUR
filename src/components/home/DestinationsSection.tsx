@@ -71,6 +71,7 @@ export default function DestinationsSection() {
   const [visibleCount, setVisibleCount] = useState(3);
   const [peekWidth, setPeekWidth] = useState("calc(100% - 10rem)");
   const [isTransitioning, setIsTransitioning] = useState(true);
+  const [isResetting, setIsResetting] = useState(false);
 
   const cardVariants = {
     hidden: (index: number) => {
@@ -124,15 +125,18 @@ export default function DestinationsSection() {
   }, []);
 
   const handlePrev = () => {
+    if (isResetting || !isTransitioning) return;
     setCurrentIndex((prev) => prev - 1);
   };
 
   const handleNext = () => {
+    if (isResetting || !isTransitioning) return;
     setCurrentIndex((prev) => prev + 1);
   };
 
   useEffect(() => {
     if (currentIndex >= N * 2) {
+      setIsResetting(true);
       const timer = setTimeout(() => {
         setIsTransitioning(false);
         setCurrentIndex(currentIndex - N);
@@ -140,18 +144,21 @@ export default function DestinationsSection() {
       return () => clearTimeout(timer);
     }
     if (currentIndex < N) {
+      setIsResetting(true);
       const timer = setTimeout(() => {
         setIsTransitioning(false);
         setCurrentIndex(currentIndex + N);
       }, 500);
       return () => clearTimeout(timer);
     }
+    setIsResetting(false);
   }, [currentIndex, N]);
 
   useEffect(() => {
     if (!isTransitioning) {
       const timer = setTimeout(() => {
         setIsTransitioning(true);
+        setIsResetting(false);
       }, 20);
       return () => clearTimeout(timer);
     }
@@ -187,7 +194,7 @@ export default function DestinationsSection() {
             style={{ 
               display: "flex", 
               gap: "1.5rem", 
-              transition: isTransitioning ? "transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)" : "none",
+              transition: isTransitioning ? "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)" : "none",
               transform: `translateX(calc(-${currentIndex} * (100% + 1.5rem) / ${visibleCount}))`
             }}
           >

@@ -436,7 +436,7 @@ a {
 
 .marquee-content {
   display: inline-flex;
-  gap: 4rem;
+  gap: 8rem;
   align-items: center;
   animation: marquee-scroll 30s linear infinite;
 }

@@ -22,7 +22,7 @@ const defaultPartners: Partner[] = [
 
 export default function PartnersSection({ partners = [] }: PartnersSectionProps) {
   const activePartners = partners.length > 0 ? partners : defaultPartners;
-  const doubledPartners = [...activePartners, ...activePartners, ...activePartners];
+  const doubledPartners = [...activePartners, ...activePartners];
 
   return (
     <section style={{ backgroundColor: "white", padding: "4rem 0 2rem 0" }}>
