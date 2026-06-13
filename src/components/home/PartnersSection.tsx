@@ -11,11 +11,13 @@ interface PartnersSectionProps {
 }
 
 const defaultPartners: Partner[] = [
-  { id: "part_1", name: "Kemenparekraf RI", logoUrl: "https://images.unsplash.com/photo-1599305445671-ac291c95aba9?auto=format&fit=crop&w=150&q=80" },
-  { id: "part_2", name: "Taman Nasional Way Kambas", logoUrl: "https://images.unsplash.com/photo-1599305445671-ac291c95aba9?auto=format&fit=crop&w=150&q=80" },
-  { id: "part_3", name: "Bank Lampung", logoUrl: "https://images.unsplash.com/photo-1599305445671-ac291c95aba9?auto=format&fit=crop&w=150&q=80" },
-  { id: "part_4", name: "Pokdarwis Lampung Timur", logoUrl: "https://images.unsplash.com/photo-1599305445671-ac291c95aba9?auto=format&fit=crop&w=150&q=80" },
-  { id: "part_5", name: "Pemerintah Provinsi Lampung", logoUrl: "https://images.unsplash.com/photo-1599305445671-ac291c95aba9?auto=format&fit=crop&w=150&q=80" }
+  { id: "part_1", name: "Kemenparekraf RI", logoUrl: "/group_1.avif" },
+  { id: "part_2", name: "Pemerintah Provinsi Lampung", logoUrl: "/group_2.avif" },
+  { id: "part_3", name: "Pemerintah Kabupaten Lampung Timur", logoUrl: "/group_3.avif" },
+  { id: "part_4", name: "Taman Nasional Way Kambas", logoUrl: "/group_4.avif" },
+  { id: "part_5", name: "Bank Lampung", logoUrl: "/group_5.avif" },
+  { id: "part_6", name: "Pokdarwis Lampung Timur", logoUrl: "/group_6.avif" },
+  { id: "part_7", name: "Dinas Pariwisata Lampung Timur", logoUrl: "/group_7.avif" }
 ];
 
 export default function PartnersSection({ partners = [] }: PartnersSectionProps) {
@@ -23,19 +25,41 @@ export default function PartnersSection({ partners = [] }: PartnersSectionProps)
   const doubledPartners = [...activePartners, ...activePartners, ...activePartners];
 
   return (
-    <section style={{ marginTop: "-2rem", backgroundColor: "white", padding: "1rem 0" }}>
-      <div className="marquee-container">
+    <section style={{ backgroundColor: "white", padding: "4rem 0 2rem 0" }}>
+      <div className="container" style={{ textAlign: "center", marginBottom: "3rem" }}>
+        <span style={{
+          fontSize: "0.875rem",
+          fontWeight: 600,
+          color: "var(--primary)",
+          textTransform: "uppercase",
+          letterSpacing: "0.05em",
+          backgroundColor: "var(--primary-light)",
+          padding: "0.25rem 0.75rem",
+          borderRadius: "9999px",
+          display: "inline-block",
+          marginBottom: "0.75rem"
+        }}>
+          Mitra & Kerjasama
+        </span>
+        <h2 style={{
+          fontSize: "2.25rem",
+          fontWeight: 800,
+          color: "var(--text-primary)",
+          letterSpacing: "-0.02em"
+        }}>
+          Partner Kami
+        </h2>
+      </div>
+
+      <div className="marquee-container" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="marquee-content">
           {doubledPartners.map((p, idx) => (
-            <div key={idx} style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div key={idx} style={{ display: "flex", alignItems: "center" }}>
               <img
                 src={p.logoUrl}
                 alt={p.name}
-                style={{ height: "40px", width: "40px", objectFit: "contain", filter: "grayscale(100%)", opacity: 0.6 }}
+                className="partner-logo-item"
               />
-              <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>
-                {p.name}
-              </span>
             </div>
           ))}
         </div>
@@ -43,3 +67,4 @@ export default function PartnersSection({ partners = [] }: PartnersSectionProps)
     </section>
   );
 }
+
