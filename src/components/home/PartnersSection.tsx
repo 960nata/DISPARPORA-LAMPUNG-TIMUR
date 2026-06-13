@@ -51,22 +51,25 @@ export default function PartnersSection({ partners = [] }: PartnersSectionProps)
         </h2>
       </div>
 
-      <div className="marquee-container" style={{ borderTop: "1px solid var(--border)" }}>
+      <div className="marquee-container">
         <div className="marquee-content">
           {doubledPartners.map((p, idx) => {
             const fallbackPng = p.logoUrl.includes(".avif") 
               ? p.logoUrl.replace(".avif", ".png") 
               : p.logoUrl;
               
+            const isWayKambas = p.name.toLowerCase().includes("way kambas") || p.logoUrl.includes("group_4");
+            const logoHeight = isWayKambas ? "46px" : "60px";
+              
             return (
               <div key={idx} style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "60px" }}>
-                <picture style={{ display: "block", height: "60px" }}>
+                <picture style={{ display: "block", height: logoHeight }}>
                   <source srcSet={p.logoUrl} type="image/avif" />
                   <img
                     src={fallbackPng}
                     alt={p.name}
                     className="partner-logo-item"
-                    style={{ height: "60px", width: "auto", display: "block" }}
+                    style={{ height: logoHeight, width: "auto", display: "block" }}
                   />
                 </picture>
               </div>

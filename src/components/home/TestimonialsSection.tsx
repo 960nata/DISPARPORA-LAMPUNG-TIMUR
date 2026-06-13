@@ -29,7 +29,7 @@ const defaultTestimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <section style={{ backgroundColor: "var(--bg-secondary)", padding: "5rem 0", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
+    <section style={{ backgroundColor: "var(--bg-secondary)", padding: "5rem 0" }}>
       <div className="container">
         <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
           <span className="badge badge-success" style={{ marginBottom: "0.75rem" }}>Testimoni</span>

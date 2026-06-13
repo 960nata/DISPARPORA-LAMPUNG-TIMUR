@@ -409,7 +409,6 @@ a {
   padding: 1.5rem 0;
   display: flex;
   background-color: var(--bg-secondary);
-  border-bottom: 1px solid var(--border);
   position: relative;
 }
 
