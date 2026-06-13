@@ -1,0 +1,76 @@
+--- PAGE 1 ---
+No. Nama Usaha Pariwisata Klasifikasi Alamat Jumlah Kamar
+1 YESTOYA HOTEL & CAFE Bintang Satu Desa Sumberejo Kecamatan Way Jepara 38
+2 AG HOTEL Non Bintang Gunung Sugih Besar Kecamatan Sekampung 
+Udik
+20
+3 BANDAR AYU Non Bintang Jl. Lintas Bandar Negeri Kecamatan Labuhan 
+Maringgai
+21
+4 SARIAMI Non Bintang Jl. Lintas Karya Tani Kecamatan Labuhan 
+Maringgai
+23
+5 CEMPAKA INDAH Non Bintang Desa Sribhawono Kecamatan Bandar 
+Sribhawono
+33
+6 TIRTA KENCANA Non Bintang Desa Srimenanti Kecamatan Bandar 
+Sribhawono
+40
+7 WISMA Non Bintang Desa Mataram Baru Kecamatan Mataram 
+Baru
+18
+8 RAHAYU Non Bintang Desa Mataram Baru Kecamatan Mataram 
+Baru
+12
+9 DIRGAHAYU Non Bintang Desa Mataram Baru Kecamatan Mataram 
+Baru
+15
+10 WINDU PERKASA Non Bintang Desa Mulyosari  Kecamatan Pasir Sakti 16
+11 BERKAH KEMBAR Non Bintang Desa Labuhan Ratu Kecamatan Pasir Sakti 14
+12 ECOLODGE Non Bintang Desa Labuhan Ratu IX Kecamatan Labuhan 
+Ratu
+8
+13 BAGUS HOTEL Bintang Satu Dusun Gunung Terang 3 Desa Labuhan Ratu 
+Kecamatan Labuhan Ratu 
+16
+14 HOTEL INDAH PERMAI Non Bintang Desa Siraman Kecamatan Pekalongan 17
+15 Homestay Jawis Angsana
+Akomodasi Lainnya
+Desa Braja Harjosari Kecamatan Braja 
+Selebah
+16 Homestay KTH Plang Ijo
+Akomodasi Lainnya
+Desa Labuhan Ratu IX Kecamatan Labuhan 
+Ratu
+17 Homestay Liman Seto
+Akomodasi Lainnya
+Desa Labuhan Ratu VI Kecamatan Labuhan 
+Ratu
+18 Homestay Ratu Karang Sari Akomodasi Lainnya Desa 
+19 Homestay Desa Wana Akomodasi Lainnya Desa Wana Kecamatan Melinting
+20 Andalas Homestay
+Akomodasi Lainnya
+Desa Labuhan Ratu IX Kecamatan Labuhan 
+Ratu
+21 YOEZ HOTEL Non Bintang Pasir Sakti
+22 Jihan Homestay Akomodasi Lainnya Labuhan Ratu IX Kecamatan Labuhan Ratu
+23 Andatu Homestay Akomodasi Lainnya Labuhan Ratu IX
+24 Agus Toni Homestay Akomodasi Lainnya Braja Harjosari
+25 Bagus Homestay Akomodasi Lainnya Braja Harjosari
+26 Alin Homestay Akomodasi Lainnya Braja Harjosari
+27 Mangrove Homestay Akomodasi Lainnya Purworejo Pasir Sakti
+28 Hasan Homestay Akomodasi Lainnya Labuhan Ratu VII
+29 Homestay Dian Al Firdaus Akomodasi Lainnya Labuhan Ratu VII
+30 Yessy Homestay Akomodasi Lainnya Braja Harjosari
+31 Lembah Pawiki Homestay Akomodasi Lainnya Sukadana Baru
+32 Bella Homestay Akomodasi Lainnya Labuhan Ratu IX
+33 Fajar Homestay Akomodasi Lainnya Braja Harjosari
+34 Margahayu Homestay Akomodasi Lainnya Labuhan Ratu VII
+35 Cairina Homestay Akomodasi Lainnya Labuhan Ratu IX
+36 Mas Deni Homestay Akomodasi Lainnya Labuhan Ratu VII
+37 Hommy Bee Homestay Akomodasi Lainnya Braja Harjosari
+38 Aqila Homestay Akomodasi Lainnya Labuhan Ratu IX
+39 Farel Homestay Akomodasi Lainnya Purworejo Pasir Sakti
+40 Supri Homestay Akomodasi Lainnya Labuhan Ratu IX
+DAFTAR USAHA PARIWISATA PENYEDIAAN AKOMODASI HOTEL 
+(BINTANG DAN NON BINTANG)

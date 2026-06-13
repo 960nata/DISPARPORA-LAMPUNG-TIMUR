@@ -1,0 +1,3403 @@
+{
+  "wisata_alam": [
+    {
+      "id": "Wisata Alam_1",
+      "no": 1,
+      "name": "Pantai Kerang Mas Desa Muara Gading Mas Kecamatan Labuhan",
+      "address": "Maringgai",
+      "facilities": [
+        "Gazebo",
+        "Sarana Ibadah",
+        "Toilet dan Ruang ganti",
+        "Tempat sampah",
+        "Loket dan area parker",
+        "Menara Pantau",
+        "Pasar Kuliner",
+        "Kios Oleh - Oleh",
+        "Sewa perahu,Ban dan ATV",
+        "Aula",
+        "Area Parkir",
+        "Kios Cindramata",
+        "Air Bersih"
+      ],
+      "contact": "",
+      "map_link": "",
+      "active": true,
+      "category": "Wisata Alam",
+      "kecamatan": "Labuhan"
+    },
+    {
+      "id": "Wisata Alam_82373804875",
+      "no": 82373804875,
+      "name": "",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/VVVENtDDBFVABrxb9",
+      "active": true,
+      "category": "Wisata Alam",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Alam_2",
+      "no": 2,
+      "name": "Taman Nasional Way Kambas Kecamatan Labuhan Ratu. • Guest House",
+      "address": "",
+      "facilities": [
+        "Visitor Center",
+        "Sellter (bangunan kecil)",
+        "Loket penjualan tiket dan Tempat parkir",
+        "Toko Souvenir",
+        "Rumah makan/kantin",
+        "Teater Gajah",
+        "Mushola",
+        "Papan petunjuk arah dan peta wisata"
+      ],
+      "contact": "",
+      "map_link": "",
+      "active": true,
+      "category": "Wisata Alam",
+      "kecamatan": "Labuhan Ratu"
+    },
+    {
+      "id": "Wisata Alam_81367230940",
+      "no": 81367230940,
+      "name": "",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/yS49nEBE9Zr2Bjqs7",
+      "active": true,
+      "category": "Wisata Alam",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Alam_3",
+      "no": 3,
+      "name": "Pantai Mutiara Baru Desa Karya makmur,Kecamatan Labuan",
+      "address": "Maringgai Kios Kuliner",
+      "facilities": [
+        "Gazebo",
+        "Spot Selfie",
+        "Toilet",
+        "Sarana Ibadah",
+        "Aula"
+      ],
+      "contact": "",
+      "map_link": "",
+      "active": true,
+      "category": "Wisata Alam",
+      "kecamatan": "Labuan"
+    },
+    {
+      "id": "Wisata Alam_81379151234",
+      "no": 81379151234,
+      "name": "",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/svqw84uJmT12VKop6",
+      "active": true,
+      "category": "Wisata Alam",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Alam_4",
+      "no": 4,
+      "name": "Sumber Mata Air Awet Muda Kecamatan Labuhan Maringgai • Kolam Pemandian",
+      "address": "",
+      "facilities": [
+        "Jalan setapak",
+        "Toilet"
+      ],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/17HCGC7Tv1ub7Gvj6",
+      "active": true,
+      "category": "Wisata Alam",
+      "kecamatan": "Labuhan Maringgai"
+    },
+    {
+      "id": "Wisata Alam_5",
+      "no": 5,
+      "name": "Danau Beringin Indah Desa Negara Nabung Kecamatan Sukadana • Toilet dan area parkir",
+      "address": "",
+      "facilities": [
+        "Gazebo",
+        "Loket",
+        "Sarana Bermain Anak",
+        "Panggung Pentas",
+        "Pagar",
+        "Spot Selfie",
+        "Perahu",
+        "Kano",
+        "Kios kuliner dan oleh-oleh"
+      ],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/Rqc39f4ouNWfVTPS6",
+      "active": false,
+      "category": "Wisata Alam",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Alam_6",
+      "no": 6,
+      "name": "Dam Negara Batin / Wanaba Desa Sukadana Timur Kecamatan Sukadana • Gazebo",
+      "address": "",
+      "facilities": [
+        "Mushola",
+        "Wahana Bermain Anak",
+        "Listrik",
+        "Perahu",
+        "Sepeda Air",
+        "Spot Selfie",
+        "Dermaga Sandar Perahu",
+        "Kios Kuliner",
+        "Aula",
+        "Toilet"
+      ],
+      "contact": "",
+      "map_link": "",
+      "active": true,
+      "category": "Wisata Alam",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Alam_85371029143",
+      "no": 85371029143,
+      "name": "",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/nHAhy6NVs1RzPJEaA",
+      "active": true,
+      "category": "Wisata Alam",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Alam_7",
+      "no": 7,
+      "name": "Pantai Cemara Indah Kecamatan Labuhan Maringgai Gazebo dan ruang ganti",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "",
+      "active": true,
+      "category": "Wisata Alam",
+      "kecamatan": "Labuhan Maringgai Gazebo dan ruang ganti"
+    },
+    {
+      "id": "Wisata Alam_81321152260",
+      "no": 81321152260,
+      "name": "",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/19tcdihPpu6Kra5K8",
+      "active": true,
+      "category": "Wisata Alam",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Alam_8",
+      "no": 8,
+      "name": "Danau Way Jepara Kecamatan Way Jepara • Gazebo",
+      "address": "",
+      "facilities": [
+        "Toilet https://maps.app.goo.gl/us97ap1FhaAK8Yn1A"
+      ],
+      "contact": "",
+      "map_link": "",
+      "active": true,
+      "category": "Wisata Alam",
+      "kecamatan": "Way Jepara"
+    },
+    {
+      "id": "Wisata Alam_9",
+      "no": 9,
+      "name": "Way Guruh Kecamatan Jabung • Gazebo",
+      "address": "",
+      "facilities": [
+        "Toilet",
+        "Kolam Ikan",
+        "Spot selfi",
+        "Sarana Ibadah",
+        "generator listrik",
+        "Lampu Taman",
+        "Kios",
+        "Tiang Listik",
+        "Taman",
+        "PAGE 2 ---"
+      ],
+      "contact": "",
+      "map_link": "",
+      "active": false,
+      "category": "Wisata Alam",
+      "kecamatan": "Jabung"
+    },
+    {
+      "id": "Wisata Alam_10",
+      "no": 10,
+      "name": "Dam Swadaya Desa Gondang Rejo Kecamatan Pekalongan • Bendungan",
+      "address": "",
+      "facilities": [
+        "Jembatan",
+        "Spot foto"
+      ],
+      "contact": "",
+      "map_link": "",
+      "active": false,
+      "category": "Wisata Alam",
+      "kecamatan": "Pekalongan"
+    },
+    {
+      "id": "Wisata Alam_11",
+      "no": 11,
+      "name": "Dam Terbanggi Marga Desa Terbanggi Marga Kecamatan Sukadana",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "",
+      "active": false,
+      "category": "Wisata Alam",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Alam_12",
+      "no": 12,
+      "name": "Pesanggrahan Curup Desa Mataram Baru Kecamatan Mataram",
+      "address": "Baru",
+      "facilities": [],
+      "contact": "",
+      "map_link": "",
+      "active": false,
+      "category": "Wisata Alam",
+      "kecamatan": "Mataram"
+    },
+    {
+      "id": "Wisata Alam_13",
+      "no": 13,
+      "name": "Hutan Mangrove Pasir Sakti Desa Purworejo Kecamatan Pasir Sakti '081274794591",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/5UHRdjdQRx75Z2uk9",
+      "active": true,
+      "category": "Wisata Alam",
+      "kecamatan": "Pasir Sakti"
+    },
+    {
+      "id": "Wisata Alam_14",
+      "no": 14,
+      "name": "Wisata Kali Alam Desa Sri Menanti Kecamatan Bandar",
+      "address": "Sribawono",
+      "facilities": [
+        "Spot Selfi",
+        "Sumur Bor",
+        "Gazebo",
+        "sarana Ibadah",
+        "Safety Guard",
+        "Pelampung",
+        "Perahu arum Jeram"
+      ],
+      "contact": "",
+      "map_link": "",
+      "active": true,
+      "category": "Wisata Alam",
+      "kecamatan": "Bandar"
+    },
+    {
+      "id": "Wisata Alam_85279608822",
+      "no": 85279608822,
+      "name": "",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/rKAWLz9YKTQHEJmQ9",
+      "active": true,
+      "category": "Wisata Alam",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Alam_15",
+      "no": 15,
+      "name": "Desa Wisata Labuhan Ratu VII Desa Labuhan Ratu VII Kecamatan",
+      "address": "Labuhan Ratu 081274251354 16 Desa Wisata Braja Harjosari/ Padang Savana Braja Harjosari Kecamatan Braja Selebah",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/McyAeTUpFLtdPq988",
+      "active": true,
+      "category": "Wisata Alam",
+      "kecamatan": "Braja Selebah Desa Wisata Labuhan Ratu VII Desa Labuhan Ratu VII Kecamatan"
+    }
+  ],
+  "wisata_buatan": [
+    {
+      "id": "Wisata Buatan_1",
+      "no": 1,
+      "name": "Danau Kemuning Desa Sribhawono Kecamatan Bandar",
+      "address": "Sribhawono",
+      "facilities": [
+        "Toilet",
+        "Gazebo",
+        "Kios Kuliner",
+        "Wahana Bebek-Bebekan",
+        "Sewa Ban"
+      ],
+      "contact": "",
+      "map_link": "",
+      "active": true,
+      "category": "Wisata Buatan",
+      "kecamatan": "Bandar"
+    },
+    {
+      "id": "Wisata Buatan_81369212248",
+      "no": 81369212248,
+      "name": "",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/FezmgNnuKAC2dukL9",
+      "active": true,
+      "category": "Wisata Buatan",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Buatan_2",
+      "no": 2,
+      "name": "Pasar Wedana / Pasar Digital Kecamatan Sukadana • Spot Selfie",
+      "address": "",
+      "facilities": [
+        "Kios Kuliner",
+        "Toilet",
+        "Area Parkir"
+      ],
+      "contact": "",
+      "map_link": "",
+      "active": true,
+      "category": "Wisata Buatan",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Buatan_82269099379",
+      "no": 82269099379,
+      "name": "",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/LGp1yT3KMN1KyqwC9",
+      "active": true,
+      "category": "Wisata Buatan",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Buatan_3",
+      "no": 3,
+      "name": "Islamic Center Kecamatan Sukadana Kios Kuliner",
+      "address": "Toilet Spot Selfie Masjid Gedung Olah Raga Area Parkir",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/QgdKipuqtYqjnpuk9",
+      "active": true,
+      "category": "Wisata Buatan",
+      "kecamatan": "Sukadana Kios Kuliner"
+    },
+    {
+      "id": "Wisata Buatan_4",
+      "no": 4,
+      "name": "Embung Bojong Katon Negeri Sakti",
+      "address": "Desa Bojong Kecamatan Sekampung Udik",
+      "facilities": [],
+      "contact": "",
+      "map_link": "",
+      "active": false,
+      "category": "Wisata Buatan",
+      "kecamatan": "Sekampung Udik Embung Bojong Katon Negeri Sakti"
+    },
+    {
+      "id": "Wisata Buatan_5",
+      "no": 5,
+      "name": "Balai Benih Induk (BBI) Hortikultura Kecamatan Pekalongan",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "",
+      "active": true,
+      "category": "Wisata Buatan",
+      "kecamatan": "Pekalongan"
+    },
+    {
+      "id": "Wisata Buatan_7",
+      "no": 7,
+      "name": "Agrowisata Kelompok Tani Lebah Desa Buana Sakti Kecamatan Batang Hari",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "",
+      "active": false,
+      "category": "Wisata Buatan",
+      "kecamatan": "Batang Hari"
+    },
+    {
+      "id": "Wisata Buatan_8",
+      "no": 8,
+      "name": "Agrowisata Buah Jeruk Desa Pugung Raharjo Kecamatan",
+      "address": "Sekampung Udik",
+      "facilities": [],
+      "contact": "",
+      "map_link": "",
+      "active": false,
+      "category": "Wisata Buatan",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Buatan_9",
+      "no": 9,
+      "name": "Agrowisata Bunga/Sayur - Sayuran",
+      "address": "Desa Gunung Pasir Jaya Kecamatan Sekampung Udik",
+      "facilities": [],
+      "contact": "",
+      "map_link": "",
+      "active": false,
+      "category": "Wisata Buatan",
+      "kecamatan": "Sekampung Udik Agrowisata Bunga"
+    },
+    {
+      "id": "Wisata Buatan_10",
+      "no": 10,
+      "name": "Randu Mas Desa Pugung Raharjo Kecamatan",
+      "address": "Sekampung Udik",
+      "facilities": [
+        "Toilet",
+        "Kamar ganti dan bilas",
+        "Restoran",
+        "Aula Pertemuan",
+        "Spot Selfie",
+        "Area Parkir",
+        "Loket Masuk",
+        "Mushola",
+        "Kolam Renang",
+        "Water Boom"
+      ],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/EKLVqHMASqJiAdGe6",
+      "active": true,
+      "category": "Wisata Buatan",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Buatan_11",
+      "no": 11,
+      "name": "Rumah Fosil (Kuliner) Kecamatan Marga Tiga",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "",
+      "active": false,
+      "category": "Wisata Buatan",
+      "kecamatan": "Marga Tiga"
+    },
+    {
+      "id": "Wisata Buatan_12",
+      "no": 12,
+      "name": "Alam Jembat Kembar (Kuliner) Kecamatan Pasir Sakti • Gazebo",
+      "address": "",
+      "facilities": [
+        "Kolam Ikan"
+      ],
+      "contact": "",
+      "map_link": "",
+      "active": false,
+      "category": "Wisata Buatan",
+      "kecamatan": "Pasir Sakti"
+    },
+    {
+      "id": "Wisata Buatan_13",
+      "no": 13,
+      "name": "Wahana Karya Tani (Kuliner) Kecamatan Batanghari",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "",
+      "active": false,
+      "category": "Wisata Buatan",
+      "kecamatan": "Batanghari"
+    },
+    {
+      "id": "Wisata Buatan_14",
+      "no": 14,
+      "name": "Gerebeq Ayem (Kuliner) Kecamatan Mataram Baru",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "",
+      "active": false,
+      "category": "Wisata Buatan",
+      "kecamatan": "Mataram Baru"
+    },
+    {
+      "id": "Wisata Buatan_15",
+      "no": 15,
+      "name": "Sarung Manggung (Kuliner) Kecamatan Batanghari",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "",
+      "active": false,
+      "category": "Wisata Buatan",
+      "kecamatan": "Batanghari"
+    },
+    {
+      "id": "Wisata Buatan_16",
+      "no": 16,
+      "name": "Teman Jalan (Kuliner) Kecamatan Sekampung",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "",
+      "active": false,
+      "category": "Wisata Buatan",
+      "kecamatan": "Sekampung"
+    },
+    {
+      "id": "Wisata Buatan_17",
+      "no": 17,
+      "name": "Wisata Omahe Jagung Desa Gedong Dalem Kecamatan Batanghari",
+      "address": "Nuban",
+      "facilities": [
+        "Foto booth",
+        "Spot selfie",
+        "Kantin",
+        "Kios kuliner dan souvenir",
+        "Kantor Koperasi",
+        "Rest Area",
+        "Gazebo"
+      ],
+      "contact": "",
+      "map_link": "",
+      "active": false,
+      "category": "Wisata Buatan",
+      "kecamatan": "Batanghari"
+    },
+    {
+      "id": "Wisata Buatan_18",
+      "no": 18,
+      "name": "Taman Wisata Bunga dan Edukasi Lembah",
+      "address": "Pawiki Kecamatan Marga Tiga • Gazebo",
+      "facilities": [
+        "live musik",
+        "Toilet",
+        "Aula",
+        "Taman Bunga",
+        "Kandang hewan",
+        "Spot selfi",
+        "Kolam",
+        "Pagar"
+      ],
+      "contact": "",
+      "map_link": "",
+      "active": false,
+      "category": "Wisata Buatan",
+      "kecamatan": "Marga Tiga"
+    },
+    {
+      "id": "Wisata Buatan_19",
+      "no": 19,
+      "name": "Kolam Renang Pitaloka 2 Desa Ganti Mulyo Kecamatan Pekalongan • Water Boom",
+      "address": "",
+      "facilities": [
+        "Kolam Renang Anak",
+        "Kolam Renang Dewasa",
+        "Toilet",
+        "Kamar Ganti dan Bilas",
+        "Toko Souvenir",
+        "Ruang Tunggu",
+        "Loket Tiket Masuk",
+        "Kantin",
+        "Spot Selfie",
+        "Tempat Ibadah",
+        "Ruang Pertemuan"
+      ],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/aL7Nfm4bmfotDE4z6",
+      "active": true,
+      "category": "Wisata Buatan",
+      "kecamatan": "Pekalongan"
+    },
+    {
+      "id": "Wisata Buatan_20",
+      "no": 20,
+      "name": "Tirta Lawang Sewu Desa Srigading Kecamatan Bandar",
+      "address": "Sribhawono",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/VgSv7ffUPLsDAJrL7",
+      "active": true,
+      "category": "Wisata Buatan",
+      "kecamatan": "Bandar"
+    },
+    {
+      "id": "Wisata Buatan_21",
+      "no": 21,
+      "name": "Taman Kreasi Sriwijaya Desa Sadar sriwijaya Kecamatan Bandar",
+      "address": "Sribhawono",
+      "facilities": [],
+      "contact": "",
+      "map_link": "",
+      "active": true,
+      "category": "Wisata Buatan",
+      "kecamatan": "Bandar"
+    },
+    {
+      "id": "Wisata Buatan_22",
+      "no": 22,
+      "name": "Rest Area Labuhan Ratu VI Desa Labuhan Ratu VI Kecamatan",
+      "address": "Labuhan Ratu 082183795269",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/QCKr6aYSoVRC3d3c9",
+      "active": true,
+      "category": "Wisata Buatan",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Buatan_23",
+      "no": 23,
+      "name": "Way Guruh Sriwangi Kecamatan Way Jepara",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/e8fXH85d7Q1uARzBA",
+      "active": true,
+      "category": "Wisata Buatan",
+      "kecamatan": "Way Jepara"
+    },
+    {
+      "id": "Wisata Buatan_24",
+      "no": 24,
+      "name": "Waterboom Tirta Kencana Kecamatan Bandar Sribhawono",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/Ng93bUjisAcvhzKCA",
+      "active": true,
+      "category": "Wisata Buatan",
+      "kecamatan": "Bandar Sribhawono"
+    }
+  ],
+  "wisata_budaya": [
+    {
+      "id": "Wisata Budaya_1",
+      "no": 1,
+      "name": "Taman Purbakala Pugung Raharjo Desa Pugung Raharjo Kecamatan Sekampung udik • Toilet",
+      "address": "",
+      "facilities": [
+        "Gazebo",
+        "Jalan Setapak",
+        "Kios Kuliner",
+        "Rumah Informasi",
+        "Peta Wisata",
+        "Spot Foto",
+        "Benda-benda Peninggalan sejarah",
+        "Area Parkir",
+        "Kantin"
+      ],
+      "contact": "",
+      "map_link": "",
+      "active": true,
+      "category": "Wisata Budaya",
+      "kecamatan": "Sekampung udik"
+    },
+    {
+      "id": "Wisata Budaya_81379108890",
+      "no": 81379108890,
+      "name": "",
+      "address": "Museum pubakala Pugung Rahardjo Desa Pugung Raharjo Kecamatan Sekampung udik",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/cWteuo2tUK3W21P68",
+      "active": true,
+      "category": "Wisata Budaya",
+      "kecamatan": "Sekampung udik"
+    },
+    {
+      "id": "Wisata Budaya_2",
+      "no": 2,
+      "name": "Museum Budaya Lampung Timur Desa Sukadana Darat Kecamatan Sukadana 081278400123",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/SAEGrywbHzHzJjoL8",
+      "active": true,
+      "category": "Wisata Budaya",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Budaya_3",
+      "no": 3,
+      "name": "Desa Tradisional Wana Desa Wana Kecamatan Melinting • Pusat kerajinan tradisional Lampung",
+      "address": "Melinting",
+      "facilities": [
+        "Sanggar Tari Melinting",
+        "Selter Penjualan Souvenir",
+        "Homestay"
+      ],
+      "contact": "",
+      "map_link": "",
+      "active": true,
+      "category": "Wisata Budaya",
+      "kecamatan": "Melinting"
+    },
+    {
+      "id": "Wisata Budaya_85279695785",
+      "no": 85279695785,
+      "name": "",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/vjWoqVST2ZHUz2HQA",
+      "active": true,
+      "category": "Wisata Budaya",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Budaya_4",
+      "no": 4,
+      "name": "Gedung Sesat Agung Desa Sukadana Darat Kecamatan Sukadana",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/kqZcu2jHGzB9ruDC7",
+      "active": false,
+      "category": "Wisata Budaya",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "Wisata Budaya_5",
+      "no": 5,
+      "name": "Wisata Budaya Gemati Desa Banjarejo Kecamatan Batanghari 081279361155",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/wD6FrRvt7Pm7Ttjo9",
+      "active": true,
+      "category": "Wisata Budaya",
+      "kecamatan": "Batanghari"
+    },
+    {
+      "id": "Wisata Budaya_6",
+      "no": 6,
+      "name": "Lawang Qori Desa Gedong Wani Kecamatan Marga Tiga 085273333379",
+      "address": "",
+      "facilities": [],
+      "contact": "",
+      "map_link": "https://maps.app.goo.gl/SHbRaxqzqiKSmYUU6",
+      "active": true,
+      "category": "Wisata Budaya",
+      "kecamatan": "Marga Tiga"
+    }
+  ],
+  "hotels": [
+    {
+      "id": "hotel_1",
+      "no": 1,
+      "name": "YESTOYA HOTEL & CAFE Bintang Satu Desa Sumberejo Kecamatan Way Jepara 38",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Way Jepara"
+    },
+    {
+      "id": "hotel_2",
+      "no": 2,
+      "name": "AG HOTEL Non Bintang Gunung Sugih Besar Kecamatan Sekampung",
+      "classification": "Non Bintang",
+      "address": "Udik",
+      "rooms": 20,
+      "category": "Hotel",
+      "kecamatan": "Sekampung"
+    },
+    {
+      "id": "hotel_3",
+      "no": 3,
+      "name": "BANDAR AYU Non Bintang Jl. Lintas Bandar Negeri Kecamatan Labuhan",
+      "classification": "Non Bintang",
+      "address": "Maringgai",
+      "rooms": 21,
+      "category": "Hotel",
+      "kecamatan": "Labuhan"
+    },
+    {
+      "id": "hotel_4",
+      "no": 4,
+      "name": "SARIAMI Non Bintang Jl. Lintas Karya Tani Kecamatan Labuhan",
+      "classification": "Non Bintang",
+      "address": "Maringgai",
+      "rooms": 23,
+      "category": "Hotel",
+      "kecamatan": "Labuhan"
+    },
+    {
+      "id": "hotel_5",
+      "no": 5,
+      "name": "CEMPAKA INDAH Non Bintang Desa Sribhawono Kecamatan Bandar",
+      "classification": "Non Bintang",
+      "address": "Sribhawono",
+      "rooms": 33,
+      "category": "Hotel",
+      "kecamatan": "Bandar"
+    },
+    {
+      "id": "hotel_6",
+      "no": 6,
+      "name": "TIRTA KENCANA Non Bintang Desa Srimenanti Kecamatan Bandar",
+      "classification": "Non Bintang",
+      "address": "Sribhawono",
+      "rooms": 40,
+      "category": "Hotel",
+      "kecamatan": "Bandar"
+    },
+    {
+      "id": "hotel_7",
+      "no": 7,
+      "name": "WISMA Non Bintang Desa Mataram Baru Kecamatan Mataram",
+      "classification": "Non Bintang",
+      "address": "Baru",
+      "rooms": 18,
+      "category": "Hotel",
+      "kecamatan": "Mataram"
+    },
+    {
+      "id": "hotel_8",
+      "no": 8,
+      "name": "RAHAYU Non Bintang Desa Mataram Baru Kecamatan Mataram",
+      "classification": "Non Bintang",
+      "address": "Baru",
+      "rooms": 12,
+      "category": "Hotel",
+      "kecamatan": "Mataram"
+    },
+    {
+      "id": "hotel_9",
+      "no": 9,
+      "name": "DIRGAHAYU Non Bintang Desa Mataram Baru Kecamatan Mataram",
+      "classification": "Non Bintang",
+      "address": "Baru",
+      "rooms": 15,
+      "category": "Hotel",
+      "kecamatan": "Mataram"
+    },
+    {
+      "id": "hotel_10",
+      "no": 10,
+      "name": "WINDU PERKASA Non Bintang Desa Mulyosari Kecamatan Pasir Sakti 16",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Pasir Sakti"
+    },
+    {
+      "id": "hotel_11",
+      "no": 11,
+      "name": "BERKAH KEMBAR Non Bintang Desa Labuhan Ratu Kecamatan Pasir Sakti 14",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Pasir Sakti"
+    },
+    {
+      "id": "hotel_12",
+      "no": 12,
+      "name": "ECOLODGE Non Bintang Desa Labuhan Ratu IX Kecamatan Labuhan",
+      "classification": "Non Bintang",
+      "address": "Ratu",
+      "rooms": 8,
+      "category": "Hotel",
+      "kecamatan": "Labuhan"
+    },
+    {
+      "id": "hotel_13",
+      "no": 13,
+      "name": "BAGUS HOTEL Bintang Satu Dusun Gunung Terang 3 Desa Labuhan Ratu",
+      "classification": "Non Bintang",
+      "address": "Kecamatan Labuhan Ratu",
+      "rooms": 16,
+      "category": "Hotel",
+      "kecamatan": "Labuhan Ratu BAGUS HOTEL Bintang Satu Dusun Gunung Terang"
+    },
+    {
+      "id": "hotel_14",
+      "no": 14,
+      "name": "HOTEL INDAH PERMAI Non Bintang Desa Siraman Kecamatan Pekalongan 17",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Pekalongan"
+    },
+    {
+      "id": "hotel_15",
+      "no": 15,
+      "name": "Homestay Jawis Angsana",
+      "classification": "Akomodasi Lainnya",
+      "address": "Desa Braja Harjosari Kecamatan Braja Selebah",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Braja Selebah Homestay Jawis Angsana"
+    },
+    {
+      "id": "hotel_16",
+      "no": 16,
+      "name": "Homestay KTH Plang Ijo",
+      "classification": "Akomodasi Lainnya",
+      "address": "Desa Labuhan Ratu IX Kecamatan Labuhan Ratu",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Labuhan Ratu Homestay KTH Plang Ijo"
+    },
+    {
+      "id": "hotel_17",
+      "no": 17,
+      "name": "Homestay Liman Seto",
+      "classification": "Akomodasi Lainnya",
+      "address": "Desa Labuhan Ratu VI Kecamatan Labuhan Ratu",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Labuhan Ratu Homestay Liman Seto"
+    },
+    {
+      "id": "hotel_18",
+      "no": 18,
+      "name": "Homestay Ratu Karang Sari Akomodasi Lainnya Desa",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "hotel_19",
+      "no": 19,
+      "name": "Homestay Desa Wana Akomodasi Lainnya Desa Wana Kecamatan Melinting",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Melinting"
+    },
+    {
+      "id": "hotel_20",
+      "no": 20,
+      "name": "Andalas Homestay",
+      "classification": "Akomodasi Lainnya",
+      "address": "Desa Labuhan Ratu IX Kecamatan Labuhan Ratu",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Labuhan Ratu Andalas Homestay"
+    },
+    {
+      "id": "hotel_21",
+      "no": 21,
+      "name": "YOEZ HOTEL Non Bintang Pasir Sakti",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Pasir Sakti"
+    },
+    {
+      "id": "hotel_22",
+      "no": 22,
+      "name": "Jihan Homestay Akomodasi Lainnya Labuhan Ratu IX Kecamatan Labuhan Ratu",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Labuhan Ratu"
+    },
+    {
+      "id": "hotel_23",
+      "no": 23,
+      "name": "Andatu Homestay Akomodasi Lainnya Labuhan Ratu IX",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "hotel_24",
+      "no": 24,
+      "name": "Agus Toni Homestay Akomodasi Lainnya Braja Harjosari",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "hotel_25",
+      "no": 25,
+      "name": "Bagus Homestay Akomodasi Lainnya Braja Harjosari",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "hotel_26",
+      "no": 26,
+      "name": "Alin Homestay Akomodasi Lainnya Braja Harjosari",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "hotel_27",
+      "no": 27,
+      "name": "Mangrove Homestay Akomodasi Lainnya Purworejo Pasir Sakti",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Pasir Sakti"
+    },
+    {
+      "id": "hotel_28",
+      "no": 28,
+      "name": "Hasan Homestay Akomodasi Lainnya Labuhan Ratu VII",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "hotel_29",
+      "no": 29,
+      "name": "Homestay Dian Al Firdaus Akomodasi Lainnya Labuhan Ratu VII",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "hotel_30",
+      "no": 30,
+      "name": "Yessy Homestay Akomodasi Lainnya Braja Harjosari",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "hotel_31",
+      "no": 31,
+      "name": "Lembah Pawiki Homestay Akomodasi Lainnya Sukadana Baru",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "hotel_32",
+      "no": 32,
+      "name": "Bella Homestay Akomodasi Lainnya Labuhan Ratu IX",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "hotel_33",
+      "no": 33,
+      "name": "Fajar Homestay Akomodasi Lainnya Braja Harjosari",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "hotel_34",
+      "no": 34,
+      "name": "Margahayu Homestay Akomodasi Lainnya Labuhan Ratu VII",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "hotel_35",
+      "no": 35,
+      "name": "Cairina Homestay Akomodasi Lainnya Labuhan Ratu IX",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "hotel_36",
+      "no": 36,
+      "name": "Mas Deni Homestay Akomodasi Lainnya Labuhan Ratu VII",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "hotel_37",
+      "no": 37,
+      "name": "Hommy Bee Homestay Akomodasi Lainnya Braja Harjosari",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "hotel_38",
+      "no": 38,
+      "name": "Aqila Homestay Akomodasi Lainnya Labuhan Ratu IX",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    },
+    {
+      "id": "hotel_39",
+      "no": 39,
+      "name": "Farel Homestay Akomodasi Lainnya Purworejo Pasir Sakti",
+      "classification": "Non Bintang",
+      "address": "",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Pasir Sakti"
+    },
+    {
+      "id": "hotel_40",
+      "no": 40,
+      "name": "Supri Homestay Akomodasi Lainnya Labuhan Ratu IX",
+      "classification": "Non Bintang",
+      "address": "DAFTAR USAHA PARIWISATA PENYEDIAAN AKOMODASI HOTEL (BINTANG DAN NON BINTANG)",
+      "rooms": 10,
+      "category": "Hotel",
+      "kecamatan": "Sukadana"
+    }
+  ],
+  "restaurants": [
+    {
+      "id": "culinary_1",
+      "no": 1,
+      "name": "RM. MANGDUT SUKADANA ILIR Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_2",
+      "no": 2,
+      "name": "RM. SARI MENANTI SUKADANA ILIR Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_3",
+      "no": 3,
+      "name": "RM. MANDIRI SUKADANA ILIR Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_4",
+      "no": 4,
+      "name": "RM. YANTI SUKADANA ILIR Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_5",
+      "no": 5,
+      "name": "RM. BATA MERAH SUKADANA ILIR Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_6",
+      "no": 6,
+      "name": "RM. MARINA SUKADANA ILIR Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_7",
+      "no": 7,
+      "name": "RM. PALEM RAYA SUKADANA ILIR Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_8",
+      "no": 8,
+      "name": "RM. SEDERHANA SUKADANA ILIR Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_9",
+      "no": 9,
+      "name": "RM. NENG LIA SUKADANA TENGAH Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_10",
+      "no": 10,
+      "name": "RM. ANITA SUKADANA TENGAH Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_11",
+      "no": 11,
+      "name": "RM. SEMANGAT BUMI NABUNG Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_12",
+      "no": 12,
+      "name": "RM. PAK NDUT BUMI NABUNG Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_13",
+      "no": 13,
+      "name": "RM. SEPAKAT MATARAM MARGA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_14",
+      "no": 14,
+      "name": "RM. APUNG TERBANGGI MARGA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_15",
+      "no": 15,
+      "name": "RM. LIMA SAUDARA PASAR SUKADANA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_16",
+      "no": 16,
+      "name": "RM. RUMAH MINANG MATARAM MARGA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_17",
+      "no": 17,
+      "name": "RM. PONDOK SANTAP MATARAM MARGA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_18",
+      "no": 18,
+      "name": "RM. TONY 66 MATARAM MARGA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_19",
+      "no": 19,
+      "name": "RM. MBAK HER MATARAM MARGA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_20",
+      "no": 20,
+      "name": "RM. YUDI MATARAM MARGA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_21",
+      "no": 21,
+      "name": "RM. TAO TAMBA NAULI MATARAM MARGA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_22",
+      "no": 22,
+      "name": "RM. AZIZ MATARAM MARGA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_23",
+      "no": 23,
+      "name": "RM. PUTI BUNGSU MATARAM MARGA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_24",
+      "no": 24,
+      "name": "RM. FATIR MATARAM MARGA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_25",
+      "no": 25,
+      "name": "RM. DEFINA MATARAM MARGA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_26",
+      "no": 26,
+      "name": "RM. GLORA 88 MATARAM MARGA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_27",
+      "no": 27,
+      "name": "RM. RAHAYU MUARA JAYA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_28",
+      "no": 28,
+      "name": "RM. SUMBER REJEKI MUARA JAYA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_29",
+      "no": 29,
+      "name": "RM. KEDIRI MUARA JAYA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_30",
+      "no": 30,
+      "name": "RM LESTARI PAKUAN AJI Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_31",
+      "no": 31,
+      "name": "RM LESTARI SUKADANA ILIR Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_32",
+      "no": 32,
+      "name": "PONDOK SALMA SUKADANA ILIR Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_33",
+      "no": 33,
+      "name": "PINDANG ROS SUKADANA ILIR Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_34",
+      "no": 34,
+      "name": "PINDANG DUL PASAR SUKADANA Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_35",
+      "no": 35,
+      "name": "RESTO 99 PAKUAN AJI Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sukadana",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_36",
+      "no": 36,
+      "name": "RM. SIDO MAMPIR PUGUNG RAHARJO Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung Udik",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_37",
+      "no": 37,
+      "name": "RM. KURNIA I GUNUNG PASIR JAYA Makanan Indonesia 30",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung Udik",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_38",
+      "no": 38,
+      "name": "RM. KURNIA II GUNUNG PASIR JAYA Makanan Indonesia 30",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung Udik",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_39",
+      "no": 39,
+      "name": "RM. ANDAMA JAYA 1 GUNUNG PASIR JAYA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung Udik",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_40",
+      "no": 40,
+      "name": "RM. ANDAMA JAYA 2 GUNUNG AGUNG Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung Udik",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_41",
+      "no": 41,
+      "name": "RM. MBAK ANTI Dusun III Negeri Katon RT.09 RW.02",
+      "address": "Desa Negeri Katon",
+      "food_type": "Makanan Indonesia",
+      "capacity": 60,
+      "kecamatan": "Marga Tiga",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_42",
+      "no": 42,
+      "name": "WM. LESTARI Dusun III RT.08 RW.04 Desa Tanjung",
+      "address": "Harapan",
+      "food_type": "Makanan Indonesia",
+      "capacity": 46,
+      "kecamatan": "Marga Tiga",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_43",
+      "no": 43,
+      "name": "WM. 1 JAWABAN Dusun III Negeri Katon RT.08 RW.03",
+      "address": "Desa Negeri Katon DAFTAR USAHA PARIWISATA JASA MAKANAN DAN MINUMAN RUMAH MAKAN, RESTO, CAFÉ COFFEE SHOP --- PAGE 2 --- Kecamatan Batanghari Nuban :",
+      "food_type": "Makanan Indonesia",
+      "capacity": 10,
+      "kecamatan": "Marga Tiga",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_44",
+      "no": 44,
+      "name": "RM. OJOLALI KEDATON Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Marga Tiga",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_45",
+      "no": 45,
+      "name": "RM. RINO KEDATON KEDATON Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Marga Tiga",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_46",
+      "no": 46,
+      "name": "TONGSENG TENTREM TRISNOMULYO Makanan Indonesia",
+      "address": "Kecamatan Labuhan Maringgai :",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Marga Tiga",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_47",
+      "no": 47,
+      "name": "RM. JOKO PATI Jl. Lintas Karya Tani Makanan Indonesia 30",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Marga Tiga",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_48",
+      "no": 48,
+      "name": "RM. OJOLALI Jl. Lintas Karya Makmur Makanan Indonesia 25",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Marga Tiga",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_49",
+      "no": 49,
+      "name": "RM. BU DARMI 2 Jl. Lintas Karya Makmur Makanan Indonesia 52",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Marga Tiga",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_50",
+      "no": 50,
+      "name": "kuliner makanan Desa bandar negeri Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Marga Tiga",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_51",
+      "no": 51,
+      "name": "kuliner makanan Desa margasari Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Marga Tiga",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_52",
+      "no": 52,
+      "name": "kuliner makanan Desa muara gading mas Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Marga Tiga",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_53",
+      "no": 53,
+      "name": "rumah makan Eka Lubis Desa sriminosari Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Marga Tiga",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_54",
+      "no": 54,
+      "name": "rumah makan Desa sriminosari Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Marga Tiga",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_55",
+      "no": 55,
+      "name": "RM. TENDA BIRU TANJUNG INTEN Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Purbolinggo",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_56",
+      "no": 56,
+      "name": "RM. TULUNG AGUNG TAMBAH DADI Makanan Indonesia 25",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Purbolinggo",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_57",
+      "no": 57,
+      "name": "RM. SATE MANTEB TAMAN BOGO Makanan Indonesia 10",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Purbolinggo",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_58",
+      "no": 58,
+      "name": "WM. YANTI TAMAN BOGO Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Purbolinggo",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_59",
+      "no": 59,
+      "name": "RM. OJOLALI TAMBAH SUBUR Makanan Indonesia 21",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Bungur",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_60",
+      "no": 60,
+      "name": "RM. MUNTILAN TEGAL OMBO Makanan Indonesia 23",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Bungur",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_61",
+      "no": 61,
+      "name": "RM. MUSLIMAH TAMBAH SUBUR Makanan Indonesia 25",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Bungur",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_62",
+      "no": 62,
+      "name": "RM. PURWOREJO TAMBAH SUBUR Makanan Indonesia 22",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Bungur",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_63",
+      "no": 63,
+      "name": "RM. TRANGKIL TAMBAH SUBUR Makanan Indonesia 24",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Bungur",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_64",
+      "no": 64,
+      "name": "RM. KS TEGAL OMBO Makanan Indonesia 22",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Bungur",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_65",
+      "no": 65,
+      "name": "RM. SILA TEGAL OMBO Makanan Indonesia 23",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Bungur",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_66",
+      "no": 66,
+      "name": "RM. PONDOK WISATA TAMAN NEGERI Makanan Indonesia 24",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Bungur",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_67",
+      "no": 67,
+      "name": "RM. BAROKAH TOTO MULYO Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Bungur",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_68",
+      "no": 68,
+      "name": "RM. CITA RASA TEGAL OMBO Makanan Indonesia 24",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Bungur",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_69",
+      "no": 69,
+      "name": "rumah makan asyfa taman negeri kec. Way bungur Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Bungur",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_70",
+      "no": 70,
+      "name": "rumah makan mahmudi taman negeri kec. Way bungur Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Bungur",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_71",
+      "no": 71,
+      "name": "RM. NENI Dusun II Donomulyo Makanan Indonesia 30",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Bumi Agung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_72",
+      "no": 72,
+      "name": "RM. SOLO Jl. Lintas Timur Nyampir Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Bumi Agung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_73",
+      "no": 73,
+      "name": "RM. SEDERHANA TAO TOBA",
+      "address": "NAULI",
+      "food_type": "Makanan Indonesia",
+      "capacity": 30,
+      "kecamatan": "Bumi Agung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_74",
+      "no": 74,
+      "name": "RM YUDI Jl. Lintas Timur Bumi Tinggi Makanan Indonesia 30",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Bumi Agung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_75",
+      "no": 75,
+      "name": "RM. SEDERHANA BRAJA HARJOSARI Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Braja Selebah",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_76",
+      "no": 76,
+      "name": "RM. MBAH TUNIK II BRAJA HARJOSARI Makanan Indonesia 30",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Braja Selebah",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_77",
+      "no": 77,
+      "name": "RM mbah tunik II Dusun III Desa Braja harjosari kec.",
+      "address": "Braja selebah",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Braja Selebah",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_78",
+      "no": 78,
+      "name": "RM. Nazwa Dusun 4 Desa Braja luhur kec. Braja",
+      "address": "selebah",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Braja Selebah",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_79",
+      "no": 79,
+      "name": "RM. jogja Dusun 4 Desa Braja luhur kec. Braja",
+      "address": "selebah",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Braja Selebah",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_80",
+      "no": 80,
+      "name": "RM. hariyanto Dusun 4 Desa Braja luhur kec. Braja",
+      "address": "selebah",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Braja Selebah",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_81",
+      "no": 81,
+      "name": "rumah makan Dusun 2 Desa braja harjosari kec.",
+      "address": "Braja selebah --- PAGE 3 --- Kecamatan Gunung Pelindung :",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Braja Selebah",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_82",
+      "no": 82,
+      "name": "RM. BAMBU Pelindung Jaya Makanan Indonesia 10",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Braja Selebah",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_83",
+      "no": 83,
+      "name": "RM. SATE GONO Pelindung Jaya Makanan Indonesia 10",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Braja Selebah",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_84",
+      "no": 84,
+      "name": "RM. ARKED ADIREJO Makanan Indonesia 16",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Jabung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_85",
+      "no": 85,
+      "name": "RM. BAMBU 1 ADIREJO Makanan Indonesia 8",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Jabung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_86",
+      "no": 86,
+      "name": "RM. BAMBU 2 ADIREJO Makanan Indonesia 12",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Jabung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_87",
+      "no": 87,
+      "name": "RM. BAKSO GANGSAR ADIREJO Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Jabung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_88",
+      "no": 88,
+      "name": "RM. PONDOK BAMBU DESA PEKALONGAN Makanan Indonesia 18",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_89",
+      "no": 89,
+      "name": "RM. BAKSO PELANGI DESA PEKALONGAN Makanan Indonesia 16",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_90",
+      "no": 90,
+      "name": "RM. KURNIA DESA PEKALONGAN Makanan Indonesia 30",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_91",
+      "no": 91,
+      "name": "RM. BAKSO BOLA MAS DESA PEKALONGAN Makanan Indonesia 50",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_92",
+      "no": 92,
+      "name": "RM. BAKSO 4 A DESA PEKALONGAN Makanan Indonesia 70",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_93",
+      "no": 93,
+      "name": "RM. TIRTO MAS DESA PEKALONGAN Makanan Indonesia 32",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_94",
+      "no": 94,
+      "name": "RM. PONDOK AYAM GORENG DESA PEKALONGAN Makanan Indonesia 44",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_95",
+      "no": 95,
+      "name": "RM. SAWUNG GALING DESA PEKALONGAN Makanan Indonesia 10",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_96",
+      "no": 96,
+      "name": "WM. MBAK ASIH DESA PEKALONGAN Makanan Indonesia 32",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_97",
+      "no": 97,
+      "name": "WM. MBAK YANI DESA PEKALONGAN Makanan Indonesia 12",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_98",
+      "no": 98,
+      "name": "Warung makan Dusun III Desa ganti warno kec.",
+      "address": "Pekalongan",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_99",
+      "no": 99,
+      "name": "Warung makan Dusun IV Desa ganti warno kec.",
+      "address": "Pekalongan",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_100",
+      "no": 100,
+      "name": "Warung makan Dusun IV Desa ganti warno kec.",
+      "address": "Pekalongan",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_101",
+      "no": 101,
+      "name": "Warung makan Dusun IV Desa ganti warno kec.",
+      "address": "Pekalongan",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_102",
+      "no": 102,
+      "name": "Warung makan Dusun V Desa ganti warno kec.",
+      "address": "Pekalongan",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_103",
+      "no": 103,
+      "name": "Warung makan Dusun V Desa ganti warno kec.",
+      "address": "Pekalongan",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_104",
+      "no": 104,
+      "name": "Warung makan Dusun V Desa ganti warno kec.",
+      "address": "Pekalongan",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_105",
+      "no": 105,
+      "name": "Warung makan Dusun V Desa ganti warno kec.",
+      "address": "Pekalongan",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_106",
+      "no": 106,
+      "name": "Warung makan Dusun VI Desa ganti warno kec.",
+      "address": "Pekalongan",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_107",
+      "no": 107,
+      "name": "Warung makan Dusun V Desa tulus rejo kec.",
+      "address": "Pekalongan",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_108",
+      "no": 108,
+      "name": "Warung sate Dusun II Desa tulus rejo kec.",
+      "address": "Pekalongan",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_109",
+      "no": 109,
+      "name": "Warung makan Dusun II Desa tulus rejo kec.",
+      "address": "Pekalongan",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_110",
+      "no": 110,
+      "name": "RM. Asih Dusun I Desa adirejo kec. Pekalongan Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_111",
+      "no": 111,
+      "name": "RM. Sidodadi Dusun II Desa adirejo kec.",
+      "address": "Pekalongan",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_112",
+      "no": 112,
+      "name": "Warung makan Dusun III Desa adirejo kec.",
+      "address": "Pekalongan",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_113",
+      "no": 113,
+      "name": "Warung makan Desa wonosari kec. Pekalongan Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_114",
+      "no": 114,
+      "name": "Warung makan Desa wonosari kec. Pekalongan Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_115",
+      "no": 115,
+      "name": "Warung makan Desa wonosari kec. Pekalongan Makanan Indonesia",
+      "address": "--- PAGE 4 ---",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pekalongan",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_116",
+      "no": 116,
+      "name": "RM. ARIMBI DESA MARGOTOTO Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Metro Kibang",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_117",
+      "no": 117,
+      "name": "RM. SIDODADI DESA MARGOTOTO Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Metro Kibang",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_118",
+      "no": 118,
+      "name": "RM. MADIUN DESA MARGOTOTO Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Metro Kibang",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_119",
+      "no": 119,
+      "name": "RM. DEVI DESA MARGOTOTO Makanan Indonesia 20",
+      "address": "Kecamatan Bandar Sribhawono :",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Metro Kibang",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_120",
+      "no": 120,
+      "name": "RM. SRIBHAWONO INDAH DESA SRIBHAWONO Makanan Indonesia 48",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Metro Kibang",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_121",
+      "no": 121,
+      "name": "RM. KARSINI DESA SRIBHAWONO Makanan Indonesia 24",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Metro Kibang",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_122",
+      "no": 122,
+      "name": "RM.MESTI MAREM DESA SRIBHAWONO Makanan Indonesia 28",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Metro Kibang",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_123",
+      "no": 123,
+      "name": "RM. SEDERHANA DESA SRIMENANTI Makanan Indonesia 17",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Metro Kibang",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_124",
+      "no": 124,
+      "name": "RM. UNANG Kota Raman Makanan Indonesia 24",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Raman Utara",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_125",
+      "no": 125,
+      "name": "RM. LESEHAN Kota Raman Makanan Indonesia 40",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Raman Utara",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_126",
+      "no": 126,
+      "name": "RM. CAK SONY DESA SUMBERGEDE Makanan Indonesia 32",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_127",
+      "no": 127,
+      "name": "RM. MBAH DARMO DESA SUMBERGEDE Makanan Indonesia 24",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_128",
+      "no": 128,
+      "name": "RM. LUWES DESA SUMBERGEDE Makanan Indonesia 12",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_129",
+      "no": 129,
+      "name": "RM. SATINI DESA SUMBERGEDE Makanan Indonesia 4",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_130",
+      "no": 130,
+      "name": "RM. MBAK HER DESA SUMBERGEDE Makanan Indonesia 6",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_131",
+      "no": 131,
+      "name": "RM. BAROKAH Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_132",
+      "no": 132,
+      "name": "Warung Makan Ipah Dusun II RT 06 Sumbergede kec.",
+      "address": "Sekampung",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_133",
+      "no": 133,
+      "name": "Warung Makan Tri.a Dusun II RT 04 Sumbergede kec.",
+      "address": "Sekampung",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_134",
+      "no": 134,
+      "name": "Warung Makan Setia Budi Dusun II RT 04 Sumbergede kec.",
+      "address": "Sekampung",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_135",
+      "no": 135,
+      "name": "Warung Makan Dzaki Dusun II RT 04 Sumbergede kec.",
+      "address": "Sekampung",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_136",
+      "no": 136,
+      "name": "Warung Makan Padang Dusun V RT 16 Sumbergede kec.",
+      "address": "Sekampung",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_137",
+      "no": 137,
+      "name": "Kedai Santap seruit lampung Dusun IV RT 15 Sumbergede kec.",
+      "address": "Sekampung",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Sekampung",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_138",
+      "no": 138,
+      "name": "RM. MARYAM SUMBER REJO Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_139",
+      "no": 139,
+      "name": "RM. DEWI SUMBER REJO Makanan Indonesia 25",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_140",
+      "no": 140,
+      "name": "RM. SIMPANG EMPAT SUMBER REJO Makanan Indonesia 15",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_141",
+      "no": 141,
+      "name": "RM. MBAH USROK KARANG ANOM Makanan Indonesia 30",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_142",
+      "no": 142,
+      "name": "RM. DEWI KARANG ANOM Makanan Indonesia 30",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_143",
+      "no": 143,
+      "name": "RM. TOYO KARANG ANOM Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_144",
+      "no": 144,
+      "name": "RM. SATE MADURA JEMBARANA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_145",
+      "no": 145,
+      "name": "RM. NISA JEMBARANA Makanan Indonesia 25",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_146",
+      "no": 146,
+      "name": "RM. BAKSO PONIDI JEMBARANA Makanan Indonesia 15",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_147",
+      "no": 147,
+      "name": "RM. BAROKAH SIDORAHAYU Makanan Indonesia 30",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_148",
+      "no": 148,
+      "name": "RM. PECEL LELE MARGA BATIN Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_149",
+      "no": 149,
+      "name": "RM. MUHAR TANJUMH WANGI Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_150",
+      "no": 150,
+      "name": "RM. SOTO SUTRIS TRI TUNGGAL Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_151",
+      "no": 151,
+      "name": "RM. NIMAH TRI TUNGGAL Makanan Indonesia 25",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_152",
+      "no": 152,
+      "name": "RM. BU MARYAH NGESTI KARYA Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_153",
+      "no": 153,
+      "name": "RM. SUGIYANTO NGESTI KARYA Makanan Indonesia 15",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_154",
+      "no": 154,
+      "name": "Rumah makan Dusun mendoyo desa jembrana",
+      "address": "kec.waway karya",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_155",
+      "no": 155,
+      "name": "rumah makan langgeng dusun 02 desa tri tunggal kec.",
+      "address": "Waway karya",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_156",
+      "no": 156,
+      "name": "Rumah makan yeyep Desa marga batin kec. Waway karya Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_157",
+      "no": 157,
+      "name": "Rumah makan saroji Desa marga batin kec. Waway karya Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_158",
+      "no": 158,
+      "name": "Rumah makan jamilatun desa marga batin kec. Waway karya Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_159",
+      "no": 159,
+      "name": "Rumah makan jumiran desa marga batin kec. Waway karya Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_160",
+      "no": 160,
+      "name": "Rumah makan mak sul Desa karang anom kec. Waway karya Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_161",
+      "no": 161,
+      "name": "Rumah makan mak siam Desa karang anom kec. Waway karya Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_162",
+      "no": 162,
+      "name": "warung makan giyatno Desa ngesti kec. Waway karya Makanan Indonesia",
+      "address": "--- PAGE 5 ---",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Waway Karya",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_163",
+      "no": 163,
+      "name": "RM. PONDOK SANTAP DESA MATARAM BARU Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Mataram Baru",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_164",
+      "no": 164,
+      "name": "RM. BU YANTI DESA MATARAM BARU Makanan Indonesia 15",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Mataram Baru",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_165",
+      "no": 165,
+      "name": "RM. WITOYO DESA TULUNG PASIK Makanan Indonesia 9",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Mataram Baru",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_166",
+      "no": 166,
+      "name": "RM Raja Intan Dusun I Rt 004 Rw 002 teluk dalem",
+      "address": "kec. Mataram baru",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Mataram Baru",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_167",
+      "no": 167,
+      "name": "RM Kurnia Dusun IV Rt 021 Rw 008 teluk dalem",
+      "address": "kec. Mataram baru",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Mataram Baru",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_168",
+      "no": 168,
+      "name": "RM Sido Moro Dusun VII rt 032 rw 002 teluk dalem",
+      "address": "kec. Mataram baru",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Mataram Baru",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_169",
+      "no": 169,
+      "name": "RM Hikmah Dusun I Rt 004 Rw 002 teluk dalem",
+      "address": "kec. Mataram baru",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Mataram Baru",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_170",
+      "no": 170,
+      "name": "RM Rauf Dusun I Rt 004 Rw 002 teluk dalem",
+      "address": "kec. Mataram baru",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Mataram Baru",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_171",
+      "no": 171,
+      "name": "Nasidaria Dusun IV Rt 017 Rw 007 teluk dalem",
+      "address": "kec. Mataram Baru",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Mataram Baru",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_172",
+      "no": 172,
+      "name": "Pindang Baung Dusun I mataram baru kec. Mataram",
+      "address": "baru",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Mataram Baru",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_173",
+      "no": 173,
+      "name": "Sate Surabaya Dusun I mataram baru kec. Mataram",
+      "address": "baru",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Mataram Baru",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_174",
+      "no": 174,
+      "name": "Rumah makan padang kec.Mataram baru Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Mataram Baru",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_175",
+      "no": 175,
+      "name": "Rumah Makan Sederhana kec.Mataram baru Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Mataram Baru",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_176",
+      "no": 176,
+      "name": "Rumah Makan Andana kec.Mataram baru Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Mataram Baru",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_177",
+      "no": 177,
+      "name": "RM. SIDODADI Jl. Merdeka 38 P Desa Banjarrejo Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Batanghari",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_178",
+      "no": 178,
+      "name": "RM. SOTO SINAR PAGI DESA BUMIHARJO Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Batanghari",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_179",
+      "no": 179,
+      "name": "RM. 3R DESA BATANGHARJO Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Batanghari",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_180",
+      "no": 180,
+      "name": "SOTO SEGER DUSUN GADING REJO DESA",
+      "address": "BANARJOYO",
+      "food_type": "Makanan Indonesia",
+      "capacity": 14,
+      "kecamatan": "Batanghari",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_181",
+      "no": 181,
+      "name": "BAKSO GRANAT DUSUN ADIREJO DESA BANARJOYO Makanan Indonesia 12",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Batanghari",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_182",
+      "no": 182,
+      "name": "MI JUM DESA BANJARREJO Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Batanghari",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_183",
+      "no": 183,
+      "name": "RM. Pindang NUMANI DESA MULYOSARI Makanan Indonesia 24",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pasir Sakti",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_184",
+      "no": 184,
+      "name": "RM. Sate Joko DESA LABUHAN RATU Makanan Indonesia 6",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pasir Sakti",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_185",
+      "no": 185,
+      "name": "RM. 234 DESA LABUHAN RATU Makanan Indonesia 27",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pasir Sakti",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_186",
+      "no": 186,
+      "name": "RM. Minang Eka Bordir DESA PURWOREJO Makanan Indonesia 24",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pasir Sakti",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_187",
+      "no": 187,
+      "name": "RM. GUMANTI DESA PURWOREJO Makanan Indonesia 30",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pasir Sakti",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_188",
+      "no": 188,
+      "name": "RM. Minang Eka Bordir DESA PURWOREJO Makanan Indonesia 30",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pasir Sakti",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_189",
+      "no": 189,
+      "name": "RM. 2 Putra DESA PURWOREJO Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pasir Sakti",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_190",
+      "no": 190,
+      "name": "RM. Indah Jaya DESA PURWOREJO Makanan Indonesia 15",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pasir Sakti",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_191",
+      "no": 191,
+      "name": "RM. Mutiara DESA PURWOREJO Makanan Indonesia 20",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pasir Sakti",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_192",
+      "no": 192,
+      "name": "Rm anis jaya Dusun II rt/rw 0/002 Desa purworejo",
+      "address": "kec. Pasir sakti",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pasir Sakti",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_193",
+      "no": 193,
+      "name": "RM. barokah Dusun VIII rt/rw 015/008 Desa pasir",
+      "address": "sakti",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pasir Sakti",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_194",
+      "no": 194,
+      "name": "WR. Angringan Dusun I rt/rw 031/001 Desa pasir",
+      "address": "sakti",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pasir Sakti",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_195",
+      "no": 195,
+      "name": "warung makan Dusun IV rt/rw 021/004 Desa",
+      "address": "purworejo kec. pasir sakti",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pasir Sakti",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_196",
+      "no": 196,
+      "name": "RM. Mutir Dusun VII rt/rw 003/007 Desa",
+      "address": "purworejo kec. Pasir sakti --- PAGE 6 ---",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Pasir Sakti",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_197",
+      "no": 197,
+      "name": "RM. PANCA DESA LABUHAN RATU Makanan Indonesia 15",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_198",
+      "no": 198,
+      "name": "RM. Mr.JO DESA LABUHAN RATU Makanan Indonesia 12",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_199",
+      "no": 199,
+      "name": "RM.LALENA DESA LABUHAN RATU Makanan Indonesia 12",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_200",
+      "no": 200,
+      "name": "RM.GEMILANG DESA LABUHAN RATU Makanan Indonesia 24",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_201",
+      "no": 201,
+      "name": "RM. JEMBER DESA RAJABASA LAMA Makanan Indonesia 18",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_202",
+      "no": 202,
+      "name": "RM. NURMALA DESA RAJABASA LAMA Makanan Indonesia 4",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_203",
+      "no": 203,
+      "name": "Rumah makan Putra Kembar Dusun Gunung Terang III Desa",
+      "address": "labuhan ratu kec. Labuhan ratu",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_204",
+      "no": 204,
+      "name": "Mandiri Desa Gunung Terang I Desa labuhan",
+      "address": "ratu kec. Labuhan ratu",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_205",
+      "no": 205,
+      "name": "RM. Kiyai Subing jaya Desa rajabasa lama kec.",
+      "address": "Labuhan ratu",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_206",
+      "no": 206,
+      "name": "Tenda Biru Ms. Wahyu Subing jaya Desa rajabasa lama kec.",
+      "address": "Labuhan ratu",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_207",
+      "no": 207,
+      "name": "Tenda Seafood Subing jaya Desa rajabasa lama kec.",
+      "address": "Labuhan ratu",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_208",
+      "no": 208,
+      "name": "Yuni Catrering Dusun Trans Pram barat Desa",
+      "address": "Rajabasa lama II kec. Labuhan ratu",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_209",
+      "no": 209,
+      "name": "Warung jose Trans Pram Barat Desa Rajabasa",
+      "address": "lama II kec. Labuhan ratu",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_210",
+      "no": 210,
+      "name": "Mak Sri Catering Margototo barat Desa rajabasa lama",
+      "address": "II kec. Labuhan ratu",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_211",
+      "no": 211,
+      "name": "Soto babat \"Bude las\" Dusun margo sakti Desa rajabasa",
+      "address": "lama I kec. Labuhan ratu",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_212",
+      "no": 212,
+      "name": "Rumah makan Dusun 02 Desa lauhan ratu Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_213",
+      "no": 213,
+      "name": "Rumah makan Dusun 04 Desa labuhan Ratu Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_214",
+      "no": 214,
+      "name": "Rumah makan Dusun 07 Desa labuhan ratu Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Labuhan Ratu",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_215",
+      "no": 215,
+      "name": "RM. TORELENGGI Way Jepara Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Jepara",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_216",
+      "no": 216,
+      "name": "RM. SUBUR Way Jepara Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Jepara",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_217",
+      "no": 217,
+      "name": "SUNAR FOOD Way Jepara Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Jepara",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_218",
+      "no": 218,
+      "name": "Windjamer Way Jepara Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Jepara",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_219",
+      "no": 219,
+      "name": "RM Kebumen Way Jepara Makanan Indonesia",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Jepara",
+      "category": "Kuliner"
+    },
+    {
+      "id": "culinary_220",
+      "no": 220,
+      "name": "RM HR PUTRA Way Jepara",
+      "address": "",
+      "food_type": "Makanan Indonesia",
+      "capacity": 20,
+      "kecamatan": "Way Jepara",
+      "category": "Kuliner"
+    }
+  ]
+}

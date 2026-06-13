@@ -1,0 +1,53 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       String @id @default(uuid())
+  username String @unique
+  password String
+  name     String
+  role     String // "superadmin", "admin_dinas", "admin_post"
+  posts    Post[]
+}
+
+model Destination {
+  id             String  @id @default(uuid())
+  name           String
+  category       String // "Wisata Alam", "Wisata Buatan", "Wisata Budaya", "Akomodasi", "Kuliner"
+  kecamatan      String
+  address        String
+  lat            Float
+  lng            Float
+  active         Boolean @default(true)
+  facilities     String // comma-separated
+  contact        String
+  map_link       String?
+  classification String? // for hotels
+  rooms          Int? // for hotels
+  food_type      String? // for restaurants
+  capacity       Int? // for restaurants
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  title     String
+  slug      String   @unique
+  content   String
+  imageUrl  String
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  status    String // "draft" or "published"
+  tags      String // comma-separated
+}
+
+model Partner {
+  id      String @id @default(uuid())
+  name    String
+  logoUrl String
+}

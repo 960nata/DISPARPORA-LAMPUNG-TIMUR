@@ -1,0 +1,368 @@
+--- PAGE 1 ---
+No. Nama Usaha Pariwisata Alamat Jenis Makanan Jumlah Meja / Kursi
+Kecamatan Sukadana : 
+1 RM. MANGDUT SUKADANA ILIR Makanan Indonesia 20
+2 RM. SARI MENANTI SUKADANA ILIR Makanan Indonesia 20
+3 RM. MANDIRI SUKADANA ILIR Makanan Indonesia 20
+4 RM. YANTI SUKADANA ILIR Makanan Indonesia 20
+5 RM. BATA MERAH SUKADANA ILIR Makanan Indonesia 20
+6 RM. MARINA SUKADANA ILIR Makanan Indonesia 20
+7 RM. PALEM RAYA SUKADANA ILIR Makanan Indonesia 20
+8 RM. SEDERHANA SUKADANA ILIR Makanan Indonesia 20
+9 RM. NENG LIA SUKADANA TENGAH Makanan Indonesia 20
+10 RM. ANITA SUKADANA TENGAH Makanan Indonesia 20
+11 RM. SEMANGAT BUMI NABUNG Makanan Indonesia 20
+12 RM. PAK NDUT BUMI NABUNG Makanan Indonesia 20
+13 RM. SEPAKAT MATARAM MARGA Makanan Indonesia 20
+14 RM. APUNG TERBANGGI MARGA Makanan Indonesia 20
+15 RM. LIMA SAUDARA PASAR SUKADANA Makanan Indonesia 20
+16 RM. RUMAH MINANG MATARAM MARGA Makanan Indonesia 20
+17 RM. PONDOK SANTAP MATARAM MARGA Makanan Indonesia 20
+18 RM. TONY 66 MATARAM MARGA Makanan Indonesia 20
+19 RM. MBAK HER MATARAM MARGA Makanan Indonesia 20
+20 RM. YUDI MATARAM MARGA Makanan Indonesia 20
+21 RM. TAO TAMBA NAULI MATARAM MARGA Makanan Indonesia 20
+22 RM. AZIZ MATARAM MARGA Makanan Indonesia 20
+23 RM. PUTI BUNGSU MATARAM MARGA Makanan Indonesia 20
+24 RM. FATIR MATARAM MARGA Makanan Indonesia 20
+25 RM. DEFINA MATARAM MARGA Makanan Indonesia 20
+26 RM. GLORA 88 MATARAM MARGA Makanan Indonesia 20
+27 RM. RAHAYU MUARA JAYA Makanan Indonesia 20
+28 RM. SUMBER REJEKI MUARA JAYA Makanan Indonesia 20
+29 RM. KEDIRI MUARA JAYA Makanan Indonesia 20
+30 RM LESTARI PAKUAN AJI Makanan Indonesia
+31 RM LESTARI SUKADANA ILIR Makanan Indonesia
+32 PONDOK SALMA SUKADANA ILIR Makanan Indonesia
+33 PINDANG ROS SUKADANA ILIR Makanan Indonesia
+34 PINDANG DUL PASAR SUKADANA Makanan Indonesia
+35 RESTO 99 PAKUAN AJI Makanan Indonesia
+Kecamatan Sekampung Udik :
+36 RM. SIDO MAMPIR PUGUNG RAHARJO Makanan Indonesia 20
+37 RM. KURNIA I GUNUNG PASIR JAYA Makanan Indonesia 30
+38 RM. KURNIA II GUNUNG PASIR JAYA Makanan Indonesia 30
+39 RM. ANDAMA JAYA 1 GUNUNG PASIR JAYA Makanan Indonesia 20
+40 RM. ANDAMA JAYA 2 GUNUNG AGUNG Makanan Indonesia 20
+Kecamatan Marga Tiga :
+41 RM. MBAK ANTI Dusun III Negeri Katon RT.09 RW.02 
+Desa Negeri Katon
+Makanan Indonesia 60
+42 WM. LESTARI Dusun III RT.08 RW.04 Desa Tanjung 
+Harapan
+Makanan Indonesia 46
+43 WM. 1 JAWABAN Dusun III Negeri Katon RT.08 RW.03 
+Desa Negeri Katon
+Makanan Indonesia 10
+DAFTAR USAHA PARIWISATA JASA MAKANAN DAN MINUMAN
+RUMAH MAKAN, RESTO, CAFÉ COFFEE SHOP
+
+--- PAGE 2 ---
+Kecamatan Batanghari Nuban 
+:
+44 RM. OJOLALI KEDATON Makanan Indonesia 20
+45 RM. RINO KEDATON KEDATON Makanan Indonesia 20
+46 TONGSENG TENTREM TRISNOMULYO Makanan Indonesia
+Kecamatan Labuhan 
+Maringgai :
+47 RM. JOKO PATI Jl. Lintas Karya Tani Makanan Indonesia 30
+48 RM. OJOLALI Jl. Lintas Karya Makmur Makanan Indonesia 25
+49 RM. BU DARMI 2 Jl. Lintas Karya Makmur Makanan Indonesia 52
+50 kuliner makanan Desa bandar negeri Makanan Indonesia
+51 kuliner makanan Desa margasari Makanan Indonesia
+52 kuliner makanan Desa muara gading mas Makanan Indonesia
+53 rumah makan Eka Lubis Desa sriminosari Makanan Indonesia
+54 rumah makan Desa sriminosari Makanan Indonesia
+Kecamatan Purbolinggo :
+55 RM. TENDA BIRU TANJUNG INTEN Makanan Indonesia 20
+56 RM. TULUNG AGUNG TAMBAH DADI Makanan Indonesia 25
+57 RM. SATE MANTEB TAMAN BOGO Makanan Indonesia 10
+58 WM. YANTI TAMAN BOGO Makanan Indonesia 20
+Kecamatan Way Bungur :
+59 RM. OJOLALI TAMBAH SUBUR Makanan Indonesia 21
+60 RM. MUNTILAN TEGAL OMBO Makanan Indonesia 23
+61 RM. MUSLIMAH TAMBAH SUBUR Makanan Indonesia 25
+62 RM. PURWOREJO TAMBAH SUBUR Makanan Indonesia 22
+63 RM. TRANGKIL TAMBAH SUBUR Makanan Indonesia 24
+64 RM. KS TEGAL OMBO Makanan Indonesia 22
+65 RM. SILA TEGAL OMBO Makanan Indonesia 23
+66 RM. PONDOK WISATA TAMAN NEGERI Makanan Indonesia 24
+67 RM. BAROKAH TOTO MULYO Makanan Indonesia 20
+68 RM. CITA RASA TEGAL OMBO Makanan Indonesia 24
+69 rumah makan  asyfa taman negeri kec. Way bungur Makanan Indonesia
+70 rumah makan mahmudi taman negeri kec. Way bungur Makanan Indonesia
+Kecamatan Bumi Agung :
+71 RM. NENI Dusun II Donomulyo Makanan Indonesia 30
+72 RM. SOLO Jl. Lintas Timur Nyampir Makanan Indonesia 20
+73 RM. SEDERHANA TAO TOBA 
+NAULI
+Jl. Lintas Timur Nyampir Makanan Indonesia 30
+74 RM YUDI Jl. Lintas Timur Bumi Tinggi Makanan Indonesia 30
+Kecamatan Braja Selebah :
+75 RM. SEDERHANA BRAJA HARJOSARI Makanan Indonesia 20
+76 RM. MBAH TUNIK II BRAJA HARJOSARI Makanan Indonesia 30
+77 RM mbah tunik II Dusun III Desa Braja harjosari kec. 
+Braja selebah
+Makanan Indonesia
+78 RM. Nazwa Dusun 4 Desa Braja luhur kec. Braja 
+selebah
+Makanan Indonesia
+79 RM. jogja Dusun 4 Desa Braja luhur kec. Braja 
+selebah
+Makanan Indonesia
+80 RM. hariyanto Dusun 4 Desa Braja luhur kec. Braja 
+selebah
+Makanan Indonesia
+81 rumah makan Dusun 2 Desa braja harjosari kec. 
+Braja selebah
+Makanan Indonesia
+
+--- PAGE 3 ---
+Kecamatan Gunung Pelindung 
+:
+82 RM. BAMBU Pelindung Jaya Makanan Indonesia 10
+83 RM. SATE GONO Pelindung Jaya Makanan Indonesia 10
+Kecamatan Jabung :
+84 RM. ARKED ADIREJO Makanan Indonesia 16
+85 RM. BAMBU 1 ADIREJO Makanan Indonesia 8
+86 RM. BAMBU 2 ADIREJO Makanan Indonesia 12
+87 RM. BAKSO GANGSAR ADIREJO Makanan Indonesia 20
+Kecamatan Pekalongan :
+88 RM. PONDOK BAMBU DESA PEKALONGAN Makanan Indonesia 18
+89 RM. BAKSO PELANGI DESA PEKALONGAN Makanan Indonesia 16
+90 RM. KURNIA DESA PEKALONGAN Makanan Indonesia 30
+91 RM. BAKSO BOLA MAS DESA PEKALONGAN Makanan Indonesia 50
+92 RM. BAKSO 4 A DESA PEKALONGAN Makanan Indonesia 70
+93 RM. TIRTO MAS DESA PEKALONGAN Makanan Indonesia 32
+94 RM. PONDOK AYAM GORENG DESA PEKALONGAN Makanan Indonesia 44
+95 RM. SAWUNG GALING DESA PEKALONGAN Makanan Indonesia 10
+96 WM. MBAK ASIH DESA PEKALONGAN Makanan Indonesia 32
+97 WM. MBAK YANI DESA PEKALONGAN Makanan Indonesia 12
+98 Warung makan Dusun III  Desa ganti warno kec. 
+Pekalongan
+Makanan Indonesia
+99 Warung makan Dusun IV Desa ganti warno kec. 
+Pekalongan
+Makanan Indonesia
+100 Warung makan Dusun IV Desa ganti warno kec. 
+Pekalongan
+Makanan Indonesia
+101 Warung makan  Dusun IV Desa ganti warno kec. 
+Pekalongan
+Makanan Indonesia
+102 Warung makan Dusun V Desa ganti warno kec. 
+Pekalongan
+Makanan Indonesia
+103 Warung makan Dusun V Desa ganti warno kec. 
+Pekalongan
+Makanan Indonesia
+104 Warung makan Dusun V Desa ganti warno kec. 
+Pekalongan
+Makanan Indonesia
+105 Warung makan Dusun V Desa ganti warno kec. 
+Pekalongan
+Makanan Indonesia
+106 Warung makan Dusun VI Desa ganti warno kec. 
+Pekalongan
+Makanan Indonesia
+107 Warung makan Dusun V Desa tulus rejo kec. 
+Pekalongan
+Makanan Indonesia
+108 Warung sate Dusun II Desa tulus rejo kec. 
+Pekalongan
+Makanan Indonesia
+109 Warung makan Dusun II Desa tulus rejo kec. 
+Pekalongan
+Makanan Indonesia
+110 RM. Asih Dusun I Desa adirejo kec. Pekalongan Makanan Indonesia
+111 RM. Sidodadi Dusun II Desa adirejo kec. 
+Pekalongan
+Makanan Indonesia
+112 Warung makan Dusun III Desa adirejo kec. 
+Pekalongan
+Makanan Indonesia
+113 Warung makan Desa wonosari kec. Pekalongan Makanan Indonesia
+114 Warung makan Desa wonosari kec. Pekalongan Makanan Indonesia
+115 Warung makan Desa wonosari kec. Pekalongan Makanan Indonesia
+
+--- PAGE 4 ---
+Kecamatan Metro Kibang :
+116 RM. ARIMBI DESA MARGOTOTO Makanan Indonesia 20
+117 RM. SIDODADI DESA MARGOTOTO Makanan Indonesia 20
+118 RM. MADIUN DESA MARGOTOTO Makanan Indonesia 20
+119 RM. DEVI DESA MARGOTOTO Makanan Indonesia 20
+Kecamatan Bandar 
+Sribhawono :
+120 RM. SRIBHAWONO INDAH DESA SRIBHAWONO Makanan Indonesia 48
+121 RM. KARSINI DESA SRIBHAWONO Makanan Indonesia 24
+122 RM.MESTI MAREM DESA SRIBHAWONO Makanan Indonesia 28
+123 RM. SEDERHANA DESA SRIMENANTI Makanan Indonesia 17
+Kecamatan Raman Utara :
+124 RM. UNANG Kota Raman Makanan Indonesia 24
+125 RM. LESEHAN Kota Raman Makanan Indonesia 40
+Kecamatan Sekampung :
+126 RM. CAK SONY DESA SUMBERGEDE Makanan Indonesia 32
+127 RM. MBAH DARMO DESA SUMBERGEDE Makanan Indonesia 24
+128 RM. LUWES DESA SUMBERGEDE Makanan Indonesia 12
+129 RM. SATINI DESA SUMBERGEDE Makanan Indonesia 4
+130 RM. MBAK HER DESA SUMBERGEDE Makanan Indonesia 6
+131 RM. BAROKAH Makanan Indonesia
+132 Warung Makan Ipah Dusun II RT 06 Sumbergede kec. 
+Sekampung
+Makanan Indonesia
+133 Warung Makan Tri.a Dusun II RT 04 Sumbergede kec. 
+Sekampung
+Makanan Indonesia
+134 Warung Makan Setia Budi Dusun II RT 04 Sumbergede kec. 
+Sekampung
+Makanan Indonesia
+135 Warung Makan Dzaki Dusun II RT 04 Sumbergede kec. 
+Sekampung
+Makanan Indonesia
+136 Warung Makan Padang Dusun V RT 16 Sumbergede kec. 
+Sekampung
+Makanan Indonesia
+137 Kedai Santap seruit lampung Dusun IV RT 15 Sumbergede kec. 
+Sekampung
+Makanan Indonesia
+Kecamatan Waway Karya :
+138 RM. MARYAM SUMBER REJO Makanan Indonesia 20
+139 RM. DEWI SUMBER REJO Makanan Indonesia 25
+140 RM. SIMPANG EMPAT SUMBER REJO Makanan Indonesia 15
+141 RM. MBAH USROK KARANG ANOM Makanan Indonesia 30
+142 RM. DEWI KARANG ANOM Makanan Indonesia 30
+143 RM. TOYO KARANG ANOM Makanan Indonesia 20
+144 RM. SATE MADURA JEMBARANA Makanan Indonesia 20
+145 RM. NISA JEMBARANA Makanan Indonesia 25
+146 RM. BAKSO PONIDI JEMBARANA Makanan Indonesia 15
+147 RM. BAROKAH SIDORAHAYU Makanan Indonesia 30
+148 RM. PECEL LELE MARGA BATIN Makanan Indonesia 20
+149 RM. MUHAR TANJUMH WANGI Makanan Indonesia 20
+150 RM. SOTO SUTRIS TRI TUNGGAL Makanan Indonesia 20
+151 RM. NIMAH TRI TUNGGAL Makanan Indonesia 25
+152 RM. BU MARYAH NGESTI KARYA Makanan Indonesia 20
+153 RM. SUGIYANTO NGESTI KARYA Makanan Indonesia 15
+154 Rumah makan Dusun mendoyo desa jembrana 
+kec.waway karya
+Makanan Indonesia
+155 rumah makan langgeng dusun 02 desa tri tunggal kec. 
+Waway karya
+Makanan Indonesia
+156 Rumah makan yeyep Desa marga batin kec. Waway karya Makanan Indonesia
+157 Rumah makan saroji Desa marga batin kec. Waway karya Makanan Indonesia
+158 Rumah makan jamilatun desa marga batin kec. Waway karya Makanan Indonesia
+159 Rumah makan jumiran desa marga batin kec. Waway karya Makanan Indonesia
+160 Rumah makan mak sul Desa karang anom kec. Waway karya Makanan Indonesia
+161 Rumah makan mak siam Desa karang anom kec. Waway karya Makanan Indonesia
+162 warung makan giyatno Desa ngesti kec. Waway karya Makanan Indonesia
+
+--- PAGE 5 ---
+Kecamatan Mataram Baru :
+163 RM. PONDOK SANTAP DESA MATARAM BARU Makanan Indonesia 20
+164 RM. BU YANTI DESA MATARAM BARU Makanan Indonesia 15
+165 RM. WITOYO DESA TULUNG PASIK Makanan Indonesia 9
+166 RM Raja Intan Dusun I Rt 004 Rw 002 teluk dalem 
+kec. Mataram baru
+Makanan Indonesia
+167 RM Kurnia Dusun IV Rt 021 Rw 008 teluk dalem 
+kec. Mataram baru
+Makanan Indonesia
+168 RM Sido Moro Dusun VII rt 032 rw 002 teluk dalem 
+kec. Mataram baru
+Makanan Indonesia
+169 RM Hikmah Dusun I Rt 004 Rw 002 teluk dalem 
+kec. Mataram baru
+Makanan Indonesia
+170 RM Rauf Dusun I Rt 004 Rw 002 teluk dalem 
+kec. Mataram baru
+Makanan Indonesia
+171 Nasidaria Dusun IV Rt 017 Rw 007 teluk dalem 
+kec. Mataram Baru
+Makanan Indonesia
+172 Pindang Baung Dusun I mataram baru kec. Mataram 
+baru
+Makanan Indonesia
+173 Sate Surabaya Dusun I mataram baru kec. Mataram 
+baru
+Makanan Indonesia
+174 Rumah makan padang kec.Mataram baru Makanan Indonesia
+175 Rumah Makan Sederhana kec.Mataram baru Makanan Indonesia
+176 Rumah Makan Andana kec.Mataram baru Makanan Indonesia
+Kecamatan Batanghari :
+177 RM. SIDODADI Jl. Merdeka 38 P Desa Banjarrejo Makanan Indonesia 20
+178 RM. SOTO SINAR PAGI DESA BUMIHARJO Makanan Indonesia 20
+179 RM. 3R DESA BATANGHARJO Makanan Indonesia 20
+180 SOTO SEGER DUSUN GADING REJO DESA 
+BANARJOYO
+Makanan Indonesia 14
+181 BAKSO GRANAT DUSUN ADIREJO DESA BANARJOYO Makanan Indonesia 12
+182 MI JUM DESA BANJARREJO Makanan Indonesia 20
+Kecamatan Pasir Sakti :
+183 RM. Pindang NUMANI DESA MULYOSARI Makanan Indonesia 24
+184 RM. Sate Joko DESA LABUHAN RATU Makanan Indonesia 6
+185 RM. 234 DESA LABUHAN RATU Makanan Indonesia 27
+186 RM. Minang Eka Bordir DESA PURWOREJO Makanan Indonesia 24
+187 RM. GUMANTI DESA PURWOREJO Makanan Indonesia 30
+188 RM. Minang Eka Bordir DESA PURWOREJO Makanan Indonesia 30
+189 RM. 2 Putra DESA PURWOREJO Makanan Indonesia 20
+190 RM. Indah Jaya DESA PURWOREJO Makanan Indonesia 15
+191 RM. Mutiara DESA PURWOREJO Makanan Indonesia 20
+192 Rm anis jaya Dusun II rt/rw 0/002 Desa purworejo 
+kec. Pasir sakti
+Makanan Indonesia
+193 RM. barokah Dusun VIII rt/rw 015/008 Desa pasir 
+sakti
+Makanan Indonesia
+194 WR. Angringan Dusun I rt/rw 031/001 Desa pasir 
+sakti
+Makanan Indonesia
+195 warung makan Dusun IV rt/rw 021/004 Desa 
+purworejo kec. pasir sakti
+Makanan Indonesia
+196 RM. Mutir Dusun VII rt/rw 003/007 Desa 
+purworejo kec. Pasir sakti
+Makanan Indonesia
+
+--- PAGE 6 ---
+Kecamatan Labuhan Ratu :
+197 RM. PANCA DESA LABUHAN RATU Makanan Indonesia 15
+198 RM. Mr.JO DESA LABUHAN RATU Makanan Indonesia 12
+199 RM.LALENA DESA LABUHAN RATU Makanan Indonesia 12
+200 RM.GEMILANG DESA LABUHAN RATU Makanan Indonesia 24
+201 RM. JEMBER DESA RAJABASA LAMA Makanan Indonesia 18
+202 RM. NURMALA DESA RAJABASA LAMA Makanan Indonesia 4
+203 Rumah makan Putra Kembar Dusun Gunung Terang III Desa 
+labuhan ratu kec. Labuhan ratu
+Makanan Indonesia
+204 Mandiri Desa Gunung Terang I Desa labuhan 
+ratu kec. Labuhan ratu
+Makanan Indonesia
+205 RM. Kiyai Subing jaya Desa rajabasa lama kec. 
+Labuhan ratu
+Makanan Indonesia
+206 Tenda Biru Ms. Wahyu Subing jaya Desa rajabasa lama kec. 
+Labuhan ratu
+Makanan Indonesia
+207 Tenda Seafood Subing jaya Desa rajabasa lama kec. 
+Labuhan ratu
+Makanan Indonesia
+208 Yuni Catrering Dusun Trans Pram barat Desa 
+Rajabasa lama II kec. Labuhan ratu
+Makanan Indonesia
+209 Warung jose Trans Pram Barat Desa Rajabasa 
+lama II kec. Labuhan ratu
+Makanan Indonesia
+210 Mak Sri Catering Margototo barat Desa rajabasa lama 
+II kec. Labuhan ratu
+Makanan Indonesia
+211 Soto babat "Bude las" Dusun margo sakti Desa rajabasa 
+lama I kec. Labuhan ratu
+Makanan Indonesia
+212 Rumah makan Dusun 02 Desa lauhan ratu Makanan Indonesia
+213 Rumah makan Dusun 04 Desa labuhan Ratu Makanan Indonesia
+214 Rumah makan Dusun 07 Desa labuhan ratu Makanan Indonesia
+Kecamatan Way Jepara :
+215 RM. TORELENGGI Way Jepara Makanan Indonesia
+216 RM. SUBUR Way Jepara Makanan Indonesia
+217 SUNAR FOOD Way Jepara Makanan Indonesia
+218 Windjamer Way Jepara Makanan Indonesia
+219 RM Kebumen Way Jepara Makanan Indonesia
+220 RM HR PUTRA Way Jepara
