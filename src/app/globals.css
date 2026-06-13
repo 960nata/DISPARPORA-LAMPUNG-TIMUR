@@ -436,7 +436,7 @@ a {
 
 .marquee-content {
   display: inline-flex;
-  gap: 6rem;
+  gap: 4rem;
   align-items: center;
   animation: marquee-scroll 30s linear infinite;
 }
@@ -451,18 +451,18 @@ a {
 }
 
 .partner-logo-item {
-  height: 48px;
+  height: 60px;
   width: auto;
   object-fit: contain;
-  opacity: 0.7;
-  filter: grayscale(100%);
+  opacity: 0.9;
   transition: all 0.3s ease;
 }
 
 .partner-logo-item:hover {
   opacity: 1;
-  filter: grayscale(0%);
+  transform: scale(1.05);
 }
+
 
 
 /* News Layout Redesign (Section 5) */

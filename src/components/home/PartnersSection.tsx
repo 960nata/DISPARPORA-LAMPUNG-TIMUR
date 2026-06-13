@@ -59,13 +59,14 @@ export default function PartnersSection({ partners = [] }: PartnersSectionProps)
               : p.logoUrl;
               
             return (
-              <div key={idx} style={{ display: "flex", alignItems: "center" }}>
-                <picture style={{ display: "flex", alignItems: "center" }}>
+              <div key={idx} style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "60px" }}>
+                <picture style={{ display: "block", height: "60px" }}>
                   <source srcSet={p.logoUrl} type="image/avif" />
                   <img
                     src={fallbackPng}
                     alt={p.name}
                     className="partner-logo-item"
+                    style={{ height: "60px", width: "auto", display: "block" }}
                   />
                 </picture>
               </div>
