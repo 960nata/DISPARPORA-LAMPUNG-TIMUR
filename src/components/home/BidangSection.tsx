@@ -89,7 +89,6 @@ export default function BidangSection() {
 
   return (
     <section className="container" id="bidang">
-      {/* Section Header */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -104,7 +103,6 @@ export default function BidangSection() {
         </p>
       </motion.div>
 
-      {/* Accordion Container */}
       <motion.div 
         className="bidang-accordion-container"
         variants={containerVariants}
@@ -122,7 +120,6 @@ export default function BidangSection() {
               onClick={() => setSelectedCard(card.id)}
               onMouseEnter={() => setSelectedCard(card.id)}
             >
-              {/* Background Image */}
               <img
                 src={card.image}
                 alt={card.title}
@@ -136,7 +133,6 @@ export default function BidangSection() {
                 }}
               />
 
-              {/* Inactive Overlay (Translucent green/dark) */}
               <div
                 style={{
                   position: "absolute",
@@ -148,7 +144,6 @@ export default function BidangSection() {
                 }}
               />
 
-              {/* Active Overlay (Gradient shadow) */}
               <div
                 style={{
                   position: "absolute",
@@ -160,7 +155,6 @@ export default function BidangSection() {
                 }}
               />
 
-              {/* Inactive State Text Layout */}
               <div
                 className="bidang-inactive-text"
                 style={{
@@ -174,13 +168,11 @@ export default function BidangSection() {
                   opacity: isActive ? 0 : 1
                 }}
               >
-                {/* Mobile Text (horizontal) */}
                 <div className="mobile-text-content" style={{ display: "flex", width: "100%", justifyContent: "space-between", alignItems: "center", padding: "1.25rem 1.5rem" }}>
                   <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "white" }}>{card.title}</h3>
                   <div style={{ fontSize: "1.5rem", fontWeight: 800, opacity: 0.3, color: "white" }}>{card.number}</div>
                 </div>
 
-                {/* Desktop/Tablet Text (vertical rotated) */}
                 <div className="desktop-text-content" style={{ display: "none", flexDirection: "column", width: "100%", height: "100%", justifyContent: "space-between", alignItems: "center", padding: "2rem 1rem" }}>
                   <div style={{ transform: "rotate(-90deg)", whiteSpace: "nowrap", marginTop: "120px" }}>
                     <h3 style={{ fontSize: "1.1rem", fontWeight: 800, letterSpacing: "0.15em", color: "white" }}>{card.title}</h3>
@@ -189,7 +181,6 @@ export default function BidangSection() {
                 </div>
               </div>
 
-              {/* Active State Details Content */}
               <div
                 className="bidang-active-details"
                 style={{

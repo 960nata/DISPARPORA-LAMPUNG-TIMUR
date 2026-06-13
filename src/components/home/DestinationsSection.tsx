@@ -67,13 +67,11 @@ export default function DestinationsSection() {
   // extendedHighlights is a 3-copy array to allow seamless infinite scrolling
   const extendedHighlights = [...defaultHighlights, ...defaultHighlights, ...defaultHighlights];
   
-  // Start at the first item of the middle copy (index N)
   const [currentIndex, setCurrentIndex] = useState(N);
   const [visibleCount, setVisibleCount] = useState(3);
   const [peekWidth, setPeekWidth] = useState("calc(100% - 10rem)");
   const [isTransitioning, setIsTransitioning] = useState(true);
 
-  // Animation variants for the staggered entrance of the cards on mount (only for the first visible index set, entering from the right)
   const cardVariants = {
     hidden: (index: number) => {
       const isInitiallyVisible = index >= N && index < N + visibleCount;
@@ -133,13 +131,12 @@ export default function DestinationsSection() {
     setCurrentIndex((prev) => prev + 1);
   };
 
-  // Check boundaries and reset index instantly without transition
   useEffect(() => {
     if (currentIndex >= N * 2) {
       const timer = setTimeout(() => {
         setIsTransitioning(false);
         setCurrentIndex(currentIndex - N);
-      }, 500); // matches transition time
+      }, 500);
       return () => clearTimeout(timer);
     }
     if (currentIndex < N) {
@@ -151,7 +148,6 @@ export default function DestinationsSection() {
     }
   }, [currentIndex, N]);
 
-  // Turn transition back on
   useEffect(() => {
     if (!isTransitioning) {
       const timer = setTimeout(() => {
@@ -163,7 +159,6 @@ export default function DestinationsSection() {
 
   return (
     <section id="destinasi" style={{ padding: "5rem 0", backgroundColor: "white", overflow: "hidden" }}>
-      {/* Header Row - Aligned with main container grid */}
       <motion.div 
         className="container" 
         style={{ marginBottom: "2rem" }}
@@ -186,7 +181,6 @@ export default function DestinationsSection() {
         </div>
       </motion.div>
 
-      {/* Carousel Track - Full Width (Bleeds left to right with peeking margins) */}
       <div style={{ width: "100%", overflow: "hidden", padding: "1rem 0" }}>
         <div style={{ width: peekWidth, margin: "0 auto", overflow: "visible" }}>
           <div 
@@ -216,7 +210,6 @@ export default function DestinationsSection() {
                   boxSizing: "border-box"
                 }}
               >
-                {/* Background Image with hover zoom */}
                 <img
                   src={item.image}
                   alt={item.name}
@@ -225,7 +218,6 @@ export default function DestinationsSection() {
                   onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
                 />
                 
-                {/* Translucent Pill Badge (Top-Right) */}
                 <div style={{
                   position: "absolute",
                   top: "1.25rem",
@@ -243,7 +235,6 @@ export default function DestinationsSection() {
                   {item.category}
                 </div>
 
-                {/* Dark Gradient Overlay & Text (Bottom) */}
                 <div style={{
                   position: "absolute",
                   bottom: 0,
@@ -261,7 +252,6 @@ export default function DestinationsSection() {
                     {item.name}
                   </h3>
                   
-                  {/* Subtitle & Rating */}
                   <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.75rem", color: "#cbd5e1" }}>
                     <span>{item.subTitle}</span>
                     <span>|</span>
@@ -271,7 +261,6 @@ export default function DestinationsSection() {
                     </span>
                   </div>
 
-                  {/* Location Pin */}
                   <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.75rem", color: "#e2e8f0", marginTop: "0.25rem" }}>
                     <MapPin size={12} style={{ color: "#ef4444" }} />
                     <span>{item.location}</span>
@@ -283,14 +272,12 @@ export default function DestinationsSection() {
         </div>
       </div>
 
-      {/* Footer Controls Row - Aligned with main container grid */}
       <div className="container" style={{ marginTop: "2rem" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Link href="/direktori" className="btn btn-primary" style={{ padding: "0.75rem 2rem", borderRadius: "9999px", backgroundColor: "#0f172a", border: "none" }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#1e293b"} onMouseOut={(e) => e.currentTarget.style.backgroundColor = "#0f172a"}>
             Lihat semua wisata
           </Link>
           
-          {/* Nav Arrows */}
           <div style={{ display: "flex", gap: "0.75rem" }}>
             <button 
               onClick={handlePrev}
