@@ -2,7 +2,10 @@
 
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-import { Plus, Search, Edit2, Trash2, MapPin, X, Filter } from "lucide-react";
+import { 
+  Plus, Search, Edit2, Trash2, MapPin, X, 
+  Compass, Activity, Globe, Layers 
+} from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { MapSkeleton } from "@/components/Skeleton";
 
@@ -16,7 +19,13 @@ interface TourismItem {
 
 const CATEGORIES = ["Wisata Alam", "Wisata Buatan", "Wisata Budaya", "Akomodasi"];
 const KECAMATANS = ["Sukadana","Labuhan Maringgai","Labuhan Ratu","Bandar Sribhawono","Sekampung Udik","Pekalongan","Pasir Sakti","Way Jepara","Mataram Baru","Braja Selebah","Jabung","Batanghari","Metro Kibang","Bumi Agung","Raman Utara","Purbolinggo","Way Bungur"];
-const CAT_COLORS: Record<string, string> = { "Wisata Alam": "#059669", "Wisata Buatan": "#d97706", "Wisata Budaya": "#8b5cf6", "Akomodasi": "#3b82f6" };
+const CAT_COLORS: Record<string, string> = { "Wisata Alam": "#059669", "Wisata Buatan": "#d97706", "Wisata Budaya": "#6940a5", "Akomodasi": "#0284c7" };
+const CAT_ICONS: Record<string, any> = {
+  "Wisata Alam": Compass,
+  "Wisata Buatan": Activity,
+  "Wisata Budaya": Globe,
+  "Akomodasi": Layers
+};
 
 export default function DestinasiPage() {
   const { user } = useAdmin();
@@ -25,7 +34,7 @@ export default function DestinasiPage() {
   const [search, setSearch] = useState("");
   const [catFilter, setCatFilter] = useState("Semua");
   const [page, setPage] = useState(1);
-  const PAGE_SIZE = 12;
+  const PAGE_SIZE = 10;
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<"add" | "edit">("add");
@@ -72,41 +81,57 @@ export default function DestinasiPage() {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-      {/* Header */}
-      <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+      
+      {/* Page Header */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
         <div>
-          <h1 style={{ margin: 0, fontSize: "1.3rem", fontWeight: 800, color: "white" }}>Manajemen Destinasi</h1>
-          <p style={{ margin: 0, fontSize: "0.8rem", color: "var(--dash-text-muted)", marginTop: "0.2rem" }}>Total {destinations.length} objek terdaftar</p>
+          <h1 style={{ margin: 0, fontSize: "1.25rem", fontWeight: 700, color: "var(--dash-text)" }}>Proyek Investasi</h1>
+          <p style={{ margin: 0, fontSize: "0.82rem", color: "var(--dash-text-muted)", marginTop: "2px" }}>
+            Total {destinations.length} proyek terdaftar.
+          </p>
         </div>
-        <div style={{ flex: 1 }} />
-        <div style={{ display: "flex", alignItems: "center", border: "1px solid var(--dash-border)", borderRadius: "8px", padding: "0.4rem 0.75rem", backgroundColor: "var(--dash-card-2)" }}>
-          <Search size={15} style={{ color: "var(--dash-text-muted)", marginRight: "0.5rem" }} />
-          <input type="text" placeholder="Cari destinasi..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} style={{ border: "none", outline: "none", background: "transparent", color: "white", fontSize: "0.85rem", width: "150px" }} />
-        </div>
-        <select value={catFilter} onChange={e => { setCatFilter(e.target.value); setPage(1); }} style={{ padding: "0.45rem 0.75rem", borderRadius: "8px", border: "1px solid var(--dash-border)", backgroundColor: "var(--dash-card-2)", color: "white", fontSize: "0.85rem", outline: "none", cursor: "pointer" }}>
-          <option value="Semua">Semua Kategori</option>
-          {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-        </select>
-        <button onClick={openAdd} className="dash-btn" style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.85rem", padding: "0.55rem 1rem" }}>
-          <Plus size={16} /> Tambah Destinasi
-        </button>
-      </div>
-
-      {/* Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1rem" }}>
-        {CATEGORIES.map(cat => (
-          <div key={cat} className="dash-card" style={{ padding: "1rem 1.25rem", borderLeft: `3px solid ${CAT_COLORS[cat]}` }}>
-            <p style={{ margin: "0 0 0.2rem", fontSize: "0.7rem", color: "var(--dash-text-muted)", fontWeight: 600 }}>{cat}</p>
-            <p style={{ margin: 0, fontSize: "1.4rem", fontWeight: 800, color: CAT_COLORS[cat] }}>{destinations.filter(d => d.category === cat).length}</p>
+        <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
+          <div style={{ position: "relative" }}>
+            <Search size={14} style={{ position: "absolute", left: "10px", top: "50%", transform: "translateY(-50%)", color: "var(--dash-text-muted)" }} />
+            <input className="dash-input" type="text" placeholder="Cari proyek..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} style={{ paddingLeft: "32px", width: "180px" }} />
           </div>
-        ))}
+          <select className="dash-input" value={catFilter} onChange={e => { setCatFilter(e.target.value); setPage(1); }} style={{ width: "150px", cursor: "pointer" }}>
+            <option value="Semua">Semua Kategori</option>
+            {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+          </select>
+          <button onClick={openAdd} className="dash-btn" style={{ padding: "8px 14px" }}>
+            <Plus size={14} /> Tambah
+          </button>
+        </div>
       </div>
 
-      {/* Table */}
+      {/* Category Stats */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "12px" }}>
+        {CATEGORIES.map(cat => {
+          const Icon = CAT_ICONS[cat];
+          const color = CAT_COLORS[cat];
+          const count = destinations.filter(d => d.category === cat).length;
+          return (
+            <div key={cat} className="dash-stat-card">
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div>
+                  <span style={{ fontSize: "0.72rem", fontWeight: 600, color: "var(--dash-text-muted)" }}>{cat}</span>
+                  <h3 style={{ fontSize: "1.5rem", color: "var(--dash-text)", fontWeight: 700, margin: "2px 0 0" }}>{count}</h3>
+                </div>
+                <div style={{ width: "32px", height: "32px", borderRadius: "8px", backgroundColor: `color-mix(in srgb, ${color} 10%, transparent)`, display: "flex", alignItems: "center", justifyContent: "center", color }}>
+                  <Icon size={16} />
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Data Table */}
       <div className="dash-card" style={{ padding: 0, overflow: "hidden" }}>
         <div style={{ overflowX: "auto" }}>
-          <table className="dash-table" style={{ width: "100%" }}>
+          <table className="dash-table">
             <thead>
               <tr>
                 <th>Nama Objek</th>
@@ -114,27 +139,33 @@ export default function DestinasiPage() {
                 <th>Kecamatan</th>
                 <th>Koordinat</th>
                 <th>Status</th>
-                <th style={{ textAlign: "right" }}>Aksi</th>
+                <th style={{ textAlign: "right", width: "80px" }}>Aksi</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={6} style={{ textAlign: "center", padding: "3rem", color: "var(--dash-text-muted)" }}>Memuat...</td></tr>
+                <tr><td colSpan={6} style={{ textAlign: "center", padding: "48px", color: "var(--dash-text-muted)" }}>Memuat data...</td></tr>
               ) : paged.length === 0 ? (
-                <tr><td colSpan={6} style={{ textAlign: "center", padding: "3rem", color: "var(--dash-text-muted)" }}><MapPin size={32} style={{ marginBottom: "0.5rem", opacity: 0.3 }} /><br />Tidak ada data</td></tr>
+                <tr><td colSpan={6} style={{ textAlign: "center", padding: "48px", color: "var(--dash-text-muted)" }}>Tidak ada proyek ditemukan.</td></tr>
               ) : paged.map(item => (
                 <tr key={item.id}>
-                  <td style={{ fontWeight: 700, color: "white" }}>{item.name}</td>
+                  <td style={{ fontWeight: 600, color: "var(--dash-text)" }}>{item.name}</td>
                   <td>
-                    <span className="dash-badge" style={{ backgroundColor: `${CAT_COLORS[item.category]}20`, color: CAT_COLORS[item.category] }}>{item.category}</span>
+                    <span className="dash-badge" style={{ backgroundColor: `color-mix(in srgb, ${CAT_COLORS[item.category]} 10%, transparent)`, color: CAT_COLORS[item.category] }}>
+                      {item.category}
+                    </span>
                   </td>
-                  <td style={{ fontSize: "0.82rem" }}>{item.kecamatan}</td>
-                  <td style={{ fontSize: "0.75rem", color: "var(--dash-text-muted)", fontFamily: "monospace" }}>{item.lat?.toFixed(4)}, {item.lng?.toFixed(4)}</td>
+                  <td>{item.kecamatan}</td>
+                  <td><code style={{ fontSize: "0.75rem", color: "var(--dash-text-muted)" }}>{item.lat?.toFixed(5)}, {item.lng?.toFixed(5)}</code></td>
                   <td><span className={`dash-badge ${item.active ? "dash-badge-success" : "dash-badge-danger"}`}>{item.active ? "Aktif" : "Non-Aktif"}</span></td>
                   <td style={{ textAlign: "right" }}>
-                    <div style={{ display: "inline-flex", gap: "0.35rem" }}>
-                      <button onClick={() => openEdit(item)} style={{ background: "none", border: "none", color: "var(--dash-primary)", cursor: "pointer", padding: "0.3rem" }}><Edit2 size={15} /></button>
-                      <button onClick={() => setDeleteConfirm({ id: item.id, name: item.name })} style={{ background: "none", border: "none", color: "var(--dash-danger)", cursor: "pointer", padding: "0.3rem" }}><Trash2 size={15} /></button>
+                    <div style={{ display: "inline-flex", gap: "4px" }}>
+                      <button onClick={() => openEdit(item)} title="Edit" style={{ background: "none", border: "1px solid var(--dash-border)", borderRadius: "6px", color: "var(--dash-primary)", cursor: "pointer", padding: "6px", display: "flex", alignItems: "center" }}>
+                        <Edit2 size={13} />
+                      </button>
+                      <button onClick={() => setDeleteConfirm({ id: item.id, name: item.name })} title="Hapus" style={{ background: "none", border: "1px solid var(--dash-border)", borderRadius: "6px", color: "var(--dash-danger)", cursor: "pointer", padding: "6px", display: "flex", alignItems: "center" }}>
+                        <Trash2 size={13} />
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -142,90 +173,91 @@ export default function DestinasiPage() {
             </tbody>
           </table>
         </div>
+
         {totalPages > 1 && (
-          <div style={{ display: "flex", justifyContent: "center", gap: "0.5rem", padding: "1rem", borderTop: "1px solid var(--dash-border)" }}>
-            <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="dash-btn" style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem", opacity: page === 1 ? 0.4 : 1 }}>‹</button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(pg => (
-              <button key={pg} onClick={() => setPage(pg)} className="dash-btn" style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem", backgroundColor: pg === page ? "var(--dash-primary)" : "transparent", border: "1px solid var(--dash-border)" }}>{pg}</button>
-            ))}
-            <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="dash-btn" style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem", opacity: page === totalPages ? 0.4 : 1 }}>›</button>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", borderTop: "1px solid var(--dash-border)" }}>
+            <span style={{ fontSize: "0.75rem", color: "var(--dash-text-muted)" }}>{((page - 1) * PAGE_SIZE) + 1}–{Math.min(page * PAGE_SIZE, filtered.length)} dari {filtered.length}</span>
+            <div style={{ display: "flex", gap: "6px" }}>
+              <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="dash-btn dash-btn-secondary" style={{ padding: "4px 10px", fontSize: "0.75rem" }}>Prev</button>
+              <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="dash-btn dash-btn-secondary" style={{ padding: "4px 10px", fontSize: "0.75rem" }}>Next</button>
+            </div>
           </div>
         )}
       </div>
 
       {/* Add/Edit Modal */}
       {modalOpen && (
-        <div style={{ position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.85)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999, padding: "1rem" }}>
-          <div className="dash-card" style={{ width: "100%", maxWidth: "860px", maxHeight: "90vh", overflowY: "auto", padding: "2rem", position: "relative" }}>
-            <button onClick={() => setModalOpen(false)} style={{ position: "absolute", top: "1.25rem", right: "1.25rem", background: "none", border: "none", color: "var(--dash-text-muted)", cursor: "pointer" }}><X size={20} /></button>
-            <h3 style={{ margin: "0 0 1.5rem", fontWeight: 800, color: "white" }}>{modalMode === "add" ? "Tambah Destinasi Baru" : "Edit Destinasi"}</h3>
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem" }}>
-              <div style={{ flex: "1 1 340px", display: "flex", flexDirection: "column", gap: "1rem" }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                  <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--dash-text-muted)" }}>Nama Objek *</label>
-                  <input required className="dash-input" value={form.name || ""} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} />
+        <div className="dash-overlay" style={{ zIndex: 9999 }}>
+          <div className="dash-modal" style={{ maxWidth: "860px", position: "relative" }}>
+            <button onClick={() => setModalOpen(false)} style={{ position: "absolute", top: "16px", right: "16px", background: "none", border: "none", color: "var(--dash-text-muted)", cursor: "pointer", padding: "4px" }}><X size={18} /></button>
+            <h3 style={{ margin: "0 0 20px", fontWeight: 700, color: "var(--dash-text)", fontSize: "1rem" }}>{modalMode === "add" ? "Tambah Proyek Baru" : "Edit Proyek"}</h3>
+            
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+              <div style={{ flex: "1 1 340px", display: "flex", flexDirection: "column", gap: "14px" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Nama Objek *</label>
+                  <input required className="dash-input" value={form.name || ""} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} placeholder="Nama lokasi proyek" />
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                    <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--dash-text-muted)" }}>Kategori *</label>
-                    <select className="dash-input" value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Kategori *</label>
+                    <select className="dash-input" value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))} style={{ cursor: "pointer" }}>
                       {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                     </select>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                    <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--dash-text-muted)" }}>Kecamatan *</label>
-                    <select className="dash-input" value={form.kecamatan} onChange={e => setForm(p => ({ ...p, kecamatan: e.target.value }))}>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Kecamatan *</label>
+                    <select className="dash-input" value={form.kecamatan} onChange={e => setForm(p => ({ ...p, kecamatan: e.target.value }))} style={{ cursor: "pointer" }}>
                       {KECAMATANS.map(k => <option key={k} value={k}>{k}</option>)}
                     </select>
                   </div>
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                  <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--dash-text-muted)" }}>Alamat</label>
-                  <input className="dash-input" value={form.address || ""} onChange={e => setForm(p => ({ ...p, address: e.target.value }))} />
+                <div>
+                  <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Alamat</label>
+                  <input className="dash-input" value={form.address || ""} onChange={e => setForm(p => ({ ...p, address: e.target.value }))} placeholder="Alamat jalan..." />
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                    <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--dash-text-muted)" }}>Latitude *</label>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Latitude *</label>
                     <input required type="number" step="any" className="dash-input" value={form.lat || ""} onChange={e => setForm(p => ({ ...p, lat: Number(e.target.value) }))} />
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                    <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--dash-text-muted)" }}>Longitude *</label>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Longitude *</label>
                     <input required type="number" step="any" className="dash-input" value={form.lng || ""} onChange={e => setForm(p => ({ ...p, lng: Number(e.target.value) }))} />
                   </div>
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "1rem", alignItems: "end" }}>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                    <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--dash-text-muted)" }}>Fasilitas (pisahkan koma)</label>
-                    <input className="dash-input" placeholder="Gazebo, Mushola, Toilet" value={form.facilities || ""} onChange={e => setForm(p => ({ ...p, facilities: e.target.value }))} />
+                <div style={{ display: "flex", gap: "12px", alignItems: "end" }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Fasilitas</label>
+                    <input className="dash-input" placeholder="Mushola, Toilet, Gazebo" value={form.facilities || ""} onChange={e => setForm(p => ({ ...p, facilities: e.target.value }))} />
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", paddingBottom: "0.25rem" }}>
-                    <input type="checkbox" id="destActive" checked={form.active !== false} onChange={e => setForm(p => ({ ...p, active: e.target.checked }))} style={{ width: "16px", height: "16px", accentColor: "var(--dash-primary)" }} />
-                    <label htmlFor="destActive" style={{ fontSize: "0.85rem", color: "white", cursor: "pointer" }}>Aktif</label>
-                  </div>
+                  <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.82rem", color: "var(--dash-text)", cursor: "pointer", fontWeight: 500, paddingBottom: "8px" }}>
+                    <input type="checkbox" checked={form.active !== false} onChange={e => setForm(p => ({ ...p, active: e.target.checked }))} style={{ accentColor: "var(--dash-primary)" }} /> Aktif
+                  </label>
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                  <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--dash-text-muted)" }}>Kontak</label>
-                  <input className="dash-input" placeholder="+62..." value={form.contact || ""} onChange={e => setForm(p => ({ ...p, contact: e.target.value }))} />
+                <div>
+                  <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Kontak</label>
+                  <input className="dash-input" placeholder="+62812xxxx" value={form.contact || ""} onChange={e => setForm(p => ({ ...p, contact: e.target.value }))} />
                 </div>
               </div>
 
-              {/* Map Picker */}
-              <div style={{ flex: "1 1 340px", display: "flex", flexDirection: "column", gap: "1rem" }}>
+              {/* Map */}
+              <div style={{ flex: "1 1 340px", display: "flex", flexDirection: "column", gap: "14px" }}>
                 <div>
-                  <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--dash-text-muted)", display: "block", marginBottom: "0.5rem" }}>Klik peta untuk atur koordinat</label>
-                  <div style={{ height: "280px", borderRadius: "10px", overflow: "hidden", border: "1px solid var(--dash-border)" }}>
+                  <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Lokasi Peta</label>
+                  <div style={{ height: "280px", borderRadius: "8px", overflow: "hidden", border: "1px solid var(--dash-border)" }}>
                     <MapComponent
                       items={[]}
-                      selectedItem={{ id: "picker", name: form.name || "Lokasi", kecamatan: form.kecamatan || "", address: form.address || "", category: form.category || "Wisata Alam", lat: form.lat || -5.2514, lng: form.lng || 105.5451 }}
+                      selectedItem={{ id: "picker", name: form.name || "Lokasi Baru", kecamatan: form.kecamatan || "", address: form.address || "", category: form.category || "Wisata Alam", lat: form.lat || -5.2514, lng: form.lng || 105.5451 }}
                       onSelectItem={() => {}}
                       isEditMode={true}
                       onCoordinatesChange={(lat, lng) => setForm(p => ({ ...p, lat: Number(lat.toFixed(6)), lng: Number(lng.toFixed(6)) }))}
                     />
                   </div>
                 </div>
-                <div style={{ display: "flex", gap: "0.75rem", marginTop: "auto" }}>
-                  <button type="button" onClick={() => setModalOpen(false)} className="dash-btn" style={{ flex: 1, backgroundColor: "transparent", border: "1px solid var(--dash-border)" }}>Batal</button>
-                  <button type="submit" className="dash-btn" style={{ flex: 1 }}>Simpan Destinasi</button>
+                <div style={{ display: "flex", gap: "8px", marginTop: "auto" }}>
+                  <button type="button" onClick={() => setModalOpen(false)} className="dash-btn dash-btn-secondary" style={{ flex: 1, padding: "10px" }}>Batal</button>
+                  <button type="submit" className="dash-btn" style={{ flex: 1, padding: "10px" }}>Simpan</button>
                 </div>
               </div>
             </form>
@@ -233,17 +265,24 @@ export default function DestinasiPage() {
         </div>
       )}
 
+      {/* Delete Confirm */}
       {deleteConfirm && (
-        <div style={{ position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.85)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999, padding: "1rem" }}>
-          <div className="dash-card" style={{ width: "100%", maxWidth: "400px", padding: "2rem", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-            <div style={{ display: "flex", gap: "1rem" }}>
-              <div style={{ width: "44px", height: "44px", borderRadius: "12px", backgroundColor: "rgba(239,68,68,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Trash2 size={22} style={{ color: "#f87171" }} /></div>
-              <div><h4 style={{ margin: "0 0 0.4rem", color: "white", fontWeight: 800 }}>Hapus Destinasi?</h4>
-              <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--dash-text-muted)" }}><strong style={{ color: "white" }}>{deleteConfirm.name}</strong> akan dihapus permanen.</p></div>
+        <div className="dash-overlay" style={{ zIndex: 9999 }}>
+          <div className="dash-modal" style={{ maxWidth: "400px" }}>
+            <div style={{ display: "flex", gap: "12px", marginBottom: "20px" }}>
+              <div style={{ width: "40px", height: "40px", borderRadius: "10px", backgroundColor: "var(--dash-danger-bg)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <Trash2 size={18} style={{ color: "var(--dash-danger)" }} />
+              </div>
+              <div>
+                <h4 style={{ margin: 0, color: "var(--dash-text)", fontWeight: 700, fontSize: "0.95rem" }}>Hapus Proyek?</h4>
+                <p style={{ margin: "4px 0 0", fontSize: "0.82rem", color: "var(--dash-text-muted)", lineHeight: 1.5 }}>
+                  <strong style={{ color: "var(--dash-text)" }}>{deleteConfirm.name}</strong> akan dihapus permanen.
+                </p>
+              </div>
             </div>
-            <div style={{ display: "flex", gap: "0.75rem" }}>
-              <button onClick={() => setDeleteConfirm(null)} className="dash-btn" style={{ flex: 1, backgroundColor: "transparent", border: "1px solid var(--dash-border)" }}>Batal</button>
-              <button onClick={handleDelete} className="dash-btn" style={{ flex: 1, backgroundColor: "#dc2626" }}>Hapus</button>
+            <div style={{ display: "flex", gap: "8px" }}>
+              <button onClick={() => setDeleteConfirm(null)} className="dash-btn dash-btn-secondary" style={{ flex: 1, padding: "8px" }}>Batal</button>
+              <button onClick={handleDelete} className="dash-btn dash-btn-danger" style={{ flex: 1, padding: "8px" }}>Hapus</button>
             </div>
           </div>
         </div>

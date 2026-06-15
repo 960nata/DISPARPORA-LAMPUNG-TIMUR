@@ -5,13 +5,15 @@ import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   LayoutDashboard, MapPin, FileText, Users, Map, LogOut,
-  ChevronRight, Globe, ShieldCheck, Menu, X, Plus,
-  ArrowLeft
+  ChevronRight, Globe, Menu, X, Plus,
+  ArrowLeft, Search, Bell, Sun, Moon, Images
 } from "lucide-react";
 import { AdminProvider, useAdmin } from "@/contexts/AdminContext";
+import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
 
-/* ─── Login Screen ─── */
+/* ─── Clean Login Screen ─── */
 function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
+  const { theme } = useTheme();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -52,53 +54,48 @@ function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
   return (
     <div style={{
       minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center",
-      background: "radial-gradient(ellipse at 20% 50%, #0d1a35 0%, var(--dash-bg) 60%)",
-      padding: "1.5rem", position: "relative", overflow: "hidden"
+      backgroundColor: "var(--dash-bg)", padding: "24px"
     }}>
-      {/* Background orbs */}
-      <div style={{ position: "absolute", top: "15%", left: "10%", width: "400px", height: "400px", borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: "10%", right: "5%", width: "300px", height: "300px", borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.04) 0%, transparent 70%)", pointerEvents: "none" }} />
-
-      <div style={{ width: "100%", maxWidth: "400px", position: "relative", zIndex: 1 }}>
-        {/* Logo */}
-        <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "60px", height: "60px", borderRadius: "16px", background: "linear-gradient(135deg, rgba(99,102,241,0.2) 0%, rgba(79,70,229,0.1) 100%)", border: "1px solid rgba(99,102,241,0.3)", marginBottom: "1rem" }}>
-            <img src="/logo.avif" alt="Logo" style={{ width: "36px", height: "36px", objectFit: "contain" }} />
+      <div style={{ width: "100%", maxWidth: "380px" }}>
+        {/* Brand */}
+        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "48px", height: "48px", borderRadius: "12px", backgroundColor: "var(--dash-primary-bg)", marginBottom: "16px" }}>
+            <img src="/logo.avif" alt="Logo" style={{ width: "28px", height: "28px", objectFit: "contain" }} />
           </div>
-          <h1 style={{ fontSize: "1.4rem", fontWeight: 800, color: "var(--dash-text)", letterSpacing: "-0.02em", margin: 0 }}>SIMAD</h1>
-          <p style={{ color: "var(--dash-text-muted)", fontSize: "0.8rem", marginTop: "0.3rem" }}>
-            Disparpora Kabupaten Lampung Timur
+          <h1 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--dash-text)", margin: 0 }}>Forum Investasi Lampung</h1>
+          <p style={{ color: "var(--dash-text-muted)", fontSize: "0.85rem", marginTop: "4px" }}>
+            Masuk ke Panel Admin
           </p>
         </div>
 
-        {/* Card */}
-        <div className="dash-card" style={{ padding: "2rem", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        {/* Form */}
+        <div style={{ backgroundColor: "var(--dash-card)", border: "1px solid var(--dash-border)", borderRadius: "12px", padding: "24px" }}>
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <div>
-              <label style={{ display: "block", fontSize: "0.72rem", fontWeight: 700, color: "var(--dash-text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.4rem" }}>Username</label>
-              <input className="dash-input" type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Masukkan username..." required autoComplete="username" />
+              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Username</label>
+              <input className="dash-input" type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Masukkan username" required autoComplete="username" />
             </div>
             <div>
-              <label style={{ display: "block", fontSize: "0.72rem", fontWeight: 700, color: "var(--dash-text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.4rem" }}>Password</label>
+              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Password</label>
               <input className="dash-input" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" required autoComplete="current-password" />
             </div>
             {error && (
-              <div style={{ padding: "0.65rem 0.875rem", borderRadius: "8px", background: "var(--dash-danger-glow)", border: "1px solid rgba(239,68,68,0.2)", fontSize: "0.8rem", color: "#f87171" }}>
+              <div style={{ padding: "8px 12px", borderRadius: "6px", backgroundColor: "var(--dash-danger-bg)", fontSize: "0.8rem", color: "var(--dash-danger)", fontWeight: 500 }}>
                 {error}
               </div>
             )}
-            <button type="submit" disabled={loading} className="dash-btn" style={{ marginTop: "0.25rem", padding: "0.75rem" }}>
-              {loading ? "Memproses..." : "Masuk ke SIMAD"}
+            <button type="submit" disabled={loading} className="dash-btn" style={{ padding: "10px", width: "100%", fontSize: "0.875rem" }}>
+              {loading ? "Memproses..." : "Masuk"}
             </button>
           </form>
 
-          <div style={{ borderTop: "1px solid var(--dash-border)", paddingTop: "1.25rem" }}>
-            <p style={{ fontSize: "0.65rem", fontWeight: 700, color: "var(--dash-text-muted)", textAlign: "center", marginBottom: "0.65rem", textTransform: "uppercase", letterSpacing: "0.1em", opacity: 0.6 }}>
-              Dev Quick Access
+          <div style={{ borderTop: "1px solid var(--dash-border)", marginTop: "20px", paddingTop: "16px" }}>
+            <p style={{ fontSize: "0.7rem", fontWeight: 600, color: "var(--dash-text-muted)", textAlign: "center", marginBottom: "10px" }}>
+              Quick Access (Dev)
             </p>
-            <div style={{ display: "flex", gap: "0.4rem" }}>
-              {[["superadmin","Superadmin"],["admin_dinas","Dinas"],["admin_post","Post"]].map(([r, l]) => (
-                <button key={r} onClick={() => quickLogin(r)} disabled={!!quickLoading} className="dash-btn" style={{ flex: 1, fontSize: "0.7rem", padding: "0.45rem 0.3rem", background: "rgba(255,255,255,0.04)", border: "1px solid var(--dash-border-2)", boxShadow: "none", color: "var(--dash-text-soft)" }}>
+            <div style={{ display: "flex", gap: "8px" }}>
+              {[["superadmin","Super"],["admin_dinas","Dinas"],["admin_post","Post"]].map(([r, l]) => (
+                <button key={r} onClick={() => quickLogin(r)} disabled={!!quickLoading} className="dash-btn dash-btn-secondary" style={{ flex: 1, fontSize: "0.75rem", padding: "6px" }}>
                   {quickLoading === r ? "..." : l}
                 </button>
               ))}
@@ -106,39 +103,42 @@ function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
           </div>
         </div>
 
-        <Link href="/" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem", marginTop: "1.5rem", fontSize: "0.8rem", color: "var(--dash-text-muted)", textDecoration: "none" }}>
-          <ArrowLeft size={14} /> Kembali ke Portal Publik
+        <Link href="/" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", marginTop: "24px", fontSize: "0.8rem", color: "var(--dash-text-muted)", textDecoration: "none" }}>
+          <ArrowLeft size={14} /> Kembali ke Portal
         </Link>
       </div>
     </div>
   );
 }
 
-/* ─── Nav Config ─── */
+/* ─── Navigation Config ─── */
 const NAV = [
-  { section: "PORTAL",  items: [
-    { href: "/dashboard",           label: "Ringkasan",    icon: LayoutDashboard, roles: ["superadmin","admin_dinas","admin_post"] },
+  { section: "MENU", items: [
+    { href: "/dashboard",           label: "Ringkasan",          icon: LayoutDashboard, roles: ["superadmin","admin_dinas","admin_post"] },
   ]},
-  { section: "KONTEN", items: [
-    { href: "/dashboard/destinasi", label: "Destinasi",    icon: MapPin,          roles: ["superadmin","admin_dinas"] },
-    { href: "/dashboard/berita",    label: "CMS Berita",   icon: FileText,        roles: ["superadmin","admin_dinas","admin_post"] },
+  { section: "KELOLA", items: [
+    { href: "/dashboard/destinasi", label: "Proyek Investasi",   icon: MapPin,          roles: ["superadmin","admin_dinas"] },
+    { href: "/dashboard/berita",    label: "Publikasi Berita",   icon: FileText,        roles: ["superadmin","admin_dinas","admin_post"] },
+    { href: "/dashboard/galeri",    label: "Galeri Foto",        icon: Images,          roles: ["superadmin","admin_dinas","admin_post"] },
   ]},
-  { section: "ADMIN",  items: [
-    { href: "/dashboard/pengguna",  label: "Pengguna",     icon: Users,           roles: ["superadmin"] },
+  { section: "SISTEM", items: [
+    { href: "/dashboard/pengguna",  label: "Manajemen Akun",     icon: Users,           roles: ["superadmin"] },
   ]},
 ];
 
 const CRUMBS: Record<string, string> = {
   "/dashboard":             "Ringkasan",
-  "/dashboard/destinasi":   "Destinasi",
-  "/dashboard/berita":      "CMS Berita",
+  "/dashboard/destinasi":   "Proyek Investasi",
+  "/dashboard/berita":      "Publikasi Berita",
   "/dashboard/berita/buat": "Buat Artikel",
-  "/dashboard/pengguna":    "Pengguna",
+  "/dashboard/galeri":      "Galeri Foto",
+  "/dashboard/pengguna":    "Manajemen Akun",
 };
 
-/* ─── Dashboard Shell ─── */
+/* ─── Main Shell Component ─── */
 function DashboardShell({ children }: { children: ReactNode }) {
   const { user, setUser, logout } = useAdmin();
+  const { theme, toggleTheme } = useTheme();
   const pathname = usePathname() ?? "";
   const router = useRouter();
   const [sideOpen, setSideOpen] = useState(false);
@@ -151,93 +151,31 @@ function DashboardShell({ children }: { children: ReactNode }) {
   const handleLogout = () => { logout(); router.push("/dashboard"); };
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "var(--dash-bg)", color: "var(--dash-text)", display: "flex", flexDirection: "column", fontFamily: "var(--font-main)" }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "var(--dash-bg)", color: "var(--dash-text)", display: "flex", fontFamily: "var(--font-main)" }}>
 
-      {/* ══ TOP HEADER ══ */}
-      <header style={{
-        height: "56px", flexShrink: 0, position: "sticky", top: 0, zIndex: 200,
-        borderBottom: "1px solid var(--dash-border)",
-        background: "rgba(4,7,15,0.82)", backdropFilter: "blur(14px)",
-        display: "flex", alignItems: "center", gap: "0.75rem", padding: "0 1.25rem",
+      {/* ══ SIDEBAR ══ */}
+      <aside className={`dash-sidebar${sideOpen ? " open" : ""}`} style={{
+        width: "240px", backgroundColor: "var(--dash-sidebar)", flexShrink: 0,
+        borderRight: "1px solid var(--dash-border)", display: "flex", flexDirection: "column",
+        overflowY: "auto", height: "100vh", position: "sticky", top: 0,
       }}>
-        {/* Mobile toggle */}
-        <button onClick={() => setSideOpen(v => !v)} className="dash-mob-toggle" style={{ background: "none", border: "none", color: "var(--dash-text-muted)", cursor: "pointer", display: "none", padding: "0.25rem" }}>
-          {sideOpen ? <X size={18} /> : <Menu size={18} />}
-        </button>
-
-        {/* Logo */}
-        <Link href="/dashboard" style={{ display: "flex", alignItems: "center", gap: "0.6rem", textDecoration: "none", flexShrink: 0 }}>
-          <div style={{ width: "28px", height: "28px", borderRadius: "8px", background: "linear-gradient(135deg, rgba(99,102,241,0.3), rgba(79,70,229,0.15))", border: "1px solid rgba(99,102,241,0.25)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        {/* Brand */}
+        <div style={{ padding: "16px 16px 8px", display: "flex", alignItems: "center", gap: "10px" }}>
+          <div style={{ width: "28px", height: "28px", borderRadius: "6px", backgroundColor: "var(--dash-primary-bg)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
             <img src="/logo.avif" alt="" style={{ width: "18px", height: "18px", objectFit: "contain" }} />
           </div>
-          <span style={{ fontWeight: 800, fontSize: "0.875rem", color: "white", letterSpacing: "-0.01em" }}>SIMAD</span>
-        </Link>
-
-        {/* Divider */}
-        <div style={{ width: "1px", height: "16px", backgroundColor: "var(--dash-border-2)", flexShrink: 0 }} />
-
-        {/* Breadcrumb */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "0.8rem" }}>
-          <span style={{ color: "var(--dash-text-muted)" }}>Dashboard</span>
-          {crumb !== "Ringkasan" && (
-            <>
-              <ChevronRight size={13} style={{ color: "var(--dash-text-muted)", opacity: 0.5 }} />
-              <span style={{ color: "var(--dash-text-soft)", fontWeight: 600 }}>{crumb}</span>
-            </>
-          )}
+          <span style={{ fontWeight: 700, fontSize: "0.9rem", color: "var(--dash-text)" }}>FILA Admin</span>
         </div>
 
-        <div style={{ flex: 1 }} />
-
-        {/* Quick create (editor pages) */}
-        {!isNewsEditor && (
-          <Link href="/dashboard/berita/buat" style={{ textDecoration: "none" }}>
-            <button className="dash-btn" style={{ padding: "0.4rem 0.75rem", fontSize: "0.78rem", display: "flex", alignItems: "center", gap: "0.35rem" }}>
-              <Plus size={13} /> Artikel
-            </button>
-          </Link>
-        )}
-
-        {/* Portal link */}
-        <a href="/" target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "0.75rem", color: "var(--dash-text-muted)", padding: "0.4rem 0.65rem", borderRadius: "7px", border: "1px solid var(--dash-border-2)", textDecoration: "none", transition: "all 0.15s", backgroundColor: "rgba(255,255,255,0.02)" }}>
-          <Globe size={13} /> Portal
-        </a>
-
-        {/* User */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-          <div style={{ width: "30px", height: "30px", borderRadius: "8px", background: "linear-gradient(135deg, #6366f1, #4f46e5)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, color: "white", fontSize: "0.75rem" }}>
-            {user.name.charAt(0).toUpperCase()}
-          </div>
-          <div style={{ lineHeight: 1.25 }} className="dash-user-info">
-            <p style={{ margin: 0, fontSize: "0.78rem", fontWeight: 700, color: "var(--dash-text)" }}>{user.name}</p>
-            <p style={{ margin: 0, fontSize: "0.62rem", color: "var(--dash-text-muted)", textTransform: "capitalize" }}>{user.role.replace("_"," ")}</p>
-          </div>
-        </div>
-
-        <button onClick={handleLogout} title="Logout" style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.15)", borderRadius: "7px", color: "#f87171", cursor: "pointer", padding: "0.4rem 0.5rem", display: "flex", alignItems: "center", transition: "all 0.15s" }}
-          onMouseOver={e => (e.currentTarget.style.background = "rgba(239,68,68,0.16)") }
-          onMouseOut={e => (e.currentTarget.style.background = "rgba(239,68,68,0.08)") }>
-          <LogOut size={15} />
-        </button>
-      </header>
-
-      {/* ══ BODY ══ */}
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-
-        {/* ══ SIDEBAR ══ */}
-        <aside className={`dash-sidebar${sideOpen ? " open" : ""}`} style={{
-          width: "220px", backgroundColor: "var(--dash-sidebar)", flexShrink: 0,
-          borderRight: "1px solid var(--dash-border)", display: "flex", flexDirection: "column",
-          overflowY: "auto",
-        }}>
-          {/* Nav */}
-          <nav style={{ flex: 1, padding: "0.75rem 0.75rem 0" }}>
-            {NAV.map(group => {
-              const visible = group.items.filter(i => i.roles.includes(user.role));
-              if (!visible.length) return null;
-              return (
-                <div key={group.section}>
-                  <p className="dash-nav-label">{group.section}</p>
+        {/* Nav */}
+        <nav style={{ flex: 1, padding: "8px" }}>
+          {NAV.map(group => {
+            const visible = group.items.filter(i => i.roles.includes(user.role));
+            if (!visible.length) return null;
+            return (
+              <div key={group.section}>
+                <p className="dash-nav-label">{group.section}</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
                   {visible.map(item => {
                     const Icon = item.icon;
                     const active = pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href));
@@ -250,71 +188,145 @@ function DashboardShell({ children }: { children: ReactNode }) {
                     );
                   })}
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
 
-            {/* Divider */}
-            <div style={{ margin: "0.875rem 0.875rem", borderTop: "1px solid var(--dash-border)" }} />
+          <div style={{ margin: "16px 4px", borderTop: "1px solid var(--dash-border)" }} />
 
-            {/* External links */}
+          <p className="dash-nav-label">TAUTAN</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
             <a href="/peta" target="_blank" rel="noreferrer" className="dash-nav-item">
-              <Map size={16} className="dash-nav-icon" /> Peta Wisata
+              <Map size={16} className="dash-nav-icon" /> Peta Interaktif
             </a>
             <a href="/" target="_blank" rel="noreferrer" className="dash-nav-item">
-              <Globe size={16} className="dash-nav-icon" /> Lihat Portal
+              <Globe size={16} className="dash-nav-icon" /> Portal Investasi
             </a>
-          </nav>
+          </div>
+        </nav>
 
-          {/* User card at bottom */}
-          <div style={{ padding: "0.875rem", borderTop: "1px solid var(--dash-border)", flexShrink: 0 }}>
-            <div style={{ padding: "0.75rem", borderRadius: "10px", background: "rgba(255,255,255,0.03)", border: "1px solid var(--dash-border)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.5rem" }}>
-                <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "linear-gradient(135deg, #6366f1, #4f46e5)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, color: "white", fontSize: "0.8rem", flexShrink: 0 }}>
-                  {user.name.charAt(0).toUpperCase()}
-                </div>
-                <div style={{ overflow: "hidden" }}>
-                  <p style={{ margin: 0, fontSize: "0.8rem", fontWeight: 700, color: "var(--dash-text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user.name}</p>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: "0.25rem", marginTop: "0.1rem" }}>
-                    <ShieldCheck size={10} style={{ color: "var(--dash-primary)" }} />
-                    <span style={{ fontSize: "0.62rem", color: "var(--dash-primary)", fontWeight: 700, textTransform: "capitalize" }}>{user.role.replace("_"," ")}</span>
-                  </div>
-                </div>
+        {/* User card */}
+        <div style={{ padding: "12px", borderTop: "1px solid var(--dash-border)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px", borderRadius: "8px" }}>
+            <div style={{ width: "32px", height: "32px", borderRadius: "50%", backgroundColor: "var(--dash-primary-bg)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, color: "var(--dash-primary)", fontSize: "0.8rem", flexShrink: 0 }}>
+              {user.name.charAt(0).toUpperCase()}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p style={{ margin: 0, fontSize: "0.8rem", fontWeight: 600, color: "var(--dash-text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user.name}</p>
+              <p style={{ margin: 0, fontSize: "0.68rem", color: "var(--dash-text-muted)", textTransform: "capitalize" }}>{user.role.replace("_"," ")}</p>
+            </div>
+            <button onClick={handleLogout} title="Logout" style={{ background: "none", border: "none", color: "var(--dash-text-muted)", cursor: "pointer", padding: "4px", borderRadius: "4px", display: "flex" }}>
+              <LogOut size={14} />
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* ══ MAIN AREA ══ */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
+
+        {/* ══ TOP HEADER ══ */}
+        <header style={{
+          height: "48px", flexShrink: 0, position: "sticky", top: 0, zIndex: 200,
+          borderBottom: "1px solid var(--dash-border)",
+          backgroundColor: "var(--dash-surface)",
+          display: "flex", alignItems: "center", gap: "12px", padding: "0 20px",
+        }}>
+          {/* Mobile Toggle */}
+          <button onClick={() => setSideOpen(v => !v)} className="dash-mob-toggle" style={{ background: "none", border: "1px solid var(--dash-border)", color: "var(--dash-text)", cursor: "pointer", display: "none", padding: "6px", borderRadius: "6px" }}>
+            {sideOpen ? <X size={16} /> : <Menu size={16} />}
+          </button>
+
+          {/* Breadcrumb */}
+          <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.8rem" }} className="desktop-breadcrumb">
+            <span style={{ color: "var(--dash-text-muted)", fontWeight: 500 }}>Dashboard</span>
+            {crumb !== "Ringkasan" && (
+              <>
+                <ChevronRight size={12} style={{ color: "var(--dash-text-muted)", opacity: 0.5 }} />
+                <span style={{ color: "var(--dash-text)", fontWeight: 600 }}>{crumb}</span>
+              </>
+            )}
+          </div>
+
+          <div style={{ flex: 1 }} />
+
+          {/* Action buttons */}
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+
+            {/* Create shortcut */}
+            {!isNewsEditor && (
+              <Link href="/dashboard/berita/buat" style={{ textDecoration: "none" }}>
+                <button className="dash-btn" style={{ padding: "5px 12px", fontSize: "0.78rem" }}>
+                  <Plus size={14} /> Tulis
+                </button>
+              </Link>
+            )}
+
+            {/* Theme toggle */}
+            <button onClick={toggleTheme} title={theme === "light" ? "Dark Mode" : "Light Mode"} style={{
+              background: "none", border: "1px solid var(--dash-border)", borderRadius: "6px",
+              color: "var(--dash-text-muted)", cursor: "pointer", padding: "5px", display: "flex", alignItems: "center",
+              transition: "background 0.15s"
+            }}>
+              {theme === "light" ? <Moon size={15} /> : <Sun size={15} />}
+            </button>
+
+            {/* Notifications */}
+            <button style={{
+              background: "none", border: "1px solid var(--dash-border)", borderRadius: "6px",
+              color: "var(--dash-text-muted)", cursor: "pointer", padding: "5px", display: "flex",
+              alignItems: "center", position: "relative"
+            }}>
+              <Bell size={15} />
+              <span style={{ position: "absolute", top: "3px", right: "3px", width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--dash-danger)" }} />
+            </button>
+
+            {/* Portal link */}
+            <a href="/" target="_blank" rel="noreferrer" className="desktop-portal-btn" style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.78rem", color: "var(--dash-text-muted)", padding: "5px 10px", borderRadius: "6px", border: "1px solid var(--dash-border)", textDecoration: "none" }}>
+              <Globe size={13} /> Portal
+            </a>
+
+            {/* User mini badge */}
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", borderLeft: "1px solid var(--dash-border)", paddingLeft: "12px", marginLeft: "4px" }} className="header-user-badge">
+              <div style={{ width: "28px", height: "28px", borderRadius: "50%", backgroundColor: "var(--dash-primary-bg)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, color: "var(--dash-primary)", fontSize: "0.72rem" }}>
+                {user.name.charAt(0).toUpperCase()}
               </div>
-              <button onClick={handleLogout} style={{ width: "100%", padding: "0.45rem", borderRadius: "7px", background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.12)", color: "#f87171", cursor: "pointer", fontSize: "0.72rem", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: "0.35rem" }}>
-                <LogOut size={12} /> Keluar
-              </button>
+              <div className="dash-user-info">
+                <p style={{ margin: 0, fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text)" }}>{user.name}</p>
+              </div>
             </div>
           </div>
-        </aside>
+        </header>
 
         {/* ══ MAIN CONTENT ══ */}
-        <main style={{ flex: 1, overflowY: "auto", padding: "1.75rem" }} className="dash-main dash-scroll">
+        <main style={{ flex: 1, overflowY: "auto", padding: "24px" }} className="dash-main">
           {children}
         </main>
       </div>
 
-      {/* ══ GLOBAL STYLES ══ */}
+      {/* ══ RESPONSIVE STYLES ══ */}
       <style jsx global>{`
-        body { background-color: var(--dash-bg) !important; overflow: hidden; }
-        .dash-sidebar { transition: transform 0.25s cubic-bezier(0.4,0,0.2,1); }
-        .dash-main { height: calc(100vh - 56px); }
+        .dash-sidebar { transition: transform 0.2s ease; }
+        .dash-main { height: calc(100vh - 48px); }
 
         @media (max-width: 768px) {
           .dash-sidebar {
-            position: fixed; top: 56px; left: 0; bottom: 0;
-            z-index: 150; transform: translateX(-100%);
+            position: fixed; top: 0; left: 0; bottom: 0;
+            z-index: 300; transform: translateX(-100%);
+            width: 240px;
           }
-          .dash-sidebar.open { transform: translateX(0); box-shadow: 8px 0 32px rgba(0,0,0,0.6); }
+          .dash-sidebar.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,0.15); }
           .dash-mob-toggle { display: flex !important; }
           .dash-user-info { display: none; }
-          .dash-main { padding: 1.25rem !important; }
+          .dash-main { padding: 16px !important; }
+          .desktop-breadcrumb, .desktop-portal-btn { display: none !important; }
+          .header-user-badge { border-left: none !important; padding-left: 0 !important; margin-left: 0 !important; }
         }
         @media (min-width: 769px) {
           .dash-mob-toggle { display: none !important; }
         }
         @media (max-width: 900px) {
           .grid-charts { grid-template-columns: 1fr !important; }
-          .grid-charts-loader { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </div>
@@ -325,7 +337,9 @@ function DashboardShell({ children }: { children: ReactNode }) {
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <AdminProvider>
-      <DashboardShell>{children}</DashboardShell>
+      <ThemeProvider>
+        <DashboardShell>{children}</DashboardShell>
+      </ThemeProvider>
     </AdminProvider>
   );
 }

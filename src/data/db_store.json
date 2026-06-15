@@ -1385,5 +1385,111 @@
       "name": "Dinas Pariwisata Lampung Timur",
       "logoUrl": "/group_7.avif"
     }
+  ],
+  "gallery": [
+    {
+      "id": "gal_1",
+      "order": 0,
+      "createdAt": "2026-06-15T14:32:17.456Z",
+      "title": "Panorama Alam Lampung Timur",
+      "category": "Alam",
+      "imageUrl": "/Gallery/hero1.avif"
+    },
+    {
+      "id": "gal_2",
+      "order": 1,
+      "createdAt": "2026-06-15T14:32:17.456Z",
+      "title": "Keindahan Destinasi Wisata",
+      "category": "Alam",
+      "imageUrl": "/Gallery/1.avif"
+    },
+    {
+      "id": "gal_3",
+      "order": 2,
+      "createdAt": "2026-06-15T14:32:17.456Z",
+      "title": "Pesona Wisata Daerah",
+      "category": "Alam",
+      "imageUrl": "/Gallery/2.avif"
+    },
+    {
+      "id": "gal_4",
+      "order": 3,
+      "createdAt": "2026-06-15T14:32:17.456Z",
+      "title": "Pantai Dewi Mandapa",
+      "category": "Bahari",
+      "imageUrl": "/Gallery/Pantai Dewi Mandapa.avif"
+    },
+    {
+      "id": "gal_5",
+      "order": 4,
+      "createdAt": "2026-06-15T14:32:17.456Z",
+      "title": "Keasrian Alam Terbuka",
+      "category": "Alam",
+      "imageUrl": "/Gallery/3.avif"
+    },
+    {
+      "id": "gal_6",
+      "order": 5,
+      "createdAt": "2026-06-15T14:32:17.456Z",
+      "title": "Air Terjun Way Guruh",
+      "category": "Alam",
+      "imageUrl": "/Gallery/Way Guruh.avif"
+    },
+    {
+      "id": "gal_7",
+      "order": 6,
+      "createdAt": "2026-06-15T14:32:17.456Z",
+      "title": "Wisata Budaya Lampung Timur",
+      "category": "Budaya",
+      "imageUrl": "/Gallery/image.avif"
+    },
+    {
+      "id": "gal_8",
+      "order": 7,
+      "createdAt": "2026-06-15T14:32:17.456Z",
+      "title": "Pantai Kerang Mas",
+      "category": "Bahari",
+      "imageUrl": "/Gallery/Pantai-Kerang-Mas-Labuhan-Maringgai-Lampung-Timur-desmonjosbur-1602765547466.avif"
+    },
+    {
+      "id": "gal_9",
+      "order": 8,
+      "createdAt": "2026-06-15T14:32:17.456Z",
+      "title": "Atraksi Budaya Lokal",
+      "category": "Budaya",
+      "imageUrl": "/Gallery/4.avif"
+    },
+    {
+      "id": "gal_10",
+      "order": 9,
+      "createdAt": "2026-06-15T14:32:17.456Z",
+      "title": "Situs Purbakala Lampung Timur",
+      "category": "Sejarah",
+      "imageUrl": "/Gallery/pugung_raharjo.avif"
+    },
+    {
+      "id": "gal_11",
+      "order": 10,
+      "createdAt": "2026-06-15T14:32:17.456Z",
+      "title": "Pesona Alam Liar Way Kambas",
+      "category": "Alam",
+      "imageUrl": "/Gallery/hero3.avif"
+    },
+    {
+      "id": "gal_12",
+      "order": 11,
+      "createdAt": "2026-06-15T14:32:17.456Z",
+      "title": "Destinasi Wisata Unggulan",
+      "category": "Alam",
+      "imageUrl": "/Gallery/image copy.avif"
+    },
+    {
+      "id": "gal_13",
+      "order": 12,
+      "createdAt": "2026-06-15T14:32:17.456Z",
+      "title": "Keindahan Alam Daerah",
+      "category": "Alam",
+      "imageUrl": "/Gallery/image copy 2.avif"
+    }
   ]
 }

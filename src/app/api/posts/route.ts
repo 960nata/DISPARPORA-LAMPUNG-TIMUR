@@ -30,10 +30,13 @@ export async function POST(request: Request) {
         title: data.title,
         slug,
         content: data.content,
-        imageUrl: data.imageUrl || "https://images.unsplash.com/photo-1542856391-010fb87dcfed?auto=format&fit=crop&w=800&q=80",
+        imageUrl: data.imageUrl || "/Gallery/1.avif",
         authorId: data.authorId,
         status: data.status || "draft",
-        tags: data.tags || "Umum"
+        tags: data.tags || "Umum",
+        seoTitle: data.seoTitle || "",
+        seoDesc: data.seoDesc || "",
+        publishDate: data.publishDate || ""
       }
     });
 

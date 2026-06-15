@@ -43,6 +43,9 @@ export interface Post {
   createdAt: string;
   status: string; // "draft", "published"
   tags: string; // comma-separated
+  seoTitle?: string;
+  seoDesc?: string;
+  publishDate?: string; // ISO date (yyyy-mm-dd) chosen by editor
 }
 
 export interface Partner {
@@ -51,11 +54,21 @@ export interface Partner {
   logoUrl: string;
 }
 
+export interface GalleryItem {
+  id: string;
+  title: string;
+  category: string;   // Alam, Bahari, Budaya, Sejarah, ...
+  imageUrl: string;   // /Gallery/xxx.avif
+  order: number;
+  createdAt: string;
+}
+
 interface JsonDatabaseSchema {
   users: User[];
   destinations: Destination[];
   posts: Post[];
   partners: Partner[];
+  gallery: GalleryItem[];
 }
 
 // Check if we have PostgreSQL configured
@@ -66,11 +79,32 @@ if (isPgConfigured) {
   prismaClient = new PrismaClient();
 }
 
+// Seed gallery mirrors the current homepage GallerySection photos
+function seedGallery(): GalleryItem[] {
+  const now = new Date().toISOString();
+  const items: Omit<GalleryItem, "id" | "order" | "createdAt">[] = [
+    { title: "Panorama Alam Lampung Timur", category: "Alam",    imageUrl: "/Gallery/hero1.avif" },
+    { title: "Keindahan Destinasi Wisata",  category: "Alam",    imageUrl: "/Gallery/1.avif" },
+    { title: "Pesona Wisata Daerah",        category: "Alam",    imageUrl: "/Gallery/2.avif" },
+    { title: "Pantai Dewi Mandapa",         category: "Bahari",  imageUrl: "/Gallery/Pantai Dewi Mandapa.avif" },
+    { title: "Keasrian Alam Terbuka",       category: "Alam",    imageUrl: "/Gallery/3.avif" },
+    { title: "Air Terjun Way Guruh",        category: "Alam",    imageUrl: "/Gallery/Way Guruh.avif" },
+    { title: "Wisata Budaya Lampung Timur", category: "Budaya",  imageUrl: "/Gallery/image.avif" },
+    { title: "Pantai Kerang Mas",           category: "Bahari",  imageUrl: "/Gallery/Pantai-Kerang-Mas-Labuhan-Maringgai-Lampung-Timur-desmonjosbur-1602765547466.avif" },
+    { title: "Atraksi Budaya Lokal",        category: "Budaya",  imageUrl: "/Gallery/4.avif" },
+    { title: "Situs Purbakala Lampung Timur", category: "Sejarah", imageUrl: "/Gallery/pugung_raharjo.avif" },
+    { title: "Pesona Alam Liar Way Kambas", category: "Alam",    imageUrl: "/Gallery/hero3.avif" },
+    { title: "Destinasi Wisata Unggulan",   category: "Alam",    imageUrl: "/Gallery/image copy.avif" },
+    { title: "Keindahan Alam Daerah",       category: "Alam",    imageUrl: "/Gallery/image copy 2.avif" },
+  ];
+  return items.map((it, i) => ({ id: `gal_${i + 1}`, order: i, createdAt: now, ...it }));
+}
+
 // ----------------------------------------------------
 // Fallback Mock JSON Database Engine
 // ----------------------------------------------------
 class JsonDbEngine {
-  private data: JsonDatabaseSchema = { users: [], destinations: [], posts: [], partners: [] };
+  private data: JsonDatabaseSchema = { users: [], destinations: [], posts: [], partners: [], gallery: [] };
 
   constructor() {
     this.loadData();
@@ -87,6 +121,11 @@ class JsonDbEngine {
       if (fs.existsSync(JSON_DB_PATH)) {
         const fileContent = fs.readFileSync(JSON_DB_PATH, "utf-8");
         this.data = JSON.parse(fileContent);
+        // Migration: older db files may not have a gallery collection yet
+        if (!this.data.gallery) {
+          this.data.gallery = seedGallery();
+          this.saveData();
+        }
       } else {
         this.seedInitialData();
       }
@@ -210,7 +249,8 @@ class JsonDbEngine {
       users: seedUsers,
       destinations: seedDestinations,
       posts: seedPosts,
-      partners: seedPartners
+      partners: seedPartners,
+      gallery: seedGallery()
     };
     this.saveData();
   }
@@ -329,6 +369,35 @@ class JsonDbEngine {
     delete: async ({ where }: { where: { id: string } }) => {
       const deleted = this.data.partners.find(p => p.id === where.id);
       this.data.partners = this.data.partners.filter(p => p.id !== where.id);
+      this.saveData();
+      return deleted;
+    }
+  };
+
+  // GALLERY
+  public gallery = {
+    findMany: async () => [...this.data.gallery].sort((a, b) => a.order - b.order),
+    create: async ({ data }: { data: Omit<GalleryItem, "id" | "createdAt" | "order"> & { order?: number } }) => {
+      const item: GalleryItem = {
+        id: `gal_${Date.now()}`,
+        createdAt: new Date().toISOString(),
+        order: data.order ?? this.data.gallery.length,
+        ...data,
+      };
+      this.data.gallery.push(item);
+      this.saveData();
+      return item;
+    },
+    update: async ({ where, data }: { where: { id: string }; data: Partial<GalleryItem> }) => {
+      const idx = this.data.gallery.findIndex(g => g.id === where.id);
+      if (idx === -1) throw new Error("Gallery item not found");
+      this.data.gallery[idx] = { ...this.data.gallery[idx], ...data };
+      this.saveData();
+      return this.data.gallery[idx];
+    },
+    delete: async ({ where }: { where: { id: string } }) => {
+      const deleted = this.data.gallery.find(g => g.id === where.id);
+      this.data.gallery = this.data.gallery.filter(g => g.id !== where.id);
       this.saveData();
       return deleted;
     }

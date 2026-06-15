@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Map, Marker, Popup } from "leaflet";
 
 interface MapItem {
@@ -100,6 +100,8 @@ export default function MapComponent({
   const editMkRef    = useRef<Marker | null>(null);
   const popupRef     = useRef<Popup | null>(null);
 
+  const [mapInstance, setMapInstance] = useState<Map | null>(null);
+
   const selectRef = useRef(onSelectItem);
   const coordRef  = useRef(onCoordinatesChange);
   useEffect(() => { selectRef.current = onSelectItem; },        [onSelectItem]);
@@ -141,30 +143,42 @@ export default function MapComponent({
           const { lat, lng } = e.latlng;
           const icon = L.divIcon({ html: makeEditPinSvg(), iconSize: [44, 54], iconAnchor: [22, 54], className: "" });
           if (editMkRef.current) {
-            editMkRef.current.setLatLng([lat, lng]);
+            try {
+              editMkRef.current.setLatLng([lat, lng]);
+            } catch (err) {}
           } else {
-            editMkRef.current = L.marker([lat, lng], { icon, draggable: true }).addTo(localMap!);
-            editMkRef.current.on("dragend", () => {
-              const pos = editMkRef.current!.getLatLng();
-              coordRef.current?.(pos.lat, pos.lng);
-            });
+            try {
+              editMkRef.current = L.marker([lat, lng], { icon, draggable: true }).addTo(localMap!);
+              editMkRef.current.on("dragend", () => {
+                const pos = editMkRef.current!.getLatLng();
+                coordRef.current?.(pos.lat, pos.lng);
+              });
+            } catch (err) {}
           }
           coordRef.current?.(lat, lng);
         });
       }
 
       if (cancelled) {
-        localMap.remove();
+        try {
+          localMap.remove();
+        } catch (err) {}
         return;
       }
 
       mapRef.current = localMap;
+      setMapInstance(localMap);
     })();
 
     return () => {
       cancelled = true;
-      localMap?.remove();
+      if (localMap) {
+        try {
+          localMap.remove();
+        } catch (err) {}
+      }
       mapRef.current  = null;
+      setMapInstance(null);
       editMkRef.current = null;
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -172,23 +186,28 @@ export default function MapComponent({
 
   // ── Draw markers ─────────────────────────────────────────────────────────
   useEffect(() => {
-    if (isEditMode) return;
-    const map = mapRef.current;
-    if (!map) return;
+    if (isEditMode || !mapInstance) return;
 
     let cancelled = false;
 
     (async () => {
       const L = (await import("leaflet")).default;
-      if (cancelled) return;
+      if (cancelled || mapInstance !== mapRef.current) return;
 
-      markersRef.current.forEach(m => m.remove());
+      // Safely remove existing markers
+      markersRef.current.forEach(m => {
+        try {
+          m.remove();
+        } catch (err) {}
+      });
       markersRef.current = [];
-      popupRef.current?.remove();
+      try {
+        popupRef.current?.remove();
+      } catch (err) {}
       popupRef.current = null;
 
       items.forEach(item => {
-        if (!item.lat || !item.lng || cancelled) return;
+        if (!item.lat || !item.lng || cancelled || mapInstance !== mapRef.current) return;
         const color   = CAT_COLORS[item.category] ?? "#059669";
         const emoji   = CAT_ICONS[item.category]  ?? "📍";
         const isSel   = selectedItem?.id === item.id;
@@ -202,73 +221,105 @@ export default function MapComponent({
           className: "",
         });
 
-        const marker = L.marker([item.lat, item.lng], { icon }).addTo(map);
+        try {
+          const marker = L.marker([item.lat, item.lng], { icon }).addTo(mapInstance);
 
-        marker.on("click", () => {
-          selectRef.current(item);
-          popupRef.current?.remove();
-          popupRef.current = L.popup({
-            offset: [0, -8],
-            closeButton: true,
-            maxWidth: 280,
-            className: "simad-popup",
-          })
-            .setLatLng([item.lat, item.lng])
-            .setContent(`
-              <div style="font-family:system-ui,sans-serif;padding:2px 0">
-                ${item.image ? `<img src="${item.image}" alt="${item.name}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;display:block;margin:0 0 8px" onerror="this.style.display='none'"/>` : ""}
-                <p style="font-size:.6rem;font-weight:800;color:${color};text-transform:uppercase;letter-spacing:.07em;margin:0 0 5px;display:flex;align-items:center;gap:4px">${item.category}${item.verified ? ' <span style="background:#dcfce7;color:#16a34a;padding:1px 5px;border-radius:4px;font-size:.55rem">✓ GPS Akurat</span>' : item.approx ? ' <span style="background:#f1f5f9;color:#64748b;padding:1px 5px;border-radius:4px;font-size:.55rem">~ Perkiraan</span>' : ''}</p>
-                <h4 style="font-size:.9rem;font-weight:800;color:#0f172a;margin:0 0 5px;line-height:1.3">${item.name}</h4>
-                <p style="font-size:.78rem;color:#475569;margin:0 0 2px">📍 ${item.address || "Kec. " + item.kecamatan}</p>
-                ${item.contact ? `<p style="font-size:.78rem;color:#475569;margin:3px 0 0">📞 ${item.contact}</p>` : ""}
-                <p style="font-size:.7rem;font-weight:700;color:${color};margin:8px 0 0;border-top:1px solid #e2e8f0;padding-top:6px">Klik untuk detail →</p>
-              </div>
-            `)
-            .openOn(map);
-        });
+          marker.on("click", () => {
+            selectRef.current(item);
+            try {
+              popupRef.current?.remove();
+            } catch (err) {}
+            try {
+              popupRef.current = L.popup({
+                offset: [0, -8],
+                closeButton: true,
+                maxWidth: 280,
+                className: "simad-popup",
+              })
+                .setLatLng([item.lat, item.lng])
+                .setContent(`
+                  <div style="font-family:system-ui,sans-serif;padding:2px 0">
+                    ${item.image ? `<img src="${item.image}" alt="${item.name}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;display:block;margin:0 0 8px" onerror="this.style.display='none'"/>` : ""}
+                    <p style="font-size:.6rem;font-weight:800;color:${color};text-transform:uppercase;letter-spacing:.07em;margin:0 0 5px;display:flex;align-items:center;gap:4px">${item.category}${item.verified ? ' <span style="background:#dcfce7;color:#16a34a;padding:1px 5px;border-radius:4px;font-size:.55rem">✓ GPS Akurat</span>' : item.approx ? ' <span style="background:#f1f5f9;color:#64748b;padding:1px 5px;border-radius:4px;font-size:.55rem">~ Perkiraan</span>' : ''}</p>
+                    <h4 style="font-size:.9rem;font-weight:800;color:#0f172a;margin:0 0 5px;line-height:1.3">${item.name}</h4>
+                    <p style="font-size:.78rem;color:#475569;margin:0 0 2px">📍 ${item.address || "Kec. " + item.kecamatan}</p>
+                    ${item.contact ? `<p style="font-size:.78rem;color:#475569;margin:3px 0 0">📞 ${item.contact}</p>` : ""}
+                    <p style="font-size:.7rem;font-weight:700;color:${color};margin:8px 0 0;border-top:1px solid #e2e8f0;padding-top:6px">Klik untuk detail →</p>
+                  </div>
+                `)
+                .openOn(mapInstance);
+            } catch (err) {}
+          });
 
-        markersRef.current.push(marker);
+          markersRef.current.push(marker);
+        } catch (err) {}
       });
     })();
 
-    return () => { cancelled = true; };
-  }, [items, selectedItem, isEditMode]);
+    return () => {
+      cancelled = true;
+      markersRef.current.forEach(m => {
+        try {
+          m.remove();
+        } catch (err) {}
+      });
+      markersRef.current = [];
+      try {
+        popupRef.current?.remove();
+      } catch (err) {}
+      popupRef.current = null;
+    };
+  }, [items, selectedItem, isEditMode, mapInstance]);
 
   // ── Fly to selected (view mode) ───────────────────────────────────────────
   useEffect(() => {
-    if (!selectedItem || isEditMode) return;
-    const map = mapRef.current;
-    if (!map) return;
-    map.flyTo([selectedItem.lat, selectedItem.lng], 13, { duration: 1.2 });
-  }, [selectedItem, isEditMode]);
+    if (!selectedItem || isEditMode || !mapInstance) return;
+    try {
+      mapInstance.flyTo([selectedItem.lat, selectedItem.lng], 13, { duration: 1.2 });
+    } catch (err) {}
+  }, [selectedItem, isEditMode, mapInstance]);
 
   // ── Sync edit marker to loaded item ──────────────────────────────────────
   useEffect(() => {
-    if (!isEditMode || !selectedItem) return;
-    const map = mapRef.current;
-    if (!map) return;
+    if (!isEditMode || !selectedItem || !mapInstance) return;
 
     let cancelled = false;
     (async () => {
       const L = (await import("leaflet")).default;
-      if (cancelled) return;
+      if (cancelled || mapInstance !== mapRef.current) return;
 
-      map.flyTo([selectedItem.lat, selectedItem.lng], 13, { duration: 0.9 });
+      try {
+        mapInstance.flyTo([selectedItem.lat, selectedItem.lng], 13, { duration: 0.9 });
+      } catch (err) {}
+
       const icon = L.divIcon({ html: makeEditPinSvg(), iconSize: [44, 54], iconAnchor: [22, 54], className: "" });
 
       if (editMkRef.current) {
-        editMkRef.current.setLatLng([selectedItem.lat, selectedItem.lng]);
+        try {
+          editMkRef.current.setLatLng([selectedItem.lat, selectedItem.lng]);
+        } catch (err) {}
       } else {
-        editMkRef.current = L.marker([selectedItem.lat, selectedItem.lng], { icon, draggable: true }).addTo(map);
-        editMkRef.current.on("dragend", () => {
-          const pos = editMkRef.current!.getLatLng();
-          coordRef.current?.(pos.lat, pos.lng);
-        });
+        try {
+          const marker = L.marker([selectedItem.lat, selectedItem.lng], { icon, draggable: true }).addTo(mapInstance);
+          editMkRef.current = marker;
+          marker.on("dragend", () => {
+            const pos = marker.getLatLng();
+            coordRef.current?.(pos.lat, pos.lng);
+          });
+        } catch (err) {}
       }
     })();
 
-    return () => { cancelled = true; };
-  }, [selectedItem, isEditMode]);
+    return () => {
+      cancelled = true;
+      if (editMkRef.current) {
+        try {
+          editMkRef.current.remove();
+        } catch (err) {}
+        editMkRef.current = null;
+      }
+    };
+  }, [selectedItem, isEditMode, mapInstance]);
 
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>

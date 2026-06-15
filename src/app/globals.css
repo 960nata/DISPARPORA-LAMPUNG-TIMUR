@@ -25,28 +25,64 @@
   --hover-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02);
   --border-radius: 24px;
   
-  /* ═══ DASHBOARD DESIGN TOKENS ═══ */
-  --dash-bg:            #04070f;
-  --dash-sidebar:       #060b16;
-  --dash-card:          #0b1120;
-  --dash-card-2:        #0f1728;
-  --dash-card-hover:    #121d30;
-  --dash-border:        #182236;
-  --dash-border-2:      #1e2d47;
-  --dash-text:          #dde6f0;
-  --dash-text-muted:    #4d6280;
-  --dash-text-soft:     #8da3be;
-  --dash-primary:       #6366f1;
-  --dash-primary-hover: #4f46e5;
-  --dash-primary-glow:  rgba(99,102,241,0.14);
-  --dash-success:       #22c55e;
-  --dash-success-glow:  rgba(34,197,94,0.12);
-  --dash-warning:       #f59e0b;
-  --dash-danger:        #ef4444;
-  --dash-danger-glow:   rgba(239,68,68,0.12);
-  
-  --font-main: 'Plus Jakarta Sans', sans-serif;
+  /* ═══ DASHBOARD DESIGN TOKENS (Light — default) ═══ */
+  --dash-bg:            #ffffff;
+  --dash-sidebar:       #fbfbfa;
+  --dash-surface:       #ffffff;
+  --dash-surface-hover: #f7f7f5;
+  --dash-card:          #ffffff;
+  --dash-card-hover:    #f7f7f5;
+  --dash-border:        rgba(55, 53, 47, 0.09);
+  --dash-border-2:      rgba(55, 53, 47, 0.16);
+  --dash-text:          #37352f;
+  --dash-text-secondary:#37352f;
+  --dash-text-muted:    rgba(55, 53, 47, 0.5);
+  --dash-text-soft:     rgba(55, 53, 47, 0.65);
+  --dash-primary:       #059669;
+  --dash-primary-hover: #047857;
+  --dash-primary-bg:    rgba(5, 150, 105, 0.08);
+  --dash-success:       #0284c7;
+  --dash-success-bg:    rgba(2, 132, 199, 0.08);
+  --dash-warning:       #d97706;
+  --dash-warning-bg:    rgba(217, 119, 6, 0.08);
+  --dash-danger:        #dc2626;
+  --dash-danger-bg:     rgba(220, 38, 38, 0.08);
+  --dash-purple:        #6940a5;
+  --dash-purple-bg:     rgba(105, 64, 165, 0.08);
+  --dash-pink:          #ad1a72;
+  --dash-pink-bg:       rgba(173, 26, 114, 0.08);
+
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-serif: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* ═══ DARK MODE TOKENS ═══ */
+[data-theme="dark"] {
+  --dash-bg:            #191919;
+  --dash-sidebar:       #202020;
+  --dash-surface:       #202020;
+  --dash-surface-hover: #2f2f2f;
+  --dash-card:          #252525;
+  --dash-card-hover:    #2f2f2f;
+  --dash-border:        rgba(255, 255, 255, 0.09);
+  --dash-border-2:      rgba(255, 255, 255, 0.13);
+  --dash-text:          rgba(255, 255, 255, 0.9);
+  --dash-text-secondary:rgba(255, 255, 255, 0.81);
+  --dash-text-muted:    rgba(255, 255, 255, 0.44);
+  --dash-text-soft:     rgba(255, 255, 255, 0.6);
+  --dash-primary:       #34d399;
+  --dash-primary-hover: #10b981;
+  --dash-primary-bg:    rgba(52, 211, 153, 0.12);
+  --dash-success:       #38bdf8;
+  --dash-success-bg:    rgba(56, 189, 248, 0.12);
+  --dash-warning:       #fbbf24;
+  --dash-warning-bg:    rgba(251, 191, 36, 0.12);
+  --dash-danger:        #f87171;
+  --dash-danger-bg:     rgba(248, 113, 113, 0.12);
+  --dash-purple:        #9a6dd7;
+  --dash-purple-bg:     rgba(154, 109, 215, 0.12);
+  --dash-pink:          #c94f8b;
+  --dash-pink-bg:       rgba(201, 79, 139, 0.12);
 }
 
 * {
@@ -54,7 +90,7 @@
   padding: 0;
   margin: 0;
   font-family: var(--font-main);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 html, body {
@@ -65,6 +101,232 @@ html, body {
   scroll-behavior: smooth;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════════
+   DASHBOARD — Notion-Style Design System
+═══════════════════════════════════════════ */
+
+/* ── Base Card (flat, no shadow, thin border) ── */
+.dash-card {
+  background: var(--dash-card);
+  border: 1px solid var(--dash-border);
+  border-radius: 8px;
+  padding: 20px;
+  transition: background 0.15s ease;
+}
+.dash-card-hover:hover {
+  background: var(--dash-card-hover);
+  cursor: pointer;
+}
+
+/* ── Input (Notion-style) ── */
+.dash-input {
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-border-2);
+  color: var(--dash-text);
+  padding: 8px 12px;
+  border-radius: 6px;
+  outline: none;
+  font-size: 0.875rem;
+  font-family: var(--font-main);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+}
+.dash-input:focus {
+  border-color: var(--dash-primary);
+  box-shadow: 0 0 0 2px var(--dash-primary-bg);
+}
+.dash-input::placeholder { color: var(--dash-text-muted); }
+.dash-input:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ── Select (Notion-style) ── */
+.dash-select {
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-border-2);
+  color: var(--dash-text);
+  padding: 8px 12px;
+  border-radius: 6px;
+  outline: none;
+  font-size: 0.875rem;
+  font-family: var(--font-main);
+  transition: border-color 0.15s;
+  cursor: pointer;
+  appearance: none;
+}
+.dash-select:focus {
+  border-color: var(--dash-primary);
+  box-shadow: 0 0 0 2px var(--dash-primary-bg);
+}
+
+/* ── Button (Notion-style — solid, no gradient, no glow) ── */
+.dash-btn {
+  background: var(--dash-primary);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-family: var(--font-main);
+  transition: opacity 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.dash-btn:hover:not(:disabled) { opacity: 0.85; }
+.dash-btn:active:not(:disabled) { opacity: 0.75; }
+.dash-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.dash-btn-secondary {
+  background: transparent;
+  color: var(--dash-text);
+  border: 1px solid var(--dash-border-2);
+}
+.dash-btn-secondary:hover:not(:disabled) {
+  background: var(--dash-surface-hover);
+  opacity: 1;
+}
+
+.dash-btn-danger {
+  background: var(--dash-danger);
+  color: white;
+}
+
+/* ── Table (Notion clean table) ── */
+.dash-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.dash-table th {
+  padding: 8px 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--dash-text-muted);
+  border-bottom: 1px solid var(--dash-border);
+  white-space: nowrap;
+}
+.dash-table td {
+  padding: 10px 16px;
+  font-size: 0.875rem;
+  color: var(--dash-text-soft);
+  border-bottom: 1px solid var(--dash-border);
+  background: transparent;
+  transition: background-color 0.1s;
+}
+.dash-table tr:last-child td { border-bottom: none; }
+.dash-table tr:hover td { background: var(--dash-surface-hover); }
+
+/* ── Nav Sidebar Item (Notion flat) ── */
+.dash-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--dash-text-soft);
+  text-decoration: none;
+  transition: background 0.1s, color 0.1s;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+}
+.dash-nav-item:hover {
+  background: var(--dash-surface-hover);
+  color: var(--dash-text);
+}
+.dash-nav-item.active {
+  background: var(--dash-primary-bg);
+  color: var(--dash-primary);
+  font-weight: 600;
+}
+.dash-nav-item.active .dash-nav-icon { color: var(--dash-primary); }
+.dash-nav-icon { flex-shrink: 0; }
+
+/* ── Nav Section Label ── */
+.dash-nav-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dash-text-muted);
+  padding: 0 12px;
+  margin: 20px 0 6px;
+}
+
+/* ── Stat Card (Notion flat) ── */
+.dash-stat-card {
+  background: var(--dash-card);
+  border: 1px solid var(--dash-border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: background 0.15s;
+  text-decoration: none;
+  position: relative;
+}
+.dash-stat-card:hover {
+  background: var(--dash-card-hover);
+}
+
+/* ── Badge (Notion-style) ── */
+.dash-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+.dash-badge-success { background: var(--dash-success-bg); color: var(--dash-success); }
+.dash-badge-warning { background: var(--dash-warning-bg); color: var(--dash-warning); }
+.dash-badge-danger  { background: var(--dash-danger-bg); color: var(--dash-danger); }
+.dash-badge-primary { background: var(--dash-primary-bg); color: var(--dash-primary); }
+.dash-badge-purple  { background: var(--dash-purple-bg); color: var(--dash-purple); }
+
+/* ── Scrollbar (theme-aware) ── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--dash-border-2); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--dash-text-muted); }
+
+/* ── Modal Overlay ── */
+.dash-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.dash-modal {
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-border);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* ── Block Editor Layout ── */
+.wp-editor-grid { display: grid; grid-template-columns: 1fr 300px; gap: 1.5rem; align-items: start; }
+@media (max-width: 900px) {
+  .wp-editor-grid { grid-template-columns: 1fr !important; }
+  .wp-editor-grid > *:last-child { position: static !important; }
 }
 
 /* Base Headings */
@@ -242,8 +504,8 @@ a {
   border-radius: 8px;
 }
 
-.dark .skeleton {
-  background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+[data-theme="dark"] .skeleton {
+  background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
   background-size: 200% 100%;
   animation: loading-pulse 1.5s infinite;
 }
@@ -292,207 +554,7 @@ a {
   margin-bottom: 4px;
 }
 
-/* ═══════════════════════════════════════════
-   DASHBOARD — Complete Design System
-═══════════════════════════════════════════ */
 
-/* ── Base Card ── */
-.dash-card {
-  background: var(--dash-card);
-  border: 1px solid var(--dash-border);
-  border-radius: 14px;
-  padding: 1.25rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03);
-  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-}
-
-.dash-card-hover:hover {
-  background: var(--dash-card-hover);
-  border-color: rgba(99,102,241,0.35);
-  box-shadow: 0 0 0 1px rgba(99,102,241,0.2), 0 8px 24px rgba(0,0,0,0.4);
-  transform: translateY(-2px);
-  cursor: pointer;
-}
-
-/* ── Input ── */
-.dash-input {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--dash-border-2);
-  color: var(--dash-text);
-  padding: 0.6rem 0.875rem;
-  border-radius: 8px;
-  outline: none;
-  font-size: 0.875rem;
-  font-family: var(--font-main);
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-  width: 100%;
-}
-.dash-input:focus {
-  border-color: var(--dash-primary);
-  background: rgba(99,102,241,0.06);
-  box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
-}
-.dash-input::placeholder { color: var(--dash-text-muted); }
-.dash-input:disabled { opacity: 0.45; cursor: not-allowed; }
-
-/* ── Button ── */
-.dash-btn {
-  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-  color: white;
-  padding: 0.6rem 1.1rem;
-  border-radius: 8px;
-  border: none;
-  font-weight: 700;
-  font-size: 0.875rem;
-  cursor: pointer;
-  font-family: var(--font-main);
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 10px rgba(99,102,241,0.3);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  white-space: nowrap;
-}
-.dash-btn:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 18px rgba(99,102,241,0.45);
-  background: linear-gradient(135deg, #7c7ff5 0%, #6366f1 100%);
-}
-.dash-btn:active:not(:disabled) { transform: translateY(0); }
-.dash-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-
-/* ── Table ── */
-.dash-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-}
-.dash-table th {
-  padding: 0.7rem 1rem;
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--dash-text-muted);
-  background: rgba(255,255,255,0.02);
-  border-bottom: 1px solid var(--dash-border);
-  white-space: nowrap;
-}
-.dash-table th:first-child { padding-left: 1.25rem; border-radius: 0; }
-.dash-table td {
-  padding: 0.9rem 1rem;
-  font-size: 0.875rem;
-  color: var(--dash-text-soft);
-  border-bottom: 1px solid rgba(24,34,54,0.7);
-}
-.dash-table td:first-child { padding-left: 1.25rem; }
-.dash-table tr:last-child td { border-bottom: none; }
-.dash-table tr:hover td { background: rgba(255,255,255,0.018); }
-
-/* ── Nav Sidebar Item ── */
-.dash-nav-item {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding: 0.6rem 0.875rem;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--dash-text-muted);
-  text-decoration: none;
-  transition: all 0.15s ease;
-  position: relative;
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  width: 100%;
-  text-align: left;
-}
-.dash-nav-item:hover {
-  background: rgba(255,255,255,0.045);
-  color: var(--dash-text-soft);
-}
-.dash-nav-item.active {
-  background: linear-gradient(90deg, rgba(99,102,241,0.18) 0%, rgba(99,102,241,0.04) 100%);
-  color: white;
-  font-weight: 700;
-  border-left: 2px solid var(--dash-primary);
-  padding-left: calc(0.875rem - 2px);
-}
-.dash-nav-item.active .dash-nav-icon { color: var(--dash-primary); }
-.dash-nav-icon { flex-shrink: 0; }
-
-/* ── Nav Section Label ── */
-.dash-nav-label {
-  font-size: 0.63rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--dash-text-muted);
-  padding: 0 0.875rem;
-  margin: 0.875rem 0 0.35rem;
-  opacity: 0.6;
-}
-
-/* ── Stat Card Premium ── */
-.dash-stat-card {
-  background: var(--dash-card);
-  border: 1px solid var(--dash-border);
-  border-radius: 14px;
-  padding: 1.25rem 1.35rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
-  transition: all 0.2s ease;
-  text-decoration: none;
-  position: relative;
-  overflow: hidden;
-}
-.dash-stat-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--dash-stat-accent, var(--dash-primary));
-  opacity: 0.8;
-}
-.dash-stat-card:hover {
-  border-color: rgba(99,102,241,0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(0,0,0,0.4);
-}
-
-/* ── Badge ── */
-.dash-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.2rem 0.55rem;
-  border-radius: 6px;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-}
-.dash-badge-success { background: var(--dash-success-glow); color: #4ade80; }
-.dash-badge-warning { background: rgba(245,158,11,0.12); color: #fbbf24; }
-.dash-badge-danger  { background: var(--dash-danger-glow); color: #f87171; }
-.dash-badge-primary { background: var(--dash-primary-glow); color: #a5b4fc; }
-
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #1e2d47; border-radius: 999px; }
-::-webkit-scrollbar-thumb:hover { background: #2d4060; }
-
-.dash-scroll::-webkit-scrollbar-thumb { background: #1a2640; }
-
-/* ── Block Editor Layout ── */
-.wp-editor-grid { display: grid; grid-template-columns: 1fr 300px; gap: 1.5rem; align-items: start; }
-@media (max-width: 900px) {
-  .wp-editor-grid { grid-template-columns: 1fr !important; }
-  .wp-editor-grid > *:last-child { position: static !important; }
-}
 
 /* Animations for Public Views */
 .fade-in {
