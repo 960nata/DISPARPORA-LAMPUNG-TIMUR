@@ -22,7 +22,7 @@ const bidangData: BidangCard[] = [
     description: "Menyelenggarakan pelayanan administratif, perencanaan program kerja, pengelolaan administrasi keuangan, kepegawaian, serta urusan rumah tangga dinas secara terpadu.",
     number: "01",
     image: "/bidang_sekretariat.png",
-    link: "/bidang#sekretariat"
+    link: "/profil#sekretariat"
   },
   {
     id: 2,
@@ -31,7 +31,7 @@ const bidangData: BidangCard[] = [
     description: "Membina dan mengembangkan potensi industri kreatif daerah, memfasilitasi sertifikasi pelaku usaha, serta mendorong pemasaran produk kreatif lokal Lampung Timur.",
     number: "02",
     image: "/bidang_ekraf.png",
-    link: "/bidang#ekraf"
+    link: "/profil#ekonomi-kreatif"
   },
   {
     id: 3,
@@ -40,7 +40,7 @@ const bidangData: BidangCard[] = [
     description: "Mengembangkan sarana prasarana destinasi wisata unggulan, meningkatkan kapasitas Pokdarwis, serta mempromosikan keindahan alam dan budaya daerah.",
     number: "03",
     image: "/bidang_pariwisata.png",
-    link: "/bidang#pariwisata"
+    link: "/profil#pariwisata"
   },
   {
     id: 4,
@@ -49,7 +49,7 @@ const bidangData: BidangCard[] = [
     description: "Meningkatkan prestasi olahraga daerah, memfasilitasi kompetisi atlet pemuda, serta memelihara sarana prasarana olahraga di Lampung Timur.",
     number: "04",
     image: "/bidang_olahraga.png",
-    link: "/bidang#olahraga"
+    link: "/profil#olahraga"
   },
   {
     id: 5,
@@ -58,7 +58,7 @@ const bidangData: BidangCard[] = [
     description: "Memberdayakan organisasi kepemudaan, menyelenggarakan pelatihan kepemimpinan dan kewirausahaan pemuda secara berkelanjutan.",
     number: "05",
     image: "/bidang_pemuda.png",
-    link: "/bidang#pemuda"
+    link: "/profil#pemuda"
   }
 ];
 
@@ -96,8 +96,7 @@ export default function BidangSection() {
         transition={{ duration: 0.6 }}
         style={{ textAlign: "center", marginBottom: "3.5rem" }}
       >
-        <span className="badge badge-success" style={{ marginBottom: "0.75rem" }}>Pelayanan Publik</span>
-        <h2 style={{ fontSize: "2.25rem", fontWeight: 800, fontFamily: "var(--font-serif)" }}>5 Bidang & Layanan Dinas</h2>
+        <h2 className="section-heading" style={{ fontSize: "2.25rem", fontWeight: 800, fontFamily: "var(--font-serif)" }}>5 Bidang & Layanan Dinas</h2>
         <p style={{ maxWidth: "600px", margin: "1.25rem auto 0 auto" }}>
           Dinas Pariwisata, Pemuda, dan Olahraga Kabupaten Lampung Timur menaungi lima bidang pelayanan masyarakat untuk pengembangan daerah.
         </p>

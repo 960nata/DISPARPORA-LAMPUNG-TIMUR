@@ -29,12 +29,13 @@ const defaultTestimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <section style={{ backgroundColor: "var(--bg-secondary)", padding: "5rem 0" }}>
+    <section style={{ backgroundColor: "var(--bg-secondary)", padding: "4rem 0" }}>
       <div className="container">
         <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
-          <span className="badge badge-success" style={{ marginBottom: "0.75rem" }}>Testimoni</span>
-          <h2 style={{ fontSize: "2.25rem", fontWeight: 800, fontFamily: "var(--font-serif)" }}>Apa Kata Wisatawan?</h2>
-          <p style={{ maxWidth: "600px", margin: "1.25rem auto 0 auto" }}>
+          <h2 className="section-heading" style={{ fontSize: "2.25rem", fontWeight: 800, fontFamily: "var(--font-serif)", marginBottom: "0.5rem" }}>
+            Apa Kata Wisatawan?
+          </h2>
+          <p style={{ maxWidth: "600px", margin: "0 auto" }}>
             Ulasan langsung dari para pelancong lokal dan mancanegara yang telah mengunjungi berbagai destinasi di Lampung Timur.
           </p>
         </div>

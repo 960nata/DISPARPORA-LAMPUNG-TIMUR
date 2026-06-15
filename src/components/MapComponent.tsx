@@ -1,17 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import L from "leaflet";
-
-// Workaround for default marker icon issues in Next.js/Webpack
-const setupLeafletIcon = () => {
-  delete (L.Icon.Default.prototype as any)._getIconUrl;
-  L.Icon.Default.mergeOptions({
-    iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-    iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-  });
-};
+import type { Map, Marker, Popup } from "leaflet";
 
 interface MapItem {
   id: string;
@@ -22,6 +12,9 @@ interface MapItem {
   lat: number;
   lng: number;
   active?: boolean;
+  verified?: boolean;
+  approx?: boolean;
+  image?: string;
   facilities?: string[];
   contact?: string;
   map_link?: string;
@@ -35,196 +28,291 @@ interface MapComponentProps {
   onCoordinatesChange?: (lat: number, lng: number) => void;
 }
 
+const CAT_COLORS: Record<string, string> = {
+  "Wisata Alam":   "#059669",
+  "Wisata Buatan": "#d97706",
+  "Wisata Budaya": "#8b5cf6",
+  "Akomodasi":     "#3b82f6",
+  "Kuliner":       "#ec4899",
+};
+
+const CAT_ICONS: Record<string, string> = {
+  "Wisata Alam":   "🌿",
+  "Wisata Buatan": "🎡",
+  "Wisata Budaya": "🏛",
+  "Akomodasi":     "🏨",
+  "Kuliner":       "🍽",
+};
+
+function makePinSvg(color: string, emoji: string, isSelected = false, verified = false, approx = false) {
+  const outerR  = 14;
+  const ringW   = isSelected ? 3.5 : 2.5;
+  const dotR    = outerR - ringW - 5;
+  const size    = isSelected ? 48 : 38;
+  const opacity = approx ? "0.55" : "1";
+
+  const glow = isSelected
+    ? `<circle cx="18" cy="16" r="18" fill="${color}" opacity="0.18"/>`
+    : verified
+    ? `<circle cx="18" cy="16" r="17" fill="${color}" opacity="0.10"/>`
+    : "";
+
+  // Verified badge: small checkmark ring at top-right of pin
+  const badge = verified && !approx
+    ? `<circle cx="27" cy="6" r="5" fill="white"/>
+       <circle cx="27" cy="6" r="4" fill="#16a34a"/>
+       <text x="27" y="10" text-anchor="middle" font-size="6.5" font-family="sans-serif" fill="white">✓</text>`
+    : approx
+    ? `<circle cx="27" cy="6" r="5" fill="white"/>
+       <circle cx="27" cy="6" r="4" fill="#94a3b8"/>
+       <text x="27" y="9.5" text-anchor="middle" font-size="7" font-family="sans-serif" fill="white">~</text>`
+    : "";
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size + 10}" viewBox="0 0 36 46" opacity="${opacity}" style="filter:drop-shadow(0 3px 8px rgba(0,0,0,${approx ? "0.18" : "0.32"}))">
+  ${glow}
+  <path d="M18 42 L11 23 Q18 28 25 23 Z" fill="${color}"/>
+  <circle cx="18" cy="16" r="${outerR}" fill="${color}"/>
+  <circle cx="18" cy="16" r="${outerR - ringW}" fill="white"/>
+  <circle cx="18" cy="16" r="${dotR}" fill="${color}" opacity="0.85"/>
+  <text x="18" y="21" text-anchor="middle" font-size="10" font-family="sans-serif">${emoji}</text>
+  ${badge}
+</svg>`;
+}
+
+function makeEditPinSvg() {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="44" height="54" viewBox="0 0 36 46" style="filter:drop-shadow(0 4px 10px rgba(0,0,0,0.42))">
+  <circle cx="18" cy="16" r="17" fill="#059669" opacity="0.12"/>
+  <path d="M18 42 L11 23 Q18 28 25 23 Z" fill="#059669"/>
+  <circle cx="18" cy="16" r="14" fill="#059669"/>
+  <circle cx="18" cy="16" r="10" fill="white"/>
+  <line x1="18" y1="9"  x2="18" y2="23" stroke="#059669" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="11" y1="16" x2="25" y2="16" stroke="#059669" stroke-width="1.8" stroke-linecap="round"/>
+  <circle cx="18" cy="16" r="2.5" fill="#059669"/>
+</svg>`;
+}
+
 export default function MapComponent({
-  items,
-  selectedItem,
-  onSelectItem,
-  isEditMode = false,
-  onCoordinatesChange
+  items, selectedItem, onSelectItem, isEditMode = false, onCoordinatesChange,
 }: MapComponentProps) {
-  const mapRef = useRef<HTMLDivElement>(null);
-  const leafletMap = useRef<L.Map | null>(null);
-  const markersGroup = useRef<L.LayerGroup | null>(null);
-  const editMarkerRef = useRef<L.Marker | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mapRef       = useRef<Map | null>(null);
+  const markersRef   = useRef<Marker[]>([]);
+  const editMkRef    = useRef<Marker | null>(null);
+  const popupRef     = useRef<Popup | null>(null);
 
+  const selectRef = useRef(onSelectItem);
+  const coordRef  = useRef(onCoordinatesChange);
+  useEffect(() => { selectRef.current = onSelectItem; },        [onSelectItem]);
+  useEffect(() => { coordRef.current  = onCoordinatesChange; }, [onCoordinatesChange]);
+
+  // ── Init Leaflet ─────────────────────────────────────────────────────────
   useEffect(() => {
-    setupLeafletIcon();
+    if (!containerRef.current) return;
 
-    if (!mapRef.current || leafletMap.current) return;
+    let cancelled = false;
+    let localMap: Map | null = null;
 
-    // East Lampung coordinates
-    const defaultCenter: [number, number] = [-5.2514, 105.6597];
-    const defaultZoom = isEditMode ? 11 : 10;
+    (async () => {
+      const L   = (await import("leaflet")).default;
+      await import("leaflet/dist/leaflet.css");
 
-    // Initialize Map
-    const map = L.map(mapRef.current, {
-      center: defaultCenter,
-      zoom: defaultZoom,
-      scrollWheelZoom: true,
-    });
+      // Abort if cleanup ran while awaiting imports (React StrictMode double-invoke)
+      if (cancelled || !containerRef.current) return;
 
-    // Add OpenStreetMap tile layer
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
+      // Guard: container already has a Leaflet instance — don't double-init
+      if ((containerRef.current as any)._leaflet_id) return;
 
-    leafletMap.current = map;
-    markersGroup.current = L.layerGroup().addTo(map);
-
-    // If Edit Mode is enabled, add click listener to place coordinate picker marker
-    if (isEditMode) {
-      map.on("click", (e: L.LeafletMouseEvent) => {
-        const { lat, lng } = e.latlng;
-        
-        if (editMarkerRef.current) {
-          editMarkerRef.current.setLatLng(e.latlng);
-        } else {
-          editMarkerRef.current = L.marker(e.latlng, { draggable: true })
-            .addTo(map)
-            .on("dragend", (event) => {
-              const marker = event.target;
-              const position = marker.getLatLng();
-              if (onCoordinatesChange) {
-                onCoordinatesChange(position.lat, position.lng);
-              }
-            });
-        }
-        
-        if (onCoordinatesChange) {
-          onCoordinatesChange(lat, lng);
-        }
+      localMap = L.map(containerRef.current, {
+        center: [-5.2514, 105.6597],
+        zoom: isEditMode ? 12 : 10,
+        zoomControl: false,
       });
-    }
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors",
+        maxZoom: 19,
+      }).addTo(localMap);
+
+      L.control.zoom({ position: "topright" }).addTo(localMap);
+
+      if (isEditMode) {
+        localMap.getContainer().style.cursor = "crosshair";
+        localMap.on("click", (e) => {
+          const { lat, lng } = e.latlng;
+          const icon = L.divIcon({ html: makeEditPinSvg(), iconSize: [44, 54], iconAnchor: [22, 54], className: "" });
+          if (editMkRef.current) {
+            editMkRef.current.setLatLng([lat, lng]);
+          } else {
+            editMkRef.current = L.marker([lat, lng], { icon, draggable: true }).addTo(localMap!);
+            editMkRef.current.on("dragend", () => {
+              const pos = editMkRef.current!.getLatLng();
+              coordRef.current?.(pos.lat, pos.lng);
+            });
+          }
+          coordRef.current?.(lat, lng);
+        });
+      }
+
+      if (cancelled) {
+        localMap.remove();
+        return;
+      }
+
+      mapRef.current = localMap;
+    })();
 
     return () => {
-      if (leafletMap.current) {
-        leafletMap.current.remove();
-        leafletMap.current = null;
-      }
+      cancelled = true;
+      localMap?.remove();
+      mapRef.current  = null;
+      editMkRef.current = null;
     };
-  }, [isEditMode, onCoordinatesChange]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEditMode]);
 
-  // Update Edit Mode Marker when coordinates change externally (e.g. selection or manual input)
+  // ── Draw markers ─────────────────────────────────────────────────────────
   useEffect(() => {
-    if (isEditMode && leafletMap.current && selectedItem) {
-      const pos: L.LatLngExpression = [selectedItem.lat, selectedItem.lng];
-      leafletMap.current.setView(pos, 13);
-      
-      if (editMarkerRef.current) {
-        editMarkerRef.current.setLatLng(pos);
-      } else {
-        editMarkerRef.current = L.marker(pos, { draggable: true })
-          .addTo(leafletMap.current)
-          .on("dragend", (event) => {
-            const marker = event.target;
-            const position = marker.getLatLng();
-            if (onCoordinatesChange) {
-              onCoordinatesChange(position.lat, position.lng);
-            }
-          });
-      }
-    }
+    if (isEditMode) return;
+    const map = mapRef.current;
+    if (!map) return;
+
+    let cancelled = false;
+
+    (async () => {
+      const L = (await import("leaflet")).default;
+      if (cancelled) return;
+
+      markersRef.current.forEach(m => m.remove());
+      markersRef.current = [];
+      popupRef.current?.remove();
+      popupRef.current = null;
+
+      items.forEach(item => {
+        if (!item.lat || !item.lng || cancelled) return;
+        const color   = CAT_COLORS[item.category] ?? "#059669";
+        const emoji   = CAT_ICONS[item.category]  ?? "📍";
+        const isSel   = selectedItem?.id === item.id;
+        const iconW   = isSel ? 48 : 38;
+        const iconH   = isSel ? 58 : 48;
+
+        const icon = L.divIcon({
+          html: makePinSvg(color, emoji, isSel, !!item.verified, !!item.approx),
+          iconSize:   [iconW, iconH],
+          iconAnchor: [iconW / 2, iconH],
+          className: "",
+        });
+
+        const marker = L.marker([item.lat, item.lng], { icon }).addTo(map);
+
+        marker.on("click", () => {
+          selectRef.current(item);
+          popupRef.current?.remove();
+          popupRef.current = L.popup({
+            offset: [0, -8],
+            closeButton: true,
+            maxWidth: 280,
+            className: "simad-popup",
+          })
+            .setLatLng([item.lat, item.lng])
+            .setContent(`
+              <div style="font-family:system-ui,sans-serif;padding:2px 0">
+                ${item.image ? `<img src="${item.image}" alt="${item.name}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;display:block;margin:0 0 8px" onerror="this.style.display='none'"/>` : ""}
+                <p style="font-size:.6rem;font-weight:800;color:${color};text-transform:uppercase;letter-spacing:.07em;margin:0 0 5px;display:flex;align-items:center;gap:4px">${item.category}${item.verified ? ' <span style="background:#dcfce7;color:#16a34a;padding:1px 5px;border-radius:4px;font-size:.55rem">✓ GPS Akurat</span>' : item.approx ? ' <span style="background:#f1f5f9;color:#64748b;padding:1px 5px;border-radius:4px;font-size:.55rem">~ Perkiraan</span>' : ''}</p>
+                <h4 style="font-size:.9rem;font-weight:800;color:#0f172a;margin:0 0 5px;line-height:1.3">${item.name}</h4>
+                <p style="font-size:.78rem;color:#475569;margin:0 0 2px">📍 ${item.address || "Kec. " + item.kecamatan}</p>
+                ${item.contact ? `<p style="font-size:.78rem;color:#475569;margin:3px 0 0">📞 ${item.contact}</p>` : ""}
+                <p style="font-size:.7rem;font-weight:700;color:${color};margin:8px 0 0;border-top:1px solid #e2e8f0;padding-top:6px">Klik untuk detail →</p>
+              </div>
+            `)
+            .openOn(map);
+        });
+
+        markersRef.current.push(marker);
+      });
+    })();
+
+    return () => { cancelled = true; };
+  }, [items, selectedItem, isEditMode]);
+
+  // ── Fly to selected (view mode) ───────────────────────────────────────────
+  useEffect(() => {
+    if (!selectedItem || isEditMode) return;
+    const map = mapRef.current;
+    if (!map) return;
+    map.flyTo([selectedItem.lat, selectedItem.lng], 13, { duration: 1.2 });
   }, [selectedItem, isEditMode]);
 
-  // Redraw active items markers
+  // ── Sync edit marker to loaded item ──────────────────────────────────────
   useEffect(() => {
-    if (!leafletMap.current || !markersGroup.current || isEditMode) return;
+    if (!isEditMode || !selectedItem) return;
+    const map = mapRef.current;
+    if (!map) return;
 
-    // Clear previous markers
-    markersGroup.current.clearLayers();
+    let cancelled = false;
+    (async () => {
+      const L = (await import("leaflet")).default;
+      if (cancelled) return;
 
-    items.forEach((item) => {
-      if (!item.lat || !item.lng) return;
+      map.flyTo([selectedItem.lat, selectedItem.lng], 13, { duration: 0.9 });
+      const icon = L.divIcon({ html: makeEditPinSvg(), iconSize: [44, 54], iconAnchor: [22, 54], className: "" });
 
-      // Color coding markers by category
-      let markerColor = "#059669"; // Green (Alam)
-      if (item.category === "Wisata Buatan") markerColor = "#d97706"; // Amber
-      if (item.category === "Wisata Budaya") markerColor = "#8b5cf6"; // Purple
-      if (item.category === "Akomodasi") markerColor = "#3b82f6"; // Blue
-      if (item.category === "Kuliner") markerColor = "#ec4899"; // Pink
+      if (editMkRef.current) {
+        editMkRef.current.setLatLng([selectedItem.lat, selectedItem.lng]);
+      } else {
+        editMkRef.current = L.marker([selectedItem.lat, selectedItem.lng], { icon, draggable: true }).addTo(map);
+        editMkRef.current.on("dragend", () => {
+          const pos = editMkRef.current!.getLatLng();
+          coordRef.current?.(pos.lat, pos.lng);
+        });
+      }
+    })();
 
-      // Creating a simple colored SVG icon pin
-      const svgIcon = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
-          <path fill="${markerColor}" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-        </svg>
-      `;
-
-      const customIcon = L.divIcon({
-        className: "custom-div-icon",
-        html: svgIcon,
-        iconSize: [32, 32],
-        iconAnchor: [16, 32],
-        popupAnchor: [0, -32]
-      });
-
-      const marker = L.marker([item.lat, item.lng], { icon: customIcon });
-
-      // Create popup content
-      const popupHtml = `
-        <div>
-          <h4>${item.name}</h4>
-          <p style="font-size:0.75rem; font-weight:700; color:${markerColor}; text-transform:uppercase;">${item.category}</p>
-          <p style="margin: 4px 0">${item.address || "Kec. " + item.kecamatan}</p>
-          ${item.contact ? `<p><strong>Telp:</strong> ${item.contact}</p>` : ""}
-          <div style="margin-top: 8px; font-weight:bold; font-size:0.75rem; color:var(--primary);">
-            Klik untuk detail selengkapnya
-          </div>
-        </div>
-      `;
-
-      marker.bindPopup(popupHtml);
-
-      // Marker click event
-      marker.on("click", () => {
-        onSelectItem(item);
-      });
-
-      markersGroup.current?.addLayer(marker);
-    });
-
-  }, [items, onSelectItem, isEditMode]);
-
-  // Pan and Zoom map to selected item
-  useEffect(() => {
-    if (selectedItem && leafletMap.current && !isEditMode) {
-      leafletMap.current.setView([selectedItem.lat, selectedItem.lng], 13, {
-        animate: true,
-        duration: 1.0,
-      });
-
-      // Find the marker corresponding to this item and open its popup
-      markersGroup.current?.eachLayer((layer: any) => {
-        const latlng = layer.getLatLng();
-        if (
-          Math.abs(latlng.lat - selectedItem.lat) < 0.00001 &&
-          Math.abs(latlng.lng - selectedItem.lng) < 0.00001
-        ) {
-          layer.openPopup();
-        }
-      });
-    }
+    return () => { cancelled = true; };
   }, [selectedItem, isEditMode]);
 
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
-      <div ref={mapRef} style={{ width: "100%", height: "100%" }} />
+      <div ref={containerRef} style={{ width: "100%", height: "100%" }} />
+
       {isEditMode && (
         <div style={{
-          position: "absolute",
-          bottom: "10px",
-          left: "10px",
-          zIndex: 1000,
-          backgroundColor: "rgba(0,0,0,0.7)",
-          color: "white",
-          padding: "4px 8px",
-          borderRadius: "4px",
-          fontSize: "0.75rem",
-          pointerEvents: "none"
+          position: "absolute", bottom: 12, left: 12, zIndex: 1000,
+          backgroundColor: "rgba(0,0,0,0.72)", backdropFilter: "blur(6px)",
+          color: "white", padding: "6px 12px", borderRadius: "8px",
+          fontSize: "0.75rem", fontWeight: 600, pointerEvents: "none",
+          border: "1px solid rgba(255,255,255,0.1)",
         }}>
-          Klik lokasi pada peta untuk memindahkan pin koordinat.
+          🎯 Klik peta atau seret pin untuk atur koordinat
         </div>
       )}
+
+      <style>{`
+        .simad-popup .leaflet-popup-content-wrapper {
+          border-radius: 14px;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.16);
+          border: 1px solid #e2e8f0;
+          padding: 0;
+        }
+        .simad-popup .leaflet-popup-content { margin: 14px 16px; }
+        .simad-popup .leaflet-popup-tip-container { margin-top: -1px; }
+        .leaflet-control-zoom {
+          border: none !important;
+          box-shadow: 0 2px 12px rgba(0,0,0,0.13) !important;
+          border-radius: 10px !important;
+          overflow: hidden;
+        }
+        .leaflet-control-zoom a {
+          border: none !important;
+          border-bottom: 1px solid #f1f5f9 !important;
+          color: #374151 !important;
+          font-weight: 700 !important;
+          background: white !important;
+        }
+        .leaflet-control-zoom a:last-child { border-bottom: none !important; }
+        .leaflet-control-zoom a:hover { background: #f8fafc !important; color: #059669 !important; }
+        .leaflet-attribution-flag { display: none !important; }
+        .leaflet-control-attribution { font-size: 10px !important; opacity: 0.6; }
+      `}</style>
     </div>
   );
 }

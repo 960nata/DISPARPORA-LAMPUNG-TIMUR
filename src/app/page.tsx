@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { fetchWithRetry } from "@/lib/api";
 
 // Import modular homepage sub-components
 import HeroSection from "@/components/home/HeroSection";
@@ -14,6 +15,8 @@ import NewsSection from "@/components/home/NewsSection";
 import PartnersSection from "@/components/home/PartnersSection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import CalloutSection from "@/components/home/CalloutSection";
+import StatisticsSection from "@/components/home/StatisticsSection";
+import { NewsCardSkeleton, PartnersSkeleton } from "@/components/Skeleton";
 
 interface Post {
   id: string;
@@ -45,17 +48,20 @@ const sectionVariants = {
 export default function Home() {
   const [latestNews, setLatestNews] = useState<Post[]>([]);
   const [partners, setPartners] = useState<Partner[]>([]);
+  const [newsLoading, setNewsLoading] = useState(true);
+  const [partnersLoading, setPartnersLoading] = useState(true);
 
   // Fetch partners and latest published news (requesting 4 news items for the redesigned layout grid)
   useEffect(() => {
-    fetch("/api/partners")
+    fetchWithRetry("/api/partners")
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setPartners(data);
       })
-      .catch(err => console.error("Error fetching partners:", err));
+      .catch(err => console.error("Error fetching partners:", err))
+      .finally(() => setPartnersLoading(false));
 
-    fetch("/api/posts")
+    fetchWithRetry("/api/posts")
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -64,11 +70,12 @@ export default function Home() {
           setLatestNews(published);
         }
       })
-      .catch(err => console.error("Error fetching news:", err));
+      .catch(err => console.error("Error fetching news:", err))
+      .finally(() => setNewsLoading(false));
   }, []);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "5rem", paddingBottom: "5rem" }}>
+    <div className="home-sections" style={{ display: "flex", flexDirection: "column", gap: "5rem", paddingBottom: "5rem" }}>
       {/* 1. Hero Section (Animate internally) */}
       <HeroSection />
 
@@ -86,16 +93,43 @@ export default function Home() {
       <BidangSection />
 
       {/* 4. Destinasi Wisata Populer (Internal Stagger from Right) */}
-      <DestinationsSection />
-
-      {/* 5. Berita & Informasi Terbaru */}
       <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, margin: "-120px" }}
         variants={sectionVariants}
       >
-        <NewsSection posts={latestNews} />
+        <DestinationsSection />
+      </motion.div>
+
+      {/* 5. Statistik Kunjungan Wisata */}
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, margin: "-120px" }}
+        variants={sectionVariants}
+      >
+        <StatisticsSection />
+      </motion.div>
+
+      {/* 6. Berita & Informasi Terbaru */}
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, margin: "-120px" }}
+        variants={sectionVariants}
+      >
+        {newsLoading ? (
+          <section className="container">
+            <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
+              <div style={{ width: "100px", height: "28px", borderRadius: "999px", background: "#e2e8f0", margin: "0 auto 0.75rem" }} className="skeleton" />
+              <div style={{ width: "260px", height: "36px", borderRadius: "8px", background: "#e2e8f0", margin: "0 auto" }} className="skeleton" />
+            </div>
+            <NewsCardSkeleton />
+          </section>
+        ) : (
+          <NewsSection posts={latestNews} />
+        )}
       </motion.div>
 
       {/* 6. Galeri Visual (Internal Stagger from Bottom) */}
@@ -128,7 +162,19 @@ export default function Home() {
         viewport={{ once: false, margin: "-120px" }}
         variants={sectionVariants}
       >
-        <PartnersSection partners={partners} />
+        {partnersLoading ? (
+          <section style={{ backgroundColor: "white", padding: "4rem 0 2rem 0" }}>
+            <div className="container">
+              <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+                <div style={{ width: "120px", height: "24px", borderRadius: "999px", background: "#e2e8f0", margin: "0 auto 0.75rem" }} className="skeleton" />
+                <div style={{ width: "180px", height: "32px", borderRadius: "8px", background: "#e2e8f0", margin: "0 auto" }} className="skeleton" />
+              </div>
+              <PartnersSkeleton />
+            </div>
+          </section>
+        ) : (
+          <PartnersSection partners={partners} />
+        )}
       </motion.div>
 
       {/* 10. Info Callout / Peta Interaktif */}

@@ -26,7 +26,7 @@ const defaultNews: Post[] = [
     title: "Festival Way Kambas Kembali Digelar Tahun Ini",
     slug: "festival-way-kambas-kembali-digelar-tahun-ini",
     content: "Pemerintah Kabupaten Lampung Timur melalui Dinas Pariwisata mengumumkan kembalinya gelaran tahunan legendaris, Festival Way Kambas. Event ini akan menampilkan atraksi edukasi gajah Sumatera, parade kebudayaan adat Lampung, pameran produk kriya kreatif khas daerah, serta kompetisi olahraga pemuda.",
-    imageUrl: "https://images.unsplash.com/photo-1589656966895-2f33e7653819?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/Gallery/Taman%20Nasional%20Way%20Kambas.avif",
     authorName: "Editor Berita Dinas",
     createdAt: "2026-06-11T09:50:59.815Z",
     status: "published",
@@ -37,7 +37,7 @@ const defaultNews: Post[] = [
     title: "Pantai Kerang Mas Alami Lonjakan Pengunjung Sepanjang Libur Lebaran",
     slug: "pantai-kerang-mas-alami-lonjakan-pengunjung-sepanjang-libur-lebaran",
     content: "Destinasi wisata bahari andalan Lampung Timur, Pantai Kerang Mas, mencatat rekor kunjungan wisatawan tertinggi selama liburan pekan ini. Ribuan wisatawan lokal dan luar daerah memadati pantai untuk menikmati gazebo pesisir, kuliner tangkapan laut segar, penyewaan ban, serta wahana ATV.",
-    imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/Gallery/Pantai-Kerang-Mas-Labuhan-Maringgai-Lampung-Timur-desmonjosbur-1602765547466.avif",
     authorName: "Editor Berita Dinas",
     createdAt: "2026-06-08T09:50:59.819Z",
     status: "published",
@@ -48,7 +48,7 @@ const defaultNews: Post[] = [
     title: "Pembinaan & Sertifikasi Pemandu Wisata Desa Wisata Lampung Timur",
     slug: "pembinaan-sertifikasi-pemandu-wisata-desa-wisata-lampung-timur",
     content: "Dalam rangka meningkatkan mutu layanan hospitality, Bidang Pengembangan Destinasi Dinas Pariwisata Lampung Timur menyelenggarakan pembinaan intensif dan sertifikasi bagi 40 pemandu desa wisata. Program ini melibatkan desa wisata binaan seperti Braja Harjosari dan Desa Tradisional Wana.",
-    imageUrl: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/Gallery/pugung_raharjo.avif",
     authorName: "Admin Bidang Dinas",
     createdAt: "2026-06-03T09:50:59.819Z",
     status: "published",
@@ -59,7 +59,7 @@ const defaultNews: Post[] = [
     title: "Ekspor Kerajinan Tapis Lampung Timur Tumbuh Pesat Didorong Pasar Digital",
     slug: "ekspor-tapis-lampung-timur-tumbuh-pesat",
     content: "Kerajinan kain tapis khas Lampung Timur mengalami lonjakan permintaan ekspor luar negeri sepanjang triwulan pertama tahun ini, didukung program Go Digital dari Dinas Pariwisata dan Ekonomi Kreatif.",
-    imageUrl: "https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&w=400&q=80",
+    imageUrl: "/Gallery/tapis_lampung.avif",
     authorName: "Humas Pemkab",
     createdAt: "2026-06-01T09:50:59.819Z",
     status: "published",
@@ -103,7 +103,7 @@ export default function NewsSection({ posts = [] }: NewsSectionProps) {
         borderBottom: "1px solid #e2e8f0",
         marginBottom: "2rem"
       }}>
-        <h2 style={{ fontSize: "1.85rem", fontWeight: 700, color: "#1e293b", fontFamily: "var(--font-main)" }}>
+        <h2 className="section-heading" style={{ fontSize: "1.85rem", fontWeight: 700, color: "#1e293b", fontFamily: "var(--font-main)" }}>
           Berita & Informasi Terbaru
         </h2>
         <Link 
@@ -112,13 +112,13 @@ export default function NewsSection({ posts = [] }: NewsSectionProps) {
             display: "flex",
             alignItems: "center",
             gap: "0.25rem",
-            color: "#1e3a8a",
+            color: "var(--primary)",
             fontWeight: 700,
             fontSize: "0.9rem",
             textDecoration: "none"
           }}
-          onMouseOver={(e) => e.currentTarget.style.color = "var(--primary)"}
-          onMouseOut={(e) => e.currentTarget.style.color = "#1e3a8a"}
+          onMouseOver={(e) => e.currentTarget.style.color = "var(--primary-hover)"}
+          onMouseOut={(e) => e.currentTarget.style.color = "var(--primary)"}
         >
           Semua Berita <ArrowRight size={14} style={{ marginLeft: "0.25rem" }} />
         </Link>
@@ -151,8 +151,9 @@ export default function NewsSection({ posts = [] }: NewsSectionProps) {
           <div className="news-featured-content">
             <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
               <span style={{
-                backgroundColor: "#1e3a8a",
-                color: "white",
+                backgroundColor: "var(--primary-light)",
+                color: "var(--primary)",
+                border: "1px solid rgba(5, 150, 105, 0.15)",
                 padding: "0.25rem 0.75rem",
                 borderRadius: "6px",
                 fontSize: "0.65rem",
@@ -192,8 +193,9 @@ export default function NewsSection({ posts = [] }: NewsSectionProps) {
               <div className="news-side-content">
                 <div className="news-side-meta">
                   <span style={{
-                    backgroundColor: "#1e3a8a",
-                    color: "white",
+                    backgroundColor: "var(--primary-light)",
+                    color: "var(--primary)",
+                    border: "1px solid rgba(5, 150, 105, 0.15)",
                     padding: "0.15rem 0.5rem",
                     borderRadius: "4px",
                     fontSize: "0.6rem",

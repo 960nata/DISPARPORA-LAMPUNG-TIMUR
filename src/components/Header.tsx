@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Compass, Menu, X, ShieldCheck } from "lucide-react";
+import { Compass, Menu, X } from "lucide-react";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,9 +29,11 @@ export default function Header() {
 
   const navLinks = [
     { name: "Beranda", path: "/" },
+    { name: "Profil", path: "/profil" },
     { name: "Peta Wisata", path: "/peta" },
+    { name: "Berita", path: "/berita" },
     { name: "Direktori", path: "/direktori" },
-    { name: "Bidang Dinas", path: "/bidang" },
+    { name: "Kontak", path: "/kontak" },
   ];
 
   return (
@@ -66,7 +68,7 @@ export default function Header() {
                     href={link.path}
                     style={{
                       fontSize: "0.95rem",
-                      fontWeight: 600,
+                      fontWeight: 500,
                       color: isActive ? "var(--primary)" : "var(--text-secondary)",
                       borderBottom: isActive ? "2px solid var(--primary)" : "2px solid transparent",
                       paddingBottom: "4px"
@@ -133,7 +135,7 @@ export default function Header() {
                     onClick={() => setIsOpen(false)}
                     style={{
                       fontSize: "1rem",
-                      fontWeight: 600,
+                      fontWeight: 500,
                       color: isActive ? "var(--primary)" : "var(--text-secondary)",
                       display: "block",
                       padding: "0.5rem 0"
@@ -153,24 +155,6 @@ export default function Header() {
           >
             <Compass size={18} />
             Eksplor Peta
-          </Link>
-          <Link
-            href="/dashboard"
-            onClick={() => setIsOpen(false)}
-            style={{ 
-              display: "flex", 
-              gap: "0.5rem", 
-              width: "100%", 
-              justifyContent: "center", 
-              alignItems: "center",
-              fontSize: "0.8rem", 
-              color: "var(--text-secondary)", 
-              textDecoration: "none",
-              marginTop: "0.25rem"
-            }}
-          >
-            <ShieldCheck size={14} />
-            Admin Panel (Khusus Staff)
           </Link>
         </div>
       )}

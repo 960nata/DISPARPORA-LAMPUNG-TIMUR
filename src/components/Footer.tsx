@@ -53,8 +53,18 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/profil" style={{ color: "#94a3b8", fontSize: "0.9rem" }} onMouseOver={(e) => e.currentTarget.style.color = "white"} onMouseOut={(e) => e.currentTarget.style.color = "#94a3b8"}>
+                  Profil Dinas
+                </Link>
+              </li>
+              <li>
                 <Link href="/peta" style={{ color: "#94a3b8", fontSize: "0.9rem" }} onMouseOver={(e) => e.currentTarget.style.color = "white"} onMouseOut={(e) => e.currentTarget.style.color = "#94a3b8"}>
                   Peta Wisata
+                </Link>
+              </li>
+              <li>
+                <Link href="/berita" style={{ color: "#94a3b8", fontSize: "0.9rem" }} onMouseOver={(e) => e.currentTarget.style.color = "white"} onMouseOut={(e) => e.currentTarget.style.color = "#94a3b8"}>
+                  Berita
                 </Link>
               </li>
               <li>
@@ -63,8 +73,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/bidang" style={{ color: "#94a3b8", fontSize: "0.9rem" }} onMouseOver={(e) => e.currentTarget.style.color = "white"} onMouseOut={(e) => e.currentTarget.style.color = "#94a3b8"}>
-                  Bidang Dinas
+                <Link href="/kontak" style={{ color: "#94a3b8", fontSize: "0.9rem" }} onMouseOver={(e) => e.currentTarget.style.color = "white"} onMouseOut={(e) => e.currentTarget.style.color = "#94a3b8"}>
+                  Kontak
                 </Link>
               </li>
             </ul>

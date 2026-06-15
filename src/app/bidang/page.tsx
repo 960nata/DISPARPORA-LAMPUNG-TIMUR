@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Briefcase, Sparkles, Palmtree, Award, Users, ShieldCheck, CheckCircle2, ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { Briefcase, Sparkles, Palmtree, Award, Users, CheckCircle2 } from "lucide-react";
 
 export default function BidangDinas() {
   const bidangDetails = [
@@ -225,31 +224,6 @@ export default function BidangDinas() {
             </motion.div>
           );
         })}
-      </section>
-
-      {/* Admin Panel Promo Card */}
-      <section className="container" style={{ marginTop: "5rem" }}>
-        <div className="card" style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          padding: "2.5rem",
-          gap: "2rem",
-          background: "linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80')",
-          backgroundSize: "cover"
-        }}>
-          <div style={{ maxWidth: "600px" }}>
-            <h3 style={{ fontSize: "1.5rem", fontWeight: 800 }}>Akses Sistem Informasi Pendukung Kegiatan</h3>
-            <p style={{ marginTop: "0.5rem" }}>
-              Bagi aparatur dinas/admin bidang, silakan masuk ke dashboard admin untuk mengelola database sarana pariwisata, perizinan hotel, serta pendataan rumah makan per kecamatan.
-            </p>
-          </div>
-          <Link href="/dashboard" className="btn btn-primary" style={{ display: "flex", gap: "0.5rem" }}>
-            <ShieldCheck size={18} />
-            Masuk Dashboard Admin
-          </Link>
-        </div>
       </section>
     </div>
   );

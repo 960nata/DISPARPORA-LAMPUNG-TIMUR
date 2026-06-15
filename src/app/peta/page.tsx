@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { MapPin, Phone, ExternalLink, Filter, Search, ArrowLeft, TreePine, Milestone, Landmark, Hotel, Utensils, Star } from "lucide-react";
@@ -23,6 +23,9 @@ interface MapItem {
   lat: number;
   lng: number;
   active?: boolean;
+  verified?: boolean;
+  approx?: boolean;
+  image?: string;
   facilities?: string[];
   contact?: string;
   map_link?: string;
@@ -35,14 +38,14 @@ interface MapItem {
 function MapPageContent() {
   const searchParams = useSearchParams();
 
-  // Load all items with appropriate categories
-  const allItems: MapItem[] = [
+  // Static — computed once, never changes reference between renders
+  const allItems = useMemo<MapItem[]>(() => [
     ...tourismData.wisata_alam.map(i => ({ ...i, category: "Wisata Alam" })),
     ...tourismData.wisata_buatan.map(i => ({ ...i, category: "Wisata Buatan" })),
     ...tourismData.wisata_budaya.map(i => ({ ...i, category: "Wisata Budaya" })),
     ...tourismData.hotels.map(i => ({ ...i, category: "Akomodasi" })),
     ...tourismData.restaurants.map(i => ({ ...i, category: "Kuliner" }))
-  ].filter(i => i.lat && i.lng); // only items with coordinates
+  ].filter(i => i.lat && i.lng), []);
 
   // States
   const [search, setSearch] = useState("");
@@ -77,14 +80,15 @@ function MapPageContent() {
   };
 
   // Filtered List
-  const displayItems = allItems.filter(item => {
+  // Stable reference — only recalculated when filter or search actually changes
+  const displayItems = useMemo(() => allItems.filter(item => {
     const matchesFilter = selectedFilters.includes(item.category);
-    const matchesSearch = 
+    const matchesSearch =
       item.name.toLowerCase().includes(search.toLowerCase()) ||
       item.kecamatan.toLowerCase().includes(search.toLowerCase()) ||
       item.address.toLowerCase().includes(search.toLowerCase());
     return matchesFilter && matchesSearch;
-  });
+  }), [allItems, selectedFilters, search]);
 
   const categories = [
     { name: "Wisata Alam", color: "#059669", icon: <TreePine size={16} /> },
@@ -198,16 +202,36 @@ function MapPageContent() {
                   Kembali ke Daftar
                 </button>
 
+                {/* Foto destinasi */}
+                {selectedItem.image && (
+                  <div style={{ margin: "0 -1.5rem", position: "relative" }}>
+                    <img
+                      src={selectedItem.image}
+                      alt={selectedItem.name}
+                      style={{ width: "100%", height: "180px", objectFit: "cover", display: "block" }}
+                      onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                    />
+                    <div style={{
+                      position: "absolute", top: "0.6rem", left: "0.6rem",
+                      background: "rgba(0,0,0,0.55)", backdropFilter: "blur(4px)",
+                      borderRadius: "6px", padding: "2px 8px",
+                      fontSize: "0.62rem", fontWeight: 700, color: "white", textTransform: "uppercase", letterSpacing: "0.06em"
+                    }}>
+                      {selectedItem.category}
+                    </div>
+                    {selectedItem.verified && (
+                      <div style={{
+                        position: "absolute", top: "0.6rem", right: "0.6rem",
+                        background: "#16a34a", borderRadius: "6px", padding: "2px 7px",
+                        fontSize: "0.62rem", fontWeight: 700, color: "white"
+                      }}>✓ GPS Akurat</div>
+                    )}
+                  </div>
+                )}
+
                 <div>
-                  <span className="badge" style={{
-                    backgroundColor: `${categories.find(c => c.name === selectedItem.category)?.color}15`,
-                    color: categories.find(c => c.name === selectedItem.category)?.color,
-                    marginBottom: "0.5rem"
-                  }}>
-                    {selectedItem.category}
-                  </span>
-                  <h3 style={{ fontSize: "1.4rem", fontWeight: 800, color: "var(--text-primary)" }}>{selectedItem.name}</h3>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", color: "var(--text-secondary)", fontSize: "0.8rem", marginTop: "0.25rem" }}>
+                  <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)", margin: 0 }}>{selectedItem.name}</h3>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", color: "var(--text-secondary)", fontSize: "0.8rem", marginTop: "0.35rem" }}>
                     <MapPin size={14} />
                     <span>Kecamatan {selectedItem.kecamatan}</span>
                   </div>
@@ -330,6 +354,34 @@ function MapPageContent() {
             selectedItem={selectedItem}
             onSelectItem={(item) => setSelectedItem(item)}
           />
+          {/* Legend */}
+          <div style={{
+            position: "absolute", bottom: "2rem", left: "1rem", zIndex: 20,
+            background: "rgba(255,255,255,0.95)", backdropFilter: "blur(8px)",
+            borderRadius: "12px", padding: "0.75rem 1rem",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.12)", border: "1px solid rgba(255,255,255,0.8)",
+            display: "flex", flexDirection: "column", gap: "0.45rem",
+          }} className="map-legend">
+            <p style={{ fontSize: "0.65rem", fontWeight: 800, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.07em", margin: "0 0 0.35rem" }}>Kategori</p>
+            {categories.map(cat => (
+              <div key={cat.name} style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.75rem", fontWeight: 600, color: "#334155" }}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13">
+                  <path fill={cat.color} d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                </svg>
+                {cat.name}
+              </div>
+            ))}
+            <div style={{ borderTop: "1px solid #e2e8f0", marginTop: "0.35rem", paddingTop: "0.45rem", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.68rem", color: "#475569" }}>
+                <span style={{ background: "#dcfce7", color: "#16a34a", padding: "1px 5px", borderRadius: "4px", fontWeight: 700, fontSize: "0.6rem" }}>✓</span>
+                GPS Akurat (verified)
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.68rem", color: "#475569" }}>
+                <span style={{ background: "#f1f5f9", color: "#64748b", padding: "1px 5px", borderRadius: "4px", fontWeight: 700, fontSize: "0.6rem" }}>~</span>
+                Lokasi Perkiraan
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

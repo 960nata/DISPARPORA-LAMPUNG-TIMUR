@@ -3,93 +3,22 @@
 import { motion } from "framer-motion";
 
 const row1Items = [
-  { 
-    title: "Konservasi Gajah Liar", 
-    category: "Way Kambas", 
-    image: "https://images.unsplash.com/photo-1505144248225-f42bc77a5f8e?auto=format&fit=crop&w=600&q=80", 
-    width: "340px" 
-  },
-  { 
-    title: "Sunrise Pesisir Timur", 
-    category: "Pantai Kerang Mas", 
-    image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80", 
-    width: "420px" 
-  },
-  { 
-    title: "Telaga Rekreasi Asri", 
-    category: "Danau Kemuning", 
-    image: "/danau_kemuning.png", 
-    width: "290px" 
-  },
-  { 
-    title: "Tenunan Tapis Tradisional", 
-    category: "Ekonomi Kreatif", 
-    image: "https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&w=600&q=80", 
-    width: "380px" 
-  },
-  { 
-    title: "Keasrian Way Jepara", 
-    category: "Danau Way Jepara", 
-    image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=600&q=80", 
-    width: "360px" 
-  },
-  { 
-    title: "Agrowisata Raman Utara", 
-    category: "Kecamatan Raman Utara", 
-    image: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=600&q=80", 
-    width: "310px" 
-  },
-  { 
-    title: "Rumah Adat Melinting", 
-    category: "Desa Tradisional Wana", 
-    image: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80", 
-    width: "400px" 
-  }
+  { title: "Panorama Alam Lampung Timur", category: "Alam & Lingkungan",    image: "/Gallery/hero1.avif",  width: "360px" },
+  { title: "Keindahan Destinasi Wisata",  category: "Destinasi Unggulan",   image: "/Gallery/1.avif",      width: "420px" },
+  { title: "Pesona Wisata Daerah",        category: "Lampung Timur",         image: "/Gallery/2.avif",      width: "300px" },
+  { title: "Pantai Dewi Mandapa",         category: "Wisata Bahari",         image: "/Gallery/Pantai Dewi Mandapa.avif", width: "390px" },
+  { title: "Keasrian Alam Terbuka",       category: "Ekowisata",             image: "/Gallery/3.avif",      width: "340px" },
+  { title: "Air Terjun Way Guruh",        category: "Wisata Alam",           image: "/Gallery/Way Guruh.avif", width: "370px" },
+  { title: "Wisata Budaya Lampung Timur", category: "Budaya & Tradisi",      image: "/Gallery/image.avif",   width: "310px" },
 ];
 
 const row2Items = [
-  { 
-    title: "Situs Purbakala Megalitikum", 
-    category: "Pugung Raharjo", 
-    image: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=600&q=80", 
-    width: "400px" 
-  },
-  { 
-    title: "Ekowisata Jembatan Mangrove", 
-    category: "Pantai Mutiara Baru", 
-    image: "/pantai_mutiara.png", 
-    width: "320px" 
-  },
-  { 
-    title: "Hutan Mangrove Margasari", 
-    category: "Margasari", 
-    image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=600&q=80", 
-    width: "440px" 
-  },
-  { 
-    title: "Kuliner Khas Lampung Timur", 
-    category: "Raman Utara", 
-    image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80", 
-    width: "300px" 
-  },
-  { 
-    title: "Benteng Purbakala", 
-    category: "Taman Purbakala", 
-    image: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=600&q=80", 
-    width: "370px" 
-  },
-  { 
-    title: "Petualangan Kali Alam", 
-    category: "Bandar Sribhawono", 
-    image: "https://images.unsplash.com/photo-1530866495561-507c9faab2ed?auto=format&fit=crop&w=600&q=80", 
-    width: "350px" 
-  },
-  { 
-    title: "Begawi Adat Melinting", 
-    category: "Wisata Budaya", 
-    image: "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=600&q=80", 
-    width: "410px" 
-  }
+  { title: "Pantai Kerang Mas",           category: "Labuhan Maringgai",     image: "/Gallery/Pantai-Kerang-Mas-Labuhan-Maringgai-Lampung-Timur-desmonjosbur-1602765547466.avif", width: "430px" },
+  { title: "Atraksi Budaya Lokal",        category: "Budaya & Seni",         image: "/Gallery/4.avif",       width: "310px" },
+  { title: "Situs Candi Lampung Timur",   category: "Wisata Sejarah",        image: "/Gallery/5.avif",      width: "370px" },
+  { title: "Pesona Alam Liar",            category: "Way Kambas",            image: "/Gallery/hero3.avif",   width: "400px" },
+  { title: "Destinasi Wisata Unggulan",   category: "Lampung Timur",         image: "/Gallery/image copy.avif",   width: "340px" },
+  { title: "Keindahan Alam Daerah",       category: "Pariwisata Daerah",     image: "/Gallery/image copy 2.avif", width: "390px" },
 ];
 
 const imageVariants = {
@@ -120,23 +49,20 @@ export default function GallerySection() {
 
   return (
     <section id="galeri" style={{ padding: "5rem 0", backgroundColor: "white", overflow: "hidden" }}>
-      {/* Title & Header Row - Centered inside page container */}
-      <motion.div 
-        className="container" 
-        style={{ textAlign: "center", marginBottom: "3.5rem" }}
+      <motion.div
+        className="container"
+        style={{ textAlign: "center", marginBottom: "1.5rem" }}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: false, margin: "-100px" }}
         transition={{ duration: 0.6 }}
       >
-        <span className="badge badge-success" style={{ marginBottom: "0.75rem" }}>Galeri Foto</span>
-        <h2 style={{ fontSize: "2.25rem", fontWeight: 800, fontFamily: "var(--font-serif)" }}>Keindahan Visual Lampung Timur</h2>
-        <p style={{ maxWidth: "600px", margin: "1.25rem auto 0 auto" }}>
+        <h2 className="section-heading" style={{ fontSize: "2.25rem", fontWeight: 800, fontFamily: "var(--font-serif)" }}>Galeri Foto</h2>
+        <p style={{ margin: "1.25rem auto 0 auto" }}>
           Dokumentasi keindahan alam liar, cagar budaya, kehidupan satwa, serta pesona wisata bahari Lampung Timur.
         </p>
       </motion.div>
 
-      {/* Marquee Viewport Wrapper (Full bleed left to right) */}
       <div className="marquee-container">
         {/* Row 1: Scrolling Left */}
         <div className="marquee-row">
@@ -148,10 +74,10 @@ export default function GallerySection() {
                 variants={imageVariants}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: false, margin: "-40px" }}
+                viewport={{ once: true, margin: "-40px" }}
                 style={{
                   width: item.width,
-                  height: "280px",
+                  height: "200px",
                   position: "relative",
                   borderRadius: "16px",
                   overflow: "hidden",
@@ -168,9 +94,7 @@ export default function GallerySection() {
                 />
                 <div style={{
                   position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
+                  bottom: 0, left: 0, right: 0,
                   background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 70%, transparent 100%)",
                   padding: "1.25rem",
                   color: "white",
@@ -181,9 +105,7 @@ export default function GallerySection() {
                   <span style={{ fontSize: "0.7rem", fontWeight: 700, color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                     {item.category}
                   </span>
-                  <h4 style={{ fontSize: "1rem", fontWeight: 800, color: "white" }}>
-                    {item.title}
-                  </h4>
+                  <h4 style={{ fontSize: "1rem", fontWeight: 800, color: "white" }}>{item.title}</h4>
                 </div>
               </motion.div>
             ))}
@@ -200,10 +122,10 @@ export default function GallerySection() {
                 variants={imageVariants}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: false, margin: "-40px" }}
+                viewport={{ once: true, margin: "-40px" }}
                 style={{
                   width: item.width,
-                  height: "280px",
+                  height: "200px",
                   position: "relative",
                   borderRadius: "16px",
                   overflow: "hidden",
@@ -220,9 +142,7 @@ export default function GallerySection() {
                 />
                 <div style={{
                   position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
+                  bottom: 0, left: 0, right: 0,
                   background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 70%, transparent 100%)",
                   padding: "1.25rem",
                   color: "white",
@@ -233,9 +153,7 @@ export default function GallerySection() {
                   <span style={{ fontSize: "0.7rem", fontWeight: 700, color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                     {item.category}
                   </span>
-                  <h4 style={{ fontSize: "1rem", fontWeight: 800, color: "white" }}>
-                    {item.title}
-                  </h4>
+                  <h4 style={{ fontSize: "1rem", fontWeight: 800, color: "white" }}>{item.title}</h4>
                 </div>
               </motion.div>
             ))}

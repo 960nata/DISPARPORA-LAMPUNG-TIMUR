@@ -35,11 +35,12 @@ const defaultEvents = [
 
 export default function EventsSection() {
   return (
-    <section className="container" id="agenda">
+    <section className="container" id="agenda" style={{ paddingTop: "2rem" }}>
       <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
-        <span className="badge badge-success" style={{ marginBottom: "0.75rem" }}>Agenda Kegiatan</span>
-        <h2 style={{ fontSize: "2.25rem", fontWeight: 800, fontFamily: "var(--font-serif)" }}>Agenda & Event Mendatang</h2>
-        <p style={{ maxWidth: "600px", margin: "1.25rem auto 0 auto" }}>
+        <h2 className="section-heading" style={{ fontSize: "2.25rem", fontWeight: 800, fontFamily: "var(--font-serif)", marginBottom: "0.5rem" }}>
+          Agenda & Event Mendatang
+        </h2>
+        <p style={{ maxWidth: "600px", margin: "0 auto" }}>
           Ikuti berbagai keseruan acara kebudayaan, kompetisi olahraga, serta festival pariwisata yang diselenggarakan di Lampung Timur.
         </p>
       </div>

@@ -27,7 +27,7 @@ export default function PartnersSection({ partners = [] }: PartnersSectionProps)
   return (
     <section style={{ backgroundColor: "white", padding: "4rem 0 2rem 0" }}>
       <div className="container" style={{ textAlign: "center", marginBottom: "3rem" }}>
-        <span style={{
+        <span className="section-badge" style={{
           fontSize: "0.875rem",
           fontWeight: 600,
           color: "var(--primary)",
@@ -41,7 +41,7 @@ export default function PartnersSection({ partners = [] }: PartnersSectionProps)
         }}>
           Mitra & Kerjasama
         </span>
-        <h2 style={{
+        <h2 className="section-heading" style={{
           fontSize: "2.25rem",
           fontWeight: 800,
           color: "var(--text-primary)",
@@ -58,11 +58,17 @@ export default function PartnersSection({ partners = [] }: PartnersSectionProps)
               ? p.logoUrl.replace(".avif", ".png") 
               : p.logoUrl;
               
-            const isWayKambas = p.name.toLowerCase().includes("way kambas") || p.logoUrl.includes("group_2");
-            const logoHeight = isWayKambas ? "46px" : "60px";
+            let logoHeight = "60px";
+            if (p.logoUrl.includes("group_2")) {
+              logoHeight = "54px";
+            } else if (p.logoUrl.includes("group_5")) {
+              logoHeight = "52px";
+            } else if (p.logoUrl.includes("group_6")) {
+              logoHeight = "68px";
+            }
               
             return (
-              <div key={idx} style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "60px" }}>
+              <div key={idx} style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "72px" }}>
                 <picture style={{ display: "block", height: logoHeight }}>
                   <source srcSet={p.logoUrl} type="image/avif" />
                   <img

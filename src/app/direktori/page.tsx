@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Search, MapPin, Phone, Link2, Eye, Compass, TreePine, Milestone, Landmark, Hotel, Utensils, Sparkles } from "lucide-react";
+import { Search, MapPin, Phone, Link2, Eye, Compass, TreePine, Milestone, Landmark, Hotel, Utensils, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import tourismData from "@/data/tourism.json";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -22,7 +22,6 @@ function DirectoryContent() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Semua");
   const [selectedKecamatan, setSelectedKecamatan] = useState("Semua");
-  const [activeOnly, setActiveOnly] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
 
@@ -59,10 +58,7 @@ function DirectoryContent() {
       selectedKecamatan === "Semua" || 
       item.kecamatan === selectedKecamatan;
 
-    // 4. Active Status Match
-    const matchesActive = !activeOnly || item.active === true;
-
-    return matchesSearch && matchesCategory && matchesKecamatan && matchesActive;
+    return matchesSearch && matchesCategory && matchesKecamatan;
   });
 
   // Pagination Logic
@@ -74,7 +70,7 @@ function DirectoryContent() {
   // Reset page when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [search, selectedCategory, selectedKecamatan, activeOnly]);
+  }, [search, selectedCategory, selectedKecamatan]);
 
   const categories = [
     { name: "Semua", icon: <Compass size={16} /> },
@@ -86,16 +82,33 @@ function DirectoryContent() {
   ];
 
   return (
-    <div className="container" style={{ padding: "3rem 1.5rem" }}>
-      {/* Title */}
-      <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-        <h2 style={{ fontSize: "2.5rem", fontWeight: 800, fontFamily: "var(--font-serif)" }}>Direktori Destinasi Lampung Timur</h2>
-        <div style={{ width: "80px", height: "4px", backgroundColor: "var(--primary)", margin: "1rem auto 1.5rem auto", borderRadius: "2px" }} />
-        <p style={{ maxWidth: "600px", margin: "0 auto" }}>
-          Temukan destinasi liburan, hotel penginapan, dan tempat kuliner seruit Lampung terbaik di seluruh kecamatan Lampung Timur.
-        </p>
-      </div>
+    <div style={{ paddingBottom: "5rem" }}>
+      {/* ── HERO ── */}
+      <section style={{ width: "100%", padding: "14px", boxSizing: "border-box", marginBottom: "3rem" }}>
+        <div className="page-hero-inner" style={{
+          position: "relative",
+          backgroundImage: "linear-gradient(to right, rgba(5, 46, 35, 0.95) 0%, rgba(6, 78, 59, 0.75) 55%, rgba(6, 78, 59, 0.2) 100%), url('/Gallery/hero1.avif')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          display: "flex",
+          alignItems: "center",
+          borderRadius: "24px",
+          overflow: "hidden",
+        }}>
+          <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+          <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "4rem", paddingBottom: "4rem" }}>
+            <h1 style={{ fontSize: "clamp(1.75rem, 3.2vw, 2.5rem)", fontWeight: 900, color: "white", lineHeight: 1.25, maxWidth: "580px", letterSpacing: "-0.02em", textShadow: "0 2px 12px rgba(0,0,0,0.25)", margin: "0 0 1.25rem 0" }}>
+              Direktori Destinasi<br />Lampung Timur
+            </h1>
+            <p style={{ fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)", color: "#d1fae5", maxWidth: "520px", lineHeight: 1.75, margin: 0 }}>
+              Temukan destinasi liburan, hotel penginapan, dan tempat kuliner terbaik di seluruh kecamatan Lampung Timur.
+            </p>
+          </div>
+        </div>
+      </section>
 
+      <div className="container" style={{ padding: "0 1.5rem" }}>
       {/* Filters & Search Control Bar */}
       <div style={{
         backgroundColor: "white",
@@ -160,29 +173,27 @@ function DirectoryContent() {
             </select>
           </div>
 
-          {/* Toggle Active Switch */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", minWidth: "180px" }}>
-            <input
-              type="checkbox"
-              id="activeOnly"
-              checked={activeOnly}
-              onChange={(e) => setActiveOnly(e.target.checked)}
-              style={{ width: "18px", height: "18px", accentColor: "var(--primary)" }}
-            />
-            <label htmlFor="activeOnly" style={{ fontSize: "0.9rem", fontWeight: 600, color: "var(--text-secondary)", cursor: "pointer" }}>
-              Tampilkan Hanya yang Aktif
-            </label>
-          </div>
         </div>
 
-        {/* Row 2: Category Pills */}
+        {/* Row 2: Category Pills + Reset */}
         <div style={{
           display: "flex",
           flexWrap: "wrap",
           gap: "0.5rem",
           borderTop: "1px solid var(--border)",
-          paddingTop: "1.25rem"
+          paddingTop: "1.25rem",
+          alignItems: "center"
         }}>
+          {/* Reset button — shown when any filter is active */}
+          {(search || selectedCategory !== "Semua" || selectedKecamatan !== "Semua") && (
+            <button
+              onClick={() => { setSearch(""); setSelectedCategory("Semua"); setSelectedKecamatan("Semua"); }}
+              style={{ display: "flex", alignItems: "center", gap: "0.4rem", padding: "0.5rem 1rem", borderRadius: "99px", border: "1.5px solid #ef4444", backgroundColor: "#fff1f1", color: "#ef4444", fontSize: "0.8rem", fontWeight: 700, cursor: "pointer" }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              Hapus Filter
+            </button>
+          )}
           {categories.map((cat) => {
             const isSelected = selectedCategory === cat.name;
             return (
@@ -259,6 +270,18 @@ function DirectoryContent() {
                     position: "relative"
                   }}
                 >
+                  {/* Card Image */}
+                  {(item as any).image && (
+                    <div style={{ margin: "-1.5rem -1.5rem 1.25rem -1.5rem", height: "180px", overflow: "hidden", borderRadius: "var(--border-radius) var(--border-radius) 0 0" }}>
+                      <img
+                        src={(item as any).image}
+                        alt={item.name}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                      />
+                    </div>
+                  )}
+
                   <div>
                     {/* Card Header stats */}
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1rem" }}>
@@ -381,47 +404,65 @@ function DirectoryContent() {
       </div>
 
       {/* Pagination controls */}
-      {totalPages > 1 && (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "0.5rem" }}>
-          <button
-            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-            className="btn btn-secondary"
-            style={{ padding: "0.5rem 1rem", fontSize: "0.9rem", cursor: currentPage === 1 ? "not-allowed" : "pointer", opacity: currentPage === 1 ? 0.5 : 1 }}
-          >
-            Sebelumnya
-          </button>
-          {Array.from({ length: totalPages }).map((_, idx) => {
-            const pageNum = idx + 1;
-            const isCurrent = currentPage === pageNum;
-            return (
-              <button
-                key={pageNum}
-                onClick={() => setCurrentPage(pageNum)}
-                className="btn"
-                style={{
-                  padding: "0.5rem 0.9rem",
-                  fontSize: "0.9rem",
-                  backgroundColor: isCurrent ? "var(--primary)" : "var(--bg-secondary)",
-                  color: isCurrent ? "white" : "var(--text-primary)",
-                  border: isCurrent ? "none" : "1px solid var(--border)",
-                  cursor: "pointer"
-                }}
-              >
-                {pageNum}
-              </button>
-            );
-          })}
-          <button
-            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-            disabled={currentPage === totalPages}
-            className="btn btn-secondary"
-            style={{ padding: "0.5rem 1rem", fontSize: "0.9rem", cursor: currentPage === totalPages ? "not-allowed" : "pointer", opacity: currentPage === totalPages ? 0.5 : 1 }}
-          >
-            Selanjutnya
-          </button>
-        </div>
-      )}
+      {totalPages > 1 && (() => {
+        // Build page number list with ellipsis
+        const pages: (number | "...")[] = [];
+        if (totalPages <= 7) {
+          for (let i = 1; i <= totalPages; i++) pages.push(i);
+        } else {
+          pages.push(1);
+          if (currentPage > 3) pages.push("...");
+          for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) pages.push(i);
+          if (currentPage < totalPages - 2) pages.push("...");
+          pages.push(totalPages);
+        }
+
+        const btnBase: React.CSSProperties = {
+          width: "38px", height: "38px", display: "flex", alignItems: "center", justifyContent: "center",
+          borderRadius: "8px", border: "1px solid var(--border)", backgroundColor: "var(--bg-secondary)",
+          color: "var(--text-primary)", fontSize: "0.9rem", fontWeight: 600, cursor: "pointer", transition: "all 0.15s ease"
+        };
+
+        return (
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "0.35rem" }}>
+            <button
+              onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
+              disabled={currentPage === 1}
+              style={{ ...btnBase, opacity: currentPage === 1 ? 0.35 : 1, cursor: currentPage === 1 ? "not-allowed" : "pointer" }}
+            >
+              <ChevronLeft size={16} />
+            </button>
+
+            {pages.map((p, i) =>
+              p === "..." ? (
+                <span key={`ellipsis-${i}`} style={{ width: "38px", textAlign: "center", color: "var(--text-muted)", fontSize: "0.9rem" }}>…</span>
+              ) : (
+                <button
+                  key={p}
+                  onClick={() => setCurrentPage(p)}
+                  style={{
+                    ...btnBase,
+                    backgroundColor: currentPage === p ? "var(--primary)" : "var(--bg-secondary)",
+                    color: currentPage === p ? "white" : "var(--text-primary)",
+                    border: currentPage === p ? "1px solid transparent" : "1px solid var(--border)"
+                  }}
+                >
+                  {p}
+                </button>
+              )
+            )}
+
+            <button
+              onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              style={{ ...btnBase, opacity: currentPage === totalPages ? 0.35 : 1, cursor: currentPage === totalPages ? "not-allowed" : "pointer" }}
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        );
+      })()}
+      </div>
     </div>
   );
 }

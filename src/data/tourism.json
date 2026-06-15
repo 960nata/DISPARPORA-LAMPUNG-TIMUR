@@ -24,7 +24,8 @@
       "active": true,
       "lat": -5.374333,
       "lng": 105.80845,
-      "category": "Wisata Alam"
+      "category": "Wisata Alam",
+      "image": "/Gallery/Pantai-Kerang-Mas-Labuhan-Maringgai-Lampung-Timur-desmonjosbur-1602765547466.avif"
     },
     {
       "id": "nature_2",
@@ -47,7 +48,8 @@
       "active": true,
       "lat": -5.162617,
       "lng": 105.768917,
-      "category": "Wisata Alam"
+      "category": "Wisata Alam",
+      "image": "/Gallery/Taman Nasional Way Kambas.avif"
     },
     {
       "id": "nature_3",
@@ -67,7 +69,8 @@
       "active": true,
       "lat": -5.369167,
       "lng": 105.822283,
-      "category": "Wisata Alam"
+      "category": "Wisata Alam",
+      "image": "/Gallery/Pantai Mutiara Baru.avif"
     },
     {
       "id": "nature_4",
@@ -82,9 +85,10 @@
       "contact": "",
       "map_link": "https://maps.app.goo.gl/17HCGC7Tv1ub7Gvj6",
       "active": true,
-      "lat": -5.367167,
-      "lng": 105.822783,
-      "category": "Wisata Alam"
+      "lat": -5.0972315,
+      "lng": 105.4683473,
+      "category": "Wisata Alam",
+      "image": "/Gallery/Sumber Mata Air Awet Muda.avif"
     },
     {
       "id": "nature_5",
@@ -106,7 +110,8 @@
       "active": false,
       "lat": -5.250233,
       "lng": 105.547433,
-      "category": "Wisata Alam"
+      "category": "Wisata Alam",
+      "image": "/Gallery/Danau Beringin Indah.avif"
     },
     {
       "id": "nature_6",
@@ -130,7 +135,8 @@
       "active": true,
       "lat": -5.24765,
       "lng": 105.543933,
-      "category": "Wisata Alam"
+      "category": "Wisata Alam",
+      "image": "/Gallery/Dam Negara Batin  Wanaba.avif"
     },
     {
       "id": "nature_7",
@@ -146,7 +152,8 @@
       "active": true,
       "lat": -5.367333,
       "lng": 105.8102,
-      "category": "Wisata Alam"
+      "category": "Wisata Alam",
+      "image": "/Gallery/Pantai Mutiara Baru.avif"
     },
     {
       "id": "nature_8",
@@ -162,7 +169,8 @@
       "active": true,
       "lat": -5.189633,
       "lng": 105.72055,
-      "category": "Wisata Alam"
+      "category": "Wisata Alam",
+      "image": "/Gallery/image copy.avif"
     },
     {
       "id": "nature_9",
@@ -184,7 +192,8 @@
       "active": false,
       "lat": -5.449717,
       "lng": 105.6497,
-      "category": "Wisata Alam"
+      "category": "Wisata Alam",
+      "image": "/Gallery/Way Guruh.avif"
     },
     {
       "id": "nature_10",
@@ -201,7 +210,8 @@
       "active": false,
       "lat": -5.0968,
       "lng": 105.37045,
-      "category": "Wisata Alam"
+      "category": "Wisata Alam",
+      "image": "/Gallery/1.avif"
     },
     {
       "id": "nature_11",
@@ -216,7 +226,8 @@
       "active": false,
       "lat": -5.25465,
       "lng": 105.538017,
-      "category": "Wisata Alam"
+      "category": "Wisata Alam",
+      "image": "/Gallery/1.avif"
     },
     {
       "id": "nature_12",
@@ -231,7 +242,8 @@
       "active": false,
       "lat": -5.254717,
       "lng": 105.774783,
-      "category": "Wisata Alam"
+      "category": "Wisata Alam",
+      "image": "/Gallery/4.avif"
     },
     {
       "id": "nature_13",
@@ -248,7 +260,8 @@
       "active": true,
       "lat": -5.48995,
       "lng": 105.755283,
-      "category": "Wisata Alam"
+      "category": "Wisata Alam",
+      "image": "/Gallery/mangrove_pasir_sakti.avif"
     },
     {
       "id": "nature_14",
@@ -269,7 +282,8 @@
       "active": true,
       "lat": -5.318467,
       "lng": 105.760567,
-      "category": "Wisata Alam"
+      "category": "Wisata Alam",
+      "image": "/Gallery/image copy 2.avif"
     },
     {
       "id": "nature_15",
@@ -287,7 +301,8 @@
       "active": true,
       "lat": -5.1512,
       "lng": 105.775917,
-      "category": "Wisata Alam"
+      "category": "Wisata Alam",
+      "image": "/Gallery/1.avif"
     },
     {
       "id": "nature_16",
@@ -305,7 +320,8 @@
       "active": true,
       "lat": -5.2067,
       "lng": 105.789867,
-      "category": "Wisata Alam"
+      "category": "Wisata Alam",
+      "image": "/Gallery/hero1.avif"
     }
   ],
   "wisata_buatan": [
@@ -326,7 +342,8 @@
       "active": true,
       "lat": -5.312883,
       "lng": 105.770317,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/danau_kemuning.avif"
     },
     {
       "id": "built_2",
@@ -344,7 +361,8 @@
       "active": true,
       "lat": -5.25215,
       "lng": 105.5386,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_3",
@@ -364,7 +382,8 @@
       "active": true,
       "lat": -5.2449,
       "lng": 105.5446,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_4",
@@ -380,7 +399,8 @@
       "active": false,
       "lat": -5.348933,
       "lng": 105.429,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_5",
@@ -396,7 +416,8 @@
       "active": true,
       "lat": -5.105967,
       "lng": 105.376533,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_6",
@@ -412,7 +433,8 @@
       "active": false,
       "lat": -5.056783,
       "lng": 105.3477,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_7",
@@ -428,7 +450,8 @@
       "active": false,
       "lat": -5.357767,
       "lng": 105.426833,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_8",
@@ -444,7 +467,8 @@
       "active": false,
       "lat": -5.358017,
       "lng": 105.418417,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_9",
@@ -466,7 +490,8 @@
       "active": true,
       "lat": -5.359183,
       "lng": 105.418083,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_10",
@@ -482,7 +507,8 @@
       "active": false,
       "lat": -5.149883,
       "lng": 105.503867,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_11",
@@ -499,7 +525,8 @@
       "active": false,
       "lat": -5.490367,
       "lng": 105.751033,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_12",
@@ -514,7 +541,8 @@
       "active": false,
       "lat": -5.0487,
       "lng": 105.358033,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_13",
@@ -529,7 +557,8 @@
       "active": false,
       "lat": -5.247217,
       "lng": 105.780867,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_14",
@@ -544,7 +573,8 @@
       "active": false,
       "lat": -5.054117,
       "lng": 105.3442,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_15",
@@ -559,7 +589,8 @@
       "active": false,
       "lat": -5.200467,
       "lng": 105.387867,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_16",
@@ -578,7 +609,8 @@
       "active": false,
       "lat": -5.0462,
       "lng": 105.350367,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_17",
@@ -598,7 +630,8 @@
       "active": false,
       "lat": -5.155967,
       "lng": 105.506533,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/hero1.avif"
     },
     {
       "id": "built_18",
@@ -620,7 +653,8 @@
       "active": true,
       "lat": -5.09555,
       "lng": 105.366617,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_19",
@@ -637,7 +671,8 @@
       "active": true,
       "lat": -5.3088,
       "lng": 105.771317,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_20",
@@ -653,7 +688,8 @@
       "active": true,
       "lat": -5.3088,
       "lng": 105.775483,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_21",
@@ -671,7 +707,8 @@
       "active": true,
       "lat": -5.1622,
       "lng": 105.764833,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     },
     {
       "id": "built_22",
@@ -688,7 +725,8 @@
       "active": true,
       "lat": -5.18155,
       "lng": 105.726717,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/Way Guruh.avif"
     },
     {
       "id": "built_23",
@@ -706,7 +744,8 @@
       "active": true,
       "lat": -5.3113,
       "lng": 105.7624,
-      "category": "Wisata Buatan"
+      "category": "Wisata Buatan",
+      "image": "/Gallery/2.avif"
     }
   ],
   "wisata_budaya": [
@@ -731,7 +770,8 @@
       "active": true,
       "lat": -5.34885,
       "lng": 105.420667,
-      "category": "Wisata Budaya"
+      "category": "Wisata Budaya",
+      "image": "/Gallery/pugung_raharjo.avif"
     },
     {
       "id": "culture_2",
@@ -748,7 +788,8 @@
       "active": true,
       "lat": -5.256067,
       "lng": 105.537683,
-      "category": "Wisata Budaya"
+      "category": "Wisata Budaya",
+      "image": "/Gallery/museum_lampung.avif"
     },
     {
       "id": "culture_3",
@@ -766,7 +807,8 @@
       "active": true,
       "lat": -5.314317,
       "lng": 105.7905,
-      "category": "Wisata Budaya"
+      "category": "Wisata Budaya",
+      "image": "/Gallery/nuwo_sesat.avif"
     },
     {
       "id": "culture_4",
@@ -781,7 +823,8 @@
       "active": false,
       "lat": -5.256483,
       "lng": 105.541683,
-      "category": "Wisata Budaya"
+      "category": "Wisata Budaya",
+      "image": "/Gallery/nuwo_sesat.avif"
     },
     {
       "id": "culture_5",
@@ -797,7 +840,8 @@
       "active": true,
       "lat": -5.0552,
       "lng": 105.352283,
-      "category": "Wisata Budaya"
+      "category": "Wisata Budaya",
+      "image": "/Gallery/nuwo_sesat.avif"
     },
     {
       "id": "culture_6",
@@ -813,7 +857,8 @@
       "active": true,
       "lat": -5.151467,
       "lng": 105.499283,
-      "category": "Wisata Budaya"
+      "category": "Wisata Budaya",
+      "image": "/Gallery/nuwo_sesat.avif"
     }
   ],
   "hotels": [
@@ -827,7 +872,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.182383,
-      "lng": 105.713967
+      "lng": 105.713967,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_2",
@@ -839,7 +885,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.20755,
-      "lng": 105.386117
+      "lng": 105.386117,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_3",
@@ -851,7 +898,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.24865,
-      "lng": 105.539517
+      "lng": 105.539517,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_4",
@@ -863,7 +911,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.249317,
-      "lng": 105.55185
+      "lng": 105.55185,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_5",
@@ -875,7 +924,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.245983,
-      "lng": 105.540183
+      "lng": 105.540183,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_6",
@@ -887,7 +937,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.247067,
-      "lng": 105.552433
+      "lng": 105.552433,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_7",
@@ -899,7 +950,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.251817,
-      "lng": 105.538683
+      "lng": 105.538683,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_8",
@@ -911,7 +963,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.244817,
-      "lng": 105.548767
+      "lng": 105.548767,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_9",
@@ -923,7 +976,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.249567,
-      "lng": 105.543433
+      "lng": 105.543433,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_10",
@@ -935,7 +989,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.505867,
-      "lng": 105.751367
+      "lng": 105.751367,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_11",
@@ -947,7 +1002,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.49395,
-      "lng": 105.754283
+      "lng": 105.754283,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_12",
@@ -959,7 +1015,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.246733,
-      "lng": 105.544183
+      "lng": 105.544183,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_13",
@@ -971,7 +1028,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.152783,
-      "lng": 105.779667
+      "lng": 105.779667,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_14",
@@ -983,7 +1041,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.10405,
-      "lng": 105.36445
+      "lng": 105.36445,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_15",
@@ -995,7 +1054,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.201533,
-      "lng": 105.795367
+      "lng": 105.795367,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_16",
@@ -1007,7 +1067,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.16195,
-      "lng": 105.764917
+      "lng": 105.764917,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_17",
@@ -1019,7 +1080,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.157367,
-      "lng": 105.766083
+      "lng": 105.766083,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_18",
@@ -1031,7 +1093,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.251817,
-      "lng": 105.551183
+      "lng": 105.551183,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_19",
@@ -1043,7 +1106,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.322733,
-      "lng": 105.775917
+      "lng": 105.775917,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_20",
@@ -1055,7 +1119,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.152117,
-      "lng": 105.779833
+      "lng": 105.779833,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_21",
@@ -1067,7 +1132,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.492617,
-      "lng": 105.746283
+      "lng": 105.746283,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_22",
@@ -1079,7 +1145,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.15995,
-      "lng": 105.765417
+      "lng": 105.765417,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_23",
@@ -1091,7 +1158,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.249233,
-      "lng": 105.543517
+      "lng": 105.543517,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_24",
@@ -1103,7 +1171,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.25215,
-      "lng": 105.546933
+      "lng": 105.546933,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_25",
@@ -1115,7 +1184,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.2569,
-      "lng": 105.5416
+      "lng": 105.5416,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_26",
@@ -1127,7 +1197,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.254733,
-      "lng": 105.550517
+      "lng": 105.550517,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_27",
@@ -1139,7 +1210,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.495367,
-      "lng": 105.75395
+      "lng": 105.75395,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_28",
@@ -1151,7 +1223,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.2509,
-      "lng": 105.538933
+      "lng": 105.538933,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_29",
@@ -1163,7 +1236,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.252817,
-      "lng": 105.538433
+      "lng": 105.538433,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_30",
@@ -1175,7 +1249,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.253983,
-      "lng": 105.54235
+      "lng": 105.54235,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_31",
@@ -1187,7 +1262,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.24665,
-      "lng": 105.544183
+      "lng": 105.544183,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_32",
@@ -1199,7 +1275,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.2474,
-      "lng": 105.53985
+      "lng": 105.53985,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_33",
@@ -1211,7 +1288,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.2474,
-      "lng": 105.548183
+      "lng": 105.548183,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_34",
@@ -1223,7 +1301,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.252733,
-      "lng": 105.54685
+      "lng": 105.54685,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_35",
@@ -1235,7 +1314,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.243233,
-      "lng": 105.55335
+      "lng": 105.55335,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_36",
@@ -1247,7 +1327,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.258567,
-      "lng": 105.549517
+      "lng": 105.549517,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_37",
@@ -1259,7 +1340,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.248567,
-      "lng": 105.54785
+      "lng": 105.54785,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_38",
@@ -1271,7 +1353,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.2584,
-      "lng": 105.541267
+      "lng": 105.541267,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_39",
@@ -1283,7 +1366,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.505533,
-      "lng": 105.747283
+      "lng": 105.747283,
+      "image": "/Gallery/3.avif"
     },
     {
       "id": "hotel_40",
@@ -1295,7 +1379,8 @@
       "category": "Akomodasi",
       "active": true,
       "lat": -5.2494,
-      "lng": 105.543517
+      "lng": 105.543517,
+      "image": "/Gallery/3.avif"
     }
   ],
   "restaurants": [
@@ -1309,7 +1394,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.256817,
-      "lng": 105.549933
+      "lng": 105.549933,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_2",
@@ -1321,7 +1407,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.2544,
-      "lng": 105.546433
+      "lng": 105.546433,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_3",
@@ -1333,7 +1420,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.24965,
-      "lng": 105.551767
+      "lng": 105.551767,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_4",
@@ -1345,7 +1433,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.2439,
-      "lng": 105.540683
+      "lng": 105.540683,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_5",
@@ -1357,7 +1446,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.247067,
-      "lng": 105.5441
+      "lng": 105.5441,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_6",
@@ -1369,7 +1459,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.254483,
-      "lng": 105.550517
+      "lng": 105.550517,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_7",
@@ -1381,7 +1472,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.244483,
-      "lng": 105.54885
+      "lng": 105.54885,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_8",
@@ -1393,7 +1485,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.2524,
-      "lng": 105.5386
+      "lng": 105.5386,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_9",
@@ -1405,7 +1498,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.254233,
-      "lng": 105.5506
+      "lng": 105.5506,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_10",
@@ -1417,7 +1511,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.251067,
-      "lng": 105.547267
+      "lng": 105.547267,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_11",
@@ -1429,7 +1524,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.251983,
-      "lng": 105.547017
+      "lng": 105.547017,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_12",
@@ -1441,7 +1537,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.243983,
-      "lng": 105.540683
+      "lng": 105.540683,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_13",
@@ -1453,7 +1550,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.252233,
-      "lng": 105.542767
+      "lng": 105.542767,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_14",
@@ -1465,7 +1563,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.254233,
-      "lng": 105.546433
+      "lng": 105.546433,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_15",
@@ -1477,7 +1576,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.25865,
-      "lng": 105.537017
+      "lng": 105.537017,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_16",
@@ -1489,7 +1589,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.250233,
-      "lng": 105.5516
+      "lng": 105.5516,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_17",
@@ -1501,7 +1602,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.25515,
-      "lng": 105.542017
+      "lng": 105.542017,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_18",
@@ -1513,7 +1615,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.2559,
-      "lng": 105.550183
+      "lng": 105.550183,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_19",
@@ -1525,7 +1628,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.251983,
-      "lng": 105.547017
+      "lng": 105.547017,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_20",
@@ -1537,7 +1641,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.25315,
-      "lng": 105.55085
+      "lng": 105.55085,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_21",
@@ -1549,7 +1654,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.254067,
-      "lng": 105.538183
+      "lng": 105.538183,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_22",
@@ -1561,7 +1667,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.254733,
-      "lng": 105.538017
+      "lng": 105.538017,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_23",
@@ -1573,7 +1680,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.245233,
-      "lng": 105.544517
+      "lng": 105.544517,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_24",
@@ -1585,7 +1693,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.254067,
-      "lng": 105.54235
+      "lng": 105.54235,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_25",
@@ -1597,7 +1706,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.2524,
-      "lng": 105.5511
+      "lng": 105.5511,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_26",
@@ -1609,7 +1719,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.2499,
-      "lng": 105.551683
+      "lng": 105.551683,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_27",
@@ -1621,7 +1732,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.251317,
-      "lng": 105.547183
+      "lng": 105.547183,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_28",
@@ -1633,7 +1745,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.255817,
-      "lng": 105.550183
+      "lng": 105.550183,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_29",
@@ -1645,7 +1758,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.2509,
-      "lng": 105.5431
+      "lng": 105.5431,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_30",
@@ -1657,7 +1771,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.250233,
-      "lng": 105.5391
+      "lng": 105.5391,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_31",
@@ -1669,7 +1784,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.25565,
-      "lng": 105.5461
+      "lng": 105.5461,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_32",
@@ -1681,7 +1797,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.243567,
-      "lng": 105.553267
+      "lng": 105.553267,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_33",
@@ -1693,7 +1810,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.247733,
-      "lng": 105.543933
+      "lng": 105.543933,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_34",
@@ -1705,7 +1823,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.2534,
-      "lng": 105.546683
+      "lng": 105.546683,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_35",
@@ -1717,7 +1836,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.2499,
-      "lng": 105.547517
+      "lng": 105.547517,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_36",
@@ -1729,7 +1849,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.35085,
-      "lng": 105.424333
+      "lng": 105.424333,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_37",
@@ -1741,7 +1862,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.362267,
-      "lng": 105.413167
+      "lng": 105.413167,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_38",
@@ -1753,7 +1875,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.351433,
-      "lng": 105.428417
+      "lng": 105.428417,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_39",
@@ -1765,7 +1888,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.350017,
-      "lng": 105.42875
+      "lng": 105.42875,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_40",
@@ -1777,7 +1901,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.360767,
-      "lng": 105.421917
+      "lng": 105.421917,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_41",
@@ -1789,7 +1914,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.156633,
-      "lng": 105.498033
+      "lng": 105.498033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_42",
@@ -1801,7 +1927,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.15955,
-      "lng": 105.50145
+      "lng": 105.50145,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_43",
@@ -1813,7 +1940,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.145133,
-      "lng": 105.4967
+      "lng": 105.4967,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_44",
@@ -1825,7 +1953,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.1548,
-      "lng": 105.494283
+      "lng": 105.494283,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_45",
@@ -1837,7 +1966,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.1513,
-      "lng": 105.4952
+      "lng": 105.4952,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_46",
@@ -1849,7 +1979,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.157883,
-      "lng": 105.506033
+      "lng": 105.506033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_47",
@@ -1861,7 +1992,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.15405,
-      "lng": 105.49445
+      "lng": 105.49445,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_48",
@@ -1873,7 +2005,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.15405,
-      "lng": 105.498617
+      "lng": 105.498617,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_49",
@@ -1885,7 +2018,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.158967,
-      "lng": 105.501617
+      "lng": 105.501617,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_50",
@@ -1897,7 +2031,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.144467,
-      "lng": 105.509367
+      "lng": 105.509367,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_51",
@@ -1909,7 +2044,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.153633,
-      "lng": 105.494617
+      "lng": 105.494617,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_52",
@@ -1921,7 +2057,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.151883,
-      "lng": 105.507533
+      "lng": 105.507533,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_53",
@@ -1933,7 +2070,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.145217,
-      "lng": 105.5092
+      "lng": 105.5092,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_54",
@@ -1945,7 +2083,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.159217,
-      "lng": 105.497367
+      "lng": 105.497367,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_55",
@@ -1957,7 +2096,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.050133,
-      "lng": 105.483783
+      "lng": 105.483783,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_56",
@@ -1969,7 +2109,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.05655,
-      "lng": 105.478033
+      "lng": 105.478033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_57",
@@ -1981,7 +2122,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.0508,
-      "lng": 105.483617
+      "lng": 105.483617,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_58",
@@ -1993,7 +2135,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.05155,
-      "lng": 105.475117
+      "lng": 105.475117,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_59",
@@ -2005,7 +2148,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.002467,
-      "lng": 105.627367
+      "lng": 105.627367,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_60",
@@ -2017,7 +2161,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.006383,
-      "lng": 105.613867
+      "lng": 105.613867,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_61",
@@ -2029,7 +2174,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.00855,
-      "lng": 105.6217
+      "lng": 105.6217,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_62",
@@ -2041,7 +2187,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.0048,
-      "lng": 105.626783
+      "lng": 105.626783,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_63",
@@ -2053,7 +2200,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.010467,
-      "lng": 105.625367
+      "lng": 105.625367,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_64",
@@ -2065,7 +2213,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.002967,
-      "lng": 105.61895
+      "lng": 105.61895,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_65",
@@ -2077,7 +2226,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.0093,
-      "lng": 105.6257
+      "lng": 105.6257,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_66",
@@ -2089,7 +2239,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.009717,
-      "lng": 105.625533
+      "lng": 105.625533,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_67",
@@ -2101,7 +2252,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.007717,
-      "lng": 105.626033
+      "lng": 105.626033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_68",
@@ -2113,7 +2265,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.000383,
-      "lng": 105.619533
+      "lng": 105.619533,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_69",
@@ -2125,7 +2278,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.004133,
-      "lng": 105.61445
+      "lng": 105.61445,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_70",
@@ -2137,7 +2291,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.0018,
-      "lng": 105.6192
+      "lng": 105.6192,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_71",
@@ -2149,7 +2304,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.145783,
-      "lng": 105.60045
+      "lng": 105.60045,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_72",
@@ -2161,7 +2317,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.1522,
-      "lng": 105.603033
+      "lng": 105.603033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_73",
@@ -2173,7 +2330,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.14795,
-      "lng": 105.6082
+      "lng": 105.6082,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_74",
@@ -2185,7 +2343,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.149617,
-      "lng": 105.595283
+      "lng": 105.595283,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_75",
@@ -2197,7 +2356,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.201533,
-      "lng": 105.7912
+      "lng": 105.7912,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_76",
@@ -2209,7 +2369,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.206533,
-      "lng": 105.794117
+      "lng": 105.794117,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_77",
@@ -2221,7 +2382,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.203533,
-      "lng": 105.794867
+      "lng": 105.794867,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_78",
@@ -2233,7 +2395,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.1932,
-      "lng": 105.793283
+      "lng": 105.793283,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_79",
@@ -2245,7 +2408,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.19345,
-      "lng": 105.784867
+      "lng": 105.784867,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_80",
@@ -2257,7 +2421,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.196867,
-      "lng": 105.7882
+      "lng": 105.7882,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_81",
@@ -2269,7 +2434,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.2012,
-      "lng": 105.78295
+      "lng": 105.78295,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_82",
@@ -2281,7 +2447,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.1982,
-      "lng": 105.792033
+      "lng": 105.792033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_83",
@@ -2293,7 +2460,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.204033,
-      "lng": 105.7947
+      "lng": 105.7947,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_84",
@@ -2305,7 +2473,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.460383,
-      "lng": 105.642867
+      "lng": 105.642867,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_85",
@@ -2317,7 +2486,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.46055,
-      "lng": 105.642867
+      "lng": 105.642867,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_86",
@@ -2329,7 +2499,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.458717,
-      "lng": 105.64745
+      "lng": 105.64745,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_87",
@@ -2341,7 +2512,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.458633,
-      "lng": 105.6517
+      "lng": 105.6517,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_88",
@@ -2353,7 +2525,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.103217,
-      "lng": 105.3772
+      "lng": 105.3772,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_89",
@@ -2365,7 +2538,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.106383,
-      "lng": 105.368033
+      "lng": 105.368033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_90",
@@ -2377,7 +2551,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.109717,
-      "lng": 105.3672
+      "lng": 105.3672,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_91",
@@ -2389,7 +2564,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.104133,
-      "lng": 105.37695
+      "lng": 105.37695,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_92",
@@ -2401,7 +2577,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.1103,
-      "lng": 105.37545
+      "lng": 105.37545,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_93",
@@ -2413,7 +2590,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.10805,
-      "lng": 105.36345
+      "lng": 105.36345,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_94",
@@ -2425,7 +2603,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.099633,
-      "lng": 105.365617
+      "lng": 105.365617,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_95",
@@ -2437,7 +2616,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.0973,
-      "lng": 105.3662
+      "lng": 105.3662,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_96",
@@ -2449,7 +2629,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.106883,
-      "lng": 105.363783
+      "lng": 105.363783,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_97",
@@ -2461,7 +2642,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.105467,
-      "lng": 105.37245
+      "lng": 105.37245,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_98",
@@ -2473,7 +2655,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.109467,
-      "lng": 105.363117
+      "lng": 105.363117,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_99",
@@ -2485,7 +2668,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.097467,
-      "lng": 105.366117
+      "lng": 105.366117,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_100",
@@ -2497,7 +2681,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.095967,
-      "lng": 105.374867
+      "lng": 105.374867,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_101",
@@ -2509,7 +2694,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.102883,
-      "lng": 105.377283
+      "lng": 105.377283,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_102",
@@ -2521,7 +2707,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.110217,
-      "lng": 105.37545
+      "lng": 105.37545,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_103",
@@ -2533,7 +2720,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.103383,
-      "lng": 105.377117
+      "lng": 105.377117,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_104",
@@ -2545,7 +2733,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.104883,
-      "lng": 105.376783
+      "lng": 105.376783,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_105",
@@ -2557,7 +2746,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.094633,
-      "lng": 105.379367
+      "lng": 105.379367,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_106",
@@ -2569,7 +2759,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.106133,
-      "lng": 105.372283
+      "lng": 105.372283,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_107",
@@ -2581,7 +2772,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.099633,
-      "lng": 105.37395
+      "lng": 105.37395,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_108",
@@ -2593,7 +2785,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.096133,
-      "lng": 105.374783
+      "lng": 105.374783,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_109",
@@ -2605,7 +2798,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.0968,
-      "lng": 105.378783
+      "lng": 105.378783,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_110",
@@ -2617,7 +2811,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.10805,
-      "lng": 105.367617
+      "lng": 105.367617,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_111",
@@ -2629,7 +2824,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.107383,
-      "lng": 105.363617
+      "lng": 105.363617,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_112",
@@ -2641,7 +2837,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.1068,
-      "lng": 105.376283
+      "lng": 105.376283,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_113",
@@ -2653,7 +2850,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.106383,
-      "lng": 105.368033
+      "lng": 105.368033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_114",
@@ -2665,7 +2863,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.096217,
-      "lng": 105.370617
+      "lng": 105.370617,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_115",
@@ -2677,7 +2876,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.1078,
-      "lng": 105.376033
+      "lng": 105.376033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_116",
@@ -2689,7 +2889,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.122533,
-      "lng": 105.298783
+      "lng": 105.298783,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_117",
@@ -2701,7 +2902,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.117617,
-      "lng": 105.295783
+      "lng": 105.295783,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_118",
@@ -2713,7 +2915,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.115283,
-      "lng": 105.296367
+      "lng": 105.296367,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_119",
@@ -2725,7 +2928,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.1227,
-      "lng": 105.307033
+      "lng": 105.307033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_120",
@@ -2737,7 +2941,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.1182,
-      "lng": 105.3082
+      "lng": 105.3082,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_121",
@@ -2749,7 +2954,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.125533,
-      "lng": 105.298033
+      "lng": 105.298033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_122",
@@ -2761,7 +2967,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.1142,
-      "lng": 105.3092
+      "lng": 105.3092,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_123",
@@ -2773,7 +2980,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.1227,
-      "lng": 105.307033
+      "lng": 105.307033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_124",
@@ -2785,7 +2993,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -4.998617,
-      "lng": 105.483867
+      "lng": 105.483867,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_125",
@@ -2797,7 +3006,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.007367,
-      "lng": 105.477533
+      "lng": 105.477533,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_126",
@@ -2809,7 +3019,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.20055,
-      "lng": 105.379533
+      "lng": 105.379533,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_127",
@@ -2821,7 +3032,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.202383,
-      "lng": 105.3832
+      "lng": 105.3832,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_128",
@@ -2833,7 +3045,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.209467,
-      "lng": 105.373117
+      "lng": 105.373117,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_129",
@@ -2845,7 +3058,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.19805,
-      "lng": 105.37595
+      "lng": 105.37595,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_130",
@@ -2857,7 +3071,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.20255,
-      "lng": 105.387367
+      "lng": 105.387367,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_131",
@@ -2869,7 +3084,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.19455,
-      "lng": 105.376867
+      "lng": 105.376867,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_132",
@@ -2881,7 +3097,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.2048,
-      "lng": 105.374283
+      "lng": 105.374283,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_133",
@@ -2893,7 +3110,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.202717,
-      "lng": 105.383117
+      "lng": 105.383117,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_134",
@@ -2905,7 +3123,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.209383,
-      "lng": 105.38145
+      "lng": 105.38145,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_135",
@@ -2917,7 +3136,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.210467,
-      "lng": 105.385367
+      "lng": 105.385367,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_136",
@@ -2929,7 +3149,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.198717,
-      "lng": 105.388283
+      "lng": 105.388283,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_137",
@@ -2941,7 +3162,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.195217,
-      "lng": 105.385033
+      "lng": 105.385033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_138",
@@ -2953,7 +3175,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.345117,
-      "lng": 105.50895
+      "lng": 105.50895,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_139",
@@ -2965,7 +3188,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.352033,
-      "lng": 105.503033
+      "lng": 105.503033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_140",
@@ -2977,7 +3201,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.3482,
-      "lng": 105.5082
+      "lng": 105.5082,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_141",
@@ -2989,7 +3214,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.353117,
-      "lng": 105.502783
+      "lng": 105.502783,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_142",
@@ -3001,7 +3227,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.356783,
-      "lng": 105.493533
+      "lng": 105.493533,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_143",
@@ -3013,7 +3240,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.358867,
-      "lng": 105.505533
+      "lng": 105.505533,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_144",
@@ -3025,7 +3253,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.353117,
-      "lng": 105.49445
+      "lng": 105.49445,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_145",
@@ -3037,7 +3266,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.35245,
-      "lng": 105.50295
+      "lng": 105.50295,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_146",
@@ -3049,7 +3279,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.355283,
-      "lng": 105.5022
+      "lng": 105.5022,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_147",
@@ -3061,7 +3292,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.356867,
-      "lng": 105.493533
+      "lng": 105.493533,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_148",
@@ -3073,7 +3305,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.352617,
-      "lng": 105.494533
+      "lng": 105.494533,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_149",
@@ -3085,7 +3318,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.353533,
-      "lng": 105.498533
+      "lng": 105.498533,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_150",
@@ -3097,7 +3331,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.345783,
-      "lng": 105.508783
+      "lng": 105.508783,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_151",
@@ -3109,7 +3344,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.351367,
-      "lng": 105.494867
+      "lng": 105.494867,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_152",
@@ -3121,7 +3357,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.348117,
-      "lng": 105.4957
+      "lng": 105.4957,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_153",
@@ -3133,7 +3370,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.351533,
-      "lng": 105.507367
+      "lng": 105.507367,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_154",
@@ -3145,7 +3383,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.351283,
-      "lng": 105.507367
+      "lng": 105.507367,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_155",
@@ -3157,7 +3396,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.343117,
-      "lng": 105.501117
+      "lng": 105.501117,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_156",
@@ -3169,7 +3409,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.349783,
-      "lng": 105.507783
+      "lng": 105.507783,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_157",
@@ -3181,7 +3422,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.3577,
-      "lng": 105.501617
+      "lng": 105.501617,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_158",
@@ -3193,7 +3435,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.346867,
-      "lng": 105.504367
+      "lng": 105.504367,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_159",
@@ -3205,7 +3448,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.343283,
-      "lng": 105.501033
+      "lng": 105.501033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_160",
@@ -3217,7 +3461,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.348783,
-      "lng": 105.508033
+      "lng": 105.508033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_161",
@@ -3229,7 +3474,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.34945,
-      "lng": 105.495367
+      "lng": 105.495367,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_162",
@@ -3241,7 +3487,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.353033,
-      "lng": 105.50695
+      "lng": 105.50695,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_163",
@@ -3253,7 +3500,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.2623,
-      "lng": 105.78545
+      "lng": 105.78545,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_164",
@@ -3265,7 +3513,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.262133,
-      "lng": 105.777117
+      "lng": 105.777117,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_165",
@@ -3277,7 +3526,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.2513,
-      "lng": 105.779867
+      "lng": 105.779867,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_166",
@@ -3289,7 +3539,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.249633,
-      "lng": 105.780283
+      "lng": 105.780283,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_167",
@@ -3301,7 +3552,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.251717,
-      "lng": 105.7797
+      "lng": 105.7797,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_168",
@@ -3313,7 +3565,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.257383,
-      "lng": 105.786617
+      "lng": 105.786617,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_169",
@@ -3325,7 +3578,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.253467,
-      "lng": 105.787617
+      "lng": 105.787617,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_170",
@@ -3337,7 +3591,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.2618,
-      "lng": 105.781367
+      "lng": 105.781367,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_171",
@@ -3349,7 +3604,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.25455,
-      "lng": 105.774867
+      "lng": 105.774867,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_172",
@@ -3361,7 +3617,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.257883,
-      "lng": 105.774033
+      "lng": 105.774033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_173",
@@ -3373,7 +3630,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.258967,
-      "lng": 105.782117
+      "lng": 105.782117,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_174",
@@ -3385,7 +3643,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.253467,
-      "lng": 105.78345
+      "lng": 105.78345,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_175",
@@ -3397,7 +3656,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.250133,
-      "lng": 105.780117
+      "lng": 105.780117,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_176",
@@ -3409,7 +3669,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.2598,
-      "lng": 105.773533
+      "lng": 105.773533,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_177",
@@ -3421,7 +3682,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.054117,
-      "lng": 105.3567
+      "lng": 105.3567,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_178",
@@ -3433,7 +3695,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.054117,
-      "lng": 105.352533
+      "lng": 105.352533,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_179",
@@ -3445,7 +3708,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.053533,
-      "lng": 105.344367
+      "lng": 105.344367,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_180",
@@ -3457,7 +3721,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.05245,
-      "lng": 105.357117
+      "lng": 105.357117,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_181",
@@ -3469,7 +3734,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.048867,
-      "lng": 105.358033
+      "lng": 105.358033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_182",
@@ -3481,7 +3747,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.056283,
-      "lng": 105.35195
+      "lng": 105.35195,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_183",
@@ -3493,7 +3760,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.490867,
-      "lng": 105.746783
+      "lng": 105.746783,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_184",
@@ -3505,7 +3773,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.504367,
-      "lng": 105.755867
+      "lng": 105.755867,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_185",
@@ -3517,7 +3786,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.493533,
-      "lng": 105.746117
+      "lng": 105.746117,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_186",
@@ -3529,7 +3799,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.49645,
-      "lng": 105.757867
+      "lng": 105.757867,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_187",
@@ -3541,7 +3812,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.4912,
-      "lng": 105.755033
+      "lng": 105.755033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_188",
@@ -3553,7 +3825,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.504283,
-      "lng": 105.7517
+      "lng": 105.7517,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_189",
@@ -3565,7 +3838,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.50245,
-      "lng": 105.756367
+      "lng": 105.756367,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_190",
@@ -3577,7 +3851,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.492617,
-      "lng": 105.75045
+      "lng": 105.75045,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_191",
@@ -3589,7 +3864,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.491533,
-      "lng": 105.746617
+      "lng": 105.746617,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_192",
@@ -3601,7 +3877,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.499033,
-      "lng": 105.753033
+      "lng": 105.753033,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_193",
@@ -3613,7 +3890,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.5027,
-      "lng": 105.74795
+      "lng": 105.74795,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_194",
@@ -3625,7 +3903,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.490867,
-      "lng": 105.755117
+      "lng": 105.755117,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_195",
@@ -3637,7 +3916,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.504783,
-      "lng": 105.751617
+      "lng": 105.751617,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_196",
@@ -3649,7 +3929,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.497783,
-      "lng": 105.7492
+      "lng": 105.7492,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_197",
@@ -3661,7 +3942,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.155867,
-      "lng": 105.770583
+      "lng": 105.770583,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_198",
@@ -3673,7 +3955,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.156283,
-      "lng": 105.778833
+      "lng": 105.778833,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_199",
@@ -3685,7 +3968,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.153617,
-      "lng": 105.767
+      "lng": 105.767,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_200",
@@ -3697,7 +3981,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.155033,
-      "lng": 105.779167
+      "lng": 105.779167,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_201",
@@ -3709,7 +3994,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.163867,
-      "lng": 105.768583
+      "lng": 105.768583,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_202",
@@ -3721,7 +4007,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.1487,
-      "lng": 105.78075
+      "lng": 105.78075,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_203",
@@ -3733,7 +4020,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.154867,
-      "lng": 105.779167
+      "lng": 105.779167,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_204",
@@ -3745,7 +4033,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.152117,
-      "lng": 105.779833
+      "lng": 105.779833,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_205",
@@ -3757,7 +4046,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.152367,
-      "lng": 105.7715
+      "lng": 105.7715,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_206",
@@ -3769,7 +4059,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.1592,
-      "lng": 105.773917
+      "lng": 105.773917,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_207",
@@ -3781,7 +4072,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.156117,
-      "lng": 105.774667
+      "lng": 105.774667,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_208",
@@ -3793,7 +4085,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.164033,
-      "lng": 105.77275
+      "lng": 105.77275,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_209",
@@ -3805,7 +4098,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.1647,
-      "lng": 105.768417
+      "lng": 105.768417,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_210",
@@ -3817,7 +4111,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.155617,
-      "lng": 105.7665
+      "lng": 105.7665,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_211",
@@ -3829,7 +4124,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.15945,
-      "lng": 105.778
+      "lng": 105.778,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_212",
@@ -3841,7 +4137,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.1602,
-      "lng": 105.773667
+      "lng": 105.773667,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_213",
@@ -3853,7 +4150,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.16445,
-      "lng": 105.76425
+      "lng": 105.76425,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_214",
@@ -3865,7 +4163,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.15895,
-      "lng": 105.765667
+      "lng": 105.765667,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_215",
@@ -3877,7 +4176,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.183717,
-      "lng": 105.726133
+      "lng": 105.726133,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_216",
@@ -3889,7 +4189,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.178883,
-      "lng": 105.71905
+      "lng": 105.71905,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_217",
@@ -3901,7 +4202,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.184217,
-      "lng": 105.72605
+      "lng": 105.72605,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_218",
@@ -3913,7 +4215,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.19005,
-      "lng": 105.720383
+      "lng": 105.720383,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_219",
@@ -3925,7 +4228,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.178883,
-      "lng": 105.723217
+      "lng": 105.723217,
+      "image": "/Gallery/5.avif"
     },
     {
       "id": "culinary_220",
@@ -3937,7 +4241,8 @@
       "category": "Kuliner",
       "active": true,
       "lat": -5.19055,
-      "lng": 105.724467
+      "lng": 105.724467,
+      "image": "/Gallery/5.avif"
     }
   ]
 }

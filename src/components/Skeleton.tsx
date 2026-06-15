@@ -94,6 +94,34 @@ export function TableSkeleton({ rows = 5 }: { rows?: number }) {
   );
 }
 
+export function NewsCardSkeleton() {
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.5rem" }}>
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div key={i} style={{ borderRadius: "20px", overflow: "hidden", border: "1px solid var(--border)", backgroundColor: "white" }}>
+          <SkeletonBlock width="100%" height="200px" borderRadius="0" />
+          <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+            <SkeletonBlock width="30%" height="20px" borderRadius="999px" />
+            <SkeletonBlock width="90%" height="18px" />
+            <SkeletonBlock width="70%" height="18px" />
+            <SkeletonBlock width="50%" height="14px" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function PartnersSkeleton() {
+  return (
+    <div style={{ display: "flex", gap: "2rem", overflow: "hidden", padding: "1.5rem 0" }}>
+      {Array.from({ length: 6 }).map((_, i) => (
+        <SkeletonBlock key={i} width="120px" height="56px" borderRadius="12px" style={{ flexShrink: 0 }} />
+      ))}
+    </div>
+  );
+}
+
 export function MapSkeleton() {
   return (
     <div className="card" style={{ height: "500px", display: "flex", flexDirection: "column", gap: "1.5rem" }}>

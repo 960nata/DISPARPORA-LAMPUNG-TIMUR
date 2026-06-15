@@ -25,18 +25,25 @@
   --hover-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02);
   --border-radius: 24px;
   
-  /* Dashboard Settings (Dark Mode default) */
-  --dash-bg: #090d16;
-  --dash-card: #111827;
-  --dash-card-hover: #1f2937;
-  --dash-border: #1f2937;
-  --dash-text: #f9fafb;
-  --dash-text-muted: #9ca3af;
-  --dash-primary: #6366f1; /* Indigo 500 */
+  /* ═══ DASHBOARD DESIGN TOKENS ═══ */
+  --dash-bg:            #04070f;
+  --dash-sidebar:       #060b16;
+  --dash-card:          #0b1120;
+  --dash-card-2:        #0f1728;
+  --dash-card-hover:    #121d30;
+  --dash-border:        #182236;
+  --dash-border-2:      #1e2d47;
+  --dash-text:          #dde6f0;
+  --dash-text-muted:    #4d6280;
+  --dash-text-soft:     #8da3be;
+  --dash-primary:       #6366f1;
   --dash-primary-hover: #4f46e5;
-  --dash-success: #10b981;
-  --dash-warning: #f59e0b;
-  --dash-danger: #ef4444;
+  --dash-primary-glow:  rgba(99,102,241,0.14);
+  --dash-success:       #22c55e;
+  --dash-success-glow:  rgba(34,197,94,0.12);
+  --dash-warning:       #f59e0b;
+  --dash-danger:        #ef4444;
+  --dash-danger-glow:   rgba(239,68,68,0.12);
   
   --font-main: 'Plus Jakarta Sans', sans-serif;
   --font-serif: 'Plus Jakarta Sans', sans-serif;
@@ -85,6 +92,21 @@ a {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem;
+}
+
+/* Section wrapper — 1200px centered, untuk halaman publik non-fullscreen */
+.section-wrap {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+.section-block {
+  padding: 4rem 0;
+}
+@media (max-width: 768px) {
+  .section-wrap  { padding: 0 1rem; }
+  .section-block { padding: 2.5rem 0; }
 }
 
 .flex-center {
@@ -270,121 +292,206 @@ a {
   margin-bottom: 4px;
 }
 
-/* Dashboard Specific Layout */
-.dashboard-wrapper {
-  background-color: var(--dash-bg);
-  color: var(--dash-text);
-  min-height: 100vh;
-  display: flex;
-}
+/* ═══════════════════════════════════════════
+   DASHBOARD — Complete Design System
+═══════════════════════════════════════════ */
 
-.dashboard-sidebar {
-  width: 260px;
-  background-color: var(--dash-card);
-  border-right: 1px solid var(--dash-border);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.dashboard-content {
-  flex: 1;
-  padding: 2rem;
-  overflow-y: auto;
-}
-
+/* ── Base Card ── */
 .dash-card {
-  background-color: var(--dash-card);
+  background: var(--dash-card);
   border: 1px solid var(--dash-border);
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 
 .dash-card-hover:hover {
-  background-color: var(--dash-card-hover);
+  background: var(--dash-card-hover);
+  border-color: rgba(99,102,241,0.35);
+  box-shadow: 0 0 0 1px rgba(99,102,241,0.2), 0 8px 24px rgba(0,0,0,0.4);
   transform: translateY(-2px);
-  border-color: #374151;
+  cursor: pointer;
 }
 
+/* ── Input ── */
 .dash-input {
-  background-color: #1f2937;
-  border: 1px solid var(--dash-border);
-  color: white;
-  padding: 0.75rem 1rem;
-  border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--dash-border-2);
+  color: var(--dash-text);
+  padding: 0.6rem 0.875rem;
+  border-radius: 8px;
   outline: none;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
+  font-family: var(--font-main);
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  width: 100%;
 }
-
 .dash-input:focus {
   border-color: var(--dash-primary);
+  background: rgba(99,102,241,0.06);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
 }
+.dash-input::placeholder { color: var(--dash-text-muted); }
+.dash-input:disabled { opacity: 0.45; cursor: not-allowed; }
 
+/* ── Button ── */
 .dash-btn {
-  background-color: var(--dash-primary);
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
   color: white;
-  padding: 0.75rem 1.25rem;
-  border-radius: 10px;
+  padding: 0.6rem 1.1rem;
+  border-radius: 8px;
   border: none;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 0.875rem;
   cursor: pointer;
+  font-family: var(--font-main);
   transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(99,102,241,0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  white-space: nowrap;
 }
-
-.dash-btn:hover {
-  background-color: var(--dash-primary-hover);
+.dash-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 18px rgba(99,102,241,0.45);
+  background: linear-gradient(135deg, #7c7ff5 0%, #6366f1 100%);
 }
+.dash-btn:active:not(:disabled) { transform: translateY(0); }
+.dash-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
-/* Table Style */
+/* ── Table ── */
 .dash-table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
 }
-
 .dash-table th {
-  padding: 1rem;
-  border-bottom: 1px solid var(--dash-border);
-  color: var(--dash-text-muted);
-  font-weight: 600;
-  font-size: 0.85rem;
+  padding: 0.7rem 1rem;
+  font-size: 0.68rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.dash-table td {
-  padding: 1rem;
+  letter-spacing: 0.1em;
+  color: var(--dash-text-muted);
+  background: rgba(255,255,255,0.02);
   border-bottom: 1px solid var(--dash-border);
-  font-size: 0.9rem;
-  color: var(--dash-text);
+  white-space: nowrap;
 }
-
-.dash-table tr:hover td {
-  background-color: rgba(255,255,255,0.02);
+.dash-table th:first-child { padding-left: 1.25rem; border-radius: 0; }
+.dash-table td {
+  padding: 0.9rem 1rem;
+  font-size: 0.875rem;
+  color: var(--dash-text-soft);
+  border-bottom: 1px solid rgba(24,34,54,0.7);
 }
+.dash-table td:first-child { padding-left: 1.25rem; }
+.dash-table tr:last-child td { border-bottom: none; }
+.dash-table tr:hover td { background: rgba(255,255,255,0.018); }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
+/* ── Nav Sidebar Item ── */
+.dash-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem 0.875rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--dash-text-muted);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  position: relative;
+  cursor: pointer;
+  border: none;
   background: transparent;
+  width: 100%;
+  text-align: left;
+}
+.dash-nav-item:hover {
+  background: rgba(255,255,255,0.045);
+  color: var(--dash-text-soft);
+}
+.dash-nav-item.active {
+  background: linear-gradient(90deg, rgba(99,102,241,0.18) 0%, rgba(99,102,241,0.04) 100%);
+  color: white;
+  font-weight: 700;
+  border-left: 2px solid var(--dash-primary);
+  padding-left: calc(0.875rem - 2px);
+}
+.dash-nav-item.active .dash-nav-icon { color: var(--dash-primary); }
+.dash-nav-icon { flex-shrink: 0; }
+
+/* ── Nav Section Label ── */
+.dash-nav-label {
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dash-text-muted);
+  padding: 0 0.875rem;
+  margin: 0.875rem 0 0.35rem;
+  opacity: 0.6;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 9999px;
+/* ── Stat Card Premium ── */
+.dash-stat-card {
+  background: var(--dash-card);
+  border: 1px solid var(--dash-border);
+  border-radius: 14px;
+  padding: 1.25rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  transition: all 0.2s ease;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+.dash-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--dash-stat-accent, var(--dash-primary));
+  opacity: 0.8;
+}
+.dash-stat-card:hover {
+  border-color: rgba(99,102,241,0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.4);
 }
 
-.dashboard-wrapper ::-webkit-scrollbar-thumb {
-  background: #374151;
+/* ── Badge ── */
+.dash-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
 }
+.dash-badge-success { background: var(--dash-success-glow); color: #4ade80; }
+.dash-badge-warning { background: rgba(245,158,11,0.12); color: #fbbf24; }
+.dash-badge-danger  { background: var(--dash-danger-glow); color: #f87171; }
+.dash-badge-primary { background: var(--dash-primary-glow); color: #a5b4fc; }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #1e2d47; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #2d4060; }
+
+.dash-scroll::-webkit-scrollbar-thumb { background: #1a2640; }
+
+/* ── Block Editor Layout ── */
+.wp-editor-grid { display: grid; grid-template-columns: 1fr 300px; gap: 1.5rem; align-items: start; }
+@media (max-width: 900px) {
+  .wp-editor-grid { grid-template-columns: 1fr !important; }
+  .wp-editor-grid > *:last-child { position: static !important; }
 }
 
 /* Animations for Public Views */
@@ -486,7 +593,7 @@ a {
     gap: 1.25rem;
   }
   .news-side-card {
-    flex: none;
+    flex: 1;
   }
 }
 
@@ -663,7 +770,7 @@ a {
   gap: 0.5rem;
   padding: 0.6rem 1.25rem;
   font-size: 0.85rem;
-  border-radius: 9999px;
+  border-radius: 10px;
   align-items: center;
   background-color: var(--primary);
   color: white;
@@ -681,7 +788,7 @@ a {
 @media (max-width: 767px) {
   .header-cta {
     padding: 0.6rem;
-    border-radius: 50%;
+    border-radius: 8px;
     gap: 0;
   }
   .desktop-btn-text {
@@ -698,5 +805,227 @@ a {
   }
 }
 
+/* ── MOBILE RESPONSIVE ── */
+/* Destination detail page grid */
+.detail-grid {
+  grid-template-columns: 1fr 360px;
+}
+@media (max-width: 900px) {
+  .detail-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Page hero default min-height (desktop) */
+.page-hero-inner {
+  min-height: 380px;
+}
+
+/* Destination side arrows hidden by default (desktop) */
+.dest-arrow-side {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  /* Section spacing reduction */
+  .home-sections {
+    gap: 3rem !important;
+  }
+
+  /* Container tighter on small screens */
+  .container {
+    padding: 0 1rem;
+  }
+
+  /* Section padding */
+  section {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+
+  /* Grids collapse to 1 col */
+  .grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Events section grid */
+  .events-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Testimonials grid */
+  .testimonials-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* News featured card height reduce on mobile */
+  .news-featured-card {
+    height: 280px !important;
+    min-height: 280px !important;
+  }
+
+  /* News side image smaller */
+  .news-side-img-container {
+    width: 90px !important;
+    height: 70px !important;
+  }
+
+  /* News side title smaller */
+  .news-side-title {
+    font-size: 0.85rem !important;
+  }
+
+  /* Callout section padding & text */
+  .callout-inner {
+    padding: 2.5rem 1.5rem !important;
+    gap: 1rem !important;
+  }
+  .callout-inner p {
+    font-size: 0.875rem !important;
+  }
+
+  /* Gallery reduce card height */
+  .marquee-track-left > div,
+  .marquee-track-right > div {
+    height: 160px !important;
+  }
+
+  /* PidatoSection */
+  .speech-card {
+    min-height: unset !important;
+  }
+
+  /* ── Home page mobile polish ─────────────────────────────────── */
+
+  /* Section headings shrink uniformly */
+  .section-heading {
+    font-size: 1.5rem !important;
+    line-height: 1.25 !important;
+  }
+
+  /* Small pill badges */
+  .hero-badge,
+  .section-badge {
+    font-size: 0.7rem !important;
+    padding: 0.3rem 0.85rem !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  /* Home hero: cut the huge vertical padding & title size */
+  .home-hero-inner {
+    padding: 4.5rem 0 4rem 0 !important;
+  }
+  .home-hero-title {
+    font-size: 1.65rem !important;
+    line-height: 1.25 !important;
+  }
+
+  /* Buttons (CTA) consistent + smaller on mobile */
+  .btn,
+  .cta-btn {
+    padding: 0.7rem 1.4rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Destination section header: stack & center on mobile */
+  .dest-section-header {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 0.5rem !important;
+  }
+  /* Reset child flex-basis so they don't add 300px/400px vertical space */
+  .dest-section-header > div {
+    flex: unset !important;
+    width: 100% !important;
+  }
+
+  /* Bottom bar: center lone button when arrows are hidden */
+  .dest-bottom-bar {
+    justify-content: center !important;
+  }
+
+  /* Destination cards a touch shorter on phones */
+  .dest-card {
+    min-height: 300px !important;
+  }
+
+  /* Desktop bottom arrows: hide on mobile */
+  .dest-arrows-desktop {
+    display: none !important;
+  }
+
+  /* Mobile side arrows: show & position on sides of carousel */
+  .dest-arrow-side {
+    display: flex !important;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #065f46;
+  }
+  .dest-arrow-side-prev { left: 4px; }
+  .dest-arrow-side-next { right: 4px; }
+
+  /* Page hero (berita/direktori/kontak) — height & text on mobile */
+  .page-hero-inner {
+    min-height: 300px;
+  }
+  .page-hero-inner .container {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+  .page-hero-inner h1 {
+    font-size: 1.35rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 0.75rem !important;
+  }
+  .page-hero-inner p {
+    font-size: 0.82rem !important;
+    line-height: 1.55 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+
+  /* Destinations header stack */
+  .destinations-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  /* Statistics stat cards: 2 columns on mobile */
+  .stat-cards-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
 
 
+
+
+/* Carousel pejabat (profil) — sembunyikan scrollbar */
+.pejabat-carousel { -ms-overflow-style: none; scrollbar-width: none; }
+.pejabat-carousel::-webkit-scrollbar { display: none; }
+
+/* Kartu pejabat — garis 1px abu mengelilingi, hover jadi hijau */
+.pejabat-card {
+  border: 1px solid #d8dee6;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.10);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.pejabat-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.13);
+}

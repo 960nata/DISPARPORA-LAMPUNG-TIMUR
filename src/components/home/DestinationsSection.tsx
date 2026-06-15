@@ -9,7 +9,7 @@ const defaultHighlights = [
   {
     name: "Way Kambas",
     category: "Wisata Alam",
-    image: "https://images.unsplash.com/photo-1589656966895-2f33e7653819?auto=format&fit=crop&w=800&q=80",
+    image: "/Gallery/Taman Nasional Way Kambas.avif",
     subTitle: "Suaka Margasatwa",
     rating: "4.9 (2.1k)",
     location: "Labuhan Ratu",
@@ -27,7 +27,7 @@ const defaultHighlights = [
   {
     name: "Pugung Raharjo",
     category: "Wisata Budaya",
-    image: "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80",
+    image: "/Gallery/pugung_raharjo.avif",
     subTitle: "Situs Purbakala",
     rating: "4.7 (950)",
     location: "Sekampung Udik",
@@ -36,7 +36,7 @@ const defaultHighlights = [
   {
     name: "Danau Kemuning",
     category: "Wisata Buatan",
-    image: "/danau_kemuning.png",
+    image: "/danau_kemuning.avif",
     subTitle: "Telaga Rekreasi Asri",
     rating: "4.7 (620)",
     location: "Bandar Sribhawono",
@@ -45,7 +45,7 @@ const defaultHighlights = [
   {
     name: "Pantai Kerang Mas",
     category: "Wisata Alam",
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+    image: "/Gallery/Pantai-Kerang-Mas-Labuhan-Maringgai-Lampung-Timur-desmonjosbur-1602765547466.avif",
     subTitle: "Wisata Pesisir",
     rating: "4.8 (1.5k)",
     location: "Labuhan Maringgai",
@@ -54,7 +54,7 @@ const defaultHighlights = [
   {
     name: "Desa Wisata Wana",
     category: "Wisata Budaya",
-    image: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80",
+    image: "/Gallery/nuwo_sesat.avif",
     subTitle: "Desa Adat Melinting",
     rating: "4.6 (780)",
     location: "Melinting",
@@ -73,26 +73,7 @@ export default function DestinationsSection() {
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [isResetting, setIsResetting] = useState(false);
 
-  const cardVariants = {
-    hidden: (index: number) => {
-      const isInitiallyVisible = index >= N && index < N + visibleCount;
-      return isInitiallyVisible ? { opacity: 0, y: 50 } : { opacity: 1, y: 0 };
-    },
-    visible: (index: number) => {
-      const isInitiallyVisible = index >= N && index < N + visibleCount;
-      return {
-        opacity: 1,
-        y: 0,
-        transition: isInitiallyVisible 
-          ? {
-              delay: (index - N) * 0.1,
-              duration: 0.6,
-              ease: [0.25, 0.8, 0.25, 1] as [number, number, number, number]
-            }
-          : { duration: 0 }
-      };
-    }
-  };
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -105,14 +86,16 @@ export default function DestinationsSection() {
         setVisibleCount(4);
       } else if (w >= 768) {
         setVisibleCount(3);
-      } else if (w >= 480) {
+      } else if (w >= 600) {
         setVisibleCount(2);
       } else {
-        setVisibleCount(1);
+        // Mobile: 1 full card + ~1/3 of the next card peeking so it reads as swipeable
+        setVisibleCount(1.35);
       }
 
-      if (w < 640) {
-        setPeekWidth("calc(100% - 3.5rem)");
+      if (w < 600) {
+        // Near full-width viewport, left-aligned card with peek on the right
+        setPeekWidth("calc(100% - 1.5rem)");
       } else if (w < 1024) {
         setPeekWidth("calc(100% - 7rem)");
       } else {
@@ -166,31 +149,40 @@ export default function DestinationsSection() {
 
   return (
     <section id="destinasi" style={{ padding: "5rem 0", backgroundColor: "white", overflow: "hidden" }}>
-      <motion.div 
-        className="container" 
-        style={{ marginBottom: "2rem" }}
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, margin: "-100px" }}
-        transition={{ duration: 0.6 }}
-      >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "2rem" }}>
+      <div className="container" style={{ marginBottom: "2rem" }}>
+        <div className="dest-section-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "2rem" }}>
           <div style={{ flex: "1 1 300px" }}>
-            <h2 style={{ fontSize: "2.5rem", fontWeight: 800, fontFamily: "var(--font-main)", letterSpacing: "-0.02em" }}>
+            <h2 className="section-heading" style={{ fontSize: "2.5rem", fontWeight: 800, fontFamily: "var(--font-main)", letterSpacing: "-0.02em" }}>
               Destinasi Terpopuler
             </h2>
           </div>
-          <div style={{ flex: "2 1 400px" }}>
+          <div className="dest-section-desc" style={{ flex: "2 1 400px" }}>
             <p style={{ fontSize: "1.05rem", color: "var(--text-secondary)", lineHeight: "1.7", margin: 0 }}>
               Jelajahi pilihan destinasi wisata terpopuler yang menjadi ikon keindahan alam dan budaya Lampung Timur.
             </p>
           </div>
         </div>
-      </motion.div>
+      </div>
 
-      <div style={{ width: "100%", overflow: "hidden", padding: "1rem 0" }}>
+      <div className="dest-carousel-wrap" style={{ width: "100%", overflow: "hidden", padding: "1rem 0", position: "relative" }}>
+        {/* Mobile-only side arrows — overlaid on the carousel */}
+        <button
+          className="dest-arrow-side dest-arrow-side-prev"
+          onClick={handlePrev}
+          aria-label="Sebelumnya"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        </button>
+        <button
+          className="dest-arrow-side dest-arrow-side-next"
+          onClick={handleNext}
+          aria-label="Berikutnya"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+
         <div style={{ width: peekWidth, margin: "0 auto", overflow: "visible" }}>
-          <div 
+          <div
             style={{ 
               display: "flex", 
               gap: "1.5rem", 
@@ -201,11 +193,7 @@ export default function DestinationsSection() {
             {extendedHighlights.map((item, index) => (
               <motion.div
                 key={`${item.name}-${index}`}
-                custom={index}
-                variants={cardVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, margin: "-80px" }}
+                className="dest-card"
                 whileHover={{ y: -6, transition: { duration: 0.2 } }}
                 style={{
                   position: "relative",
@@ -281,47 +269,24 @@ export default function DestinationsSection() {
       </div>
 
       <div className="container" style={{ marginTop: "2rem" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Link href="/direktori" className="btn btn-primary" style={{ padding: "0.75rem 2rem", borderRadius: "9999px", backgroundColor: "#0f172a", border: "none" }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#1e293b"} onMouseOut={(e) => e.currentTarget.style.backgroundColor = "#0f172a"}>
+        <div className="dest-bottom-bar" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Link href="/direktori" className="btn btn-primary cta-btn" style={{ padding: "0.75rem 2rem", borderRadius: "12px", border: "none" }}>
             Lihat semua wisata
           </Link>
-          
-          <div style={{ display: "flex", gap: "0.75rem" }}>
-            <button 
+
+          {/* Desktop-only bottom arrows */}
+          <div className="dest-arrows-desktop" style={{ display: "flex", gap: "0.75rem" }}>
+            <button
               onClick={handlePrev}
-              style={{
-                width: "44px",
-                height: "44px",
-                borderRadius: "50%",
-                border: "1px solid var(--border)",
-                backgroundColor: "white",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                color: "var(--text-secondary)",
-                transition: "background-color 0.2s"
-              }}
+              style={{ width: "44px", height: "44px", borderRadius: "50%", border: "1px solid var(--border)", backgroundColor: "white", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "var(--text-secondary)", transition: "background-color 0.2s" }}
               onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#f1f5f9"}
               onMouseOut={(e) => e.currentTarget.style.backgroundColor = "white"}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
             </button>
-            <button 
+            <button
               onClick={handleNext}
-              style={{
-                width: "44px",
-                height: "44px",
-                borderRadius: "50%",
-                border: "1px solid var(--border)",
-                backgroundColor: "white",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                color: "var(--text-secondary)",
-                transition: "background-color 0.2s"
-              }}
+              style={{ width: "44px", height: "44px", borderRadius: "50%", border: "1px solid var(--border)", backgroundColor: "white", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "var(--text-secondary)", transition: "background-color 0.2s" }}
               onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#f1f5f9"}
               onMouseOut={(e) => e.currentTarget.style.backgroundColor = "white"}
             >

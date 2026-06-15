@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Search, Calendar, User, ArrowRight, BookOpen, Compass, RefreshCw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { fetchWithRetry } from "@/lib/api";
 
 interface Post {
   id: string;
@@ -26,7 +27,7 @@ export default function NewsPage() {
   const itemsPerPage = 6;
 
   useEffect(() => {
-    fetch("/api/posts")
+    fetchWithRetry("/api/posts")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -78,17 +79,33 @@ export default function NewsPage() {
   }, [search, selectedTag]);
 
   return (
-    <div className="container" style={{ padding: "3rem 1.5rem", minHeight: "80vh" }}>
-      {/* Title */}
-      <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-        <span className="badge badge-success" style={{ marginBottom: "0.75rem" }}>Kabar & Cerita</span>
-        <h2 style={{ fontSize: "2.5rem", fontWeight: 800, fontFamily: "var(--font-serif)" }}>Portal Berita Pariwisata</h2>
-        <div style={{ width: "80px", height: "4px", backgroundColor: "var(--primary)", margin: "1rem auto 1.5rem auto", borderRadius: "2px" }} />
-        <p style={{ maxWidth: "600px", margin: "0 auto" }}>
-          Ikuti liputan agenda pariwisata, pengumuman kedinasan, agenda event, dan eksplorasi desa wisata di Kabupaten Lampung Timur.
-        </p>
-      </div>
+    <div style={{ paddingBottom: "5rem" }}>
+      {/* ── HERO ── */}
+      <section style={{ width: "100%", padding: "14px", boxSizing: "border-box", marginBottom: "3rem" }}>
+        <div className="page-hero-inner" style={{
+          position: "relative",
+          backgroundImage: "linear-gradient(to right, rgba(5, 46, 35, 0.95) 0%, rgba(6, 78, 59, 0.75) 55%, rgba(6, 78, 59, 0.2) 100%), url('/Gallery/5.avif')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          display: "flex",
+          alignItems: "center",
+          borderRadius: "24px",
+          overflow: "hidden",
+        }}>
+          <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+          <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "4rem", paddingBottom: "4rem" }}>
+            <h1 style={{ fontSize: "clamp(1.75rem, 3.2vw, 2.5rem)", fontWeight: 900, color: "white", lineHeight: 1.25, maxWidth: "580px", letterSpacing: "-0.02em", textShadow: "0 2px 12px rgba(0,0,0,0.25)", margin: "0 0 1.25rem 0" }}>
+              Portal Berita Pariwisata
+            </h1>
+            <p style={{ fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)", color: "#d1fae5", maxWidth: "700px", lineHeight: 1.75, margin: 0 }}>
+              Ikuti liputan terkini seputar agenda pariwisata, pengumuman resmi kedinasan, jadwal event budaya, kisah destinasi unggulan, pembinaan kepemudaan dan olahraga, serta eksplorasi potensi desa wisata di seluruh penjuru Kabupaten Lampung Timur.
+            </p>
+          </div>
+        </div>
+      </section>
 
+      <div className="container" style={{ minHeight: "60vh" }}>
       {/* Filter and Search Controls */}
       <div style={{
         backgroundColor: "white",
@@ -293,6 +310,7 @@ export default function NewsPage() {
           </button>
         </div>
       )}
+      </div>
     </div>
   );
 }
