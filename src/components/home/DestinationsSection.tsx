@@ -238,7 +238,7 @@ export default function DestinationsSection() {
                     <p style={{ margin: "0 0 6px", fontSize: "0.78rem", color: "rgba(255,255,255,0.75)" }}>
                       {item.subTitle}
                     </p>
-                    <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "14px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
                       <span style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.75rem", color: "rgba(255,255,255,0.85)" }}>
                         <Star size={12} fill="#fbbf24" color="#fbbf24" /> {item.rating}
                       </span>
@@ -246,16 +246,6 @@ export default function DestinationsSection() {
                         <MapPin size={12} style={{ color: "#f87171" }} /> {item.location}
                       </span>
                     </div>
-                    <Link href={item.link} className="dest-see-overlay" style={{
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      padding: "11px 14px", borderRadius: "14px",
-                      background: "#fff", color: "#0f172a",
-                      fontWeight: 700, fontSize: "0.875rem", textDecoration: "none",
-                      boxShadow: "0 4px 16px rgba(0,0,0,0.25)",
-                      transition: "background 0.2s ease",
-                    }}>
-                      Jelajahi
-                    </Link>
                   </div>
 
                   {/* ── HOVER CONTENT (white area below) ── */}
