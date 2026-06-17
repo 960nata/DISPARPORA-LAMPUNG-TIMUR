@@ -142,9 +142,12 @@ if (isPgConfigured) {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { PrismaClient } = require("@prisma/client");
-    prismaClient = new PrismaClient();
-  } catch {
-    console.warn("Prisma client not found — run `npx prisma generate`. Falling back to JSON db.");
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { PrismaPg } = require("@prisma/adapter-pg");
+    const adapter = new PrismaPg({ connectionString: process.env.DIRECT_URL ?? process.env.DATABASE_URL });
+    prismaClient = new PrismaClient({ adapter });
+  } catch (e) {
+    console.warn("Prisma client init failed — falling back to JSON db.", e);
   }
 }
 
@@ -874,8 +877,8 @@ class JsonDbEngine {
 }
 
 // Instantiate Database Engine depending on configuration
-export const db = isPgConfigured ? prismaClient : new JsonDbEngine();
-export const usingMockDb = !isPgConfigured;
+export const db = (isPgConfigured && prismaClient) ? prismaClient : new JsonDbEngine();
+export const usingMockDb = !(isPgConfigured && prismaClient);
 export const BupatiSpeechData = {
   name: "M. Dawam Rahardjo",
   title: "Bupati Lampung Timur",
