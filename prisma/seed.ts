@@ -4,10 +4,22 @@
  */
 
 import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 import * as fs from "fs";
 import * as path from "path";
 
-const prisma = new PrismaClient();
+// Load .env.local for DATABASE_URL
+const envPath = path.join(process.cwd(), ".env.local");
+if (fs.existsSync(envPath)) {
+  for (const line of fs.readFileSync(envPath, "utf-8").split("\n")) {
+    const m = line.match(/^([^#=]+)=(.*)$/);
+    if (m) process.env[m[1].trim()] = m[2].trim();
+  }
+}
+
+const connectionString = process.env.DIRECT_URL ?? process.env.DATABASE_URL ?? "";
+const adapter = new PrismaPg({ connectionString });
+const prisma = new PrismaClient({ adapter });
 
 const DB_PATH = path.join(process.cwd(), "src/data/db_store.json");
 
