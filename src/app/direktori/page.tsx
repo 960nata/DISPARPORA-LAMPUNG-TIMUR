@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Search, MapPin, Phone, Link2, Eye, Compass, TreePine, Milestone, Landmark, Hotel, Utensils, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, MapPin, Heart, ChevronRight as ChevronRightIcon, Compass, TreePine, Milestone, Landmark, Hotel, Utensils, ChevronLeft, ChevronRight } from "lucide-react";
 import tourismData from "@/data/tourism.json";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -23,6 +23,7 @@ function DirectoryContent() {
   const [selectedCategory, setSelectedCategory] = useState("Semua");
   const [selectedKecamatan, setSelectedKecamatan] = useState("Semua");
   const [currentPage, setCurrentPage] = useState(1);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
   const itemsPerPage = 12;
 
   // Sync search query from URL parameter if it exists
@@ -253,151 +254,190 @@ function DirectoryContent() {
             }}
           >
             <AnimatePresence mode="popLayout">
-              {currentItems.map((item: any, index) => (
-                <motion.div
-                  key={item.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.3, delay: (index % 6) * 0.05 }}
-                  className="card"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    minHeight: "340px",
-                    position: "relative"
-                  }}
-                >
-                  {/* Card Image */}
-                  {(item as any).image && (
-                    <div style={{ margin: "-1.5rem -1.5rem 1.25rem -1.5rem", height: "180px", overflow: "hidden", borderRadius: "var(--border-radius) var(--border-radius) 0 0" }}>
-                      <img
-                        src={(item as any).image}
-                        alt={item.name}
-                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
-                      />
-                    </div>
-                  )}
+              {currentItems.map((item: any, index) => {
+                const isHovered = hoveredId === item.id;
+                const catColor =
+                  item.displayCategory === "Wisata Alam"    ? "#059669" :
+                  item.displayCategory === "Wisata Buatan"  ? "#0891b2" :
+                  item.displayCategory === "Wisata Budaya"  ? "#7c3aed" :
+                  item.displayCategory === "Akomodasi"      ? "#2563eb" : "#db2777";
+                const catBg =
+                  item.displayCategory === "Wisata Alam"    ? "rgba(5,150,105,.15)" :
+                  item.displayCategory === "Wisata Buatan"  ? "rgba(8,145,178,.15)" :
+                  item.displayCategory === "Wisata Budaya"  ? "rgba(124,58,237,.15)" :
+                  item.displayCategory === "Akomodasi"      ? "rgba(37,99,235,.15)" : "rgba(219,39,119,.15)";
 
-                  <div>
-                    {/* Card Header stats */}
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1rem" }}>
-                      <span className="badge badge-success" style={{
-                        backgroundColor: 
-                          item.displayCategory === "Wisata Alam" ? "var(--primary-light)" :
-                          item.displayCategory === "Wisata Buatan" ? "var(--accent-light)" :
-                          item.displayCategory === "Wisata Budaya" ? "#f3e8ff" :
-                          item.displayCategory === "Akomodasi" ? "#dbeafe" : "#fce7f3",
-                        color:
-                          item.displayCategory === "Wisata Alam" ? "var(--primary)" :
-                          item.displayCategory === "Wisata Buatan" ? "var(--accent)" :
-                          item.displayCategory === "Wisata Budaya" ? "#8b5cf6" :
-                          item.displayCategory === "Akomodasi" ? "#2563eb" : "#db2777"
-                      }}>
-                        {item.displayCategory}
-                      </span>
-                      {item.hasOwnProperty("active") && (
-                        <span className={`badge ${item.active ? "badge-success" : "badge-danger"}`}>
-                          {item.active ? "Aktif" : "Non-Aktif"}
-                        </span>
+                const metaItems =
+                  item.displayCategory === "Akomodasi" ? [
+                    { label: "Klasifikasi", val: item.classification || "-" },
+                    { label: "Kamar", val: item.rooms ? `${item.rooms} Kamar` : "-" },
+                    { label: "Kecamatan", val: item.kecamatan },
+                  ] : item.displayCategory === "Kuliner" ? [
+                    { label: "Jenis", val: item.food_type || "-" },
+                    { label: "Kapasitas", val: item.capacity ? `${item.capacity} Kursi` : "-" },
+                    { label: "Kecamatan", val: item.kecamatan },
+                  ] : [
+                    { label: "Kategori", val: item.displayCategory },
+                    { label: "Kecamatan", val: item.kecamatan },
+                    { label: "Fasilitas", val: item.facilities?.length ? `${item.facilities.length} tersedia` : "-" },
+                  ];
+
+                return (
+                  <motion.div
+                    key={item.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3, delay: (index % 6) * 0.05 }}
+                    onMouseEnter={() => setHoveredId(item.id)}
+                    onMouseLeave={() => setHoveredId(null)}
+                    style={{
+                      position: "relative",
+                      borderRadius: "22px",
+                      overflow: "hidden",
+                      height: "380px",
+                      boxShadow: isHovered
+                        ? "0 20px 50px -12px rgba(0,0,0,0.35)"
+                        : "0 4px 20px -4px rgba(0,0,0,0.12)",
+                      transition: "box-shadow 0.35s ease, transform 0.35s ease",
+                      transform: isHovered ? "translateY(-6px)" : "translateY(0)",
+                      cursor: "pointer",
+                      background: "#fff",
+                    }}
+                  >
+                    {/* ── IMAGE ── */}
+                    <div style={{
+                      position: "absolute",
+                      inset: 0,
+                      transition: "all 0.45s cubic-bezier(.4,0,.2,1)",
+                      height: isHovered ? "100%" : "58%",
+                    }}>
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                          onError={(e) => { (e.target as HTMLImageElement).src = "/Gallery/hero1.avif"; }}
+                        />
+                      ) : (
+                        <div style={{ width: "100%", height: "100%", background: `linear-gradient(135deg, ${catColor}33, ${catColor}88)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <Compass size={48} style={{ color: catColor, opacity: 0.5 }} />
+                        </div>
                       )}
+
+                      {/* Hover gradient overlay */}
+                      <div style={{
+                        position: "absolute", inset: 0,
+                        background: isHovered
+                          ? "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%)"
+                          : "linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.18) 100%)",
+                        transition: "background 0.4s ease",
+                      }} />
                     </div>
 
-                    {/* Name */}
-                    <h3 style={{ fontSize: "1.1rem", fontWeight: 800, marginBottom: "0.5rem" }}>
-                      {item.name || "(Destinasi Tanpa Nama)"}
-                    </h3>
+                    {/* ── HEART BUTTON ── */}
+                    <button style={{
+                      position: "absolute", top: "14px", right: "14px", zIndex: 10,
+                      width: "36px", height: "36px", borderRadius: "50%",
+                      background: "rgba(255,255,255,0.92)", border: "none",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                      backdropFilter: "blur(6px)",
+                    }} onClick={e => e.preventDefault()}>
+                      <Heart size={16} style={{ color: "#ef4444" }} />
+                    </button>
 
-                    {/* Address details */}
-                    <div style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", marginBottom: "0.75rem", color: "var(--text-secondary)" }}>
-                      <MapPin size={16} style={{ color: "var(--text-muted)", flexShrink: 0, marginTop: "2px" }} />
-                      <span style={{ fontSize: "0.8rem", lineHeight: "1.4" }}>
-                        {item.address || "Kecamatan " + item.kecamatan + ", Lampung Timur"}
-                      </span>
+                    {/* ── HOVER STATE: overlay content ── */}
+                    <div style={{
+                      position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 5,
+                      padding: "20px",
+                      opacity: isHovered ? 1 : 0,
+                      transform: isHovered ? "translateY(0)" : "translateY(10px)",
+                      transition: "all 0.35s ease",
+                      pointerEvents: isHovered ? "auto" : "none",
+                    }}>
+                      <span style={{
+                        display: "inline-block", padding: "3px 10px", borderRadius: "99px",
+                        background: catBg, color: catColor,
+                        fontSize: "0.7rem", fontWeight: 700, marginBottom: "8px",
+                        backdropFilter: "blur(4px)",
+                        border: `1px solid ${catColor}40`,
+                      }}>{item.displayCategory}</span>
+                      <h3 style={{ margin: "0 0 4px", fontSize: "1.15rem", fontWeight: 800, color: "#fff", lineHeight: 1.25 }}>
+                        {item.name}
+                      </h3>
+                      <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "16px" }}>
+                        <MapPin size={13} style={{ color: "rgba(255,255,255,0.7)" }} />
+                        <span style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.75)" }}>
+                          Kec. {item.kecamatan}, Lampung Timur
+                        </span>
+                      </div>
+                      <Link href={`/direktori/${item.id}`} style={{
+                        display: "flex", alignItems: "center", justifyContent: "space-between",
+                        padding: "11px 16px", borderRadius: "14px",
+                        background: "#fff", color: "#0f172a",
+                        fontWeight: 700, fontSize: "0.875rem", textDecoration: "none",
+                        boxShadow: "0 4px 14px rgba(0,0,0,0.2)",
+                      }}>
+                        <span>Lihat Detail</span>
+                        <div style={{ width: "28px", height: "28px", borderRadius: "50%", background: catColor, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <ChevronRightIcon size={15} style={{ color: "#fff" }} />
+                        </div>
+                      </Link>
                     </div>
 
-                    {/* Dynamic info depending on type */}
-                    {/* Hotel specific */}
-                    {item.displayCategory === "Akomodasi" && (
-                      <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", display: "flex", flexDirection: "column", gap: "0.25rem", margin: "0.75rem 0", padding: "0.5rem", backgroundColor: "var(--bg-primary)", borderRadius: "8px" }}>
-                        <div><strong>Klasifikasi:</strong> {item.classification}</div>
-                        <div><strong>Kapasitas Kamar:</strong> {item.rooms} Kamar</div>
-                      </div>
-                    )}
-
-                    {/* Culinary specific */}
-                    {item.displayCategory === "Kuliner" && (
-                      <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", display: "flex", flexDirection: "column", gap: "0.25rem", margin: "0.75rem 0", padding: "0.5rem", backgroundColor: "var(--bg-primary)", borderRadius: "8px" }}>
-                        <div><strong>Jenis Kuliner:</strong> {item.food_type}</div>
-                        <div><strong>Kapasitas Kursi/Meja:</strong> {item.capacity} Kursi</div>
-                      </div>
-                    )}
-
-                    {/* Facilities specific */}
-                    {(item as any).facilities && (item as any).facilities.length > 0 && (
-                      <div style={{ marginTop: "1rem" }}>
-                        <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.25rem" }}>Fasilitas Pendukung:</div>
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.25rem" }}>
-                          {(item as any).facilities.slice(0, 4).map((fac: string, idx: number) => (
-                            <span key={idx} style={{
-                              fontSize: "0.7rem",
-                              backgroundColor: "var(--bg-primary)",
-                              color: "var(--text-secondary)",
-                              padding: "0.15rem 0.4rem",
-                              borderRadius: "4px",
-                              border: "1px solid var(--border)"
-                            }}>
-                              {fac}
-                            </span>
-                          ))}
-                          {(item as any).facilities.length > 4 && (
-                            <span style={{ fontSize: "0.7rem", color: "var(--primary)", fontWeight: 700 }}>
-                              +{(item as any).facilities.length - 4} lainnya
-                            </span>
-                          )}
+                    {/* ── NORMAL STATE: white content area ── */}
+                    <div style={{
+                      position: "absolute", bottom: 0, left: 0, right: 0,
+                      height: "44%",
+                      background: "#fff",
+                      borderRadius: "0 0 22px 22px",
+                      padding: "16px 18px 18px",
+                      display: "flex", flexDirection: "column", justifyContent: "space-between",
+                      opacity: isHovered ? 0 : 1,
+                      transition: "opacity 0.25s ease",
+                      pointerEvents: isHovered ? "none" : "auto",
+                      zIndex: 4,
+                    }}>
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
+                          <span style={{ fontSize: "0.7rem", fontWeight: 700, color: catColor, background: catBg, padding: "2px 9px", borderRadius: "99px", border: `1px solid ${catColor}30` }}>
+                            {item.displayCategory}
+                          </span>
+                        </div>
+                        <h3 style={{ margin: "0 0 3px", fontSize: "1rem", fontWeight: 800, color: "#0f172a", lineHeight: 1.3 }}>
+                          {item.name}
+                        </h3>
+                        <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                          <MapPin size={12} style={{ color: "#94a3b8", flexShrink: 0 }} />
+                          <span style={{ fontSize: "0.75rem", color: "#64748b" }}>Kec. {item.kecamatan}</span>
                         </div>
                       </div>
-                    )}
-                  </div>
 
-                  {/* Card Actions */}
-                  <div style={{ display: "flex", gap: "0.5rem", borderTop: "1px solid var(--border)", paddingTop: "1rem", marginTop: "1.25rem" }}>
-                    {item.map_link ? (
-                      <a
-                        href={item.map_link}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="btn btn-secondary"
-                        style={{ padding: "0.5rem", flex: 1, fontSize: "0.8rem", display: "flex", gap: "0.25rem" }}
-                      >
-                        <Link2 size={14} />
-                        Google Maps
-                      </a>
-                    ) : (
-                      <div
-                        style={{ padding: "0.5rem", flex: 1, fontSize: "0.8rem", color: "var(--text-muted)", display: "flex", gap: "0.25rem", justifyContent: "center", alignItems: "center", border: "1px dashed var(--border)", borderRadius: "8px" }}
-                      >
-                        No Map Link
+                      {/* Meta row */}
+                      <div style={{ display: "flex", gap: "0", borderTop: "1px solid #f1f5f9", paddingTop: "10px", marginTop: "8px" }}>
+                        {metaItems.map((m, i) => (
+                          <div key={i} style={{ flex: 1, textAlign: i === 1 ? "center" : i === 2 ? "right" : "left" }}>
+                            <div style={{ fontSize: "0.65rem", color: "#94a3b8", fontWeight: 600, marginBottom: "2px" }}>{m.label}</div>
+                            <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "#334155", lineHeight: 1.2 }}>{m.val}</div>
+                          </div>
+                        ))}
+                        <Link href={`/direktori/${item.id}`} style={{
+                          display: "flex", alignItems: "center", gap: "6px",
+                          padding: "7px 14px", borderRadius: "10px",
+                          background: catColor, color: "#fff",
+                          fontWeight: 700, fontSize: "0.78rem", textDecoration: "none",
+                          flexShrink: 0, alignSelf: "flex-end", marginLeft: "10px",
+                          whiteSpace: "nowrap",
+                        }}>
+                          Lihat
+                        </Link>
                       </div>
-                    )}
-                    
-                    {/* Only tourism categories have coordinates set */}
-                    {item.lat && item.lng && (
-                      <Link
-                        href={`/peta?id=${item.id}`}
-                        className="btn btn-primary"
-                        style={{ padding: "0.5rem", flex: 1, fontSize: "0.8rem", display: "flex", gap: "0.25rem" }}
-                      >
-                        <Eye size={14} />
-                        Peta Wisata
-                      </Link>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
+                    </div>
+                  </motion.div>
+                );
+              })}
             </AnimatePresence>
           </motion.div>
         )}
