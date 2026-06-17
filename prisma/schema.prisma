@@ -1,5 +1,7 @@
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 generator client {
@@ -7,47 +9,110 @@ generator client {
 }
 
 model User {
-  id       String @id @default(uuid())
-  username String @unique
-  password String
-  name     String
-  role     String // "superadmin", "admin_dinas", "admin_post"
-  posts    Post[]
+  id          String  @id @default(cuid())
+  username    String  @unique
+  password    String
+  name        String
+  role        String
+  permissions String?
+  posts       Post[]
+
+  @@map("users")
 }
 
 model Destination {
-  id             String  @id @default(uuid())
+  id             String  @id @default(cuid())
   name           String
-  category       String // "Wisata Alam", "Wisata Buatan", "Wisata Budaya", "Akomodasi", "Kuliner"
+  category       String
   kecamatan      String
-  address        String
+  address        String?
   lat            Float
   lng            Float
   active         Boolean @default(true)
-  facilities     String // comma-separated
-  contact        String
+  facilities     String?
+  contact        String?
   map_link       String?
-  classification String? // for hotels
-  rooms          Int? // for hotels
-  food_type      String? // for restaurants
-  capacity       Int? // for restaurants
+  classification String?
+  rooms          Int?
+  food_type      String?
+  capacity       Int?
+  imageUrl       String?
+  description    String?
+  slug           String?
+  gallery        Json?
+
+  @@map("destinations")
 }
 
 model Post {
-  id        String   @id @default(uuid())
-  title     String
-  slug      String   @unique
-  content   String
-  imageUrl  String
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
-  createdAt DateTime @default(now())
-  status    String // "draft" or "published"
-  tags      String // comma-separated
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  content     String
+  imageUrl    String
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id])
+  authorName  String?
+  createdAt   DateTime @default(now())
+  status      String
+  tags        String?
+  seoTitle    String?
+  seoDesc     String?
+  publishDate String?
+
+  @@map("posts")
 }
 
 model Partner {
-  id      String @id @default(uuid())
+  id      String @id @default(cuid())
   name    String
   logoUrl String
+
+  @@map("partners")
+}
+
+model GalleryItem {
+  id        String   @id @default(cuid())
+  title     String
+  category  String
+  imageUrl  String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@map("gallery")
+}
+
+model Official {
+  id       String  @id @default(cuid())
+  name     String
+  title    String
+  role     String
+  photoUrl String?
+  order    Int     @default(0)
+
+  @@map("officials")
+}
+
+model Speech {
+  id            String @id @default(cuid())
+  name          String
+  title         String
+  badge         String
+  photoUrl      String
+  welcomeSpeech String
+  order         Int    @default(0)
+
+  @@map("speeches")
+}
+
+model AppEvent {
+  id       String  @id @default(cuid())
+  title    String
+  date     String
+  location String
+  desc     String
+  status   String
+  image    String?
+
+  @@map("events")
 }

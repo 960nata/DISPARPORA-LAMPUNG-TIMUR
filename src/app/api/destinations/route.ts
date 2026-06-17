@@ -32,7 +32,11 @@ export async function POST(request: Request) {
         classification: data.classification || "Non Bintang",
         rooms: data.rooms !== undefined ? Number(data.rooms) : undefined,
         food_type: data.food_type || undefined,
-        capacity: data.capacity !== undefined ? Number(data.capacity) : undefined
+        capacity: data.capacity !== undefined ? Number(data.capacity) : undefined,
+        imageUrl: data.imageUrl || undefined,
+        description: data.description || undefined,
+        slug: data.slug || undefined,
+        gallery: Array.isArray(data.gallery) ? data.gallery : undefined,
       }
     });
 

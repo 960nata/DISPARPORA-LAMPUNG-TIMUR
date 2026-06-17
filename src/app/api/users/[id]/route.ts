@@ -14,7 +14,8 @@ export async function PUT(
       data: {
         name: data.name,
         role: data.role,
-        ...(data.password ? { password: data.password } : {}) // only update password if provided
+        ...(data.password ? { password: data.password } : {}),
+        ...(data.permissions !== undefined ? { permissions: typeof data.permissions === "string" ? data.permissions : JSON.stringify(data.permissions) } : {})
       }
     });
 

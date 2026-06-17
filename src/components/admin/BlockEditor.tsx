@@ -1,429 +1,493 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import Link from "@tiptap/extension-link";
-import TextAlign from "@tiptap/extension-text-align";
-import Placeholder from "@tiptap/extension-placeholder";
+import { useState } from "react";
+import dynamic from "next/dynamic";
 import {
   DndContext, closestCenter, KeyboardSensor, PointerSensor,
-  useSensor, useSensors, DragEndEvent
+  useSensor, useSensors, DragEndEvent,
 } from "@dnd-kit/core";
 import {
   SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy,
-  useSortable, arrayMove
+  useSortable, arrayMove,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import {
-  GripVertical, Plus, Trash2, Copy, Bold, Italic, UnderlineIcon,
-  AlignLeft, AlignCenter, AlignRight, List, ListOrdered, Link2,
-  Image, PlayCircle, Code2, Columns, Monitor, ExternalLink, ChevronUp, ChevronDown,
-  X, Check, LayoutGrid
+  GripVertical, Plus, Trash2, Copy,
+  Image, Code2, Monitor, ExternalLink, ChevronUp, ChevronDown,
+  X, LayoutGrid, Type, Video, Sliders, Images,
 } from "lucide-react";
-import MediaLibrary, { MediaItem } from "./MediaLibrary";
+import type { GalleryItem } from "./widgets/GalleryPickerModal";
 
-/* ── Types ── */
-export type BlockType = "text" | "image" | "carousel" | "grid" | "html" | "youtube" | "iframe";
+const QuillEditorWidget    = dynamic(() => import("./widgets/QuillEditorWidget"),    { ssr: false });
+const GalleryWidget        = dynamic(() => import("./widgets/GalleryWidget"),        { ssr: false });
+const GalleryPickerModal   = dynamic(() => import("./widgets/GalleryPickerModal"),   { ssr: false });
 
-export interface Block {
-  id: string;
-  type: BlockType;
-  data: Record<string, any>;
-}
+/* ─── Types ─────────────────────────────────── */
+export type BlockType =
+  | "text" | "image" | "video" | "carousel" | "grid" | "html" | "gallery"
+  | "youtube" | "iframe"; // legacy
+
+export interface Block { id: string; type: BlockType; data: Record<string, any>; }
 
 function genId() { return `blk_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`; }
 
-/* ── TipTap Text Block ── */
-function TextBlock({ block, onChange }: { block: Block; onChange: (data: any) => void }) {
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Underline,
-      Link.configure({ openOnClick: false }),
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Placeholder.configure({ placeholder: "Tulis konten di sini..." }),
-    ],
-    content: block.data.html || "",
-    onUpdate: ({ editor }) => onChange({ html: editor.getHTML() }),
-  });
+/* ─── Video embed helper ─────────────────────── */
+function getVideoEmbedUrl(url: string) {
+  const yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([^&?/\s]+)/);
+  if (yt) return `https://www.youtube.com/embed/${yt[1]}`;
+  const vm = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
+  return url;
+}
 
-  if (!editor) return null;
+/* ─── Shared label style ─────────────────────── */
+const LBL: React.CSSProperties = {
+  display: "block", fontSize: "0.68rem", fontWeight: 700,
+  color: "var(--dash-text-muted)", textTransform: "uppercase",
+  letterSpacing: "0.08em", marginBottom: "0.35rem",
+};
 
-  const Btn = ({ action, active, title, children }: { action: () => void; active?: boolean; title: string; children: React.ReactNode }) => (
-    <button type="button" onClick={action} title={title} style={{
-      padding: "0.3rem 0.45rem", borderRadius: "6px", border: "none", cursor: "pointer",
-      backgroundColor: active ? "rgba(99,102,241,0.2)" : "transparent",
-      color: active ? "var(--dash-primary)" : "var(--dash-text-muted)",
-    }}>{children}</button>
-  );
+const INPUT: React.CSSProperties = {
+  width: "100%", background: "transparent", border: "none",
+  borderBottom: "1px solid var(--dash-border)", outline: "none",
+  fontSize: "0.85rem", color: "var(--dash-text)", padding: "0.2rem 0",
+  boxSizing: "border-box",
+};
 
-  const addLink = () => {
-    const url = window.prompt("URL link:");
-    if (url) editor.chain().focus().setLink({ href: url }).run();
-  };
-
+/* ─── TEXT ───────────────────────────────────── */
+function TextBlock({ block, onChange }: { block: Block; onChange: (d: any) => void }) {
   return (
-    <div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.15rem", padding: "0.5rem", backgroundColor: "#0f172a", borderRadius: "8px 8px 0 0", borderBottom: "1px solid var(--dash-border)", alignItems: "center" }}>
-        <select onChange={e => {
-          const v = e.target.value;
-          if (v === "p") editor.chain().focus().setParagraph().run();
-          else editor.chain().focus().setHeading({ level: parseInt(v) as 1|2|3 }).run();
-        }} defaultValue="p" style={{ fontSize: "0.75rem", backgroundColor: "var(--dash-card-2)", border: "1px solid var(--dash-border)", color: "white", borderRadius: "6px", padding: "0.2rem 0.4rem", marginRight: "0.25rem", cursor: "pointer" }}>
-          <option value="p">Paragraf</option>
-          <option value="1">Heading 1</option>
-          <option value="2">Heading 2</option>
-          <option value="3">Heading 3</option>
-        </select>
-        <div style={{ width: "1px", height: "20px", backgroundColor: "var(--dash-border)", margin: "0 0.25rem" }} />
-        <Btn action={() => editor.chain().focus().toggleBold().run()} active={editor.isActive("bold")} title="Bold"><Bold size={14} /></Btn>
-        <Btn action={() => editor.chain().focus().toggleItalic().run()} active={editor.isActive("italic")} title="Italic"><Italic size={14} /></Btn>
-        <Btn action={() => editor.chain().focus().toggleUnderline().run()} active={editor.isActive("underline")} title="Underline"><UnderlineIcon size={14} /></Btn>
-        <div style={{ width: "1px", height: "20px", backgroundColor: "var(--dash-border)", margin: "0 0.25rem" }} />
-        <Btn action={() => editor.chain().focus().setTextAlign("left").run()} active={editor.isActive({ textAlign: "left" })} title="Rata Kiri"><AlignLeft size={14} /></Btn>
-        <Btn action={() => editor.chain().focus().setTextAlign("center").run()} active={editor.isActive({ textAlign: "center" })} title="Rata Tengah"><AlignCenter size={14} /></Btn>
-        <Btn action={() => editor.chain().focus().setTextAlign("right").run()} active={editor.isActive({ textAlign: "right" })} title="Rata Kanan"><AlignRight size={14} /></Btn>
-        <div style={{ width: "1px", height: "20px", backgroundColor: "var(--dash-border)", margin: "0 0.25rem" }} />
-        <Btn action={() => editor.chain().focus().toggleBulletList().run()} active={editor.isActive("bulletList")} title="Daftar Bullet"><List size={14} /></Btn>
-        <Btn action={() => editor.chain().focus().toggleOrderedList().run()} active={editor.isActive("orderedList")} title="Daftar Angka"><ListOrdered size={14} /></Btn>
-        <div style={{ width: "1px", height: "20px", backgroundColor: "var(--dash-border)", margin: "0 0.25rem" }} />
-        <Btn action={addLink} active={editor.isActive("link")} title="Sisipkan Link"><Link2 size={14} /></Btn>
-      </div>
-      <div style={{ backgroundColor: "#1a2332", borderRadius: "0 0 8px 8px", minHeight: "120px" }}>
-        <style>{`
-          .tiptap-editor { padding: 0.85rem 1rem; min-height: 120px; outline: none; color: #e2e8f0; font-size: 0.9rem; line-height: 1.7; }
-          .tiptap-editor p { margin: 0 0 0.5rem; } .tiptap-editor h1 { font-size: 1.6rem; font-weight: 800; margin: 0 0 0.5rem; color: white; }
-          .tiptap-editor h2 { font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem; color: white; }
-          .tiptap-editor h3 { font-size: 1.05rem; font-weight: 700; margin: 0 0 0.5rem; color: white; }
-          .tiptap-editor ul, .tiptap-editor ol { padding-left: 1.5rem; margin: 0 0 0.5rem; }
-          .tiptap-editor a { color: var(--dash-primary); text-decoration: underline; }
-          .tiptap-editor p.is-editor-empty:first-child::before { content: attr(data-placeholder); float: left; color: #4b5563; pointer-events: none; height: 0; }
-        `}</style>
-        <EditorContent editor={editor} className="tiptap-editor" />
-      </div>
-    </div>
+    <QuillEditorWidget
+      value={block.data.html || ""}
+      onChange={html => onChange({ html })}
+      placeholder="Tulis konten artikel di sini..."
+      minHeight={220}
+    />
   );
 }
 
-/* ── Image Block ── */
-function ImageBlock({ block, onChange }: { block: Block; onChange: (data: any) => void }) {
-  const [showLib, setShowLib] = useState(false);
+/* ─── IMAGE ──────────────────────────────────── */
+function ImageBlock({ block, onChange }: { block: Block; onChange: (d: any) => void }) {
+  const [showPicker, setShowPicker] = useState(false);
   const d = block.data;
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
       {d.src ? (
-        <div style={{ position: "relative", borderRadius: "8px", overflow: "hidden" }}>
-          <img src={d.src} alt={d.alt || ""} style={{ width: "100%", maxHeight: "320px", objectFit: "cover", display: "block", borderRadius: "8px" }} />
-          <button onClick={() => onChange({ ...d, src: "" })} style={{ position: "absolute", top: "0.5rem", right: "0.5rem", background: "rgba(0,0,0,0.7)", border: "none", borderRadius: "50%", width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "white" }}><X size={14} /></button>
+        <div style={{ position: "relative", borderRadius: "10px", overflow: "hidden", border: "1px solid var(--dash-border)" }}>
+          <img src={d.src} alt={d.alt || ""} style={{ width: "100%", maxHeight: "280px", objectFit: "cover", display: "block" }} />
+          <div style={{ position: "absolute", top: "0.5rem", right: "0.5rem", display: "flex", gap: "0.35rem" }}>
+            <button onClick={() => setShowPicker(true)} style={{ padding: "0.35rem 0.7rem", borderRadius: "7px", background: "rgba(0,0,0,0.6)", border: "none", color: "#fff", fontSize: "0.72rem", fontWeight: 700, cursor: "pointer", backdropFilter: "blur(4px)" }}>Ganti</button>
+            <button onClick={() => onChange({ ...d, src: "" })} style={{ width: "28px", height: "28px", borderRadius: "7px", background: "rgba(220,38,38,0.8)", border: "none", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(4px)" }}><X size={13} /></button>
+          </div>
         </div>
       ) : (
-        <div onClick={() => setShowLib(true)} style={{ border: "2px dashed var(--dash-border)", borderRadius: "8px", padding: "2.5rem", textAlign: "center", cursor: "pointer", color: "var(--dash-text-muted)", backgroundColor: "var(--dash-card-2)" }}>
-          <Image size={28} style={{ marginBottom: "0.5rem" }} />
-          <p style={{ margin: 0, fontSize: "0.85rem" }}>Klik untuk pilih gambar</p>
+        <div onClick={() => setShowPicker(true)} style={{ border: "2px dashed var(--dash-border)", borderRadius: "10px", padding: "2.5rem 1rem", textAlign: "center", cursor: "pointer", color: "var(--dash-text-muted)", background: "var(--dash-surface-hover)", transition: "all 0.15s" }}
+          onMouseOver={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--dash-primary)"; (e.currentTarget as HTMLElement).style.background = "var(--dash-primary-bg)"; }}
+          onMouseOut={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--dash-border)"; (e.currentTarget as HTMLElement).style.background = "var(--dash-surface-hover)"; }}>
+          <Image size={28} style={{ marginBottom: "0.5rem", opacity: 0.45 }} />
+          <p style={{ margin: 0, fontSize: "0.85rem", fontWeight: 600 }}>Klik untuk pilih gambar</p>
+          <p style={{ margin: "0.2rem 0 0", fontSize: "0.72rem", opacity: 0.7 }}>dari Galeri</p>
         </div>
       )}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
-        <input className="dash-input" placeholder="Alt text" value={d.alt || ""} onChange={e => onChange({ ...d, alt: e.target.value })} style={{ fontSize: "0.82rem", padding: "0.4rem 0.6rem" }} />
-        <input className="dash-input" placeholder="Keterangan gambar" value={d.caption || ""} onChange={e => onChange({ ...d, caption: e.target.value })} style={{ fontSize: "0.82rem", padding: "0.4rem 0.6rem" }} />
+        <input className="dash-input" placeholder="Alt text" value={d.alt || ""} onChange={e => onChange({ ...d, alt: e.target.value })} style={{ fontSize: "0.82rem" }} />
+        <input className="dash-input" placeholder="Keterangan gambar" value={d.caption || ""} onChange={e => onChange({ ...d, caption: e.target.value })} style={{ fontSize: "0.82rem" }} />
       </div>
-      <button type="button" onClick={() => setShowLib(true)} className="dash-btn" style={{ fontSize: "0.8rem", padding: "0.4rem 0.75rem", backgroundColor: "transparent", border: "1px solid var(--dash-border)", display: "flex", alignItems: "center", gap: "0.4rem", alignSelf: "flex-start" }}>
-        <Image size={14} /> {d.src ? "Ganti Gambar" : "Pilih dari Library"}
-      </button>
-      {showLib && <MediaLibrary onSelect={item => { onChange({ ...d, src: item.src, alt: d.alt || item.alt }); setShowLib(false); }} onClose={() => setShowLib(false)} />}
+      {showPicker && (
+        <GalleryPickerModal
+          multi={false}
+          onSelect={items => { if (items[0]) onChange({ ...d, src: items[0].imageUrl, alt: d.alt || items[0].title }); }}
+          onClose={() => setShowPicker(false)}
+        />
+      )}
     </div>
   );
 }
 
-/* ── Carousel Block ── */
-function CarouselBlock({ block, onChange }: { block: Block; onChange: (data: any) => void }) {
-  const [showLib, setShowLib] = useState(false);
+/* ─── VIDEO ──────────────────────────────────── */
+function VideoBlock({ block, onChange }: { block: Block; onChange: (d: any) => void }) {
   const d = block.data;
-  const images: MediaItem[] = d.images || [];
+  const url = d.url || "";
+  const embedUrl = url ? getVideoEmbedUrl(url) : "";
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+      <div>
+        <label style={LBL}>URL Video (YouTube / Vimeo / Embed)</label>
+        <input className="dash-input" type="text" value={url} onChange={e => onChange({ ...d, url: e.target.value })} placeholder="https://www.youtube.com/watch?v=... atau embed URL" style={{ fontSize: "0.85rem" }} />
+      </div>
+      <div>
+        <label style={LBL}>Judul Video (Opsional)</label>
+        <input className="dash-input" type="text" value={d.title || ""} onChange={e => onChange({ ...d, title: e.target.value })} placeholder="Judul atau deskripsi video" style={{ fontSize: "0.85rem" }} />
+      </div>
+      {embedUrl ? (
+        <div>
+          <label style={LBL}>Preview Video</label>
+          <div style={{ position: "relative", paddingBottom: "56.25%", borderRadius: "12px", overflow: "hidden", background: "#000" }}>
+            <iframe src={embedUrl} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none" }} allowFullScreen title={d.title || "Video"} />
+          </div>
+        </div>
+      ) : (
+        <div style={{ border: "2px dashed var(--dash-border)", borderRadius: "10px", padding: "2.5rem 1rem", textAlign: "center", color: "var(--dash-text-muted)", background: "var(--dash-surface-hover)" }}>
+          <Video size={30} style={{ marginBottom: "0.5rem", opacity: 0.4 }} />
+          <p style={{ margin: 0, fontSize: "0.85rem", fontWeight: 600 }}>Masukkan URL video di atas</p>
+          <p style={{ margin: "0.2rem 0 0", fontSize: "0.72rem", opacity: 0.7 }}>YouTube · Vimeo · URL embed langsung</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── GALLERY ────────────────────────────────── */
+function GalleryBlock({ block, onChange }: { block: Block; onChange: (d: any) => void }) {
+  const d = block.data;
+  return (
+    <GalleryWidget
+      selectedIds={d.selectedIds || []}
+      onChange={ids => onChange({ ...d, selectedIds: ids })}
+      caption={d.caption || ""}
+      onCaptionChange={caption => onChange({ ...d, caption })}
+    />
+  );
+}
+
+/* ─── CAROUSEL ───────────────────────────────── */
+interface Slide { id: string; src: string; title: string; subtitle: string; }
+
+function CarouselBlock({ block, onChange }: { block: Block; onChange: (d: any) => void }) {
+  const [showPicker, setShowPicker] = useState(false);
+  const [draggedIdx, setDraggedIdx] = useState<number | null>(null);
+  const [canDrag, setCanDrag] = useState(false);
+  const d = block.data;
+  const slides: Slide[] = d.slides || [];
   const cols: number = d.cols || 1;
 
+  const reorder = (from: number, to: number) => {
+    const next = [...slides]; const [item] = next.splice(from, 1); next.splice(to, 0, item);
+    onChange({ ...d, slides: next });
+  };
+  const updateSlide = (idx: number, patch: Partial<Slide>) => {
+    onChange({ ...d, slides: slides.map((s, i) => i === idx ? { ...s, ...patch } : s) });
+  };
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-        <span style={{ fontSize: "0.8rem", color: "var(--dash-text-muted)", fontWeight: 600 }}>Layout:</span>
-        {[1, 2, 3].map(c => (
-          <button key={c} type="button" onClick={() => onChange({ ...d, cols: c })} style={{ padding: "0.3rem 0.75rem", borderRadius: "8px", border: "1px solid var(--dash-border)", backgroundColor: cols === c ? "var(--dash-primary)" : "transparent", color: cols === c ? "white" : "var(--dash-text-muted)", cursor: "pointer", fontSize: "0.78rem", fontWeight: 700 }}>
-            1×{c}
-          </button>
-        ))}
-        <button type="button" onClick={() => setShowLib(true)} className="dash-btn" style={{ marginLeft: "auto", fontSize: "0.78rem", padding: "0.35rem 0.75rem", display: "flex", alignItems: "center", gap: "0.35rem" }}>
-          <Plus size={13} /> Tambah Gambar
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "0.65rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <label style={{ ...LBL, marginBottom: 0 }}>Tampil per baris:</label>
+          {[1, 2, 3].map(c => (
+            <button key={c} type="button" onClick={() => onChange({ ...d, cols: c })} style={{ padding: "0.28rem 0.65rem", borderRadius: "8px", border: "1px solid var(--dash-border)", background: cols === c ? "var(--dash-text)" : "transparent", color: cols === c ? "#fff" : "var(--dash-text-muted)", cursor: "pointer", fontSize: "0.75rem", fontWeight: 700, transition: "all 0.15s" }}>1×{c}</button>
+          ))}
+        </div>
+        <button type="button" onClick={() => setShowPicker(true)} style={{ display: "flex", alignItems: "center", gap: "0.35rem", padding: "0.38rem 0.8rem", borderRadius: "8px", border: "1px solid var(--dash-primary)", background: "var(--dash-primary-bg)", color: "var(--dash-primary)", cursor: "pointer", fontSize: "0.75rem", fontWeight: 700 }}>
+          <Plus size={13} /> Tambah Slide
         </button>
       </div>
-      {images.length > 0 ? (
-        <div style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(cols, images.length)}, 1fr)`, gap: "0.5rem" }}>
-          {images.map((img, idx) => (
-            <div key={idx} style={{ position: "relative", borderRadius: "6px", overflow: "hidden" }}>
-              <img src={img.src} alt={img.alt || ""} style={{ width: "100%", height: "140px", objectFit: "cover", display: "block" }} />
-              <button onClick={() => onChange({ ...d, images: images.filter((_, i) => i !== idx) })} style={{ position: "absolute", top: "4px", right: "4px", background: "rgba(0,0,0,0.7)", border: "none", borderRadius: "50%", width: "22px", height: "22px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "white" }}><X size={12} /></button>
+
+      {slides.length === 0 ? (
+        <div onClick={() => setShowPicker(true)} style={{ border: "2px dashed var(--dash-border)", borderRadius: "10px", padding: "2.5rem 1rem", textAlign: "center", cursor: "pointer", color: "var(--dash-text-muted)", background: "var(--dash-surface-hover)", transition: "all 0.15s" }}
+          onMouseOver={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--dash-primary)"; }}
+          onMouseOut={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--dash-border)"; }}>
+          <Sliders size={28} style={{ marginBottom: "0.5rem", opacity: 0.4 }} />
+          <p style={{ margin: 0, fontSize: "0.85rem", fontWeight: 600 }}>Klik untuk menambahkan slide carousel</p>
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.55rem" }}>
+          {slides.map((slide, si) => (
+            <div key={slide.id + si}
+              draggable={canDrag}
+              onDragStart={() => setDraggedIdx(si)}
+              onDragOver={e => { e.preventDefault(); if (draggedIdx !== null && draggedIdx !== si) { reorder(draggedIdx, si); setDraggedIdx(si); } }}
+              onDragEnd={() => { setDraggedIdx(null); setCanDrag(false); }}
+              style={{ display: "flex", gap: "0.65rem", padding: "0.75rem", background: "var(--dash-surface-hover)", border: `1px solid ${draggedIdx === si ? "var(--dash-primary)" : "var(--dash-border)"}`, borderRadius: "10px", alignItems: "center", opacity: draggedIdx === si ? 0.4 : 1, transition: "opacity 0.15s, border-color 0.15s" }}>
+              <div onMouseDown={() => setCanDrag(true)} onMouseUp={() => setCanDrag(false)} style={{ cursor: "grab", color: "var(--dash-text-muted)", flexShrink: 0, display: "flex", userSelect: "none" }}>
+                <GripVertical size={15} />
+              </div>
+              <img src={slide.src} alt={slide.title} style={{ width: "72px", aspectRatio: "16/9", objectFit: "cover", borderRadius: "7px", border: "1px solid var(--dash-border)", flexShrink: 0, userSelect: "none" }} />
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "0.3rem", minWidth: 0 }}>
+                <input type="text" value={slide.title} onChange={e => updateSlide(si, { title: e.target.value })} placeholder="Judul Slide"
+                  style={{ ...INPUT, fontWeight: 700 }} />
+                <input type="text" value={slide.subtitle} onChange={e => updateSlide(si, { subtitle: e.target.value })} placeholder="Sub-judul Slide"
+                  style={{ ...INPUT, fontSize: "0.78rem", color: "var(--dash-text-muted)", borderBottomColor: "transparent" }}
+                  onFocus={e => (e.currentTarget.style.borderBottomColor = "var(--dash-border)")}
+                  onBlur={e => (e.currentTarget.style.borderBottomColor = "transparent")} />
+              </div>
+              <button type="button" onClick={() => onChange({ ...d, slides: slides.filter((_, i) => i !== si) })} style={{ background: "none", border: "none", color: "var(--dash-danger)", cursor: "pointer", padding: "0.25rem", flexShrink: 0 }}>
+                <Trash2 size={15} />
+              </button>
             </div>
           ))}
         </div>
-      ) : (
-        <div style={{ border: "2px dashed var(--dash-border)", borderRadius: "8px", padding: "2rem", textAlign: "center", color: "var(--dash-text-muted)", backgroundColor: "var(--dash-card-2)" }}>
-          <p style={{ margin: 0, fontSize: "0.85rem" }}>Belum ada gambar di carousel</p>
-        </div>
       )}
-      {showLib && <MediaLibrary multi onSelect={() => {}} onClose={() => setShowLib(false)} selected={images.map(i => i.id)} onMultiSelect={sel => { onChange({ ...d, images: [...images, ...sel.filter(s => !images.some(img => img.id === s.id))] }); setShowLib(false); }} />}
+
+      {showPicker && (
+        <GalleryPickerModal
+          multi={true}
+          selectedIds={slides.map(s => s.id)}
+          onSelect={picked => {
+            const existing = new Set(slides.map(s => s.id));
+            const add: Slide[] = picked
+              .filter(it => !existing.has(it.id))
+              .map(it => ({ id: it.id, src: it.imageUrl, title: it.title, subtitle: "" }));
+            onChange({ ...d, slides: [...slides, ...add] });
+          }}
+          onClose={() => setShowPicker(false)}
+        />
+      )}
     </div>
   );
 }
 
-/* ── Grid Block ── */
-function GridBlock({ block, onChange }: { block: Block; onChange: (data: any) => void }) {
-  const d = block.data;
-  const cols: number = d.cols || 2;
-  const cells: string[] = d.cells || Array(cols).fill("");
+/* ─── GRID ───────────────────────────────────── */
+interface GridCol { image?: string; title: string; text: string; }
+
+function GridBlock({ block, onChange }: { block: Block; onChange: (d: any) => void }) {
   const [showLibIdx, setShowLibIdx] = useState<number | null>(null);
+  const d = block.data;
+  const numCols: number = d.cols || 2;
+  const columns: GridCol[] = d.columns
+    ? d.columns
+    : Array(numCols).fill(null).map(() => ({ title: "", text: "" }));
 
-  const updateCell = (idx: number, val: string) => {
-    const next = [...cells];
-    next[idx] = val;
-    onChange({ ...d, cells: next });
+  const setColumns = (cols: GridCol[]) => onChange({ ...d, columns: cols });
+  const updateCol = (i: number, patch: Partial<GridCol>) => {
+    setColumns(columns.map((c, idx) => idx === i ? { ...c, ...patch } : c));
   };
-
   const changeCols = (n: number) => {
-    const next = Array(n).fill("").map((_, i) => cells[i] || "");
-    onChange({ ...d, cols: n, cells: next });
+    const next: GridCol[] = Array(n).fill(null).map((_, i) => columns[i] || { title: "", text: "" });
+    onChange({ ...d, cols: n, columns: next });
   };
+  const gridTpl = numCols >= 3 ? "repeat(3,1fr)" : numCols === 2 ? "repeat(2,1fr)" : "1fr";
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-        <span style={{ fontSize: "0.8rem", color: "var(--dash-text-muted)", fontWeight: 600 }}>Kolom:</span>
+        <label style={{ ...LBL, marginBottom: 0 }}>Kolom:</label>
         {[1, 2, 3, 4].map(c => (
-          <button key={c} type="button" onClick={() => changeCols(c)} style={{ padding: "0.3rem 0.6rem", borderRadius: "8px", border: "1px solid var(--dash-border)", backgroundColor: cols === c ? "var(--dash-primary)" : "transparent", color: cols === c ? "white" : "var(--dash-text-muted)", cursor: "pointer", fontSize: "0.78rem", fontWeight: 700 }}>{c}</button>
+          <button key={c} type="button" onClick={() => changeCols(c)} style={{ padding: "0.28rem 0.6rem", borderRadius: "8px", border: "1px solid var(--dash-border)", background: numCols === c ? "var(--dash-text)" : "transparent", color: numCols === c ? "#fff" : "var(--dash-text-muted)", cursor: "pointer", fontSize: "0.75rem", fontWeight: 700, transition: "all 0.15s" }}>{c}</button>
         ))}
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: "0.5rem" }}>
-        {cells.map((cell, idx) => (
-          <div key={idx} style={{ borderRadius: "8px", border: "1px solid var(--dash-border)", backgroundColor: "#1a2332", overflow: "hidden" }}>
-            {cell ? (
+      <div style={{ display: "grid", gridTemplateColumns: gridTpl, gap: "0.75rem" }}>
+        {columns.slice(0, numCols).map((col, ci) => (
+          <div key={ci} style={{ position: "relative", padding: "0.85rem", background: "var(--dash-surface-hover)", border: "1px solid var(--dash-border)", borderRadius: "10px", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+            {numCols > 1 && (
+              <button type="button" onClick={() => changeCols(numCols - 1)} style={{ position: "absolute", top: "0.5rem", right: "0.5rem", background: "none", border: "none", color: "var(--dash-danger)", cursor: "pointer", padding: "0.15rem" }}>
+                <Trash2 size={13} />
+              </button>
+            )}
+            {col.image ? (
               <div style={{ position: "relative" }}>
-                {cell.startsWith("data:image") || cell.startsWith("http") ? (
-                  <img src={cell} style={{ width: "100%", height: "120px", objectFit: "cover", display: "block" }} />
-                ) : (
-                  <div style={{ padding: "0.75rem", fontSize: "0.8rem", color: "#e2e8f0", minHeight: "80px", lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: cell }} />
-                )}
-                <button onClick={() => updateCell(idx, "")} style={{ position: "absolute", top: "4px", right: "4px", background: "rgba(0,0,0,0.7)", border: "none", borderRadius: "50%", width: "20px", height: "20px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "white" }}><X size={11} /></button>
+                <img src={col.image} alt={col.title} style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", borderRadius: "8px", border: "1px solid var(--dash-border)", display: "block" }} />
+                <div className="col-img-overlay" style={{ position: "absolute", inset: 0, borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", opacity: 0, background: "rgba(0,0,0,0)", transition: "all 0.2s" }}
+                  onMouseOver={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0.45)"; }}
+                  onMouseOut={e => { (e.currentTarget as HTMLElement).style.opacity = "0"; (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0)"; }}>
+                  <button type="button" onClick={() => setShowLibIdx(ci)} style={{ padding: "0.3rem 0.6rem", borderRadius: "6px", background: "rgba(255,255,255,0.2)", border: "none", color: "#fff", fontSize: "0.7rem", fontWeight: 700, cursor: "pointer", backdropFilter: "blur(4px)" }}>Ganti</button>
+                  <button type="button" onClick={() => updateCol(ci, { image: undefined })} style={{ padding: "0.3rem 0.6rem", borderRadius: "6px", background: "rgba(220,38,38,0.75)", border: "none", color: "#fff", fontSize: "0.7rem", fontWeight: 700, cursor: "pointer" }}>Hapus</button>
+                </div>
               </div>
             ) : (
-              <div style={{ padding: "0.75rem", display: "flex", flexDirection: "column", gap: "0.35rem" }}>
-                <button type="button" onClick={() => setShowLibIdx(idx)} style={{ padding: "0.35rem", borderRadius: "6px", border: "1px dashed var(--dash-border)", background: "transparent", color: "var(--dash-text-muted)", cursor: "pointer", fontSize: "0.72rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.3rem" }}><Image size={12} /> Gambar</button>
-                <textarea placeholder="Teks / HTML..." rows={3} onChange={e => updateCell(idx, e.target.value)} style={{ fontSize: "0.75rem", backgroundColor: "#0f172a", border: "1px solid var(--dash-border)", borderRadius: "6px", color: "#e2e8f0", padding: "0.35rem", outline: "none", resize: "none", width: "100%", boxSizing: "border-box" }} />
+              <div onClick={() => setShowLibIdx(ci)} style={{ width: "100%", aspectRatio: "16/9", border: "2px dashed var(--dash-border)", borderRadius: "8px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "var(--dash-text-muted)", transition: "all 0.15s" }}
+                onMouseOver={e => { const el = e.currentTarget; el.style.borderColor = "var(--dash-primary)"; el.style.background = "var(--dash-primary-bg)"; el.style.color = "var(--dash-primary)"; }}
+                onMouseOut={e => { const el = e.currentTarget; el.style.borderColor = "var(--dash-border)"; el.style.background = "transparent"; el.style.color = "var(--dash-text-muted)"; }}>
+                <Image size={18} style={{ marginBottom: "0.2rem" }} />
+                <span style={{ fontSize: "0.7rem", fontWeight: 700 }}>Tambah Gambar</span>
               </div>
             )}
+            <input type="text" value={col.title} onChange={e => updateCol(ci, { title: e.target.value })} placeholder="Judul kolom"
+              style={{ ...INPUT, fontWeight: 700, width: numCols > 1 ? "calc(100% - 1.5rem)" : "100%" }} />
+            <textarea value={col.text} onChange={e => updateCol(ci, { text: e.target.value })} rows={3} placeholder="Tulis isi konten kolom..."
+              style={{ width: "100%", fontSize: "0.8rem", color: "var(--dash-text-soft)", background: "var(--dash-card)", border: "1px solid var(--dash-border)", borderRadius: "8px", padding: "0.5rem 0.65rem", outline: "none", resize: "none", boxSizing: "border-box", lineHeight: 1.55 }}
+              onFocus={e => (e.currentTarget.style.borderColor = "var(--dash-primary)")}
+              onBlur={e => (e.currentTarget.style.borderColor = "var(--dash-border)")} />
           </div>
         ))}
       </div>
-      {showLibIdx !== null && <MediaLibrary onSelect={item => { updateCell(showLibIdx, item.src); setShowLibIdx(null); }} onClose={() => setShowLibIdx(null)} />}
+      {showLibIdx !== null && (
+        <GalleryPickerModal
+          multi={false}
+          onSelect={items => { if (items[0]) updateCol(showLibIdx!, { image: items[0].imageUrl }); }}
+          onClose={() => setShowLibIdx(null)}
+        />
+      )}
     </div>
   );
 }
 
-/* ── HTML Block ── */
-function HTMLBlock({ block, onChange }: { block: Block; onChange: (data: any) => void }) {
+/* ─── HTML ───────────────────────────────────── */
+function HTMLBlock({ block, onChange }: { block: Block; onChange: (d: any) => void }) {
   const [preview, setPreview] = useState(false);
   const d = block.data;
+  const code = d.code || d.content || "";
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-        <span style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--dash-text-muted)" }}>HTML / CSS / JS</span>
-        <div style={{ flex: 1 }} />
-        <button type="button" onClick={() => setPreview(v => !v)} style={{ display: "flex", alignItems: "center", gap: "0.35rem", padding: "0.3rem 0.65rem", borderRadius: "6px", border: "1px solid var(--dash-border)", background: preview ? "var(--dash-primary)" : "transparent", color: preview ? "white" : "var(--dash-text-muted)", cursor: "pointer", fontSize: "0.75rem" }}>
-          <Monitor size={13} /> {preview ? "Sembunyikan Preview" : "Lihat Preview"}
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <label style={LBL}>Kode HTML / CSS / JS Embed</label>
+        <button type="button" onClick={() => setPreview(v => !v)} style={{ display: "flex", alignItems: "center", gap: "0.35rem", padding: "0.3rem 0.7rem", borderRadius: "7px", border: "1px solid var(--dash-border)", background: preview ? "var(--dash-primary)" : "transparent", color: preview ? "#fff" : "var(--dash-text-muted)", cursor: "pointer", fontSize: "0.72rem", fontWeight: 700 }}>
+          <Monitor size={12} /> {preview ? "Sembunyikan" : "Live Preview"}
         </button>
       </div>
-      <textarea rows={8} value={d.code || ""} onChange={e => onChange({ ...d, code: e.target.value })} placeholder="<!DOCTYPE html>&#10;<html>&#10;  <!-- kode HTML/CSS/JS kamu di sini -->" style={{ width: "100%", backgroundColor: "#0f172a", border: "1px solid var(--dash-border)", borderRadius: "8px", color: "#86efac", padding: "0.75rem 1rem", fontFamily: "monospace", fontSize: "0.82rem", outline: "none", resize: "vertical", boxSizing: "border-box", lineHeight: 1.6 }} />
-      {preview && d.code && (
-        <div style={{ border: "1px solid var(--dash-border)", borderRadius: "8px", overflow: "hidden", backgroundColor: "white" }}>
-          <div style={{ padding: "0.4rem 0.75rem", backgroundColor: "var(--dash-card-2)", borderBottom: "1px solid var(--dash-border)", fontSize: "0.72rem", color: "var(--dash-text-muted)", display: "flex", alignItems: "center", gap: "0.4rem" }}><Monitor size={12} /> Preview</div>
-          <iframe srcDoc={d.code} style={{ width: "100%", height: "300px", border: "none", display: "block" }} sandbox="allow-scripts" title="HTML Preview" />
+      <textarea rows={8} value={code} onChange={e => onChange({ ...d, code: e.target.value, content: undefined })}
+        placeholder={"<style>\n  .box { color: blue; }\n</style>\n<div class='box'>Hello World</div>\n<script>\n  console.log('ok');\n</script>"}
+        style={{ width: "100%", background: "#0f172a", border: "1px solid var(--dash-border)", borderRadius: "10px", color: "#34d399", padding: "0.85rem 1rem", fontFamily: "monospace", fontSize: "0.8rem", outline: "none", resize: "vertical", boxSizing: "border-box", lineHeight: 1.65 }} />
+      {preview && code && (
+        <div style={{ border: "1px solid var(--dash-border)", borderRadius: "10px", overflow: "hidden" }}>
+          <div style={{ padding: "0.4rem 0.75rem", background: "var(--dash-surface-hover)", borderBottom: "1px solid var(--dash-border)", fontSize: "0.7rem", color: "var(--dash-text-muted)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+            <Monitor size={11} /> Live Preview Render
+          </div>
+          <iframe srcDoc={code} style={{ width: "100%", minHeight: "250px", border: "none", display: "block", background: "#fff" }} sandbox="allow-scripts allow-same-origin" title="HTML Preview" />
         </div>
       )}
     </div>
   );
 }
 
-/* ── YouTube Block ── */
-function YouTubeBlock({ block, onChange }: { block: Block; onChange: (data: any) => void }) {
+/* ─── Legacy YouTube ─────────────────────────── */
+function LegacyYouTubeBlock({ block, onChange }: { block: Block; onChange: (d: any) => void }) {
+  return <VideoBlock block={{ ...block, type: "video" }} onChange={onChange} />;
+}
+
+/* ─── Legacy iFrame ──────────────────────────── */
+function LegacyIframeBlock({ block, onChange }: { block: Block; onChange: (d: any) => void }) {
   const d = block.data;
-  const getEmbedId = (url: string) => {
-    const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([^&?/\s]+)/);
-    return m ? m[1] : null;
-  };
-  const embedId = d.url ? getEmbedId(d.url) : null;
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
       <div style={{ display: "flex", gap: "0.5rem" }}>
-        <input className="dash-input" placeholder="URL YouTube (https://youtube.com/watch?v=...)" value={d.url || ""} onChange={e => onChange({ ...d, url: e.target.value })} style={{ flex: 1, fontSize: "0.85rem" }} />
-        {d.url && <button type="button" onClick={() => onChange({ ...d, url: "" })} style={{ background: "none", border: "none", color: "var(--dash-text-muted)", cursor: "pointer" }}><X size={16} /></button>}
+        <input className="dash-input" placeholder="URL iframe (https://...)" value={d.src || ""} onChange={e => onChange({ ...d, src: e.target.value })} style={{ flex: 1, fontSize: "0.85rem" }} />
+        <div>
+          <input type="number" className="dash-input" value={d.height || 400} onChange={e => onChange({ ...d, height: parseInt(e.target.value) })} style={{ width: "90px", fontSize: "0.82rem" }} />
+        </div>
       </div>
-      <input className="dash-input" placeholder="Judul video (opsional)" value={d.title || ""} onChange={e => onChange({ ...d, title: e.target.value })} style={{ fontSize: "0.82rem" }} />
-      {embedId ? (
-        <div style={{ position: "relative", paddingBottom: "56.25%", borderRadius: "8px", overflow: "hidden", backgroundColor: "#000" }}>
-          <iframe src={`https://www.youtube.com/embed/${embedId}`} title={d.title || "YouTube"} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none" }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
-        </div>
-      ) : (
-        <div style={{ border: "2px dashed var(--dash-border)", borderRadius: "8px", padding: "2.5rem", textAlign: "center", color: "var(--dash-text-muted)", backgroundColor: "var(--dash-card-2)" }}>
-          <PlayCircle size={32} style={{ marginBottom: "0.5rem" }} />
-          <p style={{ margin: 0, fontSize: "0.85rem" }}>Masukkan URL YouTube di atas</p>
-        </div>
-      )}
+      {d.src
+        ? <iframe src={d.src} title={d.title || "Embed"} style={{ width: "100%", height: d.height || 400, border: "1px solid var(--dash-border)", borderRadius: "8px", display: "block" }} />
+        : <div style={{ border: "2px dashed var(--dash-border)", borderRadius: "8px", padding: "2rem 1rem", textAlign: "center", color: "var(--dash-text-muted)", background: "var(--dash-surface-hover)" }}>
+            <ExternalLink size={26} style={{ marginBottom: "0.5rem", opacity: 0.4 }} />
+            <p style={{ margin: 0, fontSize: "0.85rem" }}>Masukkan URL untuk embed iframe</p>
+          </div>
+      }
     </div>
   );
 }
 
-/* ── iFrame Block ── */
-function IframeBlock({ block, onChange }: { block: Block; onChange: (data: any) => void }) {
-  const d = block.data;
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-      <input className="dash-input" placeholder="URL iframe (https://...)" value={d.src || ""} onChange={e => onChange({ ...d, src: e.target.value })} style={{ fontSize: "0.85rem" }} />
-      <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-        <label style={{ fontSize: "0.78rem", color: "var(--dash-text-muted)", fontWeight: 600, whiteSpace: "nowrap" }}>Tinggi (px):</label>
-        <input type="number" className="dash-input" value={d.height || 400} onChange={e => onChange({ ...d, height: parseInt(e.target.value) })} style={{ width: "100px", fontSize: "0.82rem", padding: "0.4rem 0.6rem" }} />
-        <input className="dash-input" placeholder="Judul iframe" value={d.title || ""} onChange={e => onChange({ ...d, title: e.target.value })} style={{ flex: 1, fontSize: "0.82rem" }} />
-      </div>
-      {d.src ? (
-        <iframe src={d.src} title={d.title || "Embed"} style={{ width: "100%", height: d.height || 400, border: "1px solid var(--dash-border)", borderRadius: "8px", display: "block" }} />
-      ) : (
-        <div style={{ border: "2px dashed var(--dash-border)", borderRadius: "8px", padding: "2rem", textAlign: "center", color: "var(--dash-text-muted)", backgroundColor: "var(--dash-card-2)" }}>
-          <ExternalLink size={28} style={{ marginBottom: "0.5rem" }} />
-          <p style={{ margin: 0, fontSize: "0.85rem" }}>Masukkan URL untuk embed iframe</p>
-        </div>
-      )}
-    </div>
-  );
-}
+/* ─── Block metadata ─────────────────────────── */
+const BLOCK_META: Record<string, { label: string; color: string }> = {
+  text:     { label: "Teks Kaya",      color: "var(--dash-primary)" },
+  image:    { label: "Gambar",          color: "#8b5cf6" },
+  video:    { label: "Video",           color: "#ef4444" },
+  gallery:  { label: "Galeri",          color: "#f59e0b" },
+  carousel: { label: "Carousel",        color: "#06b6d4" },
+  grid:     { label: "Grid",            color: "#84cc16" },
+  html:     { label: "HTML / JS / CSS", color: "#ec4899" },
+  youtube:  { label: "Video YouTube",   color: "#ef4444" },
+  iframe:   { label: "iFrame",          color: "#6b7280" },
+};
 
-/* ── Block Picker ── */
-const BLOCK_TYPES = [
-  { type: "text",     icon: <AlignLeft size={18} />,    label: "Teks Kaya",    desc: "Rich text dengan format" },
-  { type: "image",    icon: <Image size={18} />,         label: "Gambar",       desc: "Upload atau dari gallery" },
-  { type: "carousel", icon: <Columns size={18} />,       label: "Carousel",     desc: "Galeri foto 1×1 / 1×2 / 1×3" },
-  { type: "grid",     icon: <LayoutGrid size={18} />,    label: "Grid",         desc: "Layout kolom drag & drop" },
-  { type: "youtube",  icon: <PlayCircle size={18} />,    label: "Video YouTube",desc: "Embed video dari URL" },
-  { type: "html",     icon: <Code2 size={18} />,         label: "HTML / CSS / JS", desc: "Kode dengan live preview" },
-  { type: "iframe",   icon: <ExternalLink size={18} />,  label: "iFrame",       desc: "Embed halaman eksternal" },
-] as const;
-
-function BlockPicker({ onAdd, onClose }: { onAdd: (type: BlockType) => void; onClose: () => void }) {
-  return (
-    <div style={{ position: "fixed", inset: 0, zIndex: 9998, backgroundColor: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", padding: "1.5rem" }}>
-      <div className="dash-card" style={{ width: "100%", maxWidth: "520px", padding: "1.5rem", backgroundColor: "var(--dash-card)" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
-          <h4 style={{ margin: 0, color: "white", fontWeight: 800 }}>Tambah Blok</h4>
-          <button onClick={onClose} style={{ background: "none", border: "none", color: "var(--dash-text-muted)", cursor: "pointer" }}><X size={20} /></button>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
-          {BLOCK_TYPES.map(({ type, icon, label, desc }) => (
-            <button key={type} type="button" onClick={() => { onAdd(type as BlockType); onClose(); }} style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem", padding: "0.85rem 1rem", borderRadius: "10px", border: "1px solid var(--dash-border)", backgroundColor: "var(--dash-card-2)", cursor: "pointer", textAlign: "left" }}>
-              <div style={{ color: "var(--dash-primary)", flexShrink: 0, marginTop: "0.1rem" }}>{icon}</div>
-              <div>
-                <p style={{ margin: 0, fontWeight: 700, fontSize: "0.85rem", color: "white" }}>{label}</p>
-                <p style={{ margin: 0, fontSize: "0.72rem", color: "var(--dash-text-muted)", marginTop: "0.15rem" }}>{desc}</p>
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ── Sortable Block Wrapper ── */
+/* ─── Sortable Block Wrapper ─────────────────── */
 function SortableBlock({ block, onUpdate, onDelete, onDuplicate, isFirst, isLast, onMoveUp, onMoveDown }: {
-  block: Block; onUpdate: (data: any) => void; onDelete: () => void; onDuplicate: () => void;
-  isFirst: boolean; isLast: boolean; onMoveUp: () => void; onMoveDown: () => void;
+  block: Block; onUpdate: (d: any) => void; onDelete: () => void;
+  onDuplicate: () => void; isFirst: boolean; isLast: boolean;
+  onMoveUp: () => void; onMoveDown: () => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: block.id });
-  const style = { transform: CSS.Transform.toString(transform), transition, opacity: isDragging ? 0.4 : 1 };
-
-  const blockLabel = BLOCK_TYPES.find(b => b.type === block.type)?.label || block.type;
+  const style = { transform: CSS.Transform.toString(transform), transition, opacity: isDragging ? 0.35 : 1 };
+  const meta = BLOCK_META[block.type] || { label: block.type, color: "var(--dash-text-muted)" };
 
   return (
     <div ref={setNodeRef} style={{ ...style, display: "flex", gap: "0.5rem", alignItems: "flex-start" }}>
-      {/* Drag handle */}
-      <div {...attributes} {...listeners} style={{ cursor: "grab", color: "var(--dash-text-muted)", paddingTop: "0.65rem", flexShrink: 0, touchAction: "none" }}>
-        <GripVertical size={16} />
+      {/* Outer drag handle */}
+      <div {...attributes} {...listeners} style={{ cursor: "grab", color: "var(--dash-text-muted)", paddingTop: "0.7rem", flexShrink: 0, touchAction: "none" }}>
+        <GripVertical size={15} />
       </div>
-      {/* Block body */}
-      <div style={{ flex: 1, backgroundColor: "#1a2332", borderRadius: "10px", border: "1px solid var(--dash-border)", overflow: "hidden" }}>
-        <div style={{ padding: "0.5rem 0.75rem", backgroundColor: "#0f172a", display: "flex", alignItems: "center", gap: "0.5rem", borderBottom: "1px solid var(--dash-border)" }}>
-          <span style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--dash-primary)" }}>{blockLabel}</span>
+
+      {/* Block card — always light, uses card tokens */}
+      <div style={{ flex: 1, background: "var(--dash-card)", border: "1px solid var(--dash-border)", borderRadius: "16px", overflow: "hidden", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}>
+
+        {/* Top toolbar */}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.55rem 0.85rem", background: "var(--dash-surface-hover)", borderBottom: "1px solid var(--dash-border)" }}>
+          <span style={{ display: "inline-flex", alignItems: "center", padding: "0.15rem 0.55rem", borderRadius: "5px", fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.07em", background: `${meta.color}18`, color: meta.color, border: `1px solid ${meta.color}30` }}>
+            {meta.label}
+          </span>
           <div style={{ flex: 1 }} />
-          <button type="button" onClick={onMoveUp} disabled={isFirst} style={{ background: "none", border: "none", color: isFirst ? "var(--dash-border-2)" : "var(--dash-text-muted)", cursor: isFirst ? "not-allowed" : "pointer", padding: "0.2rem" }}><ChevronUp size={14} /></button>
-          <button type="button" onClick={onMoveDown} disabled={isLast} style={{ background: "none", border: "none", color: isLast ? "var(--dash-border-2)" : "var(--dash-text-muted)", cursor: isLast ? "not-allowed" : "pointer", padding: "0.2rem" }}><ChevronDown size={14} /></button>
-          <button type="button" onClick={onDuplicate} style={{ background: "none", border: "none", color: "var(--dash-text-muted)", cursor: "pointer", padding: "0.2rem" }} title="Duplikat"><Copy size={14} /></button>
-          <button type="button" onClick={onDelete} style={{ background: "none", border: "none", color: "var(--dash-danger)", cursor: "pointer", padding: "0.2rem" }} title="Hapus"><Trash2 size={14} /></button>
+          <button type="button" onClick={onMoveUp} disabled={isFirst} style={{ background: "none", border: "none", color: isFirst ? "var(--dash-border)" : "var(--dash-text-muted)", cursor: isFirst ? "not-allowed" : "pointer", padding: "0.2rem" }}><ChevronUp size={14} /></button>
+          <button type="button" onClick={onMoveDown} disabled={isLast} style={{ background: "none", border: "none", color: isLast ? "var(--dash-border)" : "var(--dash-text-muted)", cursor: isLast ? "not-allowed" : "pointer", padding: "0.2rem" }}><ChevronDown size={14} /></button>
+          <button type="button" onClick={onDuplicate} title="Duplikat" style={{ background: "none", border: "none", color: "var(--dash-text-muted)", cursor: "pointer", padding: "0.2rem" }}><Copy size={14} /></button>
+          <button type="button" onClick={onDelete} title="Hapus" style={{ background: "none", border: "none", color: "var(--dash-danger)", cursor: "pointer", padding: "0.2rem" }}><Trash2 size={14} /></button>
         </div>
-        <div style={{ padding: "1rem" }}>
-          {block.type === "text"     && <TextBlock block={block} onChange={onUpdate} />}
-          {block.type === "image"    && <ImageBlock block={block} onChange={onUpdate} />}
+
+        {/* Body */}
+        <div style={{ padding: "1rem 1.1rem" }}>
+          {block.type === "text"     && <TextBlock     block={block} onChange={onUpdate} />}
+          {block.type === "image"    && <ImageBlock    block={block} onChange={onUpdate} />}
+          {block.type === "video"    && <VideoBlock    block={block} onChange={onUpdate} />}
+          {block.type === "gallery"  && <GalleryBlock  block={block} onChange={onUpdate} />}
           {block.type === "carousel" && <CarouselBlock block={block} onChange={onUpdate} />}
-          {block.type === "grid"     && <GridBlock block={block} onChange={onUpdate} />}
-          {block.type === "html"     && <HTMLBlock block={block} onChange={onUpdate} />}
-          {block.type === "youtube"  && <YouTubeBlock block={block} onChange={onUpdate} />}
-          {block.type === "iframe"   && <IframeBlock block={block} onChange={onUpdate} />}
+          {block.type === "grid"     && <GridBlock     block={block} onChange={onUpdate} />}
+          {block.type === "html"     && <HTMLBlock     block={block} onChange={onUpdate} />}
+          {block.type === "youtube"  && <LegacyYouTubeBlock block={block} onChange={onUpdate} />}
+          {block.type === "iframe"   && <LegacyIframeBlock  block={block} onChange={onUpdate} />}
         </div>
       </div>
     </div>
   );
 }
 
-/* ── Main BlockEditor Export ── */
+/* ─── Add Widget Button Bar ──────────────────── */
+const WIDGET_BTN = [
+  { type: "text",     icon: <Type size={20} />,      label: "Teks"     },
+  { type: "gallery",  icon: <Images size={20} />,    label: "Galeri"   },
+  { type: "video",    icon: <Video size={20} />,     label: "Video"    },
+  { type: "carousel", icon: <Sliders size={20} />,   label: "Carousel" },
+  { type: "grid",     icon: <LayoutGrid size={20} />, label: "Grid"    },
+  { type: "html",     icon: <Code2 size={20} />,     label: "HTML"     },
+] as const;
+
+function AddWidgetBar({ onAdd }: { onAdd: (t: BlockType) => void }) {
+  return (
+    <div style={{ border: "1px solid var(--dash-border)", borderRadius: "20px", padding: "1.1rem 1.25rem", background: "var(--dash-card)", boxShadow: "0 1px 3px rgba(0,0,0,0.05)" }}>
+      <p style={{ margin: "0 0 0.85rem", fontSize: "0.62rem", fontWeight: 800, color: "var(--dash-text-muted)", textTransform: "uppercase", letterSpacing: "0.1em", textAlign: "center" }}>
+        Tambah Blok Widget
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(6,1fr)", gap: "0.55rem" }}>
+        {WIDGET_BTN.map(({ type, icon, label }) => (
+          <button key={type} type="button" onClick={() => onAdd(type as BlockType)}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.4rem", padding: "0.85rem 0.4rem", borderRadius: "12px", border: "1px solid var(--dash-border)", background: "var(--dash-surface-hover)", color: "var(--dash-text-soft)", cursor: "pointer", fontSize: "0.7rem", fontWeight: 700, transition: "all 0.15s" }}
+            onMouseOver={e => { const el = e.currentTarget; el.style.borderColor = "var(--dash-primary)"; el.style.background = "var(--dash-primary-bg)"; el.style.color = "var(--dash-primary)"; }}
+            onMouseOut={e => { const el = e.currentTarget; el.style.borderColor = "var(--dash-border)"; el.style.background = "var(--dash-surface-hover)"; el.style.color = "var(--dash-text-soft)"; }}>
+            {icon}
+            {label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Main Export ────────────────────────────── */
 export default function BlockEditor({ value, onChange }: { value: Block[]; onChange: (blocks: Block[]) => void }) {
-  const [showPicker, setShowPicker] = useState(false);
   const sensors = useSensors(
     useSensor(PointerSensor),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 
-  const addBlock = (type: BlockType) => {
-    const block: Block = { id: genId(), type, data: {} };
-    onChange([...value, block]);
-  };
-
-  const updateBlock = (id: string, data: any) => {
-    onChange(value.map(b => b.id === id ? { ...b, data } : b));
-  };
-
-  const deleteBlock = (id: string) => {
-    onChange(value.filter(b => b.id !== id));
-  };
-
+  const addBlock = (type: BlockType) => onChange([...value, { id: genId(), type, data: {} }]);
+  const updateBlock = (id: string, data: any) => onChange(value.map(b => b.id === id ? { ...b, data } : b));
+  const deleteBlock = (id: string) => onChange(value.filter(b => b.id !== id));
   const duplicateBlock = (id: string) => {
     const idx = value.findIndex(b => b.id === id);
     if (idx === -1) return;
-    const copy = { ...value[idx], id: genId() };
-    const next = [...value];
-    next.splice(idx + 1, 0, copy);
+    const next = [...value]; next.splice(idx + 1, 0, { ...value[idx], id: genId() });
     onChange(next);
   };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (over && active.id !== over.id) {
-      const oldIdx = value.findIndex(b => b.id === active.id);
-      const newIdx = value.findIndex(b => b.id === over.id);
-      onChange(arrayMove(value, oldIdx, newIdx));
-    }
+  const handleDragEnd = (e: DragEndEvent) => {
+    const { active, over } = e;
+    if (over && active.id !== over.id)
+      onChange(arrayMove(value, value.findIndex(b => b.id === active.id), value.findIndex(b => b.id === over.id)));
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={value.map(b => b.id)} strategy={verticalListSortingStrategy}>
           {value.map((block, idx) => (
-            <SortableBlock
-              key={block.id} block={block}
+            <SortableBlock key={block.id} block={block}
               onUpdate={data => updateBlock(block.id, data)}
               onDelete={() => deleteBlock(block.id)}
               onDuplicate={() => duplicateBlock(block.id)}
@@ -435,13 +499,7 @@ export default function BlockEditor({ value, onChange }: { value: Block[]; onCha
         </SortableContext>
       </DndContext>
 
-      <button type="button" onClick={() => setShowPicker(true)} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", padding: "0.85rem", borderRadius: "10px", border: "2px dashed var(--dash-border)", background: "transparent", color: "var(--dash-text-muted)", cursor: "pointer", fontSize: "0.85rem", fontWeight: 600, transition: "all 0.2s" }}
-        onMouseOver={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--dash-primary)"; (e.currentTarget as HTMLElement).style.color = "var(--dash-primary)"; }}
-        onMouseOut={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--dash-border)"; (e.currentTarget as HTMLElement).style.color = "var(--dash-text-muted)"; }}>
-        <Plus size={18} /> Tambah Blok Konten
-      </button>
-
-      {showPicker && <BlockPicker onAdd={addBlock} onClose={() => setShowPicker(false)} />}
+      <AddWidgetBar onAdd={addBlock} />
     </div>
   );
 }

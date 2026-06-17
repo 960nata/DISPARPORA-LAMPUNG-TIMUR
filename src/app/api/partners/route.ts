@@ -9,3 +9,11 @@ export async function GET() {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }
+
+export async function POST(request: Request) {
+  try {
+    const data = await request.json();
+    const item = await db.partners.create({ data: { name: data.name, logoUrl: data.logoUrl } });
+    return NextResponse.json(item);
+  } catch (e: any) { return NextResponse.json({ error: e.message }, { status: 500 }); }
+}

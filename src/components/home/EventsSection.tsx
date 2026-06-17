@@ -1,9 +1,20 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
 
-const defaultEvents = [
+interface AppEvent {
+  id: string;
+  title: string;
+  date: string;
+  location: string;
+  desc: string;
+  status: string;
+  image?: string;
+}
+
+const defaultEvents: AppEvent[] = [
   {
     id: "ev_1",
     title: "Festival Way Kambas 2026",
@@ -34,6 +45,15 @@ const defaultEvents = [
 ];
 
 export default function EventsSection() {
+  const [events, setEvents] = useState<AppEvent[]>(defaultEvents);
+
+  useEffect(() => {
+    fetch("/api/events")
+      .then(res => res.json())
+      .then(data => { if (Array.isArray(data) && data.length > 0) setEvents(data); })
+      .catch(() => { /* keep default */ });
+  }, []);
+
   return (
     <section className="container" id="agenda" style={{ paddingTop: "2rem" }}>
       <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
@@ -46,7 +66,7 @@ export default function EventsSection() {
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2rem" }}>
-        {defaultEvents.map((event, index) => (
+        {events.map((event, index) => (
           <motion.div
             key={event.id}
             initial={{ opacity: 0, y: 20 }}
@@ -57,7 +77,9 @@ export default function EventsSection() {
             style={{ padding: 0, overflow: "hidden", display: "flex", flexDirection: "column", height: "100%", border: "1px solid var(--border)" }}
           >
             <div style={{ height: "180px", overflow: "hidden", position: "relative" }}>
-              <img src={event.image} alt={event.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              {event.image && (
+                <img src={event.image} alt={event.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              )}
               <div style={{
                 position: "absolute",
                 top: "1rem",

@@ -1,15 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
-import { 
-  Plus, Search, Edit2, Trash2, MapPin, X, 
-  Compass, Activity, Globe, Layers 
+import { useRouter } from "next/navigation";
+import {
+  Plus, Search, Edit2, Trash2, MapPin, X,
+  Compass, Activity, Globe, Layers, Eye
 } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
-import { MapSkeleton } from "@/components/Skeleton";
-
-const MapComponent = dynamic(() => import("@/components/MapComponent"), { ssr: false, loading: () => <MapSkeleton /> });
 
 interface TourismItem {
   id: string; name: string; category: string; kecamatan: string; address: string;
@@ -29,16 +26,13 @@ const CAT_ICONS: Record<string, any> = {
 
 export default function DestinasiPage() {
   const { user } = useAdmin();
+  const router   = useRouter();
   const [destinations, setDestinations] = useState<TourismItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
+  const [search, setSearch]   = useState("");
   const [catFilter, setCatFilter] = useState("Semua");
-  const [page, setPage] = useState(1);
+  const [page, setPage]       = useState(1);
   const PAGE_SIZE = 10;
-
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState<"add" | "edit">("add");
-  const [form, setForm] = useState<Partial<TourismItem>>({ name: "", category: "Wisata Alam", kecamatan: "Sukadana", address: "", facilities: "", contact: "", active: true, lat: -5.2514, lng: 105.5451 });
   const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; name: string } | null>(null);
 
   useEffect(() => {
@@ -57,22 +51,6 @@ export default function DestinasiPage() {
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
-  const openAdd = () => { setModalMode("add"); setForm({ name: "", category: "Wisata Alam", kecamatan: "Sukadana", address: "", facilities: "", contact: "", active: true, lat: -5.2514, lng: 105.5451 }); setModalOpen(true); };
-  const openEdit = (item: TourismItem) => { setModalMode("edit"); setForm({ ...item }); setModalOpen(true); };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.name || !form.lat || !form.lng) { alert("Nama dan koordinat wajib diisi!"); return; }
-    const isAdd = modalMode === "add";
-    const res = await fetch(isAdd ? "/api/destinations" : `/api/destinations/${form.id}`, {
-      method: isAdd ? "POST" : "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form)
-    });
-    const data = await res.json();
-    if (!res.ok) { alert(data.error || "Gagal menyimpan"); return; }
-    setDestinations(prev => isAdd ? [data, ...prev] : prev.map(d => d.id === data.id ? data : d));
-    setModalOpen(false);
-  };
-
   const handleDelete = async () => {
     if (!deleteConfirm) return;
     await fetch(`/api/destinations/${deleteConfirm.id}`, { method: "DELETE" });
@@ -86,9 +64,10 @@ export default function DestinasiPage() {
       {/* Page Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
         <div>
-          <h1 style={{ margin: 0, fontSize: "1.25rem", fontWeight: 700, color: "var(--dash-text)" }}>Proyek Investasi</h1>
-          <p style={{ margin: 0, fontSize: "0.82rem", color: "var(--dash-text-muted)", marginTop: "2px" }}>
-            Total {destinations.length} proyek terdaftar.
+          <p style={{ margin: 0, fontSize: "0.66rem", fontWeight: 700, color: "var(--dash-primary)", textTransform: "uppercase", letterSpacing: "0.12em" }}>Kelola Data</p>
+          <h1 style={{ margin: "2px 0 0", fontSize: "1.4rem", fontWeight: 800, color: "var(--dash-text)" }}>Destinasi Wisata</h1>
+          <p style={{ margin: "0.3rem 0 0", fontSize: "0.82rem", color: "var(--dash-text-muted)" }}>
+            {destinations.length} destinasi wisata terdaftar di Lampung Timur.
           </p>
         </div>
         <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
@@ -100,8 +79,8 @@ export default function DestinasiPage() {
             <option value="Semua">Semua Kategori</option>
             {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
-          <button onClick={openAdd} className="dash-btn" style={{ padding: "8px 14px" }}>
-            <Plus size={14} /> Tambah
+          <button onClick={() => router.push("/dashboard/destinasi/buat")} className="dash-btn" style={{ padding: "8px 14px" }}>
+            <Plus size={14} /> Tambah Destinasi
           </button>
         </div>
       </div>
@@ -160,7 +139,10 @@ export default function DestinasiPage() {
                   <td><span className={`dash-badge ${item.active ? "dash-badge-success" : "dash-badge-danger"}`}>{item.active ? "Aktif" : "Non-Aktif"}</span></td>
                   <td style={{ textAlign: "right" }}>
                     <div style={{ display: "inline-flex", gap: "4px" }}>
-                      <button onClick={() => openEdit(item)} title="Edit" style={{ background: "none", border: "1px solid var(--dash-border)", borderRadius: "6px", color: "var(--dash-primary)", cursor: "pointer", padding: "6px", display: "flex", alignItems: "center" }}>
+                      <button onClick={() => router.push(`/destinasi/${item.id}`)} title="Lihat di publik" style={{ background: "none", border: "1px solid var(--dash-border)", borderRadius: "6px", color: "var(--dash-text-muted)", cursor: "pointer", padding: "6px", display: "flex", alignItems: "center" }}>
+                        <Eye size={13} />
+                      </button>
+                      <button onClick={() => router.push(`/dashboard/destinasi/edit/${item.id}`)} title="Edit" style={{ background: "none", border: "1px solid var(--dash-border)", borderRadius: "6px", color: "var(--dash-primary)", cursor: "pointer", padding: "6px", display: "flex", alignItems: "center" }}>
                         <Edit2 size={13} />
                       </button>
                       <button onClick={() => setDeleteConfirm({ id: item.id, name: item.name })} title="Hapus" style={{ background: "none", border: "1px solid var(--dash-border)", borderRadius: "6px", color: "var(--dash-danger)", cursor: "pointer", padding: "6px", display: "flex", alignItems: "center" }}>
@@ -184,86 +166,6 @@ export default function DestinasiPage() {
           </div>
         )}
       </div>
-
-      {/* Add/Edit Modal */}
-      {modalOpen && (
-        <div className="dash-overlay" style={{ zIndex: 9999 }}>
-          <div className="dash-modal" style={{ maxWidth: "860px", position: "relative" }}>
-            <button onClick={() => setModalOpen(false)} style={{ position: "absolute", top: "16px", right: "16px", background: "none", border: "none", color: "var(--dash-text-muted)", cursor: "pointer", padding: "4px" }}><X size={18} /></button>
-            <h3 style={{ margin: "0 0 20px", fontWeight: 700, color: "var(--dash-text)", fontSize: "1rem" }}>{modalMode === "add" ? "Tambah Proyek Baru" : "Edit Proyek"}</h3>
-            
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-              <div style={{ flex: "1 1 340px", display: "flex", flexDirection: "column", gap: "14px" }}>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Nama Objek *</label>
-                  <input required className="dash-input" value={form.name || ""} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} placeholder="Nama lokasi proyek" />
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-                  <div>
-                    <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Kategori *</label>
-                    <select className="dash-input" value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))} style={{ cursor: "pointer" }}>
-                      {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Kecamatan *</label>
-                    <select className="dash-input" value={form.kecamatan} onChange={e => setForm(p => ({ ...p, kecamatan: e.target.value }))} style={{ cursor: "pointer" }}>
-                      {KECAMATANS.map(k => <option key={k} value={k}>{k}</option>)}
-                    </select>
-                  </div>
-                </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Alamat</label>
-                  <input className="dash-input" value={form.address || ""} onChange={e => setForm(p => ({ ...p, address: e.target.value }))} placeholder="Alamat jalan..." />
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-                  <div>
-                    <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Latitude *</label>
-                    <input required type="number" step="any" className="dash-input" value={form.lat || ""} onChange={e => setForm(p => ({ ...p, lat: Number(e.target.value) }))} />
-                  </div>
-                  <div>
-                    <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Longitude *</label>
-                    <input required type="number" step="any" className="dash-input" value={form.lng || ""} onChange={e => setForm(p => ({ ...p, lng: Number(e.target.value) }))} />
-                  </div>
-                </div>
-                <div style={{ display: "flex", gap: "12px", alignItems: "end" }}>
-                  <div style={{ flex: 1 }}>
-                    <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Fasilitas</label>
-                    <input className="dash-input" placeholder="Mushola, Toilet, Gazebo" value={form.facilities || ""} onChange={e => setForm(p => ({ ...p, facilities: e.target.value }))} />
-                  </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.82rem", color: "var(--dash-text)", cursor: "pointer", fontWeight: 500, paddingBottom: "8px" }}>
-                    <input type="checkbox" checked={form.active !== false} onChange={e => setForm(p => ({ ...p, active: e.target.checked }))} style={{ accentColor: "var(--dash-primary)" }} /> Aktif
-                  </label>
-                </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Kontak</label>
-                  <input className="dash-input" placeholder="+62812xxxx" value={form.contact || ""} onChange={e => setForm(p => ({ ...p, contact: e.target.value }))} />
-                </div>
-              </div>
-
-              {/* Map */}
-              <div style={{ flex: "1 1 340px", display: "flex", flexDirection: "column", gap: "14px" }}>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Lokasi Peta</label>
-                  <div style={{ height: "280px", borderRadius: "8px", overflow: "hidden", border: "1px solid var(--dash-border)" }}>
-                    <MapComponent
-                      items={[]}
-                      selectedItem={{ id: "picker", name: form.name || "Lokasi Baru", kecamatan: form.kecamatan || "", address: form.address || "", category: form.category || "Wisata Alam", lat: form.lat || -5.2514, lng: form.lng || 105.5451 }}
-                      onSelectItem={() => {}}
-                      isEditMode={true}
-                      onCoordinatesChange={(lat, lng) => setForm(p => ({ ...p, lat: Number(lat.toFixed(6)), lng: Number(lng.toFixed(6)) }))}
-                    />
-                  </div>
-                </div>
-                <div style={{ display: "flex", gap: "8px", marginTop: "auto" }}>
-                  <button type="button" onClick={() => setModalOpen(false)} className="dash-btn dash-btn-secondary" style={{ flex: 1, padding: "10px" }}>Batal</button>
-                  <button type="submit" className="dash-btn" style={{ flex: 1, padding: "10px" }}>Simpan</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
       {/* Delete Confirm */}
       {deleteConfirm && (

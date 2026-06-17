@@ -1,15 +1,14 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import Link from "next/link";
-import { 
-  Eye, Users, MapPin, FileText, TrendingUp, 
-  Activity, Clock, ArrowUpRight, Search
+import { useState, useEffect, useMemo, useRef } from "react";
+import {
+  Users, UserCheck, MapPin, FileText, Download, Calendar,
+  ChevronDown, Clock, Minus
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useAdmin } from "@/contexts/AdminContext";
 import { useTheme } from "@/contexts/ThemeContext";
-import { StatCardSkeleton, ChartSkeleton } from "@/components/Skeleton";
+import { StatCardSkeleton } from "@/components/Skeleton";
 import DashboardChart from "@/components/DashboardChart";
 
 interface TourismItem { id: string; category: string; active: boolean; kecamatan: string; }
@@ -30,8 +29,19 @@ export default function DashboardPage() {
   const [destinations, setDestinations] = useState<TourismItem[]>([]);
   const [posts, setPosts] = useState<NewsPost[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [tablePage, setTablePage] = useState(1);
+  const [period, setPeriod] = useState<"1 Hari" | "1 Minggu" | "1 Bulan" | "1 Tahun">("1 Bulan");
+  const [periodOpen, setPeriodOpen] = useState(false);
+  const periodRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const closeMenu = (event: MouseEvent) => {
+      if (periodRef.current && !periodRef.current.contains(event.target as Node)) {
+        setPeriodOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", closeMenu);
+    return () => document.removeEventListener("mousedown", closeMenu);
+  }, []);
 
   useEffect(() => {
     Promise.all([
@@ -53,372 +63,404 @@ export default function DashboardPage() {
   const ttTheme: "dark" | "light" = isDark ? "dark" : "light";
   const textMain = isDark ? "rgba(255,255,255,0.9)" : "#37352f";
 
-  // ── Mock GA4 Content ──
-  const ga4Content = [
-    { path: "/", label: "Beranda Utama", views: 304, type: "Landing" },
-    { path: "/auth", label: "Halaman Login", views: 50, type: "Auth" },
-    { path: "/investment-projects", label: "Proyek Investasi", views: 48, type: "Directory" },
-    { path: "/admin", label: "Administrasi", views: 40, type: "Admin" },
-    { path: "/leif2025", label: "LEIF 2025", views: 40, type: "Campaign" },
-    { path: "/presentation-books", label: "Presentation Books", views: 22, type: "Resource" },
-    { path: "/project/852ccaf9", label: "Proyek Kopi Robusta", views: 20, type: "Detail" },
-    { path: "/why-lampung", label: "Mengapa Lampung?", views: 20, type: "Info" },
-    { path: "/contact", label: "Hubungi Kami", views: 17, type: "Support" },
-    { path: "/about", label: "Tentang Forum", views: 16, type: "Info" }
-  ];
+  const ACCENT = "var(--dash-primary)";   // emerald
+  const C2 = "var(--dash-success)";        // sky/blue
+  const C3 = "var(--dash-warning)";        // amber
+  const C4 = "var(--dash-pink)";           // pink
+  const CARD: React.CSSProperties = { background: "var(--dash-card)", border: "1px solid var(--dash-border)", borderRadius: "18px", padding: "22px" };
 
-  const filtered = ga4Content.filter(i =>
-    i.path.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    i.label.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  const perPage = 5;
-  const paginated = filtered.slice((tablePage - 1) * perPage, tablePage * perPage);
-  const totalPages = Math.ceil(filtered.length / perPage);
-  const totalViews = 854;
+  // ── Mock GA4 traffic (30 hari) ──
+  const traffic30 = [12,18,15,22,28,24,31,27,35,30,38,42,36,44,40,48,45,52,49,55,58,53,61,57,64,60,68,72,66,74];
+  const dateLabels = ["17 Mei","","","","22 Mei","","","","27 Mei","","","","1 Jun","","","","6 Jun","","","","11 Jun","","","","16 Jun","","","","",""];
+  const trafficDaily = [18,20,19,22,24,26,29,32,35,38,40,42,41,43,45,47,49,50,52,51,49,46,44,42];
+  const dailyLabels = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
+  const trafficWeekly = [310,330,320,340,360,380,390];
+  const weekLabels = ["Sen","Sel","Rab","Kam","Jum","Sab","Min"];
+  const trafficMonthly = [310,420,380,510,490,620,590,710,680,790,750,873];
+  const monthLabels = ["Jul","Ags","Sep","Okt","Nov","Des","Jan","Feb","Mar","Apr","Mei","Jun"];
+  const trafficYearly = [410,430,420,450,470,520,560,600,630,670,700,740];
+  const yearLabels = monthLabels;
+  const trafficConfig = useMemo(() => {
+    switch (period) {
+      case "1 Hari": return { labels: dailyLabels, data: trafficDaily };
+      case "1 Minggu": return { labels: weekLabels, data: trafficWeekly };
+      case "1 Bulan": return { labels: monthLabels, data: trafficMonthly };
+      case "1 Tahun": return { labels: yearLabels, data: trafficYearly };
+    }
+  }, [period, dailyLabels, trafficDaily, weekLabels, trafficWeekly, monthLabels, trafficMonthly, yearLabels, trafficYearly]);
 
-  // ── Chart Configs ──
-  const trafficOpts = useMemo(() => ({
-    chart: { foreColor: fg, toolbar: { show: false }, zoom: { enabled: false }, sparkline: { enabled: false } },
-    colors: ["#059669", "#0284c7"],
-    stroke: { curve: "smooth" as const, width: [2.5, 2], dashArray: [0, 4] },
-    fill: { type: "gradient", gradient: { shadeIntensity: 1, opacityFrom: 0.3, opacityTo: 0.02, stops: [0, 85, 100] } },
-    dataLabels: { enabled: false },
-    grid: { borderColor: grid, strokeDashArray: 3, padding: { left: 8, right: 8 } },
-    xaxis: { categories: ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Ags","Sep","Okt","Nov","Des"], axisBorder: { show: false }, axisTicks: { show: false } },
-    yaxis: { labels: { formatter: (v: number) => `${v}` } },
-    tooltip: { theme: ttTheme },
-    legend: { position: "top" as const, horizontalAlign: "left" as const, labels: { colors: fg }, markers: { size: 4 }, fontSize: "12px", fontWeight: 500 }
-  }), [fg, grid, ttTheme]);
-
-  const trafficSeries = [
-    { name: "Total Pengunjung", data: [310,420,380,510,490,620,590,710,680,790,750,854] },
-    { name: "Pengunjung Unik", data: [90,110,95,120,115,130,125,140,135,150,142,126] }
-  ];
-
-  const sourceOpts = useMemo(() => ({
-    labels: ["Direct","Organic","Social","Referral"],
-    colors: ["#059669","#0284c7","#d97706","#dc2626"],
-    chart: { foreColor: fg },
-    stroke: { width: 0 },
-    legend: { show: false },
-    tooltip: { theme: ttTheme },
-    dataLabels: { enabled: false },
-    plotOptions: { pie: { donut: { size: "75%", labels: { show: true, name: { fontSize: "11px", color: fg }, value: { fontSize: "18px", fontWeight: 700, color: textMain }, total: { show: true, label: "Traffic", color: fg, formatter: () => "854" } } } } }
-  }), [fg, ttTheme, textMain]);
-
-  const deviceOpts = useMemo(() => ({
-    chart: { foreColor: fg },
-    colors: ["#059669","#0284c7","#d97706"],
-    labels: ["Desktop","Mobile","Tablet"],
-    plotOptions: { radialBar: { hollow: { size: "45%" }, track: { background: isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)" }, dataLabels: { name: { fontSize: "10px", color: fg }, value: { fontSize: "12px", fontWeight: 600, color: textMain }, total: { show: true, label: "Device", fontSize: "10px", color: fg, formatter: () => "55%" } } } },
-    stroke: { lineCap: "round" as const },
-    legend: { show: false }
-  }), [fg, isDark, textMain]);
-
-  const newReturnOpts = useMemo(() => ({
-    labels: ["New","Returning"],
-    colors: ["#059669","#0284c7"],
-    chart: { foreColor: fg },
-    stroke: { width: 0 },
-    legend: { show: false },
-    tooltip: { theme: ttTheme },
-    dataLabels: { enabled: false },
-    plotOptions: { pie: { donut: { size: "70%", labels: { show: true, name: { fontSize: "10px", color: fg }, value: { fontSize: "14px", fontWeight: 700, color: textMain }, total: { show: true, label: "Visitors", fontSize: "9px", color: fg, formatter: () => "148" } } } } }
-  }), [fg, ttTheme, textMain]);
-
-  // ── Stat Cards Config ──
+  // ── KPI Cards ──
   const stats = [
-    { label: "Total Pengunjung", value: "854", sub: "0.0% dari bulan lalu", icon: Eye, accent: "var(--dash-primary)" },
-    { label: "Pengunjung Unik", value: "126", sub: "0.0% dari bulan lalu", icon: Users, accent: "var(--dash-success)" },
-    { label: "Proyek Aktif", value: String(activeCount || 67), sub: "0 proyek baru", icon: MapPin, accent: "var(--dash-warning)" },
-    { label: "Berita Terpublikasi", value: String(publishedCount || 4), sub: "0 artikel baru", icon: FileText, accent: "var(--dash-danger)" },
+    { label: "Total Pengunjung", value: "873", delta: "0.0%", up: null, icon: Users,     accent: ACCENT, soft: "var(--dash-primary-bg)", spark: [20,24,22,28,26,32,30,36,34,40] },
+    { label: "Pengunjung Unik",  value: "125", delta: "0.0%", up: null, icon: UserCheck, accent: C2,     soft: "var(--dash-success-bg)", spark: [8,10,9,12,11,9,13,12,14,12] },
+    { label: "Destinasi Aktif",  value: String(activeCount || 12), delta: "0 baru", up: null, icon: MapPin, accent: C3, soft: "var(--dash-warning-bg)", spark: [4,5,5,6,6,7,8,9,10,12] },
+    { label: "Berita Terpublikasi", value: String(publishedCount || 43), delta: "0 baru", up: null, icon: FileText, accent: C4, soft: "var(--dash-pink-bg)", spark: [10,12,14,13,18,20,22,28,34,43] },
   ];
 
-  const badgeColor = (type: string) => {
-    const map: Record<string, string> = {
-      Landing: "dash-badge-primary", Auth: "dash-badge-warning", Directory: "dash-badge-success",
-      Admin: "dash-badge-danger", Campaign: "dash-badge-purple", Resource: "dash-badge-primary",
-      Detail: "dash-badge-success", Info: "dash-badge-primary", Support: "dash-badge-warning"
-    };
-    return map[type] || "dash-badge-primary";
+  const sparkOpts = (color: string) => ({
+    chart: { sparkline: { enabled: true }, foreColor: fg },
+    colors: [color], stroke: { curve: "smooth" as const, width: 2.4 },
+    fill: { type: "solid", opacity: 0 },
+    tooltip: { enabled: false }, dataLabels: { enabled: false }
+  });
+
+  // ── Traffic area chart ──
+  const trafficOpts = useMemo(() => ({
+    chart: { foreColor: fg, toolbar: { show: false }, zoom: { enabled: false } },
+    colors: [ACCENT],
+    stroke: { curve: "smooth" as const, width: 2.6 },
+    fill: { type: "gradient", gradient: { shadeIntensity: 1, opacityFrom: 0.3, opacityTo: 0.0, stops: [0, 90, 100] } },
+    dataLabels: { enabled: false },
+    grid: { borderColor: grid, strokeDashArray: 4, padding: { left: 8, right: 8 } },
+    xaxis: {
+      categories: trafficConfig.labels,
+      axisBorder: { show: false }, axisTicks: { show: false },
+      labels: { rotate: 0, style: { fontSize: "11px" } }, tickAmount: 7
+    },
+    yaxis: { labels: { formatter: (v: number) => `${Math.round(v)}` } },
+    tooltip: { theme: ttTheme },
+    legend: { show: false }
+  }), [fg, grid, ttTheme, trafficConfig]);
+
+  const trafficSeries = [{
+    name: "Kunjungan",
+    data: trafficConfig.data
+  }];
+
+  // ── Device donut ──
+  const deviceOpts = useMemo(() => ({
+    labels: ["Desktop", "Mobile", "Tablet"],
+    colors: [ACCENT, C2, "var(--dash-text-muted)"],
+    chart: { foreColor: fg },
+    stroke: { width: 0 },
+    legend: { show: false },
+    tooltip: { theme: ttTheme },
+    dataLabels: { enabled: false },
+    plotOptions: { pie: { donut: { size: "72%", labels: { show: true, name: { fontSize: "11px", color: fg }, value: { fontSize: "20px", fontWeight: 800, color: textMain }, total: { show: true, label: "Pengunjung", color: fg, formatter: () => "873" } } } } }
+  }), [fg, ttTheme, textMain]);
+
+  // ── New vs Returning donut ──
+  const newReturnOpts = useMemo(() => ({
+    labels: ["Baru", "Kembali"],
+    colors: [ACCENT, "var(--dash-text-muted)"],
+    chart: { foreColor: fg },
+    stroke: { width: 0 },
+    legend: { show: false },
+    tooltip: { theme: ttTheme },
+    dataLabels: { enabled: false },
+    plotOptions: { pie: { donut: { size: "70%", labels: { show: true, name: { fontSize: "10px", color: fg }, value: { fontSize: "15px", fontWeight: 800, color: textMain }, total: { show: true, label: "Total", fontSize: "10px", color: fg, formatter: () => "148" } } } } }
+  }), [fg, ttTheme, textMain]);
+
+  // ── Sources & Countries (bar lists) ──
+  const sources = [
+    { name: "Direct / Langsung", pct: 42, color: ACCENT },
+    { name: "Organic Search",    pct: 31, color: C2 },
+    { name: "Media Sosial",      pct: 18, color: C3 },
+    { name: "Referral",          pct: 9,  color: C4 },
+  ];
+  const countries = [
+    { name: "Indonesia",       pct: 78 },
+    { name: "Singapura",       pct: 9 },
+    { name: "Malaysia",        pct: 6 },
+    { name: "Amerika Serikat", pct: 4 },
+    { name: "Lainnya",         pct: 3 },
+  ];
+
+  // ── Popular content ──
+  const popular = [
+    { label: "Beranda", path: "/", views: 306 },
+    { label: "Direktori Wisata", path: "/direktori", views: 52 },
+    { label: "Profil Dinas", path: "/profil", views: 48 },
+    { label: "Peta Wisata Interaktif", path: "/peta", views: 45 },
+    { label: "Berita & Artikel", path: "/berita", views: 40 },
+    { label: "Bidang Dinas", path: "/bidang", views: 26 },
+    { label: "Detail Destinasi", path: "/direktori/danau-way-jepara", views: 22 },
+    { label: "Detail Berita", path: "/berita/festival-way-kambas-2025", views: 20 },
+    { label: "Kontak", path: "/kontak", views: 17 },
+    { label: "Akses Admin", path: "/admin", views: 16 },
+  ];
+  const maxViews = popular[0].views;
+
+  const handleExport = () => {
+    const rows = [
+      ["Metrik", "Nilai"],
+      ["Total Pengunjung", "873"],
+      ["Pengunjung Unik", "125"],
+      ["Destinasi Aktif", String(activeCount || 12)],
+      ["Berita Terpublikasi", String(publishedCount || 43)],
+      [],
+      ["Halaman", "URL", "Views"],
+      ...popular.map(p => [p.label, p.path, String(p.views)]),
+    ];
+    const csv = rows.map(r => r.join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `dashboard-disparpora-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "18px", fontFamily: "var(--font-main)" }}>
 
-      {/* ── Greeting ── */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "12px" }}>
+      {/* ── Page header ── */}
+      <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "18px", flexWrap: "wrap" }}>
         <div>
-          <h1 style={{ fontSize: "1.35rem", fontWeight: 700, color: "var(--dash-text)", margin: 0, lineHeight: 1.3 }}>
-            Selamat datang, {user?.name || "Admin"} 👋
-          </h1>
-          <p style={{ margin: "4px 0 0", fontSize: "0.82rem", color: "var(--dash-text-muted)" }}>
-            Ringkasan data portal investasi dan performa digital.
+          <h1 style={{ margin: 0, fontSize: "1.7rem", fontWeight: 800, letterSpacing: "-0.02em", color: "var(--dash-text)" }}>Dashboard</h1>
+          <p style={{ margin: "6px 0 0", fontSize: "0.88rem", color: "var(--dash-text-soft)" }}>
+            Selamat datang kembali, {user?.name || "Admin"} — ringkasan aktivitas DISPARPORA Lampung Timur.
           </p>
         </div>
-        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-          <span style={{ fontSize: "0.72rem", color: "var(--dash-text-muted)", fontWeight: 500 }}>
-            {new Date().toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
-          </span>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }} ref={periodRef}>
+          <button onClick={() => setPeriodOpen(v => !v)} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 15px", borderRadius: "11px", border: "1px solid var(--dash-border)", background: "var(--dash-card)", color: "var(--dash-text-soft)", fontFamily: "inherit", fontSize: "0.82rem", fontWeight: 600, cursor: "pointer", position: "relative" }}>
+            <Calendar size={16} /> {period} <ChevronDown size={14} />
+          </button>
+          {periodOpen && (
+            <div style={{ position: "absolute", top: "54px", left: 0, minWidth: "200px", borderRadius: "16px", background: "var(--dash-card)", border: "1px solid var(--dash-border)", boxShadow: "0 18px 36px rgba(0,0,0,0.12)", zIndex: 10, padding: "10px 0" }}>
+              {(["1 Hari", "1 Minggu", "1 Bulan", "1 Tahun"] as const).map(option => (
+                <button key={option} onClick={() => { setPeriod(option); setPeriodOpen(false); }} style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", border: "none", background: option === period ? "var(--dash-surface-hover)" : "transparent", color: "var(--dash-text)", cursor: "pointer", fontWeight: option === period ? 700 : 500, textAlign: "left" }}>
+                  <span>{option}</span>
+                  {option === period ? <span style={{ fontSize: "0.72rem", color: "var(--dash-text-muted)" }}>Dipilih</span> : null}
+                </button>
+              ))}
+            </div>
+          )}
+          <button onClick={handleExport} className="dash-btn" style={{ padding: "10px 16px", fontSize: "0.82rem", borderRadius: "11px", boxShadow: "0 10px 22px -12px var(--dash-primary)" }}>
+            <Download size={15} /> Ekspor
+          </button>
         </div>
       </div>
 
-      {/* ── Stat Cards ── */}
+      {/* ── KPI ROW ── */}
       {loading ? (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "14px" }} className="grid-stat-cards">
+        <div className="dash-grid-kpi" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "18px" }}>
           <StatCardSkeleton /><StatCardSkeleton /><StatCardSkeleton /><StatCardSkeleton />
         </div>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "14px" }} className="grid-stat-cards">
+        <div className="dash-grid-kpi" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "18px" }}>
           {stats.map(card => {
             const Icon = card.icon;
             return (
-              <div key={card.label} className="dash-stat-card" style={{ borderLeft: `3px solid ${card.accent === "var(--dash-primary)" ? "#059669" : card.accent === "var(--dash-success)" ? "#0284c7" : card.accent === "var(--dash-warning)" ? "#d97706" : "#dc2626"}` }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-                    <span style={{ fontSize: "0.72rem", fontWeight: 500, color: "var(--dash-text-muted)", letterSpacing: "0.01em" }}>{card.label}</span>
-                    <span style={{ fontSize: "1.65rem", color: "var(--dash-text)", fontWeight: 700, lineHeight: 1.2 }}>{card.value}</span>
+              <div key={card.label} style={{ ...CARD, padding: "20px 22px" }}>
+                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px" }}>
+                  <div style={{ width: "44px", height: "44px", borderRadius: "13px", background: card.soft, color: card.accent, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Icon size={21} />
                   </div>
-                  <div style={{
-                    width: "36px", height: "36px", borderRadius: "10px",
-                    background: `color-mix(in srgb, ${card.accent} 8%, transparent)`,
-                    display: "flex", alignItems: "center", justifyContent: "center"
-                  }}>
-                    <Icon size={17} style={{ color: card.accent }} />
-                  </div>
+                  <span style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.72rem", fontWeight: 700, color: "var(--dash-text-muted)", background: "var(--dash-surface-hover)", padding: "5px 9px", borderRadius: "20px" }}>
+                    <Minus size={12} /> {card.delta}
+                  </span>
                 </div>
-                <span style={{ fontSize: "0.7rem", color: "var(--dash-text-muted)", display: "flex", alignItems: "center", gap: "3px", marginTop: "2px" }}>
-                  <TrendingUp size={10} style={{ color: card.accent }} /> {card.sub}
-                </span>
+                <div style={{ marginTop: "16px", fontSize: "1.95rem", fontWeight: 800, letterSpacing: "-0.02em", fontVariantNumeric: "tabular-nums", color: "var(--dash-text)" }}>{card.value}</div>
+                <div style={{ marginTop: "2px", fontSize: "0.84rem", fontWeight: 600, color: "var(--dash-text-soft)" }}>{card.label}</div>
+                <div style={{ height: "34px", marginTop: "12px" }}>
+                  <DashboardChart type="line" options={sparkOpts(card.accent)} series={[{ data: card.spark }]} height={34} />
+                </div>
               </div>
             );
           })}
         </div>
       )}
 
-      {/* ── Row 1: Traffic Chart + Source/Device ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "14px", alignItems: "stretch" }} className="grid-charts">
-        {/* Traffic Area Chart */}
-        <div className="dash-card" style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+      {/* ── ROW: TRAFFIC + DEVICE ── */}
+      <div className="grid-charts" style={{ display: "grid", gridTemplateColumns: "minmax(0, 2.4fr) minmax(0, 1fr)", gap: "18px" }}>
+        <div style={{ ...CARD, display: "flex", flexDirection: "column" }}>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "14px", flexWrap: "wrap" }}>
             <div>
-              <h3 style={{ fontSize: "0.88rem", fontWeight: 700, color: "var(--dash-text)", margin: 0 }}>Trafik Pengunjung</h3>
-              <p style={{ margin: "2px 0 0", fontSize: "0.72rem", color: "var(--dash-text-muted)" }}>12 bulan terakhir</p>
+              <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--dash-text)" }}>Trafik Pengunjung</div>
+              <div style={{ marginTop: "3px", fontSize: "0.78rem", color: "var(--dash-text-soft)" }}>Total <strong style={{ color: "var(--dash-text)" }}>873</strong> kunjungan dalam 30 hari terakhir</div>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--dash-text-muted)", fontSize: "0.82rem" }}>
+              <span>Periode:</span>
+              <strong style={{ color: "var(--dash-text)", fontWeight: 700 }}>{period}</strong>
             </div>
           </div>
-          <div style={{ flex: 1, minHeight: "280px" }}>
+          <div style={{ marginTop: "14px", height: "240px" }}>
             <DashboardChart type="area" options={trafficOpts} series={trafficSeries} height="100%" />
           </div>
         </div>
 
-        {/* Source Donut + Device Radial */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-          {/* Source */}
-          <div className="dash-card" style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-            <h4 style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--dash-text)", margin: "0 0 4px" }}>Sumber Traffic</h4>
-            <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <DashboardChart type="donut" options={sourceOpts} series={[384,257,128,85]} height={180} />
-            </div>
-            {/* Legend */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px", marginTop: "4px" }}>
-              {[
-                { color: "#059669", label: "Direct", pct: "45%" },
-                { color: "#0284c7", label: "Organic", pct: "30%" },
-                { color: "#d97706", label: "Social", pct: "15%" },
-                { color: "#dc2626", label: "Referral", pct: "10%" },
-              ].map(s => (
-                <div key={s.label} style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.7rem" }}>
-                  <span style={{ width: "8px", height: "8px", borderRadius: "2px", background: s.color, flexShrink: 0 }} />
-                  <span style={{ color: "var(--dash-text-muted)" }}>{s.label}</span>
-                  <span style={{ marginLeft: "auto", fontWeight: 600, color: "var(--dash-text)" }}>{s.pct}</span>
-                </div>
-              ))}
-            </div>
+        <div style={{ ...CARD, display: "flex", flexDirection: "column" }}>
+          <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--dash-text)" }}>Device Pengunjung</div>
+          <div style={{ marginTop: "3px", fontSize: "0.78rem", color: "var(--dash-text-soft)" }}>Berdasarkan perangkat akses</div>
+          <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", margin: "10px 0" }}>
+            <DashboardChart type="donut" options={deviceOpts} series={[506, 314, 53]} height={180} />
           </div>
-
-          {/* Device */}
-          <div className="dash-card" style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-            <h4 style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--dash-text)", margin: "0 0 4px" }}>Device Overview</h4>
-            <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <DashboardChart type="radialBar" options={deviceOpts} series={[55,40,5]} height={160} />
-            </div>
-            <div style={{ display: "flex", justifyContent: "center", gap: "16px", marginTop: "4px" }}>
-              {[
-                { color: "#059669", label: "Desktop", val: "55%" },
-                { color: "#0284c7", label: "Mobile", val: "40%" },
-                { color: "#d97706", label: "Tablet", val: "5%" },
-              ].map(d => (
-                <div key={d.label} style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.68rem" }}>
-                  <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: d.color }} />
-                  <span style={{ color: "var(--dash-text-muted)" }}>{d.label}</span>
-                  <span style={{ fontWeight: 600, color: "var(--dash-text)" }}>{d.val}</span>
-                </div>
-              ))}
-            </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "11px" }}>
+            {[
+              { c: ACCENT, label: "Desktop", v: "58%" },
+              { c: C2, label: "Mobile", v: "36%" },
+              { c: "var(--dash-text-muted)", label: "Tablet", v: "6%" },
+            ].map(d => (
+              <div key={d.label} style={{ display: "flex", alignItems: "center", gap: "9px" }}>
+                <span style={{ width: "9px", height: "9px", borderRadius: "3px", background: d.c }} />
+                <span style={{ fontSize: "0.82rem", color: "var(--dash-text-soft)", flex: 1 }}>{d.label}</span>
+                <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--dash-text)" }}>{d.v}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* ── Row 2: Map + Performance Grid ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }} className="grid-charts">
-        {/* Map */}
-        <div className="dash-card" style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ marginBottom: "10px" }}>
-            <h3 style={{ fontSize: "0.88rem", fontWeight: 700, color: "var(--dash-text)", margin: 0 }}>Distribusi Pengunjung</h3>
-            <p style={{ margin: "2px 0 0", fontSize: "0.72rem", color: "var(--dash-text-muted)" }}>Berdasarkan data GA4</p>
+      {/* ── ROW: MAP + SOURCES ── */}
+      <div className="grid-charts" style={{ display: "grid", gridTemplateColumns: "minmax(0, 1.7fr) minmax(0, 1fr)", gap: "18px" }}>
+        <div style={{ ...CARD }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
+            <div>
+              <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--dash-text)" }}>Sebaran Geografis Pengunjung</div>
+              <div style={{ marginTop: "3px", fontSize: "0.78rem", color: "var(--dash-text-soft)" }}>Negara asal kunjungan</div>
+            </div>
+            <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--dash-primary)", background: "var(--dash-primary-bg)", padding: "5px 11px", borderRadius: "20px" }}>8 negara</span>
           </div>
-          <div style={{ flex: 1, minHeight: "300px", borderRadius: "8px", overflow: "hidden", border: "1px solid var(--dash-border)" }}>
+          <div style={{ marginTop: "16px", height: "200px", borderRadius: "14px", overflow: "hidden", border: "1px solid var(--dash-border)" }}>
             <VisitorMap />
           </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "13px", marginTop: "18px" }}>
+            {countries.map(c => (
+              <div key={c.name} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <span style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--dash-text-soft)", width: "130px", flexShrink: 0 }}>{c.name}</span>
+                <div style={{ flex: 1, height: "8px", borderRadius: "20px", background: "var(--dash-surface-hover)", overflow: "hidden" }}>
+                  <div style={{ width: `${c.pct}%`, height: "100%", borderRadius: "20px", background: "var(--dash-primary)" }} />
+                </div>
+                <span style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--dash-text)", width: "38px", textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{c.pct}%</span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* GA4 Performance */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
-            {/* Bounce Rate */}
-            <div className="dash-card" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontSize: "0.72rem", color: "var(--dash-text-muted)", fontWeight: 500 }}>Bounce Rate</span>
-                <Clock size={13} style={{ color: "var(--dash-primary)" }} />
+        <div style={{ ...CARD }}>
+          <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--dash-text)" }}>Sumber Traffic</div>
+          <div style={{ marginTop: "3px", fontSize: "0.78rem", color: "var(--dash-text-soft)" }}>Dari mana pengunjung datang</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "18px", marginTop: "20px" }}>
+            {sources.map(s => (
+              <div key={s.name}>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                  <span style={{ fontSize: "0.84rem", fontWeight: 600, color: "var(--dash-text)" }}>{s.name}</span>
+                  <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--dash-text-soft)", fontVariantNumeric: "tabular-nums" }}>{s.pct}%</span>
+                </div>
+                <div style={{ height: "9px", borderRadius: "20px", background: "var(--dash-surface-hover)", overflow: "hidden" }}>
+                  <div style={{ width: `${s.pct}%`, height: "100%", borderRadius: "20px", background: s.color }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── ROW: SMALL STATS ── */}
+      <div className="dash-grid-kpi" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "18px" }}>
+        <div style={{ ...CARD, padding: "20px 22px" }}>
+          <div style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--dash-text-soft)" }}>Page Views</div>
+          <div style={{ marginTop: "8px", fontSize: "1.6rem", fontWeight: 800, color: "var(--dash-text)", fontVariantNumeric: "tabular-nums" }}>873</div>
+          <div style={{ height: "38px", marginTop: "10px" }}>
+            <DashboardChart type="area" options={{
+              chart: { sparkline: { enabled: true }, foreColor: fg },
+              colors: [ACCENT], stroke: { curve: "smooth" as const, width: 2.2 },
+              fill: { type: "gradient", gradient: { opacityFrom: 0.3, opacityTo: 0.04 } },
+              tooltip: { enabled: false }
+            }} series={[{ data: [30,34,40,38,46,44,52,50,58,62,60,66] }]} height={38} />
+          </div>
+        </div>
+
+        <div style={{ ...CARD, padding: "20px 22px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--dash-text-soft)" }}>Bounce Rate</span>
+            <span style={{ fontSize: "0.62rem", fontWeight: 700, color: "var(--dash-primary)", background: "var(--dash-primary-bg)", padding: "3px 8px", borderRadius: "20px" }}>SANGAT BAIK</span>
+          </div>
+          <div style={{ marginTop: "8px", fontSize: "1.6rem", fontWeight: 800, color: "var(--dash-text)", fontVariantNumeric: "tabular-nums" }}>13.65%</div>
+          <div style={{ marginTop: "14px", height: "9px", borderRadius: "20px", background: "var(--dash-surface-hover)", overflow: "hidden" }}>
+            <div style={{ width: "13.65%", height: "100%", borderRadius: "20px", background: "var(--dash-primary)" }} />
+          </div>
+          <div style={{ marginTop: "8px", fontSize: "0.72rem", color: "var(--dash-text-muted)" }}>Rata-rata pentalan kunjungan</div>
+        </div>
+
+        <div style={{ ...CARD, padding: "20px 22px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--dash-text-soft)" }}>Durasi Sesi Rata-rata</span>
+            <Clock size={14} style={{ color: "var(--dash-primary)" }} />
+          </div>
+          <div style={{ marginTop: "8px", fontSize: "1.6rem", fontWeight: 800, color: "var(--dash-text)", fontVariantNumeric: "tabular-nums" }}>2m 39s</div>
+          <div style={{ display: "flex", alignItems: "flex-end", gap: "5px", height: "38px", marginTop: "12px" }}>
+            {[40, 65, 50, 85, 70, 95].map((h, i) => (
+              <div key={i} style={{ flex: 1, height: `${h}%`, borderRadius: "4px 4px 2px 2px", background: h === 85 ? "var(--dash-primary)" : "var(--dash-primary-bg)" }} />
+            ))}
+          </div>
+        </div>
+
+        <div style={{ ...CARD, padding: "20px 22px", display: "flex", flexDirection: "column" }}>
+          <div style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--dash-text-soft)" }}>New vs Returning</div>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "6px", flex: 1 }}>
+            <div style={{ width: "86px", height: "86px" }}>
+              <DashboardChart type="donut" options={newReturnOpts} series={[86, 62]} height={86} />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: "7px" }}>
+                  <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: ACCENT }} />
+                  <span style={{ fontSize: "0.72rem", color: "var(--dash-text-soft)" }}>Baru</span>
+                </div>
+                <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--dash-text)", marginLeft: "15px" }}>86</div>
               </div>
               <div>
-                <h4 style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--dash-text)", margin: "8px 0 0" }}>12.37%</h4>
-                <p style={{ margin: "2px 0 0", fontSize: "0.68rem", color: "var(--dash-success)", fontWeight: 600 }}>Rata-rata sehat</p>
+                <div style={{ display: "flex", alignItems: "center", gap: "7px" }}>
+                  <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--dash-text-muted)" }} />
+                  <span style={{ fontSize: "0.72rem", color: "var(--dash-text-soft)" }}>Kembali</span>
+                </div>
+                <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--dash-text)", marginLeft: "15px" }}>62</div>
               </div>
-            </div>
-
-            {/* Avg Session */}
-            <div className="dash-card" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontSize: "0.72rem", color: "var(--dash-text-muted)", fontWeight: 500 }}>Avg Session</span>
-                <Activity size={13} style={{ color: "var(--dash-success)" }} />
-              </div>
-              <div>
-                <h4 style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--dash-text)", margin: "8px 0 0" }}>2m 29s</h4>
-                <p style={{ margin: "2px 0 0", fontSize: "0.68rem", color: "var(--dash-primary)", fontWeight: 600 }}>Interaksi tinggi</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Page Views */}
-          <div className="dash-card" style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <div style={{ flex: 1 }}>
-              <span style={{ fontSize: "0.72rem", color: "var(--dash-text-muted)", fontWeight: 500 }}>Page Views</span>
-              <h4 style={{ fontSize: "1.3rem", fontWeight: 700, color: "var(--dash-text)", margin: "4px 0 0" }}>854 <span style={{ fontSize: "0.7rem", fontWeight: 500, color: "var(--dash-text-muted)" }}>views</span></h4>
-            </div>
-            <div style={{ width: "120px", height: "50px" }}>
-              <DashboardChart type="area" options={{
-                chart: { sparkline: { enabled: true }, foreColor: fg },
-                colors: ["#059669"], stroke: { curve: "smooth" as const, width: 2 },
-                fill: { type: "gradient", gradient: { opacityFrom: 0.35, opacityTo: 0.05 } },
-                tooltip: { enabled: false }
-              }} series={[{ data: [310,420,380,510,490,620,590,710,680,790,750,854] }]} height={50} />
-            </div>
-          </div>
-
-          {/* New vs Returning */}
-          <div className="dash-card" style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <div style={{ flex: 1 }}>
-              <span style={{ fontSize: "0.72rem", color: "var(--dash-text-muted)", fontWeight: 500 }}>New vs Returning</span>
-              <h4 style={{ fontSize: "1.3rem", fontWeight: 700, color: "var(--dash-text)", margin: "4px 0 0" }}>148 <span style={{ fontSize: "0.7rem", fontWeight: 500, color: "var(--dash-text-muted)" }}>visitors</span></h4>
-              <div style={{ display: "flex", gap: "12px", fontSize: "0.7rem", marginTop: "4px" }}>
-                <span style={{ color: "var(--dash-primary)", fontWeight: 600 }}>New: 68%</span>
-                <span style={{ color: "var(--dash-success)", fontWeight: 600 }}>Return: 32%</span>
-              </div>
-            </div>
-            <div style={{ width: "80px", height: "80px" }}>
-              <DashboardChart type="donut" options={newReturnOpts} series={[101,47]} height={80} />
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── Popular Content Table ── */}
-      <div className="dash-card" style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+      {/* ── POPULAR CONTENT ── */}
+      <div style={{ ...CARD, overflow: "hidden" }}>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "14px", flexWrap: "wrap" }}>
           <div>
-            <h3 style={{ fontSize: "0.88rem", fontWeight: 700, color: "var(--dash-text)", margin: 0 }}>Popular Content</h3>
-            <p style={{ margin: "2px 0 0", fontSize: "0.72rem", color: "var(--dash-text-muted)" }}>Halaman dengan tayangan tertinggi</p>
-          </div>
-          <div style={{ position: "relative" }}>
-            <Search size={13} style={{ position: "absolute", left: "10px", top: "50%", transform: "translateY(-50%)", color: "var(--dash-text-muted)" }} />
-            <input
-              type="text" placeholder="Cari halaman..." value={searchTerm}
-              onChange={e => { setSearchTerm(e.target.value); setTablePage(1); }}
-              className="dash-input" style={{ maxWidth: "200px", paddingLeft: "30px", fontSize: "0.78rem" }}
-            />
-          </div>
-        </div>
-
-        <div style={{ overflowX: "auto" }}>
-          <table className="dash-table">
-            <thead>
-              <tr>
-                <th>Halaman</th>
-                <th>URL</th>
-                <th>Tipe</th>
-                <th style={{ width: "22%" }}>Proporsi</th>
-                <th style={{ textAlign: "right" }}>Views</th>
-                <th style={{ width: "40px" }}></th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginated.length === 0 ? (
-                <tr><td colSpan={6} style={{ textAlign: "center", padding: "32px", color: "var(--dash-text-muted)" }}>Tidak ditemukan.</td></tr>
-              ) : (
-                paginated.map(item => {
-                  const pct = ((item.views / totalViews) * 100).toFixed(1);
-                  return (
-                    <tr key={item.path}>
-                      <td style={{ fontWeight: 600, color: "var(--dash-text)" }}>{item.label}</td>
-                      <td><code style={{ fontSize: "0.75rem", color: "var(--dash-text-muted)", background: "var(--dash-surface-hover)", padding: "2px 6px", borderRadius: "4px" }}>{item.path}</code></td>
-                      <td><span className={`dash-badge ${badgeColor(item.type)}`}>{item.type}</span></td>
-                      <td>
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <div style={{ flex: 1, height: "5px", backgroundColor: "var(--dash-surface-hover)", borderRadius: "3px", overflow: "hidden" }}>
-                            <div style={{ height: "100%", width: `${pct}%`, background: "linear-gradient(90deg, var(--dash-primary), var(--dash-success))", borderRadius: "3px", transition: "width 0.5s ease" }} />
-                          </div>
-                          <span style={{ fontSize: "0.7rem", color: "var(--dash-text-muted)", width: "35px", textAlign: "right", fontWeight: 500 }}>{pct}%</span>
-                        </div>
-                      </td>
-                      <td style={{ textAlign: "right", fontWeight: 700, color: "var(--dash-text)", fontSize: "0.85rem" }}>{item.views.toLocaleString()}</td>
-                      <td style={{ textAlign: "right" }}>
-                        <a href={item.path} target="_blank" rel="noreferrer" style={{
-                          display: "inline-flex", alignItems: "center", justifyContent: "center",
-                          width: "26px", height: "26px", borderRadius: "6px", border: "1px solid var(--dash-border)",
-                          color: "var(--dash-text-muted)", textDecoration: "none", transition: "all 0.15s"
-                        }}>
-                          <ArrowUpRight size={12} />
-                        </a>
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {totalPages > 1 && (
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid var(--dash-border)", paddingTop: "12px" }}>
-            <span style={{ fontSize: "0.72rem", color: "var(--dash-text-muted)" }}>
-              {((tablePage - 1) * perPage) + 1}–{Math.min(tablePage * perPage, filtered.length)} dari {filtered.length}
-            </span>
-            <div style={{ display: "flex", gap: "6px" }}>
-              <button onClick={() => setTablePage(p => Math.max(1, p - 1))} disabled={tablePage === 1} className="dash-btn dash-btn-secondary" style={{ padding: "4px 12px", fontSize: "0.72rem" }}>Prev</button>
-              <button onClick={() => setTablePage(p => Math.min(totalPages, p + 1))} disabled={tablePage === totalPages} className="dash-btn dash-btn-secondary" style={{ padding: "4px 12px", fontSize: "0.72rem" }}>Next</button>
+            <div style={{ display: "flex", alignItems: "center", gap: "9px" }}>
+              <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--dash-text)" }}>Konten Populer</div>
+              <span style={{ fontSize: "0.62rem", fontWeight: 700, color: "var(--dash-warning)", background: "var(--dash-warning-bg)", padding: "3px 9px", borderRadius: "20px" }}>GOOGLE ANALYTICS 4</span>
             </div>
+            <div style={{ marginTop: "3px", fontSize: "0.78rem", color: "var(--dash-text-soft)" }}>Halaman dengan page views terbanyak</div>
           </div>
-        )}
+        </div>
+
+        <div className="dash-pop-row" style={{ display: "grid", gridTemplateColumns: "34px 1fr 130px 64px", gap: "14px", padding: "14px 4px 12px", borderBottom: "1px solid var(--dash-border)", marginTop: "14px", fontSize: "0.66rem", fontWeight: 700, letterSpacing: "0.05em", color: "var(--dash-text-muted)" }}>
+          <span>#</span><span>HALAMAN</span><span className="dash-hide-sm">DISTRIBUSI</span><span style={{ textAlign: "right" }}>VIEWS</span>
+        </div>
+
+        {popular.map((p, i) => (
+          <div key={p.path} className="dash-pop-row" style={{ display: "grid", gridTemplateColumns: "34px 1fr 130px 64px", gap: "14px", alignItems: "center", padding: "13px 4px", borderBottom: i === popular.length - 1 ? "none" : "1px solid var(--dash-border)" }}>
+            <span style={{ fontSize: "0.8rem", fontWeight: 800, color: "var(--dash-text-muted)", fontVariantNumeric: "tabular-nums" }}>{String(i + 1).padStart(2, "0")}</span>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: "0.84rem", fontWeight: 700, color: "var(--dash-text)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{p.label}</div>
+              <div style={{ fontSize: "0.72rem", color: "var(--dash-text-muted)", fontFamily: "ui-monospace, monospace", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{p.path}</div>
+            </div>
+            <div className="dash-hide-sm" style={{ height: "8px", borderRadius: "20px", background: "var(--dash-surface-hover)", overflow: "hidden" }}>
+              <div style={{ width: `${Math.round(p.views / maxViews * 100)}%`, height: "100%", borderRadius: "20px", background: "var(--dash-primary)" }} />
+            </div>
+            <span style={{ fontSize: "0.88rem", fontWeight: 800, color: "var(--dash-text)", textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{p.views}</span>
+          </div>
+        ))}
       </div>
 
-      {/* Responsive grid overrides */}
+      <div style={{ textAlign: "center", padding: "8px 0 4px", fontSize: "0.74rem", color: "var(--dash-text-muted)" }}>
+        © {new Date().getFullYear()} DISPARPORA Lampung Timur · Data ditarik dari Google Analytics 4
+      </div>
+
+      {/* Responsive overrides */}
       <style jsx global>{`
         @media (max-width: 1100px) {
-          .grid-stat-cards { grid-template-columns: repeat(2, 1fr) !important; }
+          .dash-grid-kpi { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 900px) {
+          .grid-charts { grid-template-columns: 1fr !important; }
         }
         @media (max-width: 600px) {
-          .grid-stat-cards { grid-template-columns: 1fr !important; }
+          .dash-grid-kpi { grid-template-columns: 1fr !important; }
+          .dash-pop-row { grid-template-columns: 28px 1fr 56px !important; }
+          .dash-pop-row .dash-hide-sm { display: none !important; }
         }
       `}</style>
     </div>

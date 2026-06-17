@@ -5,14 +5,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface SpeechData {
+  id?: string;
   name: string;
   title: string;
   badge: string;
   photoUrl: string;
   welcomeSpeech: string;
+  order?: number;
 }
 
-const speeches: SpeechData[] = [
+const defaultSpeeches: SpeechData[] = [
   {
     name: "Ela Siti Nuryamah",
     title: "Bupati Lampung Timur",
@@ -37,9 +39,17 @@ const speeches: SpeechData[] = [
 ];
 
 export default function PidatoSection() {
+  const [speeches, setSpeeches] = useState<SpeechData[]>(defaultSpeeches);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1); // 1 = right, -1 = left
   const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/speeches")
+      .then(res => res.json())
+      .then(data => { if (Array.isArray(data) && data.length > 0) setSpeeches(data); })
+      .catch(() => { /* keep default */ });
+  }, []);
 
   useEffect(() => {
     if (isPaused) return;
@@ -49,7 +59,12 @@ export default function PidatoSection() {
     }, 8000); // Auto-play every 8 seconds
 
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, [isPaused, speeches.length]);
+
+  // Reset index if speeches array changes
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [speeches.length]);
 
   const handlePrev = () => {
     setDirection(-1);
@@ -61,7 +76,7 @@ export default function PidatoSection() {
     setCurrentIndex((prev) => (prev + 1) % speeches.length);
   };
 
-  const activeSpeech = speeches[currentIndex];
+  const activeSpeech = speeches[currentIndex] ?? speeches[0];
 
   const slideVariants = {
     enter: (dir: number) => ({
@@ -79,6 +94,8 @@ export default function PidatoSection() {
       transition: { duration: 0.3, ease: "easeIn" as const }
     })
   };
+
+  if (!activeSpeech) return null;
 
   return (
     <section className="container" style={{ position: "relative" }}>
@@ -122,8 +139,8 @@ export default function PidatoSection() {
       </div>
 
       {/* Main Glassmorphic Card Container */}
-      <div 
-        className="card speech-card" 
+      <div
+        className="card speech-card"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         style={{
@@ -142,7 +159,7 @@ export default function PidatoSection() {
         }}
       >
         {/* Desktop Side Navigation - Left */}
-        <button 
+        <button
           onClick={handlePrev}
           className="desktop-nav-btn"
           style={{
@@ -179,7 +196,7 @@ export default function PidatoSection() {
         </button>
 
         {/* Desktop Side Navigation - Right */}
-        <button 
+        <button
           onClick={handleNext}
           className="desktop-nav-btn"
           style={{
@@ -266,7 +283,7 @@ export default function PidatoSection() {
 
               {/* Speech Text Column */}
               <div style={{ flex: "1 1 400px", display: "flex", flexDirection: "column", gap: "1.25rem", minWidth: "280px" }}>
-                <span style={{ 
+                <span style={{
                   alignSelf: "flex-start",
                   backgroundColor: "var(--primary-light)",
                   color: "var(--primary)",
@@ -280,9 +297,9 @@ export default function PidatoSection() {
                 }}>
                   {activeSpeech.badge}
                 </span>
-                <h3 style={{ 
-                  fontSize: "1.85rem", 
-                  fontWeight: 800, 
+                <h3 style={{
+                  fontSize: "1.85rem",
+                  fontWeight: 800,
                   fontFamily: "var(--font-serif)",
                   color: "var(--text-primary)",
                   lineHeight: "1.3"
@@ -392,4 +409,3 @@ export default function PidatoSection() {
     </section>
   );
 }
-

@@ -43,9 +43,10 @@ export default function BeritaPage() {
       {/* Page Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
         <div>
-          <h1 style={{ margin: 0, fontSize: "1.25rem", fontWeight: 700, color: "var(--dash-text)" }}>Publikasi Berita</h1>
-          <p style={{ margin: 0, fontSize: "0.82rem", color: "var(--dash-text-muted)", marginTop: "2px" }}>
-            Kelola rilis berita, kegiatan, dan promosi investasi daerah.
+          <p style={{ margin: 0, fontSize: "0.66rem", fontWeight: 700, color: "var(--dash-primary)", textTransform: "uppercase", letterSpacing: "0.12em" }}>Kelola Konten</p>
+          <h1 style={{ margin: "2px 0 0", fontSize: "1.4rem", fontWeight: 800, color: "var(--dash-text)" }}>Publikasi Berita</h1>
+          <p style={{ margin: "0.3rem 0 0", fontSize: "0.82rem", color: "var(--dash-text-muted)" }}>
+            Kelola rilis berita, kegiatan, dan promosi wisata daerah.
           </p>
         </div>
         <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>

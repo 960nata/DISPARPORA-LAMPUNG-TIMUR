@@ -1,13 +1,11 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
 interface Partner {
   id: string;
   name: string;
   logoUrl: string;
-}
-
-interface PartnersSectionProps {
-  partners?: Partner[];
 }
 
 const defaultPartners: Partner[] = [
@@ -20,7 +18,20 @@ const defaultPartners: Partner[] = [
   { id: "part_7", name: "Dinas Pariwisata Lampung Timur", logoUrl: "/group_7.avif" }
 ];
 
-export default function PartnersSection({ partners = [] }: PartnersSectionProps) {
+interface PartnersSectionProps {
+  partners?: Partner[];
+}
+
+export default function PartnersSection({ partners: propPartners }: PartnersSectionProps) {
+  const [partners, setPartners] = useState<Partner[]>(propPartners && propPartners.length > 0 ? propPartners : defaultPartners);
+
+  useEffect(() => {
+    fetch("/api/partners")
+      .then(res => res.json())
+      .then(data => { if (Array.isArray(data) && data.length > 0) setPartners(data); })
+      .catch(() => { /* keep default */ });
+  }, []);
+
   const activePartners = partners.length > 0 ? partners : defaultPartners;
   const doubledPartners = [...activePartners, ...activePartners];
 
@@ -54,10 +65,10 @@ export default function PartnersSection({ partners = [] }: PartnersSectionProps)
       <div className="marquee-container">
         <div className="marquee-content">
           {doubledPartners.map((p, idx) => {
-            const fallbackPng = p.logoUrl.includes(".avif") 
-              ? p.logoUrl.replace(".avif", ".png") 
+            const fallbackPng = p.logoUrl.includes(".avif")
+              ? p.logoUrl.replace(".avif", ".png")
               : p.logoUrl;
-              
+
             let logoHeight = "60px";
             if (p.logoUrl.includes("group_2")) {
               logoHeight = "54px";
@@ -66,7 +77,7 @@ export default function PartnersSection({ partners = [] }: PartnersSectionProps)
             } else if (p.logoUrl.includes("group_6")) {
               logoHeight = "68px";
             }
-              
+
             return (
               <div key={idx} style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "72px" }}>
                 <picture style={{ display: "block", height: logoHeight }}>
@@ -86,4 +97,3 @@ export default function PartnersSection({ partners = [] }: PartnersSectionProps)
     </section>
   );
 }
-

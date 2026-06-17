@@ -33,7 +33,8 @@ export async function POST(request: Request) {
         username: data.username,
         password: data.password,
         name: data.name,
-        role: data.role
+        role: data.role,
+        ...(data.permissions !== undefined ? { permissions: typeof data.permissions === "string" ? data.permissions : JSON.stringify(data.permissions) } : {})
       }
     });
 
