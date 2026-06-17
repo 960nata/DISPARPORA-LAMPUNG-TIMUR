@@ -4,8 +4,8 @@ import { useEffect, useRef, useState, ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
-  LayoutDashboard, MapPin, FileText, Users, Map, LogOut,
-  Globe, Menu, X, ArrowLeft, Bell, Sun, Moon, Images, User,
+  LayoutDashboard, MapPin, FileText, Users, LogOut,
+  Menu, X, ArrowLeft, Bell, Sun, Moon, Images, User,
   Building2, Mic2, CalendarDays, Handshake
 } from "lucide-react";
 import { AdminProvider, useAdmin } from "@/contexts/AdminContext";
@@ -241,29 +241,22 @@ function DashboardShell({ children }: { children: ReactNode }) {
             );
           })}
 
-          <div style={{ fontSize: "0.66rem", fontWeight: 700, letterSpacing: "0.09em", color: "var(--dash-text-muted)", padding: "16px 8px 6px" }}>TAUTAN</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-            <a href="/peta" target="_blank" rel="noreferrer" className="dash-nav-soft" style={{ ...navItemBase, color: "var(--dash-text-soft)" }}>
-              <Map size={19} style={{ flexShrink: 0 }} /> <span>Peta Interaktif</span>
-            </a>
-            <a href="/" target="_blank" rel="noreferrer" className="dash-nav-soft" style={{ ...navItemBase, color: "var(--dash-text-soft)" }}>
-              <Globe size={19} style={{ flexShrink: 0 }} /> <span>Portal Wisata</span>
-            </a>
-          </div>
         </nav>
 
-        {/* User card */}
-        <div style={{ display: "flex", alignItems: "center", gap: "11px", padding: "11px", borderRadius: "14px", background: "var(--dash-surface-hover)", border: "1px solid var(--dash-border)" }}>
-          <div style={{ width: "38px", height: "38px", borderRadius: "11px", background: "linear-gradient(135deg, var(--dash-primary), var(--dash-success))", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: "0.85rem", flexShrink: 0 }}>
-            {user.name.charAt(0).toUpperCase()}
+        {/* Profile card */}
+        <div style={{ marginTop: "8px", borderTop: "1px solid var(--dash-border)", paddingTop: "14px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "11px", padding: "12px", borderRadius: "14px", background: "var(--dash-surface-hover)", border: "1px solid var(--dash-border)" }}>
+            <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: "linear-gradient(135deg, var(--dash-primary), var(--dash-success))", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: "1rem", flexShrink: 0, boxShadow: "0 6px 14px -6px var(--dash-primary)" }}>
+              {user.name.charAt(0).toUpperCase()}
+            </div>
+            <div style={{ lineHeight: 1.25, minWidth: 0, flex: 1 }}>
+              <div style={{ fontSize: "0.84rem", fontWeight: 700, color: "var(--dash-text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user.name}</div>
+              <div style={{ fontSize: "0.69rem", fontWeight: 600, color: "var(--dash-primary)", textTransform: "capitalize", marginTop: "1px" }}>{user.role.replace(/_/g," ")}</div>
+            </div>
+            <button onClick={handleLogout} title="Keluar" style={{ background: "none", border: "1px solid var(--dash-border)", color: "var(--dash-text-muted)", cursor: "pointer", padding: "6px", borderRadius: "8px", display: "flex", flexShrink: 0 }}>
+              <LogOut size={15} />
+            </button>
           </div>
-          <div style={{ lineHeight: 1.2, minWidth: 0, flex: 1 }}>
-            <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--dash-text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user.name}</div>
-            <div style={{ fontSize: "0.68rem", color: "var(--dash-text-muted)", textTransform: "capitalize" }}>{user.role.replace("_"," ")}</div>
-          </div>
-          <button onClick={handleLogout} title="Keluar" style={{ background: "none", border: "none", color: "var(--dash-text-muted)", cursor: "pointer", padding: "4px", borderRadius: "6px", display: "flex" }}>
-            <LogOut size={16} />
-          </button>
         </div>
       </aside>
 
