@@ -1,24 +1,20 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import {
   Compass,
   Users,
   ShieldCheck,
   Award,
   Scale,
-  FileText,
-  ChevronLeft,
-  ChevronRight,
   MapPin,
   Briefcase,
   Sparkles,
-  CheckCircle2,
-  Star,
   Zap,
-  Target,
+  Quote,
+  Check,
+  Store,
 } from "lucide-react";
 
 const fadeUp = (delay = 0) => ({
@@ -28,6 +24,10 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.55, delay },
 });
 
+const GREEN = "#0E9F4F";
+const LIME = "#BEF26A";
+const FOREST_GRADIENT = "linear-gradient(120deg, #0C3B26, #0F5132)";
+
 const kepalaDinas = {
   name: "Marsan, S.Pd., Ing., M.Pd.",
   role: "Kepala Dinas",
@@ -36,19 +36,18 @@ const kepalaDinas = {
 };
 
 const pejabatList = [
-  { name: "Sekretariat", role: "Sekretaris Dinas", sub: "Administrasi & Operasional Dinas" },
-  { name: "Bidang Pariwisata", role: "Kepala Bidang", sub: "Pengembangan Destinasi Wisata" },
-  { name: "Bidang Ekonomi Kreatif", role: "Kepala Bidang", sub: "Industri & Kriya Kreatif" },
-  { name: "Bidang Kepemudaan", role: "Kepala Bidang", sub: "Pemberdayaan Pemuda" },
-  { name: "Bidang Keolahragaan", role: "Kepala Bidang", sub: "Pembinaan Prestasi Olahraga" },
+  { letter: "S", name: "Sekretariat", role: "Sekretaris Dinas", sub: "Administrasi & Operasional", bidangId: "sekretariat" },
+  { letter: "P", name: "Bidang Pariwisata", role: "Kepala Bidang", sub: "Pengembangan Destinasi", bidangId: "pariwisata" },
+  { letter: "E", name: "Bidang Ekonomi Kreatif", role: "Kepala Bidang", sub: "Industri & Kriya Kreatif", bidangId: "ekonomi-kreatif" },
+  { letter: "K", name: "Bidang Kepemudaan", role: "Kepala Bidang", sub: "Pemberdayaan Pemuda", bidangId: "pemuda" },
+  { letter: "K", name: "Bidang Keolahragaan", role: "Kepala Bidang", sub: "Pembinaan Prestasi", bidangId: "olahraga" },
 ];
 
 const bidangDetails = [
   {
     id: "sekretariat",
     title: "Sekretariat",
-    icon: <Briefcase size={28} />,
-    color: "#3b82f6",
+    icon: <Briefcase size={22} />,
     tagline: "Pusat Pelayanan Administrasi & Operasional Dinas",
     tugas: [
       "Pengelolaan administrasi surat-menyurat dan kearsipan dinas.",
@@ -66,8 +65,7 @@ const bidangDetails = [
   {
     id: "ekonomi-kreatif",
     title: "Ekonomi Kreatif",
-    icon: <Sparkles size={28} />,
-    color: "#ec4899",
+    icon: <Sparkles size={22} />,
     tagline: "Inovasi & Pemberdayaan Industri Kreatif Lokal",
     tugas: [
       "Identifikasi, pendataan, dan pemetaan potensi pelaku ekonomi kreatif di Lampung Timur.",
@@ -85,8 +83,7 @@ const bidangDetails = [
   {
     id: "pariwisata",
     title: "Pariwisata",
-    icon: <Compass size={28} />,
-    color: "#10b981",
+    icon: <Compass size={22} />,
     tagline: "Pengembangan Destinasi & Pemasaran Wisata Unggulan",
     tugas: [
       "Penyusunan rencana induk pengembangan pariwisata daerah (RIPPDA) Lampung Timur.",
@@ -104,8 +101,7 @@ const bidangDetails = [
   {
     id: "olahraga",
     title: "Olahraga",
-    icon: <Award size={28} />,
-    color: "#f59e0b",
+    icon: <Award size={22} />,
     tagline: "Pembinaan Atlet Prestasi & Peningkatan Kebugaran Masyarakat",
     tugas: [
       "Pembinaan cabang olahraga prestasi di bawah naungan KONI Lampung Timur.",
@@ -123,8 +119,7 @@ const bidangDetails = [
   {
     id: "pemuda",
     title: "Pemuda",
-    icon: <Users size={28} />,
-    color: "#8b5cf6",
+    icon: <Users size={22} />,
     tagline: "Kepemimpinan, Kewirausahaan, & Kemandirian Pemuda",
     tugas: [
       "Pemberdayaan organisasi kepemudaan (KNPI, Karang Taruna, Purna Paskibraka, Pramuka).",
@@ -142,45 +137,46 @@ const bidangDetails = [
 ];
 
 const stats = [
-  { value: "5",   label: "Bidang Kerja",      color: "#059669", bg: "#ecfdf5", icon: <Briefcase size={22}/> },
-  { value: "24",  label: "Kecamatan",          color: "#3b82f6", bg: "#eff6ff", icon: <MapPin size={22}/> },
-  { value: "264", label: "Desa & Kelurahan",   color: "#8b5cf6", bg: "#f5f3ff", icon: <Users size={22}/> },
-  { value: "71+", label: "Destinasi Wisata",   color: "#f59e0b", bg: "#fffbeb", icon: <Compass size={22}/> },
+  { value: "5",   label: "Bidang Kerja",      sub: "Unit kerja struktural dinas",   icon: <Briefcase size={22}/> },
+  { value: "24",  label: "Kecamatan",          sub: "Wilayah administratif",         icon: <MapPin size={22}/> },
+  { value: "264", label: "Desa & Kelurahan",   sub: "Tersebar di seluruh wilayah",   icon: <Users size={22}/> },
+  { value: "71+", label: "Destinasi Wisata",   sub: "Daya tarik wisata unggulan",    icon: <Compass size={22}/> },
 ];
 
 const renstraItems = [
   {
-    num: "01",
-    color: "#10b981",
+    icon: <MapPin size={24} />,
     title: "Pengembangan Destinasi Wisata",
     items: ["Pemberdayaan Kelompok Sadar Wisata (Pokdarwis)", "Pengembangan desa wisata tematik berbasis budaya lokal", "Peningkatan aksesibilitas dan amenitas wisata unggulan"],
   },
   {
-    num: "02",
-    color: "#8b5cf6",
+    icon: <Users size={24} />,
     title: "Pembinaan Kepemudaan",
     items: ["Pendidikan dan pelatihan kepemimpinan Paskibraka", "Pemberdayaan organisasi pemuda tingkat kecamatan", "Program wirausaha muda dan inovasi daerah"],
   },
   {
-    num: "03",
-    color: "#f59e0b",
+    icon: <Award size={24} />,
     title: "Peningkatan Prestasi Olahraga",
     items: ["Pembinaan dan pelatihan atlet cabang olahraga unggulan", "Penyelenggaraan kompetisi olahraga tingkat kabupaten", "Rehabilitasi dan pembangunan sarana olahraga desa"],
   },
   {
-    num: "04",
-    color: "#ec4899",
+    icon: <Store size={24} />,
     title: "Ekonomi Kreatif & UMKM",
     items: ["Fasilitasi pameran produk unggulan daerah", "Pelatihan digital marketing pelaku usaha kreatif", "Kemitraan sertifikasi halal dan standarisasi produk lokal"],
+    highlight: true,
   },
 ];
 
 export default function ProfilDinas() {
   const [activeBidang, setActiveBidang] = useState(0);
-  const pejabatRef = useRef<HTMLDivElement>(null);
-  const scrollPejabat = (dir: number) => {
-    pejabatRef.current?.scrollBy({ left: dir * 280, behavior: "smooth" });
+
+  const gotoBidang = (bidangId: string) => {
+    const idx = bidangDetails.findIndex(b => b.id === bidangId);
+    if (idx >= 0) setActiveBidang(idx);
+    document.getElementById("bidang")?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const active = bidangDetails[activeBidang];
 
   return (
     <div style={{ paddingBottom: "6rem" }}>
@@ -240,131 +236,138 @@ export default function ProfilDinas() {
         </div>
       </section>
 
-      {/* ── STATS STRIP ── */}
-      <section style={{ backgroundColor: "#f8fafc", borderBottom: "1px solid var(--border)", marginBottom: "5rem", padding: "2.5rem 0" }}>
-        <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1.25rem" }}>
-          {stats.map((s, i) => (
-            <motion.div
-              key={i}
-              {...fadeUp(i * 0.07)}
-              style={{
-                textAlign: "center",
-                padding: "1.75rem 1.25rem",
-                backgroundColor: "white",
-                borderRadius: "20px",
-                border: "1px solid var(--border)",
-                boxShadow: "var(--card-shadow)",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "0.4rem",
-              }}
-            >
-              <div style={{ width: "48px", height: "48px", borderRadius: "14px", backgroundColor: s.bg, color: s.color, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "0.25rem" }}>
-                {s.icon}
-              </div>
-              <p style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)", fontWeight: 900, color: s.color, margin: 0, lineHeight: 1 }}>{s.value}</p>
-              <p style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-secondary)", margin: 0 }}>{s.label}</p>
-            </motion.div>
-          ))}
+      {/* ── STATS STRIP (di bawah hero, tidak menempel) ── */}
+      <section className="container" style={{ marginTop: "3rem", marginBottom: "5rem" }}>
+        <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1.25rem" }}>
+          {stats.map((s, i) => {
+            const highlight = i === stats.length - 1;
+            return (
+              <motion.div
+                key={i}
+                {...fadeUp(i * 0.07)}
+                style={{
+                  position: "relative",
+                  overflow: "hidden",
+                  padding: "1.5rem",
+                  backgroundColor: highlight ? GREEN : "white",
+                  borderRadius: "20px",
+                  border: highlight ? "none" : "1px solid rgba(16,40,28,0.08)",
+                  boxShadow: "0 20px 40px -28px rgba(12,59,38,0.4)",
+                }}
+              >
+                {highlight && (
+                  <div style={{ position: "absolute", right: "-20px", bottom: "-20px", width: "90px", height: "90px", borderRadius: "50%", background: "rgba(255,255,255,0.12)" }} />
+                )}
+                <div style={{ width: "48px", height: "48px", borderRadius: "14px", backgroundColor: highlight ? "rgba(255,255,255,0.18)" : "rgba(14,159,79,0.1)", color: highlight ? "white" : GREEN, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  {s.icon}
+                </div>
+                <p style={{ marginTop: "0.9rem", fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)", fontWeight: 800, letterSpacing: "-0.03em", color: highlight ? "white" : GREEN, lineHeight: 1 }}>{s.value}</p>
+                <p style={{ marginTop: "0.3rem", fontSize: "0.9rem", fontWeight: 700, color: highlight ? "white" : "#11231A" }}>{s.label}</p>
+                <p style={{ marginTop: "0.1rem", fontSize: "0.78rem", color: highlight ? "rgba(255,255,255,0.82)" : "#6b7a70" }}>{s.sub}</p>
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 
       {/* ── VISI & MISI ── */}
       <section className="container" style={{ marginBottom: "5rem" }}>
-        <motion.div {...fadeUp()} style={{ textAlign: "center", marginBottom: "3rem" }}>
-          <span style={{ display: "inline-block", backgroundColor: "#ecfdf5", color: "#059669", fontWeight: 700, fontSize: "0.75rem", letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.3rem 0.9rem", borderRadius: "999px", marginBottom: "0.75rem" }}>Visi &amp; Misi</span>
+        <motion.div {...fadeUp()} style={{ textAlign: "center", marginBottom: "2.5rem" }}>
+          <span style={{ display: "inline-block", backgroundColor: "rgba(14,159,79,0.1)", color: GREEN, fontWeight: 700, fontSize: "0.75rem", letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.3rem 0.9rem", borderRadius: "999px", marginBottom: "0.75rem" }}>Visi &amp; Misi</span>
           <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800 }}>Arah &amp; Cita-cita Pembangunan Daerah</h2>
         </motion.div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem" }}>
-          {/* Visi */}
-          <motion.div
-            {...fadeUp(0.1)}
-            style={{
-              background: "linear-gradient(145deg, #052e1c 0%, #064e3b 50%, #065f46 100%)",
-              borderRadius: "28px",
-              padding: "2.5rem",
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            <div style={{ position: "absolute", top: "-30px", right: "-30px", width: "160px", height: "160px", borderRadius: "50%", background: "rgba(255,255,255,0.04)" }} />
-            <div style={{ position: "absolute", bottom: "-50px", left: "20px", fontSize: "12rem", fontWeight: 900, color: "rgba(255,255,255,0.04)", lineHeight: 1, pointerEvents: "none", userSelect: "none" }}>&ldquo;</div>
+        {/* Visi — quote panel */}
+        <motion.div
+          {...fadeUp(0.1)}
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            borderRadius: "28px",
+            background: FOREST_GRADIENT,
+            padding: "3.5rem 3rem",
+            textAlign: "center",
+          }}
+        >
+          <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(190,242,106,0.1) 1.4px, transparent 1.6px)", backgroundSize: "20px 20px" }} />
+          <Quote size={40} style={{ position: "relative", color: LIME, opacity: 0.9 }} />
+          <p style={{ position: "relative", marginTop: "1rem", fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: LIME }}>Visi Kabupaten Lampung Timur</p>
+          <p style={{ position: "relative", marginTop: "1rem", fontSize: "clamp(1.6rem, 4vw, 2.6rem)", fontWeight: 800, letterSpacing: "-0.02em", color: "white", lineHeight: 1.15, margin: "1rem 0 0" }}>
+            &ldquo;Rakyat Lampung Timur Berjaya&rdquo;
+          </p>
+        </motion.div>
 
-            <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "44px", height: "44px", borderRadius: "14px", backgroundColor: "rgba(255,255,255,0.12)", marginBottom: "1.5rem" }}>
-              <Star size={20} style={{ color: "#6ee7b7" }} />
-            </div>
-            <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6ee7b7", marginBottom: "1rem" }}>Visi Kabupaten Lampung Timur</p>
-            <p style={{ fontSize: "clamp(1.2rem, 2.5vw, 1.6rem)", fontWeight: 800, color: "white", lineHeight: 1.4, margin: 0, position: "relative", zIndex: 1 }}>
-              &ldquo;Rakyat Lampung Timur Berjaya&rdquo;
-            </p>
-          </motion.div>
-
-          {/* Misi */}
-          <motion.div
-            {...fadeUp(0.2)}
-            style={{ borderRadius: "28px", border: "1.5px solid var(--border)", padding: "2.5rem", backgroundColor: "white", boxShadow: "var(--card-shadow)" }}
-          >
-            <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "44px", height: "44px", borderRadius: "14px", backgroundColor: "#ecfdf5", marginBottom: "1.5rem" }}>
-              <Target size={20} style={{ color: "#059669" }} />
-            </div>
-            <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#059669", marginBottom: "1.5rem" }}>Misi Strategis Dinas</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
-              {[
-                "Meningkatkan daya saing ekonomi daerah berbasis pariwisata, industri kreatif, dan potensi sumber daya lokal.",
-                "Membangun sumber daya manusia yang unggul, berkarakter, berdaya saing, dan berjiwa kewirausahaan.",
-                "Mendorong pertumbuhan koperasi, UMKM, serta usaha sektor informal masyarakat secara berkelanjutan.",
-              ].map((m, i) => (
-                <div key={i} style={{ display: "flex", gap: "1rem", alignItems: "flex-start" }}>
-                  <span style={{ flexShrink: 0, width: "28px", height: "28px", borderRadius: "8px", background: "#ecfdf5", color: "#059669", fontSize: "0.8rem", fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {i + 1}
-                  </span>
-                  <p style={{ margin: 0, color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.65 }}>{m}</p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
+        {/* Misi — numbered cards */}
+        <p style={{ marginTop: "1.5rem", fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b7a70", textAlign: "center" }}>Misi Strategis Dinas</p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem", marginTop: "1.25rem" }}>
+          {[
+            "Meningkatkan daya saing ekonomi daerah berbasis pariwisata, industri kreatif, dan potensi sumber daya lokal.",
+            "Membangun sumber daya manusia yang unggul, berkarakter, berdaya saing, dan berjiwa kewirausahaan.",
+            "Mendorong pertumbuhan koperasi, UMKM, serta usaha sektor informal masyarakat secara berkelanjutan.",
+          ].map((m, i) => {
+            const highlight = i === 2;
+            return (
+              <motion.div
+                key={i}
+                {...fadeUp(i * 0.09)}
+                whileHover={{ y: -6 }}
+                style={{
+                  backgroundColor: highlight ? LIME : "white",
+                  border: highlight ? "none" : "1px solid rgba(16,40,28,0.08)",
+                  borderRadius: "22px",
+                  padding: "1.875rem",
+                  transition: "box-shadow 0.3s",
+                }}
+              >
+                <div style={{ fontSize: "3rem", fontWeight: 800, lineHeight: 1, letterSpacing: "-0.04em", color: highlight ? "rgba(12,59,38,0.3)" : "rgba(14,159,79,0.18)" }}>{String(i + 1).padStart(2, "0")}</div>
+                <p style={{ margin: "1rem 0 0", fontSize: "0.94rem", lineHeight: 1.6, color: highlight ? "#0C3B26" : "#3a463e", fontWeight: highlight ? 600 : 500 }}>{m}</p>
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 
-      {/* ── TUPOKSI ── */}
-      <section id="tupoksi" style={{ background: "linear-gradient(180deg, #f0fdf4 0%, #f8fafc 100%)", padding: "5rem 0", marginBottom: "5rem", scrollMarginTop: "90px" }}>
-        <div className="container">
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "3rem", alignItems: "start" }}>
+      {/* ── TUPOKSI & DASAR HUKUM ── */}
+      <section id="tupoksi" style={{ scrollMarginTop: "90px" }}>
+        <div className="container" style={{ marginBottom: "5rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "2.5rem", alignItems: "center" }}>
             {/* Left: intro */}
             <motion.div {...fadeUp()}>
-              <span style={{ display: "inline-block", backgroundColor: "#ecfdf5", color: "#059669", fontWeight: 700, fontSize: "0.75rem", letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.3rem 0.9rem", borderRadius: "999px", marginBottom: "1rem" }}>Tupoksi &amp; Dasar Hukum</span>
+              <span style={{ display: "inline-block", backgroundColor: "rgba(14,159,79,0.1)", color: GREEN, fontWeight: 700, fontSize: "0.75rem", letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.3rem 0.9rem", borderRadius: "999px", marginBottom: "1rem" }}>Tupoksi &amp; Dasar Hukum</span>
               <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800, marginBottom: "1rem" }}>Kedudukan, Tugas Pokok &amp; Fungsi</h2>
-              <p style={{ color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
+              <p style={{ color: "#46564c", lineHeight: 1.7, marginBottom: "1.5rem" }}>
                 Ditetapkan berdasarkan <strong>Peraturan Bupati Lampung Timur Nomor 71 Tahun 2021</strong> tentang Kedudukan, Susunan Organisasi, Tugas dan Fungsi, serta Tata Kerja Dinas Pariwisata, Kepemudaan dan Olahraga Kabupaten Lampung Timur.
               </p>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", backgroundColor: "white", border: "1px solid #d1fae5", borderRadius: "14px", padding: "1rem 1.25rem" }}>
-                <Scale size={20} style={{ color: "#059669", flexShrink: 0 }} />
-                <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-secondary)" }}>Perbup Nomor 71 Tahun 2021 — Lampung Timur</p>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.75rem", backgroundColor: "white", border: "1px solid rgba(16,40,28,0.08)", borderRadius: "16px", padding: "1rem 1.25rem" }}>
+                <span style={{ width: "42px", height: "42px", borderRadius: "11px", backgroundColor: "rgba(14,159,79,0.1)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <Scale size={20} style={{ color: GREEN }} />
+                </span>
+                <div>
+                  <p style={{ margin: 0, fontSize: "0.88rem", fontWeight: 800, color: "#11231A" }}>Perbup Nomor 71 Tahun 2021</p>
+                  <p style={{ margin: 0, fontSize: "0.78rem", color: "#6b7a70" }}>Dasar hukum penyelenggaraan dinas</p>
+                </div>
               </div>
             </motion.div>
 
             {/* Right: 4 items */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <div className="tupoksi-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
               {[
-                { icon: <MapPin size={20} />, color: "#059669", bg: "#ecfdf5", title: "Kedudukan", body: "Unsur pelaksana otonomi daerah di bawah Bupati, bertanggung jawab atas urusan pemerintahan di bidang pariwisata, kepemudaan, dan keolahragaan." },
-                { icon: <Briefcase size={20} />, color: "#3b82f6", bg: "#eff6ff", title: "Tugas Pokok", body: "Melaksanakan urusan pemerintahan daerah berdasarkan asas otonomi dan tugas pembantuan di bidang pariwisata, ekonomi kreatif, kepemudaan, dan keolahragaan." },
-                { icon: <Zap size={20} />, color: "#f59e0b", bg: "#fffbeb", title: "Fungsi", body: "Perumusan kebijakan teknis, pengkoordinasian, pembinaan, pelaksanaan tugas, serta evaluasi dan pelaporan kinerja dinas." },
-                { icon: <ShieldCheck size={20} />, color: "#8b5cf6", bg: "#f5f3ff", title: "Pertanggungjawaban", body: "Kepala Dinas bertanggung jawab kepada Bupati melalui Sekretaris Daerah sesuai dengan ketentuan peraturan perundang-undangan yang berlaku." },
+                { icon: <MapPin size={20} />, title: "Kedudukan", body: "Unsur pelaksana otonomi daerah di bawah Bupati, bertanggung jawab atas urusan pariwisata, kepemudaan, dan keolahragaan." },
+                { icon: <Briefcase size={20} />, title: "Tugas Pokok", body: "Melaksanakan urusan pemerintahan berdasarkan asas otonomi dan tugas pembantuan di bidang pariwisata, ekraf, kepemudaan, dan olahraga." },
+                { icon: <Zap size={20} />, title: "Fungsi", body: "Perumusan kebijakan teknis, pengkoordinasian, pembinaan, pelaksanaan tugas, serta evaluasi dan pelaporan kinerja dinas." },
+                { icon: <ShieldCheck size={20} />, title: "Pertanggungjawaban", body: "Kepala Dinas bertanggung jawab kepada Bupati melalui Sekretaris Daerah sesuai ketentuan peraturan perundang-undangan." },
               ].map((item, i) => (
                 <motion.div
                   key={i}
                   {...fadeUp(0.05 + i * 0.07)}
-                  style={{ display: "flex", gap: "1rem", alignItems: "flex-start", backgroundColor: "white", borderRadius: "16px", padding: "1.25rem", border: "1px solid var(--border)", boxShadow: "var(--card-shadow)" }}
+                  whileHover={{ y: -5 }}
+                  style={{ backgroundColor: "white", border: "1px solid rgba(16,40,28,0.08)", borderRadius: "20px", padding: "1.5rem" }}
                 >
-                  <div style={{ flexShrink: 0, width: "40px", height: "40px", borderRadius: "12px", backgroundColor: item.bg, color: item.color, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ width: "42px", height: "42px", borderRadius: "12px", backgroundColor: "rgba(14,159,79,0.1)", color: GREEN, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {item.icon}
-                  </div>
-                  <div>
-                    <p style={{ fontWeight: 800, fontSize: "0.9rem", marginBottom: "0.3rem" }}>{item.title}</p>
-                    <p style={{ margin: 0, fontSize: "0.825rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>{item.body}</p>
-                  </div>
+                  </span>
+                  <p style={{ marginTop: "0.875rem", fontWeight: 800, fontSize: "0.94rem" }}>{item.title}</p>
+                  <p style={{ margin: "0.5rem 0 0", fontSize: "0.8rem", lineHeight: 1.6, color: "#5a6960" }}>{item.body}</p>
                 </motion.div>
               ))}
             </div>
@@ -372,90 +375,78 @@ export default function ProfilDinas() {
         </div>
       </section>
 
-      {/* ── STRUKTUR ORGANISASI / SUSUNAN PEJABAT ── */}
+      {/* ── STRUKTUR ORGANISASI ── */}
       <section className="container" style={{ marginBottom: "5rem" }}>
-        <motion.div {...fadeUp()} style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "2rem" }}>
-          <div>
-            <span style={{ display: "inline-block", backgroundColor: "#ecfdf5", color: "#059669", fontWeight: 700, fontSize: "0.75rem", letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.3rem 0.9rem", borderRadius: "999px", marginBottom: "0.75rem" }}>Struktur Organisasi</span>
-            <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800, margin: 0 }}>Susunan Pejabat DISPARPORA</h2>
-          </div>
-          <Link href="#bidang" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", backgroundColor: "#f1f5f9", color: "#334155", fontWeight: 700, fontSize: "0.82rem", padding: "0.6rem 1.1rem", borderRadius: "999px", textDecoration: "none", border: "1px solid #e2e8f0" }}>
-            Tupoksi Bidang
-          </Link>
+        <motion.div {...fadeUp()} style={{ textAlign: "center", marginBottom: "2.5rem" }}>
+          <span style={{ display: "inline-block", backgroundColor: "rgba(14,159,79,0.1)", color: GREEN, fontWeight: 700, fontSize: "0.75rem", letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.3rem 0.9rem", borderRadius: "999px", marginBottom: "0.75rem" }}>Struktur Organisasi</span>
+          <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800, margin: 0 }}>Susunan Pejabat DISPARPORA</h2>
         </motion.div>
 
-        {/* Featured — Kepala Dinas */}
-        <motion.div {...fadeUp(0.05)} whileHover={{ y: -4 }} className="pejabat-card" style={{
-          backgroundColor: "white",
-          borderRadius: "22px",
-          padding: "2rem",
+        {/* Kepala Dinas */}
+        <motion.div {...fadeUp(0.05)} style={{
+          maxWidth: "560px",
+          margin: "0 auto 2.5rem",
           display: "flex",
           alignItems: "center",
-          gap: "1.75rem",
-          flexWrap: "wrap",
-          marginBottom: "1.5rem",
+          gap: "1.375rem",
+          background: FOREST_GRADIENT,
+          borderRadius: "24px",
+          padding: "1.375rem",
+          boxShadow: "0 26px 52px -28px rgba(12,59,38,0.55)",
         }}>
-          <div style={{ width: "120px", height: "120px", borderRadius: "50%", backgroundColor: "#ecfdf5", border: "3px solid #a7f3d0", overflow: "hidden", flexShrink: 0 }}>
+          <div style={{ width: "104px", height: "104px", flexShrink: 0, borderRadius: "18px", overflow: "hidden", border: "3px solid rgba(255,255,255,0.18)" }}>
             <img src={kepalaDinas.photo} alt={kepalaDinas.name} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
           </div>
-          <div style={{ flex: "1 1 240px" }}>
-            <h3 style={{ fontSize: "clamp(1.4rem, 3vw, 1.9rem)", fontWeight: 800, margin: 0, color: "var(--text-primary)" }}>{kepalaDinas.name}</h3>
-            <p style={{ color: "#059669", fontWeight: 700, fontSize: "1rem", margin: "0.35rem 0 0.9rem" }}>{kepalaDinas.role}</p>
-            <span style={{ display: "inline-block", fontFamily: "monospace", fontSize: "0.82rem", letterSpacing: "0.04em", color: "#475569", backgroundColor: "#f1f5f9", border: "1px solid #e2e8f0", padding: "0.4rem 0.9rem", borderRadius: "8px" }}>{kepalaDinas.unit}</span>
+          <div>
+            <span style={{ display: "inline-block", padding: "0.25rem 0.75rem", borderRadius: "20px", backgroundColor: LIME, color: "#0C3B26", fontSize: "0.68rem", fontWeight: 800, letterSpacing: "0.04em" }}>KEPALA DINAS</span>
+            <p style={{ margin: "0.6rem 0 0", fontSize: "1.3rem", fontWeight: 800, letterSpacing: "-0.01em", color: "white" }}>{kepalaDinas.name}</p>
+            <p style={{ margin: "0.25rem 0 0", fontSize: "0.82rem", color: "rgba(255,255,255,0.72)" }}>{kepalaDinas.unit}</p>
           </div>
         </motion.div>
 
-        {/* Carousel pejabat */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-          <p style={{ fontWeight: 700, fontSize: "0.9rem", color: "var(--text-secondary)", margin: 0 }}>Pejabat Struktural</p>
-          <div style={{ display: "flex", gap: "0.5rem" }}>
-            <button onClick={() => scrollPejabat(-1)} aria-label="Sebelumnya" style={{ width: "40px", height: "40px", borderRadius: "50%", border: "1px solid var(--border)", backgroundColor: "white", color: "var(--primary)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
-              <ChevronLeft size={18} />
-            </button>
-            <button onClick={() => scrollPejabat(1)} aria-label="Berikutnya" style={{ width: "40px", height: "40px", borderRadius: "50%", border: "1px solid var(--border)", backgroundColor: "white", color: "var(--primary)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
-              <ChevronRight size={18} />
-            </button>
-          </div>
-        </div>
-        <div ref={pejabatRef} className="pejabat-carousel" style={{ display: "flex", gap: "1.25rem", overflowX: "auto", scrollSnapType: "x mandatory", padding: "0.6rem 0.4rem 1.1rem" }}>
+        {/* Pejabat grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: "1rem" }}>
           {pejabatList.map((p, i) => (
             <motion.div
               key={i}
-              {...fadeUp(0.08 + i * 0.06)}
-              whileHover={{ y: -4 }}
-              className="pejabat-card"
+              {...fadeUp(0.06 + i * 0.06)}
+              whileHover={{ y: -6 }}
+              onClick={() => gotoBidang(p.bidangId)}
+              role="button"
+              tabIndex={0}
               style={{
-                flex: "0 0 240px",
-                scrollSnapAlign: "start",
+                cursor: "pointer",
                 backgroundColor: "white",
-                borderRadius: "18px",
-                padding: "1.5rem",
+                border: "1px solid rgba(16,40,28,0.08)",
+                borderRadius: "20px",
+                padding: "1.375rem",
+                textAlign: "center",
               }}
             >
-              <div style={{ width: "74px", height: "74px", borderRadius: "50%", backgroundColor: "var(--primary-light)", border: "2px solid #a7f3d0", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.1rem" }}>
-                <span style={{ fontSize: "2rem", fontWeight: 800, color: "var(--primary)" }}>{p.name.replace(/^Bidang\s/, "").charAt(0)}</span>
+              <div style={{ width: "54px", height: "54px", margin: "0 auto", borderRadius: "16px", backgroundColor: "rgba(14,159,79,0.1)", color: GREEN, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.375rem", fontWeight: 800 }}>
+                {p.letter}
               </div>
-              <h4 style={{ fontSize: "1.05rem", fontWeight: 800, margin: 0, color: "var(--text-primary)" }}>{p.name}</h4>
-              <p style={{ fontSize: "0.78rem", color: "var(--text-secondary)", margin: "0.2rem 0 0.7rem" }}>{p.sub}</p>
-              <p style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--primary)", margin: 0 }}>{p.role}</p>
+              <p style={{ marginTop: "0.875rem", fontSize: "0.9rem", fontWeight: 800, color: "#11231A" }}>{p.name}</p>
+              <p style={{ marginTop: "0.2rem", fontSize: "0.75rem", color: "#6b7a70", lineHeight: 1.4 }}>{p.sub}</p>
+              <p style={{ marginTop: "0.625rem", fontSize: "0.72rem", fontWeight: 700, color: GREEN }}>{p.role}</p>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* ── BIDANG DETAIL ── */}
-      <section id="bidang" style={{ backgroundColor: "#f8fafc", padding: "5rem 0", scrollMarginTop: "90px" }}>
-        <div className="container">
-          <motion.div {...fadeUp()} style={{ textAlign: "center", marginBottom: "3rem" }}>
-            <span style={{ display: "inline-block", backgroundColor: "#ecfdf5", color: "#059669", fontWeight: 700, fontSize: "0.75rem", letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.3rem 0.9rem", borderRadius: "999px", marginBottom: "0.75rem" }}>Tupoksi Bidang</span>
-            <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800 }}>Tugas Pokok &amp; Fungsi Tiap Bidang</h2>
-            <p style={{ maxWidth: "560px", margin: "0.75rem auto 0", color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+      {/* ── TUPOKSI BIDANG (INTERACTIVE) ── */}
+      <section id="bidang" style={{ scrollMarginTop: "90px" }}>
+        <div className="container" style={{ marginBottom: "5rem" }}>
+          <motion.div {...fadeUp()} style={{ textAlign: "center" }}>
+            <span style={{ display: "inline-block", backgroundColor: "rgba(14,159,79,0.1)", color: GREEN, fontWeight: 700, fontSize: "0.75rem", letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.3rem 0.9rem", borderRadius: "999px", marginBottom: "0.75rem" }}>Tupoksi Bidang</span>
+            <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800, margin: 0 }}>Tugas Pokok &amp; Fungsi Tiap Bidang</h2>
+            <p style={{ maxWidth: "560px", margin: "0.75rem auto 0", color: "#46564c", fontSize: "0.9rem" }}>
               Klik bidang di bawah untuk melihat uraian tupoksi dan program kerja prioritasnya.
             </p>
           </motion.div>
 
           {/* Tabs */}
-          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "center", marginBottom: "2rem" }}>
+          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "center", marginTop: "1.875rem", marginBottom: "1.5rem" }}>
             {bidangDetails.map((b, i) => (
               <button
                 key={b.id}
@@ -463,8 +454,8 @@ export default function ProfilDinas() {
                 style={{
                   padding: "0.55rem 1.1rem",
                   borderRadius: "999px",
-                  border: `2px solid ${activeBidang === i ? b.color : "#e2e8f0"}`,
-                  backgroundColor: activeBidang === i ? b.color : "white",
+                  border: activeBidang === i ? "none" : "1px solid rgba(16,40,28,0.12)",
+                  backgroundColor: activeBidang === i ? GREEN : "white",
                   color: activeBidang === i ? "white" : "#64748b",
                   fontWeight: 700,
                   fontSize: "0.82rem",
@@ -479,105 +470,84 @@ export default function ProfilDinas() {
           </div>
 
           {/* Active content */}
-          {bidangDetails.map((bidang, i) => (
-            <div key={bidang.id} id={bidang.id} style={{ display: activeBidang === i ? "block" : "none", scrollMarginTop: "100px" }}>
-
-              {/* Header card */}
-              <div style={{
-                backgroundColor: "white",
-                borderRadius: "20px",
-                border: "1px solid var(--border)",
-                borderTop: `4px solid ${bidang.color}`,
-                boxShadow: "var(--card-shadow)",
-                padding: "1.75rem 2rem",
-                marginBottom: "1.25rem",
-                display: "flex",
-                alignItems: "center",
-                gap: "1.25rem",
-              }}>
-                <div style={{ width: "60px", height: "60px", borderRadius: "16px", backgroundColor: `${bidang.color}14`, color: bidang.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  {bidang.icon}
-                </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1.35fr 1fr", gap: "1.25rem", alignItems: "start" }} className="bidang-2col">
+            <div style={{ backgroundColor: "white", border: "1px solid rgba(16,40,28,0.08)", borderRadius: "24px", padding: "2rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.875rem" }}>
+                <span style={{ width: "50px", height: "50px", borderRadius: "14px", backgroundColor: GREEN, color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  {active.icon}
+                </span>
                 <div>
-                  <p style={{ fontSize: "0.68rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.2rem" }}>Bidang</p>
-                  <h3 style={{ fontSize: "clamp(1.2rem, 2.5vw, 1.5rem)", fontWeight: 900, margin: 0 }}>{bidang.title}</h3>
-                  <p style={{ color: bidang.color, fontWeight: 600, fontSize: "0.85rem", margin: "0.25rem 0 0" }}>{bidang.tagline}</p>
+                  <p style={{ margin: 0, fontSize: "1.3rem", fontWeight: 800, letterSpacing: "-0.01em", color: "#11231A" }}>{active.title}</p>
+                  <p style={{ margin: 0, fontSize: "0.82rem", color: "#6b7a70" }}>{active.tagline}</p>
                 </div>
               </div>
 
-              {/* 2-col content */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>
-
-                {/* Tupoksi - clean list */}
-                <div style={{ backgroundColor: "white", borderRadius: "20px", padding: "2rem", border: "1px solid var(--border)", boxShadow: "var(--card-shadow)" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "1.25rem", paddingBottom: "1rem", borderBottom: "1px solid var(--border)" }}>
-                    <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: `${bidang.color}14`, color: bidang.color, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <FileText size={14} />
-                    </div>
-                    <p style={{ fontWeight: 800, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.06em", margin: 0 }}>Uraian Tupoksi</p>
+              <p style={{ marginTop: "1.5rem", fontSize: "0.75rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: GREEN }}>Uraian Tupoksi</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem", marginTop: "0.875rem" }}>
+                {active.tugas.map((t, idx) => (
+                  <div key={idx} style={{ display: "flex", gap: "0.875rem", alignItems: "flex-start" }}>
+                    <span style={{ flexShrink: 0, width: "26px", height: "26px", borderRadius: "8px", backgroundColor: "rgba(14,159,79,0.1)", color: GREEN, fontSize: "0.78rem", fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      {idx + 1}
+                    </span>
+                    <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.55, color: "#3a463e" }}>{t}</p>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    {bidang.tugas.map((t, idx) => (
-                      <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: "0.9rem", padding: "0.85rem 0", borderBottom: idx < bidang.tugas.length - 1 ? "1px solid var(--border)" : "none" }}>
-                        <span style={{ flexShrink: 0, width: "26px", height: "26px", borderRadius: "8px", backgroundColor: `${bidang.color}14`, color: bidang.color, fontSize: "0.72rem", fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                          {idx + 1}
-                        </span>
-                        <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-secondary)", lineHeight: 1.65 }}>{t}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Program Prioritas */}
-                <div style={{ backgroundColor: "white", borderRadius: "20px", padding: "2rem", border: "1px solid var(--border)", boxShadow: "var(--card-shadow)" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "1.25rem", paddingBottom: "1rem", borderBottom: "1px solid var(--border)" }}>
-                    <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: `${bidang.color}14`, color: bidang.color, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <Star size={14} />
-                    </div>
-                    <p style={{ fontWeight: 800, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.06em", margin: 0 }}>Program Prioritas</p>
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
-                    {bidang.program.map((p, idx) => (
-                      <div key={idx} style={{ display: "flex", gap: "1rem", alignItems: "flex-start", padding: "1.1rem 1.25rem", borderRadius: "14px", border: "1px solid var(--border)", backgroundColor: "#fafafa" }}>
-                        <div style={{ flexShrink: 0, width: "32px", height: "32px", borderRadius: "10px", backgroundColor: bidang.color, color: "white", fontSize: "0.78rem", fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                          {String(idx + 1).padStart(2, "0")}
-                        </div>
-                        <p style={{ margin: 0, fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: 1.65 }}>{p}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
-          ))}
+
+            <div style={{ background: FOREST_GRADIENT, borderRadius: "24px", padding: "2rem", position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", right: "-30px", top: "-30px", width: "120px", height: "120px", borderRadius: "50%", background: "rgba(190,242,106,0.12)" }} />
+              <p style={{ position: "relative", fontSize: "0.75rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: LIME, margin: 0 }}>Program Prioritas</p>
+              <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: "0.875rem", marginTop: "1.125rem" }}>
+                {active.program.map((p, idx) => (
+                  <div key={idx} style={{ display: "flex", gap: "0.875rem", alignItems: "flex-start", paddingBottom: "0.875rem", borderBottom: idx < active.program.length - 1 ? "1px solid rgba(255,255,255,0.1)" : "none" }}>
+                    <span style={{ fontSize: "1.125rem", fontWeight: 800, color: LIME, letterSpacing: "-0.02em" }}>{String(idx + 1).padStart(2, "0")}</span>
+                    <p style={{ margin: 0, fontSize: "0.875rem", lineHeight: 1.5, color: "rgba(255,255,255,0.9)", fontWeight: 500 }}>{p}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* ── RENSTRA ── */}
-      <section className="container" style={{ padding: "5rem 0 0" }}>
-        <motion.div {...fadeUp()} style={{ textAlign: "center", marginBottom: "3rem" }}>
-          <span style={{ display: "inline-block", backgroundColor: "#ecfdf5", color: "#059669", fontWeight: 700, fontSize: "0.75rem", letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.3rem 0.9rem", borderRadius: "999px", marginBottom: "0.75rem" }}>Rencana Strategis</span>
-          <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800 }}>Program Unggulan Renstra Dinas</h2>
-          <p style={{ maxWidth: "520px", margin: "0.75rem auto 0", color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+      {/* ── RENCANA STRATEGIS ── */}
+      <section className="container">
+        <motion.div {...fadeUp()} style={{ textAlign: "center" }}>
+          <span style={{ display: "inline-block", backgroundColor: "rgba(14,159,79,0.1)", color: GREEN, fontWeight: 700, fontSize: "0.75rem", letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.3rem 0.9rem", borderRadius: "999px", marginBottom: "0.75rem" }}>Rencana Strategis</span>
+          <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800, margin: 0 }}>Program Unggulan Renstra Dinas</h2>
+          <p style={{ maxWidth: "600px", margin: "0.75rem auto 0", color: "#46564c", fontSize: "0.9rem" }}>
             Arah kebijakan dan program prioritas DISPARPORA Lampung Timur dalam periode pembangunan daerah.
           </p>
         </motion.div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
+        <div className="renstra-2col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.125rem", marginTop: "2.25rem" }}>
           {renstraItems.map((r, i) => (
             <motion.div
               key={i}
               {...fadeUp(i * 0.08)}
-              style={{ backgroundColor: "white", borderRadius: "20px", padding: "2rem", border: "1px solid var(--border)", boxShadow: "var(--card-shadow)", position: "relative", overflow: "hidden" }}
+              whileHover={{ y: -6 }}
+              style={{
+                backgroundColor: r.highlight ? LIME : "white",
+                border: r.highlight ? "none" : "1px solid rgba(16,40,28,0.08)",
+                borderRadius: "24px",
+                padding: "1.875rem",
+              }}
             >
-              <span style={{ position: "absolute", top: "1rem", right: "1.25rem", fontSize: "3.5rem", fontWeight: 900, color: `${r.color}12`, lineHeight: 1, userSelect: "none" }}>{r.num}</span>
-              <div style={{ width: "4px", height: "32px", backgroundColor: r.color, borderRadius: "2px", marginBottom: "1.25rem" }} />
-              <h4 style={{ fontWeight: 800, fontSize: "0.95rem", marginBottom: "1rem" }}>{r.title}</h4>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.55rem" }}>
+              <span style={{
+                width: "50px", height: "50px", borderRadius: "14px",
+                backgroundColor: r.highlight ? "rgba(12,59,38,0.14)" : "rgba(14,159,79,0.1)",
+                color: r.highlight ? "#0C3B26" : GREEN,
+                display: "inline-flex", alignItems: "center", justifyContent: "center",
+              }}>
+                {r.icon}
+              </span>
+              <p style={{ marginTop: "1rem", fontSize: "1.125rem", fontWeight: 800, color: r.highlight ? "#0C3B26" : "#11231A" }}>{r.title}</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.7rem", marginTop: "1rem" }}>
                 {r.items.map((item, j) => (
-                  <div key={j} style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start" }}>
-                    <CheckCircle2 size={13} style={{ color: r.color, flexShrink: 0, marginTop: "3px" }} />
-                    <span style={{ fontSize: "0.83rem", color: "var(--text-secondary)", lineHeight: 1.55 }}>{item}</span>
+                  <div key={j} style={{ display: "flex", gap: "0.625rem", alignItems: "flex-start" }}>
+                    <Check size={16} style={{ color: r.highlight ? "#0C3B26" : GREEN, flexShrink: 0, marginTop: "2px" }} />
+                    <span style={{ fontSize: "0.875rem", lineHeight: 1.5, color: r.highlight ? "#0C3B26" : "#46564c", fontWeight: r.highlight ? 500 : 400 }}>{item}</span>
                   </div>
                 ))}
               </div>
@@ -585,6 +555,19 @@ export default function ProfilDinas() {
           ))}
         </div>
       </section>
+
+      <style jsx global>{`
+        @media (max-width: 900px) {
+          .bidang-2col { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 700px) {
+          .renstra-2col { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 640px) {
+          .stats-grid { grid-template-columns: 1fr 1fr !important; }
+          .tupoksi-grid { grid-template-columns: 1fr 1fr !important; }
+        }
+      `}</style>
     </div>
   );
 }
