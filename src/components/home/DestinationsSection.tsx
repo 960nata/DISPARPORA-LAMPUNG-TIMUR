@@ -247,17 +247,14 @@ export default function DestinationsSection() {
                       </span>
                     </div>
                     <Link href={item.link} className="dest-see-overlay" style={{
-                      display: "flex", alignItems: "center", justifyContent: "space-between",
-                      padding: "10px 14px", borderRadius: "14px",
-                      background: "rgba(255,255,255,0.12)", color: "#fff",
-                      fontWeight: 700, fontSize: "0.85rem", textDecoration: "none",
-                      border: "1px solid rgba(255,255,255,0.35)", backdropFilter: "blur(6px)",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      padding: "11px 14px", borderRadius: "14px",
+                      background: "#fff", color: "#0f172a",
+                      fontWeight: 700, fontSize: "0.875rem", textDecoration: "none",
+                      boxShadow: "0 4px 16px rgba(0,0,0,0.25)",
                       transition: "background 0.2s ease",
                     }}>
-                      <span>Jelajahi</span>
-                      <div style={{ width: "26px", height: "26px", borderRadius: "50%", background: "rgba(255,255,255,0.25)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <ChevronRight size={14} style={{ color: "#fff" }} />
-                      </div>
+                      Jelajahi
                     </Link>
                   </div>
 
