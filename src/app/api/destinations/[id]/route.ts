@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { db, jsonDb } from "@/lib/db";
 
 export async function GET(
   _request: Request,
@@ -7,9 +7,15 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const dest = await db.destinations.findUnique({ where: { id } });
-    if (!dest) return NextResponse.json({ error: "Not found" }, { status: 404 });
-    return NextResponse.json(dest);
+    try {
+      const dest = await db.destinations.findUnique({ where: { id } });
+      if (!dest) return NextResponse.json({ error: "Not found" }, { status: 404 });
+      return NextResponse.json(dest);
+    } catch {
+      const dest = await jsonDb.destinations.findUnique({ where: { id } });
+      if (!dest) return NextResponse.json({ error: "Not found" }, { status: 404 });
+      return NextResponse.json(dest);
+    }
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
@@ -23,7 +29,7 @@ export async function PUT(
     const { id } = await params;
     const data = await request.json();
 
-    const updated = await db.destinations.update({
+    const payload = {
       where: { id },
       data: {
         name: data.name,
@@ -45,24 +51,29 @@ export async function PUT(
         slug: data.slug || undefined,
         gallery: Array.isArray(data.gallery) ? data.gallery : undefined,
       }
-    });
+    };
 
-    return NextResponse.json(updated);
+    try {
+      return NextResponse.json(await db.destinations.update(payload));
+    } catch {
+      return NextResponse.json(await jsonDb.destinations.update(payload));
+    }
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }
 
 export async function DELETE(
-  request: Request,
+  _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
-    const deleted = await db.destinations.delete({
-      where: { id }
-    });
-    return NextResponse.json(deleted);
+    try {
+      return NextResponse.json(await db.destinations.delete({ where: { id } }));
+    } catch {
+      return NextResponse.json(await jsonDb.destinations.delete({ where: { id } }));
+    }
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }

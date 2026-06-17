@@ -1802,6 +1802,14 @@
       "title": "Keindahan Alam Daerah",
       "category": "Alam",
       "imageUrl": "/Gallery/image copy 2.avif"
+    },
+    {
+      "id": "gal_1781717330473",
+      "createdAt": "2026-06-17T17:28:50.473Z",
+      "order": 13,
+      "title": "Hero 1",
+      "category": "Lainnya",
+      "imageUrl": "/Gallery/hero-1-1781717329672.avif"
     }
   ],
   "officials": [

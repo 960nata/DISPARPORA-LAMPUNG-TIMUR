@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { db, jsonDb } from "@/lib/db";
 
 export async function GET() {
   try {
     const list = await db.destinations.findMany();
     return NextResponse.json(list);
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+  } catch {
+    return NextResponse.json(await jsonDb.destinations.findMany());
   }
 }
 
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Name and coordinates are required" }, { status: 400 });
     }
 
-    const newDest = await db.destinations.create({
+    const payload = {
       data: {
         name: data.name,
         category: data.category || "Wisata Alam",
@@ -38,9 +38,15 @@ export async function POST(request: Request) {
         slug: data.slug || undefined,
         gallery: Array.isArray(data.gallery) ? data.gallery : undefined,
       }
-    });
+    };
 
-    return NextResponse.json(newDest, { status: 201 });
+    try {
+      const item = await db.destinations.create(payload);
+      return NextResponse.json(item, { status: 201 });
+    } catch {
+      const item = await jsonDb.destinations.create(payload);
+      return NextResponse.json(item, { status: 201 });
+    }
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
