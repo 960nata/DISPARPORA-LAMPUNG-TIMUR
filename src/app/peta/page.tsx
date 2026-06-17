@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
-import { MapPin, Phone, ExternalLink, Filter, Search, ArrowLeft, TreePine, Milestone, Landmark, Hotel, Utensils, Star } from "lucide-react";
+import { MapPin, Phone, ExternalLink, Search, ArrowLeft, TreePine, Milestone, Landmark, Hotel, Utensils, Star, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import tourismData from "@/data/tourism.json";
 import { MapSkeleton } from "@/components/Skeleton";
@@ -288,15 +288,21 @@ function MapPageContent() {
                   </div>
                 )}
 
+                <Link
+                  href={`/destinasi/${selectedItem.id}`}
+                  style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", padding: "0.8rem 1rem", borderRadius: "12px", background: categories.find(c => c.name === selectedItem.category)?.color ?? "#059669", color: "white", fontWeight: 700, fontSize: "0.88rem", textDecoration: "none", marginTop: "0.5rem" }}
+                >
+                  Lihat Halaman Destinasi <ChevronRight size={15} />
+                </Link>
+
                 {selectedItem.map_link && (
                   <a
                     href={selectedItem.map_link}
                     target="_blank"
                     rel="noreferrer"
-                    className="btn btn-primary"
-                    style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}
+                    style={{ display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1rem", borderRadius: "12px", background: "#0f172a", color: "white", fontWeight: 700, fontSize: "0.85rem", textDecoration: "none" }}
                   >
-                    <ExternalLink size={16} />
+                    <ExternalLink size={15} />
                     Navigasi Google Maps
                   </a>
                 )}

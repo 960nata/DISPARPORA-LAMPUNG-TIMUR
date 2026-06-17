@@ -94,11 +94,12 @@ function makeEditPinSvg() {
 export default function MapComponent({
   items, selectedItem, onSelectItem, isEditMode = false, onCoordinatesChange,
 }: MapComponentProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const mapRef       = useRef<Map | null>(null);
-  const markersRef   = useRef<Marker[]>([]);
-  const editMkRef    = useRef<Marker | null>(null);
-  const popupRef     = useRef<Popup | null>(null);
+  const containerRef  = useRef<HTMLDivElement>(null);
+  const mapRef        = useRef<Map | null>(null);
+  const markersRef    = useRef<Marker[]>([]);
+  const markersMapRef = useRef<Record<string, Marker>>({});
+  const editMkRef     = useRef<Marker | null>(null);
+  const popupRef      = useRef<Popup | null>(null);
 
   const [mapInstance, setMapInstance] = useState<Map | null>(null);
 
@@ -196,23 +197,20 @@ export default function MapComponent({
 
       // Safely remove existing markers
       markersRef.current.forEach(m => {
-        try {
-          m.remove();
-        } catch (err) {}
+        try { m.remove(); } catch (err) {}
       });
       markersRef.current = [];
-      try {
-        popupRef.current?.remove();
-      } catch (err) {}
+      markersMapRef.current = {};
+      try { popupRef.current?.remove(); } catch (err) {}
       popupRef.current = null;
 
       items.forEach(item => {
         if (!item.lat || !item.lng || cancelled || mapInstance !== mapRef.current) return;
-        const color   = CAT_COLORS[item.category] ?? "#059669";
-        const emoji   = CAT_ICONS[item.category]  ?? "📍";
-        const isSel   = selectedItem?.id === item.id;
-        const iconW   = isSel ? 48 : 38;
-        const iconH   = isSel ? 58 : 48;
+        const color = CAT_COLORS[item.category] ?? "#059669";
+        const emoji = CAT_ICONS[item.category]  ?? "📍";
+        const isSel = selectedItem?.id === item.id;
+        const iconW = isSel ? 48 : 38;
+        const iconH = isSel ? 58 : 48;
 
         const icon = L.divIcon({
           html: makePinSvg(color, emoji, isSel, !!item.verified, !!item.approx),
@@ -221,61 +219,51 @@ export default function MapComponent({
           className: "",
         });
 
-        try {
-          const marker = L.marker([item.lat, item.lng], { icon }).addTo(mapInstance);
+        const popupContent = `
+          <div style="font-family:system-ui,sans-serif;padding:2px 0">
+            ${item.image ? `<img src="${item.image}" alt="${item.name}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;display:block;margin:0 0 8px" onerror="this.style.display='none'"/>` : ""}
+            <p style="font-size:.6rem;font-weight:800;color:${color};text-transform:uppercase;letter-spacing:.07em;margin:0 0 5px;display:flex;align-items:center;gap:4px">${item.category}${item.verified ? ' <span style="background:#dcfce7;color:#16a34a;padding:1px 5px;border-radius:4px;font-size:.55rem">✓ GPS Akurat</span>' : item.approx ? ' <span style="background:#f1f5f9;color:#64748b;padding:1px 5px;border-radius:4px;font-size:.55rem">~ Perkiraan</span>' : ''}</p>
+            <h4 style="font-size:.9rem;font-weight:800;color:#0f172a;margin:0 0 5px;line-height:1.3">${item.name}</h4>
+            <p style="font-size:.78rem;color:#475569;margin:0 0 2px">📍 ${item.address || "Kec. " + item.kecamatan}</p>
+            ${item.contact ? `<p style="font-size:.78rem;color:#475569;margin:3px 0 0">📞 ${item.contact}</p>` : ""}
+            <a href="/destinasi/${item.id}" style="display:flex;align-items:center;justify-content:center;gap:6px;background:${color};color:white;font-weight:700;font-size:.8rem;padding:8px 12px;border-radius:10px;text-decoration:none;margin-top:10px;border-top:1px solid #e2e8f0;padding-top:10px">Lihat Detail →</a>
+          </div>
+        `;
 
-          marker.on("click", () => {
-            selectRef.current(item);
-            try {
-              popupRef.current?.remove();
-            } catch (err) {}
-            try {
-              popupRef.current = L.popup({
-                offset: [0, -8],
-                closeButton: true,
-                maxWidth: 280,
-                className: "simad-popup",
-              })
-                .setLatLng([item.lat, item.lng])
-                .setContent(`
-                  <div style="font-family:system-ui,sans-serif;padding:2px 0">
-                    ${item.image ? `<img src="${item.image}" alt="${item.name}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;display:block;margin:0 0 8px" onerror="this.style.display='none'"/>` : ""}
-                    <p style="font-size:.6rem;font-weight:800;color:${color};text-transform:uppercase;letter-spacing:.07em;margin:0 0 5px;display:flex;align-items:center;gap:4px">${item.category}${item.verified ? ' <span style="background:#dcfce7;color:#16a34a;padding:1px 5px;border-radius:4px;font-size:.55rem">✓ GPS Akurat</span>' : item.approx ? ' <span style="background:#f1f5f9;color:#64748b;padding:1px 5px;border-radius:4px;font-size:.55rem">~ Perkiraan</span>' : ''}</p>
-                    <h4 style="font-size:.9rem;font-weight:800;color:#0f172a;margin:0 0 5px;line-height:1.3">${item.name}</h4>
-                    <p style="font-size:.78rem;color:#475569;margin:0 0 2px">📍 ${item.address || "Kec. " + item.kecamatan}</p>
-                    ${item.contact ? `<p style="font-size:.78rem;color:#475569;margin:3px 0 0">📞 ${item.contact}</p>` : ""}
-                    <p style="font-size:.7rem;font-weight:700;color:${color};margin:8px 0 0;border-top:1px solid #e2e8f0;padding-top:6px">Klik untuk detail →</p>
-                  </div>
-                `)
-                .openOn(mapInstance);
-            } catch (err) {}
-          });
+        try {
+          const marker = L.marker([item.lat, item.lng], { icon })
+            .bindPopup(popupContent, { offset: [0, -8], closeButton: true, maxWidth: 280, className: "simad-popup" })
+            .addTo(mapInstance);
+
+          marker.on("click", () => { selectRef.current(item); });
 
           markersRef.current.push(marker);
+          markersMapRef.current[item.id] = marker;
         } catch (err) {}
       });
     })();
 
     return () => {
       cancelled = true;
-      markersRef.current.forEach(m => {
-        try {
-          m.remove();
-        } catch (err) {}
-      });
+      markersRef.current.forEach(m => { try { m.remove(); } catch (err) {} });
       markersRef.current = [];
-      try {
-        popupRef.current?.remove();
-      } catch (err) {}
+      markersMapRef.current = {};
+      try { popupRef.current?.remove(); } catch (err) {}
       popupRef.current = null;
     };
   }, [items, selectedItem, isEditMode, mapInstance]);
 
-  // ── Fly to selected (view mode) ───────────────────────────────────────────
+  // ── Fly to selected + open popup (view mode) ──────────────────────────────
   useEffect(() => {
     if (!selectedItem || isEditMode || !mapInstance) return;
     try {
       mapInstance.flyTo([selectedItem.lat, selectedItem.lng], 13, { duration: 1.2 });
+      const marker = markersMapRef.current[selectedItem.id];
+      if (marker) {
+        setTimeout(() => {
+          try { marker.openPopup(); } catch (err) {}
+        }, 1300);
+      }
     } catch (err) {}
   }, [selectedItem, isEditMode, mapInstance]);
 
