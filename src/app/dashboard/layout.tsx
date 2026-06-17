@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState, ReactNode } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, useState, ReactNode, Suspense } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   LayoutDashboard, MapPin, FileText, Users, Map, LogOut,
-  Globe, Menu, X, ArrowLeft, Bell, Sun, Moon, Images, User, FileEdit
+  Globe, Menu, X, ArrowLeft, Bell, Sun, Moon, Images, User,
+  Building2, Mic2, CalendarDays, Handshake
 } from "lucide-react";
 import { AdminProvider, useAdmin } from "@/contexts/AdminContext";
 import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
@@ -122,7 +123,10 @@ const NAV = [
     { href: "/dashboard/galeri",    label: "Galeri Foto",        icon: Images,          roles: ["superadmin","admin_dinas","admin_post"] },
   ]},
   { section: "KONTEN", items: [
-    { href: "/dashboard/konten", label: "Manajemen Konten", icon: FileEdit, roles: ["superadmin", "admin_dinas"] },
+    { href: "/dashboard/konten?tab=organisasi", label: "Struktur Organisasi", icon: Building2,    roles: ["superadmin", "admin_dinas"] },
+    { href: "/dashboard/konten?tab=sambutan",   label: "Sambutan",            icon: Mic2,         roles: ["superadmin", "admin_dinas"] },
+    { href: "/dashboard/konten?tab=agenda",     label: "Agenda & Event",      icon: CalendarDays, roles: ["superadmin", "admin_dinas"] },
+    { href: "/dashboard/konten?tab=partner",    label: "Partner Kami",        icon: Handshake,    roles: ["superadmin", "admin_dinas"] },
   ]},
   { section: "SISTEM", items: [
     { href: "/dashboard/pengguna",  label: "Manajemen Akun",     icon: Users,           roles: ["superadmin"] },
@@ -135,7 +139,11 @@ const CRUMBS: Record<string, string> = {
   "/dashboard/berita":      "Berita & Artikel",
   "/dashboard/berita/buat": "Tulis Artikel",
   "/dashboard/galeri":      "Galeri Foto",
-  "/dashboard/konten":      "Manajemen Konten",
+  "/dashboard/konten":                    "Manajemen Konten",
+  "/dashboard/konten?tab=organisasi":    "Struktur Organisasi",
+  "/dashboard/konten?tab=sambutan":      "Sambutan Kepala Daerah",
+  "/dashboard/konten?tab=agenda":        "Agenda & Event",
+  "/dashboard/konten?tab=partner":       "Partner Kami",
   "/dashboard/pengguna":    "Manajemen Akun",
 };
 
@@ -144,7 +152,9 @@ function DashboardShell({ children }: { children: ReactNode }) {
   const { user, setUser, logout } = useAdmin();
   const { theme, toggleTheme } = useTheme();
   const pathname = usePathname() ?? "";
+  const searchParams = useSearchParams();
   const router = useRouter();
+  const fullPath = searchParams?.get("tab") ? `${pathname}?tab=${searchParams.get("tab")}` : pathname;
   const [sideOpen, setSideOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -163,7 +173,7 @@ function DashboardShell({ children }: { children: ReactNode }) {
 
   if (!user) return <LoginScreen onLogin={u => setUser(u)} />;
 
-  const crumb = CRUMBS[pathname] ?? "Dashboard";
+  const crumb = CRUMBS[fullPath] ?? CRUMBS[pathname] ?? "Dashboard";
 
   const notifications = [
     { title: "Laporan harian tersedia", detail: "Ringkasan performa portal siap dilihat." },
@@ -211,7 +221,7 @@ function DashboardShell({ children }: { children: ReactNode }) {
                 <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
                   {visible.map(item => {
                     const Icon = item.icon;
-                    const active = pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href));
+                    const active = fullPath === item.href || pathname === item.href || (item.href !== "/dashboard" && !item.href.includes("?") && pathname.startsWith(item.href));
                     return (
                       <Link key={item.href} href={item.href} onClick={() => setSideOpen(false)}
                         className={active ? "" : "dash-nav-soft"}
@@ -392,7 +402,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     <AdminProvider>
       <ThemeProvider>
         <ToastProvider>
-          <DashboardShell>{children}</DashboardShell>
+          <Suspense fallback={null}>
+            <DashboardShell>{children}</DashboardShell>
+          </Suspense>
           <ToastStack />
         </ToastProvider>
       </ThemeProvider>

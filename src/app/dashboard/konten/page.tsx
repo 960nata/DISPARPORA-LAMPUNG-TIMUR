@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { useToast } from "@/contexts/ToastContext";
+import { useSearchParams } from "next/navigation";
 import { Plus, Edit2, Trash2, X, Save, Upload } from "lucide-react";
 
 /* ─── Types ─── */
@@ -144,7 +145,7 @@ function OfficialTab() {
     try {
       const res = await fetch("/api/officials");
       const data = await res.json();
-      setItems(data);
+      setItems(Array.isArray(data) ? data : []);
     } catch { toast({ type: "error", title: "Gagal memuat data pejabat" }); }
     finally { setLoading(false); }
   };
@@ -272,7 +273,8 @@ function SpeechTab() {
     setLoading(true);
     try {
       const res = await fetch("/api/speeches");
-      setItems(await res.json());
+      const d = await res.json();
+      setItems(Array.isArray(d) ? d : []);
     } catch { toast({ type: "error", title: "Gagal memuat sambutan" }); }
     finally { setLoading(false); }
   };
@@ -398,7 +400,8 @@ function EventTab() {
     setLoading(true);
     try {
       const res = await fetch("/api/events");
-      setItems(await res.json());
+      const d = await res.json();
+      setItems(Array.isArray(d) ? d : []);
     } catch { toast({ type: "error", title: "Gagal memuat agenda" }); }
     finally { setLoading(false); }
   };
@@ -536,7 +539,8 @@ function PartnerTab() {
     setLoading(true);
     try {
       const res = await fetch("/api/partners");
-      setItems(await res.json());
+      const d = await res.json();
+      setItems(Array.isArray(d) ? d : []);
     } catch { toast({ type: "error", title: "Gagal memuat partner" }); }
     finally { setLoading(false); }
   };
@@ -647,7 +651,14 @@ const TABS = [
 
 export default function KontenPage() {
   const { user } = useAdmin();
-  const [activeTab, setActiveTab] = useState("struktur");
+  const searchParams = useSearchParams();
+  const tabParam = searchParams?.get("tab");
+  const [activeTab, setActiveTab] = useState(tabParam ?? "struktur");
+
+  // Sync when URL query changes (sidebar navigation)
+  useEffect(() => {
+    if (tabParam) setActiveTab(tabParam);
+  }, [tabParam]);
 
   if (!user) return null;
 

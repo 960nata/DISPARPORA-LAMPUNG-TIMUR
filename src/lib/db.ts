@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import fs from "fs";
 import path from "path";
 
@@ -138,9 +137,15 @@ function seedEvents(): AppEvent[] {
 // Check if we have PostgreSQL configured
 const isPgConfigured = !!process.env.DATABASE_URL;
 
-let prismaClient: any;
+let prismaClient: any = null;
 if (isPgConfigured) {
-  prismaClient = new PrismaClient();
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { PrismaClient } = require("@prisma/client");
+    prismaClient = new PrismaClient();
+  } catch {
+    console.warn("Prisma client not found — run `npx prisma generate`. Falling back to JSON db.");
+  }
 }
 
 // Seed gallery mirrors the current homepage GallerySection photos
