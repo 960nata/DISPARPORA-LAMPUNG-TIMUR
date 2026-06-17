@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { Star, MapPin } from "lucide-react";
+import { Star, MapPin, Heart, ChevronRight } from "lucide-react";
 
 const defaultHighlights = [
   {
@@ -63,92 +62,67 @@ const defaultHighlights = [
 ];
 
 export default function DestinationsSection() {
-  const N = defaultHighlights.length; // 6
-  // extendedHighlights is a 3-copy array to allow seamless infinite scrolling
+  const N = defaultHighlights.length;
   const extendedHighlights = [...defaultHighlights, ...defaultHighlights, ...defaultHighlights];
-  
+
   const [currentIndex, setCurrentIndex] = useState(N);
   const [visibleCount, setVisibleCount] = useState(3);
   const [peekWidth, setPeekWidth] = useState("calc(100% - 10rem)");
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [isResetting, setIsResetting] = useState(false);
-
-
+  const [hoveredKey, setHoveredKey] = useState<string | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
       const w = window.innerWidth;
-      if (w >= 1440) {
-        setVisibleCount(6);
-      } else if (w >= 1200) {
-        setVisibleCount(5);
-      } else if (w >= 992) {
-        setVisibleCount(4);
-      } else if (w >= 768) {
-        setVisibleCount(3);
-      } else if (w >= 600) {
-        setVisibleCount(2);
-      } else {
-        // Mobile: 1 full card + ~1/3 of the next card peeking so it reads as swipeable
-        setVisibleCount(1.35);
-      }
+      if (w >= 1440) setVisibleCount(6);
+      else if (w >= 1200) setVisibleCount(5);
+      else if (w >= 992) setVisibleCount(4);
+      else if (w >= 768) setVisibleCount(3);
+      else if (w >= 600) setVisibleCount(2);
+      else setVisibleCount(1.35);
 
-      if (w < 600) {
-        // Near full-width viewport, left-aligned card with peek on the right
-        setPeekWidth("calc(100% - 1.5rem)");
-      } else if (w < 1024) {
-        setPeekWidth("calc(100% - 7rem)");
-      } else {
-        setPeekWidth("calc(100% - 10rem)");
-      }
+      if (w < 600) setPeekWidth("calc(100% - 1.5rem)");
+      else if (w < 1024) setPeekWidth("calc(100% - 7rem)");
+      else setPeekWidth("calc(100% - 10rem)");
     };
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handlePrev = () => {
-    if (isResetting || !isTransitioning) return;
-    setCurrentIndex((prev) => prev - 1);
-  };
-
-  const handleNext = () => {
-    if (isResetting || !isTransitioning) return;
-    setCurrentIndex((prev) => prev + 1);
-  };
+  const handlePrev = () => { if (!isResetting && isTransitioning) setCurrentIndex(p => p - 1); };
+  const handleNext = () => { if (!isResetting && isTransitioning) setCurrentIndex(p => p + 1); };
 
   useEffect(() => {
     if (currentIndex >= N * 2) {
       setIsResetting(true);
-      const timer = setTimeout(() => {
-        setIsTransitioning(false);
-        setCurrentIndex(currentIndex - N);
-      }, 500);
-      return () => clearTimeout(timer);
+      const t = setTimeout(() => { setIsTransitioning(false); setCurrentIndex(currentIndex - N); }, 500);
+      return () => clearTimeout(t);
     }
     if (currentIndex < N) {
       setIsResetting(true);
-      const timer = setTimeout(() => {
-        setIsTransitioning(false);
-        setCurrentIndex(currentIndex + N);
-      }, 500);
-      return () => clearTimeout(timer);
+      const t = setTimeout(() => { setIsTransitioning(false); setCurrentIndex(currentIndex + N); }, 500);
+      return () => clearTimeout(t);
     }
     setIsResetting(false);
   }, [currentIndex, N]);
 
   useEffect(() => {
     if (!isTransitioning) {
-      const timer = setTimeout(() => {
-        setIsTransitioning(true);
-        setIsResetting(false);
-      }, 20);
-      return () => clearTimeout(timer);
+      const t = setTimeout(() => { setIsTransitioning(true); setIsResetting(false); }, 20);
+      return () => clearTimeout(t);
     }
   }, [isTransitioning]);
 
   return (
     <section id="destinasi" style={{ padding: "5rem 0", backgroundColor: "white", overflow: "hidden" }}>
+      <style>{`
+        .dest-see-btn:hover { background: #1e293b !important; }
+        .dest-heart-btn:hover { background: rgba(255,255,255,1) !important; transform: scale(1.1); }
+        .dest-see-overlay:hover { background: rgba(255,255,255,0.15) !important; }
+      `}</style>
+
       <div className="container" style={{ marginBottom: "2rem" }}>
         <div className="dest-section-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "2rem" }}>
           <div style={{ flex: "1 1 300px" }}>
@@ -165,105 +139,182 @@ export default function DestinationsSection() {
       </div>
 
       <div className="dest-carousel-wrap" style={{ width: "100%", overflow: "hidden", padding: "1rem 0", position: "relative" }}>
-        {/* Mobile-only side arrows — overlaid on the carousel */}
-        <button
-          className="dest-arrow-side dest-arrow-side-prev"
-          onClick={handlePrev}
-          aria-label="Sebelumnya"
-        >
+        {/* Mobile arrows */}
+        <button className="dest-arrow-side dest-arrow-side-prev" onClick={handlePrev} aria-label="Sebelumnya">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
         </button>
-        <button
-          className="dest-arrow-side dest-arrow-side-next"
-          onClick={handleNext}
-          aria-label="Berikutnya"
-        >
+        <button className="dest-arrow-side dest-arrow-side-next" onClick={handleNext} aria-label="Berikutnya">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
 
         <div style={{ width: peekWidth, margin: "0 auto", overflow: "visible" }}>
-          <div
-            style={{ 
-              display: "flex", 
-              gap: "1.5rem", 
-              transition: isTransitioning ? "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)" : "none",
-              transform: `translateX(calc(-${currentIndex} * (100% + 1.5rem) / ${visibleCount}))`
-            }}
-          >
-            {extendedHighlights.map((item, index) => (
-              <motion.div
-                key={`${item.name}-${index}`}
-                className="dest-card"
-                whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                style={{
-                  position: "relative",
-                  borderRadius: "24px",
-                  overflow: "hidden",
-                  boxShadow: "var(--card-shadow)",
-                  minHeight: "360px",
-                  cursor: "pointer",
-                  flex: `0 0 calc((100% - (${visibleCount} - 1) * 1.5rem) / ${visibleCount})`,
-                  boxSizing: "border-box"
-                }}
-              >
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", zIndex: 1, transition: "transform 0.5s ease" }}
-                  onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.1)"}
-                  onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
-                />
-                
-                <div style={{
-                  position: "absolute",
-                  top: "1.25rem",
-                  right: "1.25rem",
-                  backgroundColor: "rgba(255, 255, 255, 0.85)",
-                  backdropFilter: "blur(4px)",
-                  padding: "0.4rem 0.85rem",
-                  borderRadius: "9999px",
-                  fontSize: "0.75rem",
-                  fontWeight: 700,
-                  color: "var(--text-primary)",
-                  zIndex: 3,
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.05)"
-                }}>
-                  {item.category}
-                </div>
+          <div style={{
+            display: "flex", gap: "1.5rem",
+            transition: isTransitioning ? "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)" : "none",
+            transform: `translateX(calc(-${currentIndex} * (100% + 1.5rem) / ${visibleCount}))`
+          }}>
+            {extendedHighlights.map((item, index) => {
+              const key = `${item.name}-${index}`;
+              const isHovered = hoveredKey === key;
 
-                <div style={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  background: "linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%)",
-                  zIndex: 2,
-                  padding: "1.5rem",
-                  color: "white",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.35rem"
-                }}>
-                  <h3 style={{ fontSize: "1.35rem", fontWeight: 800, color: "white", fontFamily: "var(--font-main)" }}>
-                    {item.name}
-                  </h3>
-                  
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.75rem", color: "#cbd5e1" }}>
-                    <span>{item.subTitle}</span>
-                    <span>|</span>
-                    <span style={{ display: "inline-flex", alignItems: "center", gap: "0.2rem" }}>
-                      <Star size={12} fill="var(--accent)" color="var(--accent)" />
-                      <strong style={{ color: "white" }}>{item.rating}</strong>
-                    </span>
+              return (
+                <div
+                  key={key}
+                  className="dest-card"
+                  onMouseEnter={() => setHoveredKey(key)}
+                  onMouseLeave={() => setHoveredKey(null)}
+                  style={{
+                    position: "relative",
+                    borderRadius: "24px",
+                    minHeight: "380px",
+                    cursor: "pointer",
+                    flex: `0 0 calc((100% - (${visibleCount} - 1) * 1.5rem) / ${visibleCount})`,
+                    boxSizing: "border-box",
+                    background: "#fff",
+                    boxShadow: isHovered
+                      ? "0 24px 50px -12px rgba(0,0,0,0.3)"
+                      : "0 4px 20px -4px rgba(0,0,0,0.1)",
+                    transform: isHovered ? "translateY(-6px)" : "translateY(0)",
+                    transition: "box-shadow 0.35s ease, transform 0.35s ease",
+                    overflow: "hidden",
+                  }}
+                >
+                  {/* ── IMAGE ── */}
+                  <div style={{
+                    position: "absolute",
+                    top: isHovered ? 0 : "8px",
+                    left: isHovered ? 0 : "8px",
+                    right: isHovered ? 0 : "8px",
+                    bottom: isHovered ? 0 : "43%",
+                    borderRadius: isHovered ? "24px" : "18px",
+                    overflow: "hidden",
+                    transition: "all 0.45s cubic-bezier(.4,0,.2,1)",
+                  }}>
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    />
+                    {/* Hover gradient */}
+                    <div style={{
+                      position: "absolute", inset: 0,
+                      background: isHovered
+                        ? "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.05) 100%)"
+                        : "none",
+                      transition: "background 0.4s ease",
+                    }} />
                   </div>
 
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.75rem", color: "#e2e8f0", marginTop: "0.25rem" }}>
-                    <MapPin size={12} style={{ color: "#ef4444" }} />
-                    <span>{item.location}</span>
+                  {/* ── HEART ── */}
+                  <button className="dest-heart-btn" style={{
+                    position: "absolute", top: "5%", right: "5%", zIndex: 10,
+                    width: "36px", height: "36px", borderRadius: "50%",
+                    background: "rgba(255,255,255,0.9)", border: "none",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                    backdropFilter: "blur(6px)", transition: "transform 0.2s ease, background 0.2s ease",
+                  }} onClick={e => e.preventDefault()}>
+                    <Heart size={15} style={{ color: "#065f46" }} />
+                  </button>
+
+                  {/* ── HOVER OVERLAY CONTENT ── */}
+                  <div style={{
+                    position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 5,
+                    padding: "20px",
+                    opacity: isHovered ? 1 : 0,
+                    transform: isHovered ? "translateY(0)" : "translateY(12px)",
+                    transition: "all 0.35s ease",
+                    pointerEvents: isHovered ? "auto" : "none",
+                  }}>
+                    <span style={{
+                      display: "inline-block", padding: "3px 10px", borderRadius: "99px",
+                      background: "rgba(255,255,255,0.18)", color: "#fff",
+                      fontSize: "0.7rem", fontWeight: 700, marginBottom: "8px",
+                      backdropFilter: "blur(4px)", border: "1px solid rgba(255,255,255,0.3)",
+                    }}>{item.category}</span>
+                    <h3 style={{ margin: "0 0 2px", fontSize: "1.2rem", fontWeight: 800, color: "#fff", lineHeight: 1.2 }}>
+                      {item.name}
+                    </h3>
+                    <p style={{ margin: "0 0 6px", fontSize: "0.78rem", color: "rgba(255,255,255,0.75)" }}>
+                      {item.subTitle}
+                    </p>
+                    <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "14px" }}>
+                      <span style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.75rem", color: "rgba(255,255,255,0.85)" }}>
+                        <Star size={12} fill="#fbbf24" color="#fbbf24" /> {item.rating}
+                      </span>
+                      <span style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.75rem", color: "rgba(255,255,255,0.85)" }}>
+                        <MapPin size={12} style={{ color: "#f87171" }} /> {item.location}
+                      </span>
+                    </div>
+                    <Link href={item.link} className="dest-see-overlay" style={{
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                      padding: "10px 14px", borderRadius: "14px",
+                      background: "rgba(255,255,255,0.12)", color: "#fff",
+                      fontWeight: 700, fontSize: "0.85rem", textDecoration: "none",
+                      border: "1px solid rgba(255,255,255,0.35)", backdropFilter: "blur(6px)",
+                      transition: "background 0.2s ease",
+                    }}>
+                      <span>Jelajahi</span>
+                      <div style={{ width: "26px", height: "26px", borderRadius: "50%", background: "rgba(255,255,255,0.25)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <ChevronRight size={14} style={{ color: "#fff" }} />
+                      </div>
+                    </Link>
+                  </div>
+
+                  {/* ── NORMAL CONTENT (white area) ── */}
+                  <div style={{
+                    position: "absolute", bottom: 0, left: 0, right: 0,
+                    height: "43%", background: "#fff",
+                    borderRadius: "0 0 24px 24px",
+                    padding: "14px 16px 16px",
+                    display: "flex", flexDirection: "column", justifyContent: "space-between",
+                    opacity: isHovered ? 0 : 1,
+                    transition: "opacity 0.2s ease",
+                    pointerEvents: isHovered ? "none" : "auto",
+                    zIndex: 4,
+                  }}>
+                    <div>
+                      <h3 style={{ margin: "0 0 2px", fontSize: "1.05rem", fontWeight: 800, color: "#0f172a", lineHeight: 1.25 }}>
+                        {item.name}
+                      </h3>
+                      <p style={{ margin: "0 0 8px", fontSize: "0.75rem", color: "#64748b" }}>
+                        {item.subTitle}
+                      </p>
+                      <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                        <span style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.72rem", color: "#475569" }}>
+                          <Star size={11} fill="#fbbf24" color="#fbbf24" /> {item.rating}
+                        </span>
+                        <span style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.72rem", color: "#475569" }}>
+                          <MapPin size={11} style={{ color: "#f87171" }} /> {item.location}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Bottom: button + heart */}
+                    <div style={{ display: "flex", gap: "8px", alignItems: "center", borderTop: "1px solid #f1f5f9", paddingTop: "10px" }}>
+                      <Link href={item.link} className="dest-see-btn" style={{
+                        flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
+                        padding: "9px 14px", borderRadius: "12px",
+                        background: "#0f172a", color: "#fff",
+                        fontWeight: 700, fontSize: "0.82rem", textDecoration: "none",
+                        transition: "background 0.2s ease",
+                      }}>
+                        Jelajahi
+                      </Link>
+                      <button className="dest-heart-btn" style={{
+                        width: "38px", height: "38px", borderRadius: "12px",
+                        background: "#f8fafc", border: "1px solid #e2e8f0",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        cursor: "pointer", flexShrink: 0,
+                        transition: "transform 0.2s ease, background 0.2s ease",
+                      }} onClick={e => e.preventDefault()}>
+                        <Heart size={15} style={{ color: "#065f46" }} />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -273,23 +324,11 @@ export default function DestinationsSection() {
           <Link href="/direktori" className="btn btn-primary cta-btn" style={{ padding: "0.75rem 2rem", borderRadius: "12px", border: "none" }}>
             Lihat semua wisata
           </Link>
-
-          {/* Desktop-only bottom arrows */}
           <div className="dest-arrows-desktop" style={{ display: "flex", gap: "0.75rem" }}>
-            <button
-              onClick={handlePrev}
-              style={{ width: "44px", height: "44px", borderRadius: "50%", border: "1px solid var(--border)", backgroundColor: "white", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "var(--text-secondary)", transition: "background-color 0.2s" }}
-              onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#f1f5f9"}
-              onMouseOut={(e) => e.currentTarget.style.backgroundColor = "white"}
-            >
+            <button onClick={handlePrev} style={{ width: "44px", height: "44px", borderRadius: "50%", border: "1px solid var(--border)", backgroundColor: "white", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "var(--text-secondary)", transition: "background-color 0.2s" }} onMouseOver={e => e.currentTarget.style.backgroundColor = "#f1f5f9"} onMouseOut={e => e.currentTarget.style.backgroundColor = "white"}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
             </button>
-            <button
-              onClick={handleNext}
-              style={{ width: "44px", height: "44px", borderRadius: "50%", border: "1px solid var(--border)", backgroundColor: "white", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "var(--text-secondary)", transition: "background-color 0.2s" }}
-              onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#f1f5f9"}
-              onMouseOut={(e) => e.currentTarget.style.backgroundColor = "white"}
-            >
+            <button onClick={handleNext} style={{ width: "44px", height: "44px", borderRadius: "50%", border: "1px solid var(--border)", backgroundColor: "white", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "var(--text-secondary)", transition: "background-color 0.2s" }} onMouseOver={e => e.currentTarget.style.backgroundColor = "#f1f5f9"} onMouseOut={e => e.currentTarget.style.backgroundColor = "white"}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>
           </div>
