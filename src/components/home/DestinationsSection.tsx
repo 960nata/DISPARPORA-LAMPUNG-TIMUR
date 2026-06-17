@@ -182,11 +182,11 @@ export default function DestinationsSection() {
                   {/* ── IMAGE ── */}
                   <div style={{
                     position: "absolute",
-                    top: isHovered ? 0 : "8px",
-                    left: isHovered ? 0 : "8px",
-                    right: isHovered ? 0 : "8px",
-                    bottom: isHovered ? 0 : "43%",
-                    borderRadius: isHovered ? "24px" : "18px",
+                    top: isHovered ? "8px" : 0,
+                    left: isHovered ? "8px" : 0,
+                    right: isHovered ? "8px" : 0,
+                    bottom: isHovered ? "43%" : 0,
+                    borderRadius: isHovered ? "18px" : "24px",
                     overflow: "hidden",
                     transition: "all 0.45s cubic-bezier(.4,0,.2,1)",
                   }}>
@@ -195,12 +195,12 @@ export default function DestinationsSection() {
                       alt={item.name}
                       style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
                     />
-                    {/* Hover gradient */}
+                    {/* Normal gradient overlay */}
                     <div style={{
                       position: "absolute", inset: 0,
                       background: isHovered
-                        ? "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.05) 100%)"
-                        : "none",
+                        ? "none"
+                        : "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.05) 100%)",
                       transition: "background 0.4s ease",
                     }} />
                   </div>
@@ -217,14 +217,14 @@ export default function DestinationsSection() {
                     <Heart size={15} style={{ color: "#065f46" }} />
                   </button>
 
-                  {/* ── HOVER OVERLAY CONTENT ── */}
+                  {/* ── NORMAL OVERLAY CONTENT (full image state) ── */}
                   <div style={{
                     position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 5,
                     padding: "20px",
-                    opacity: isHovered ? 1 : 0,
-                    transform: isHovered ? "translateY(0)" : "translateY(12px)",
+                    opacity: isHovered ? 0 : 1,
+                    transform: isHovered ? "translateY(8px)" : "translateY(0)",
                     transition: "all 0.35s ease",
-                    pointerEvents: isHovered ? "auto" : "none",
+                    pointerEvents: isHovered ? "none" : "auto",
                   }}>
                     <span style={{
                       display: "inline-block", padding: "3px 10px", borderRadius: "99px",
@@ -261,16 +261,16 @@ export default function DestinationsSection() {
                     </Link>
                   </div>
 
-                  {/* ── NORMAL CONTENT (white area) ── */}
+                  {/* ── HOVER CONTENT (white area below) ── */}
                   <div style={{
                     position: "absolute", bottom: 0, left: 0, right: 0,
                     height: "43%", background: "#fff",
                     borderRadius: "0 0 24px 24px",
                     padding: "14px 16px 16px",
                     display: "flex", flexDirection: "column", justifyContent: "space-between",
-                    opacity: isHovered ? 0 : 1,
+                    opacity: isHovered ? 1 : 0,
                     transition: "opacity 0.2s ease",
-                    pointerEvents: isHovered ? "none" : "auto",
+                    pointerEvents: isHovered ? "auto" : "none",
                     zIndex: 4,
                   }}>
                     <div>
