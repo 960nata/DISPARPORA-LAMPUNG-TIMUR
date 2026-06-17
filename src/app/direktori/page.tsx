@@ -84,6 +84,11 @@ function DirectoryContent() {
 
   return (
     <div style={{ paddingBottom: "5rem" }}>
+      <style>{`
+        .dir-see-more:hover { background: #f1f5f9 !important; transform: scale(0.98); }
+        .dir-see-more:hover > div { transform: translateX(2px); }
+        .dir-heart-btn:hover { background: rgba(255,255,255,1) !important; transform: scale(1.1); }
+      `}</style>
       {/* ── HERO ── */}
       <section style={{ width: "100%", padding: "14px", boxSizing: "border-box", marginBottom: "3rem" }}>
         <div className="page-hero-inner" style={{
@@ -340,15 +345,15 @@ function DirectoryContent() {
                     </div>
 
                     {/* ── HEART BUTTON ── */}
-                    <button style={{
-                      position: "absolute", top: "20px", right: "20px", zIndex: 10,
+                    <button className="dir-heart-btn" style={{
+                      position: "absolute", top: "5%", right: "5%", zIndex: 10,
                       width: "36px", height: "36px", borderRadius: "50%",
                       background: "rgba(255,255,255,0.92)", border: "none",
                       display: "flex", alignItems: "center", justifyContent: "center",
                       cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                      backdropFilter: "blur(6px)",
+                      backdropFilter: "blur(6px)", transition: "transform 0.2s ease, background 0.2s ease",
                     }} onClick={e => e.preventDefault()}>
-                      <Heart size={16} style={{ color: "#ef4444" }} />
+                      <Heart size={16} style={{ color: "#065f46" }} />
                     </button>
 
                     {/* ── HOVER STATE: overlay content ── */}
@@ -376,15 +381,16 @@ function DirectoryContent() {
                           Kec. {item.kecamatan}, Lampung Timur
                         </span>
                       </div>
-                      <Link href={`/direktori/${item.id}`} style={{
+                      <Link href={`/direktori/${item.id}`} className="dir-see-more" style={{
                         display: "flex", alignItems: "center", justifyContent: "space-between",
                         padding: "11px 16px", borderRadius: "14px",
                         background: "#fff", color: "#0f172a",
                         fontWeight: 700, fontSize: "0.875rem", textDecoration: "none",
                         boxShadow: "0 4px 14px rgba(0,0,0,0.2)",
+                        transition: "background 0.2s ease, transform 0.2s ease",
                       }}>
                         <span>Lihat Detail</span>
-                        <div style={{ width: "28px", height: "28px", borderRadius: "50%", background: catColor, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ width: "28px", height: "28px", borderRadius: "50%", background: catColor, display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s ease" }}>
                           <ChevronRightIcon size={15} style={{ color: "#fff" }} />
                         </div>
                       </Link>
