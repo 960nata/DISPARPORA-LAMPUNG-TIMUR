@@ -878,7 +878,22 @@ class JsonDbEngine {
 
 // Instantiate Database Engine depending on configuration
 export const jsonDb = new JsonDbEngine();
-export const db = (isPgConfigured && prismaClient) ? prismaClient : jsonDb;
+
+// Normalize Prisma singular model names → plural to match JsonDbEngine API
+function normalizePrisma(p: any) {
+  return {
+    users:        p.user,
+    destinations: p.destination,
+    posts:        p.post,
+    partners:     p.partner,
+    gallery:      p.galleryItem,
+    officials:    p.official,
+    speeches:     p.speech,
+    events:       p.appEvent,
+  };
+}
+
+export const db = (isPgConfigured && prismaClient) ? normalizePrisma(prismaClient) : jsonDb;
 export const usingMockDb = !(isPgConfigured && prismaClient);
 export const BupatiSpeechData = {
   name: "M. Dawam Rahardjo",
