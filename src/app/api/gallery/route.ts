@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { db, jsonDb } from "@/lib/db";
 import sharp from "sharp";
 import path from "path";
 import fs from "fs/promises";
@@ -10,8 +10,14 @@ export async function GET() {
   try {
     const list = await db.gallery.findMany();
     return NextResponse.json(list);
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+  } catch {
+    // Fallback to JSON db if Prisma table doesn't exist yet
+    try {
+      const list = await jsonDb.gallery.findMany();
+      return NextResponse.json(list);
+    } catch (e: any) {
+      return NextResponse.json({ error: e.message }, { status: 500 });
+    }
   }
 }
 
@@ -24,7 +30,7 @@ export async function POST(request: Request) {
 
     let imageUrl: string = data.imageUrl || "";
 
-    // If a base64 image was uploaded, convert to AVIF and write to /public/Gallery
+    // Convert base64 → AVIF → save to /public/Gallery
     if (typeof data.imageData === "string" && data.imageData.startsWith("data:image/")) {
       const base64 = data.imageData.split(",")[1] || "";
       const buf = Buffer.from(base64, "base64");
@@ -43,10 +49,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Gambar wajib diunggah atau diisi URL-nya" }, { status: 400 });
     }
 
-    const item = await db.gallery.create({
-      data: { title: data.title, category: data.category, imageUrl }
-    });
-    return NextResponse.json(item, { status: 201 });
+    const payload = { data: { title: data.title, category: data.category, imageUrl } };
+
+    try {
+      const item = await db.gallery.create(payload);
+      return NextResponse.json(item, { status: 201 });
+    } catch {
+      // Prisma table not ready — fall back to JSON db
+      const item = await jsonDb.gallery.create(payload);
+      return NextResponse.json(item, { status: 201 });
+    }
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }

@@ -877,7 +877,8 @@ class JsonDbEngine {
 }
 
 // Instantiate Database Engine depending on configuration
-export const db = (isPgConfigured && prismaClient) ? prismaClient : new JsonDbEngine();
+export const jsonDb = new JsonDbEngine();
+export const db = (isPgConfigured && prismaClient) ? prismaClient : jsonDb;
 export const usingMockDb = !(isPgConfigured && prismaClient);
 export const BupatiSpeechData = {
   name: "M. Dawam Rahardjo",
