@@ -271,16 +271,15 @@ function DirectoryContent() {
                   item.displayCategory === "Akomodasi" ? [
                     { label: "Klasifikasi", val: item.classification || "-" },
                     { label: "Kamar", val: item.rooms ? `${item.rooms} Kamar` : "-" },
-                    { label: "Kecamatan", val: item.kecamatan },
                   ] : item.displayCategory === "Kuliner" ? [
                     { label: "Jenis", val: item.food_type || "-" },
                     { label: "Kapasitas", val: item.capacity ? `${item.capacity} Kursi` : "-" },
-                    { label: "Kecamatan", val: item.kecamatan },
                   ] : [
                     { label: "Kategori", val: item.displayCategory },
                     { label: "Kecamatan", val: item.kecamatan },
-                    { label: "Fasilitas", val: item.facilities?.length ? `${item.facilities.length} tersedia` : "-" },
                   ];
+
+                const desc = item.description || `Destinasi ${item.displayCategory.toLowerCase()} yang menarik di Kecamatan ${item.kecamatan}, Kabupaten Lampung Timur.`;
 
                 return (
                   <motion.div
@@ -309,9 +308,13 @@ function DirectoryContent() {
                     {/* ── IMAGE ── */}
                     <div style={{
                       position: "absolute",
-                      inset: 0,
+                      left: isHovered ? 0 : "8px",
+                      right: isHovered ? 0 : "8px",
+                      top: isHovered ? 0 : "8px",
+                      bottom: isHovered ? 0 : "42%",
                       transition: "all 0.45s cubic-bezier(.4,0,.2,1)",
-                      height: isHovered ? "100%" : "58%",
+                      borderRadius: isHovered ? "22px" : "16px",
+                      overflow: "hidden",
                     }}>
                       {item.image ? (
                         <img
@@ -330,15 +333,15 @@ function DirectoryContent() {
                       <div style={{
                         position: "absolute", inset: 0,
                         background: isHovered
-                          ? "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%)"
-                          : "linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.18) 100%)",
+                          ? "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0) 100%)"
+                          : "none",
                         transition: "background 0.4s ease",
                       }} />
                     </div>
 
                     {/* ── HEART BUTTON ── */}
                     <button style={{
-                      position: "absolute", top: "14px", right: "14px", zIndex: 10,
+                      position: "absolute", top: "20px", right: "20px", zIndex: 10,
                       width: "36px", height: "36px", borderRadius: "50%",
                       background: "rgba(255,255,255,0.92)", border: "none",
                       display: "flex", alignItems: "center", justifyContent: "center",
@@ -393,45 +396,49 @@ function DirectoryContent() {
                       height: "44%",
                       background: "#fff",
                       borderRadius: "0 0 22px 22px",
-                      padding: "16px 18px 18px",
+                      padding: "14px 18px 16px",
                       display: "flex", flexDirection: "column", justifyContent: "space-between",
                       opacity: isHovered ? 0 : 1,
-                      transition: "opacity 0.25s ease",
+                      transition: "opacity 0.2s ease",
                       pointerEvents: isHovered ? "none" : "auto",
                       zIndex: 4,
                     }}>
                       <div>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
-                          <span style={{ fontSize: "0.7rem", fontWeight: 700, color: catColor, background: catBg, padding: "2px 9px", borderRadius: "99px", border: `1px solid ${catColor}30` }}>
-                            {item.displayCategory}
-                          </span>
-                        </div>
-                        <h3 style={{ margin: "0 0 3px", fontSize: "1rem", fontWeight: 800, color: "#0f172a", lineHeight: 1.3 }}>
+                        <h3 style={{ margin: "0 0 2px", fontSize: "1rem", fontWeight: 800, color: "#0f172a", lineHeight: 1.3 }}>
                           {item.name}
                         </h3>
-                        <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                          <MapPin size={12} style={{ color: "#94a3b8", flexShrink: 0 }} />
-                          <span style={{ fontSize: "0.75rem", color: "#64748b" }}>Kec. {item.kecamatan}</span>
+                        <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "6px" }}>
+                          <MapPin size={11} style={{ color: "#94a3b8", flexShrink: 0 }} />
+                          <span style={{ fontSize: "0.72rem", color: "#94a3b8" }}>Kec. {item.kecamatan}</span>
                         </div>
+                        {/* Deskripsi 3 baris */}
+                        <p style={{
+                          margin: 0, fontSize: "0.76rem", color: "#64748b", lineHeight: 1.55,
+                          display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}>{desc}</p>
                       </div>
 
-                      {/* Meta row */}
-                      <div style={{ display: "flex", gap: "0", borderTop: "1px solid #f1f5f9", paddingTop: "10px", marginTop: "8px" }}>
+                      {/* Meta row + See more */}
+                      <div style={{ display: "flex", alignItems: "center", gap: "0", borderTop: "1px solid #f1f5f9", paddingTop: "10px", marginTop: "8px" }}>
                         {metaItems.map((m, i) => (
-                          <div key={i} style={{ flex: 1, textAlign: i === 1 ? "center" : i === 2 ? "right" : "left" }}>
-                            <div style={{ fontSize: "0.65rem", color: "#94a3b8", fontWeight: 600, marginBottom: "2px" }}>{m.label}</div>
-                            <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "#334155", lineHeight: 1.2 }}>{m.val}</div>
+                          <div key={i} style={{ flex: 1 }}>
+                            <div style={{ fontSize: "0.68rem", fontWeight: 700, color: "#0f172a" }}>{m.val}</div>
+                            <div style={{ fontSize: "0.62rem", color: "#94a3b8", fontWeight: 500 }}>{m.label}</div>
                           </div>
                         ))}
                         <Link href={`/direktori/${item.id}`} style={{
-                          display: "flex", alignItems: "center", gap: "6px",
-                          padding: "7px 14px", borderRadius: "10px",
+                          display: "flex", alignItems: "center", gap: "8px",
+                          padding: "8px 14px", borderRadius: "12px",
                           background: catColor, color: "#fff",
-                          fontWeight: 700, fontSize: "0.78rem", textDecoration: "none",
-                          flexShrink: 0, alignSelf: "flex-end", marginLeft: "10px",
-                          whiteSpace: "nowrap",
+                          fontWeight: 700, fontSize: "0.8rem", textDecoration: "none",
+                          flexShrink: 0, whiteSpace: "nowrap",
+                          boxShadow: `0 4px 12px -4px ${catColor}80`,
                         }}>
                           Lihat
+                          <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "rgba(255,255,255,0.25)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <ChevronRightIcon size={12} style={{ color: "#fff" }} />
+                          </div>
                         </Link>
                       </div>
                     </div>
