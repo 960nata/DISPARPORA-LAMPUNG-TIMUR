@@ -253,18 +253,27 @@ export default function MapComponent({
     };
   }, [items, selectedItem, isEditMode, mapInstance]);
 
-  // ── Fly to selected + open popup (view mode) ──────────────────────────────
+  // ── Fly to selected + open popup after animation ends ─────────────────────
   useEffect(() => {
     if (!selectedItem || isEditMode || !mapInstance) return;
+    let cancelled = false;
+    const id = selectedItem.id;
+
+    const handleMoveEnd = () => {
+      if (cancelled) return;
+      const marker = markersMapRef.current[id];
+      if (marker) { try { marker.openPopup(); } catch (err) {} }
+    };
+
     try {
       mapInstance.flyTo([selectedItem.lat, selectedItem.lng], 13, { duration: 1.2 });
-      const marker = markersMapRef.current[selectedItem.id];
-      if (marker) {
-        setTimeout(() => {
-          try { marker.openPopup(); } catch (err) {}
-        }, 1300);
-      }
+      (mapInstance as any).once("moveend", handleMoveEnd);
     } catch (err) {}
+
+    return () => {
+      cancelled = true;
+      try { (mapInstance as any).off("moveend", handleMoveEnd); } catch (err) {}
+    };
   }, [selectedItem, isEditMode, mapInstance]);
 
   // ── Sync edit marker to loaded item ──────────────────────────────────────
