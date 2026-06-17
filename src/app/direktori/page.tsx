@@ -311,7 +311,7 @@ function DirectoryContent() {
                       left: isHovered ? 0 : "8px",
                       right: isHovered ? 0 : "8px",
                       top: isHovered ? 0 : "8px",
-                      bottom: isHovered ? 0 : "42%",
+                      bottom: isHovered ? 0 : "47%",
                       transition: "all 0.45s cubic-bezier(.4,0,.2,1)",
                       borderRadius: isHovered ? "22px" : "16px",
                       overflow: "hidden",
@@ -393,7 +393,7 @@ function DirectoryContent() {
                     {/* ── NORMAL STATE: white content area ── */}
                     <div style={{
                       position: "absolute", bottom: 0, left: 0, right: 0,
-                      height: "44%",
+                      height: "43%",
                       background: "#fff",
                       borderRadius: "0 0 22px 22px",
                       padding: "14px 18px 16px",
