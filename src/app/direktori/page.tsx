@@ -25,7 +25,39 @@ function DirectoryContent() {
   const [currentPage, setCurrentPage] = useState(1);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [tappedId, setTappedId]   = useState<string | null>(null);
+  const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
+  const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
   const itemsPerPage = 12;
+
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("simad_liked") || "[]");
+      setLikedIds(new Set(stored));
+    } catch { /* ignore */ }
+    fetch("/api/destinations/likes")
+      .then(r => r.json())
+      .then(d => { if (d.map) setLikeCounts(d.map); })
+      .catch(() => { /* ignore */ });
+  }, []);
+
+  const handleLike = async (id: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (likedIds.has(id)) return;
+    try {
+      const res = await fetch(`/api/destinations/${id}/like`, { method: "POST" });
+      const data = await res.json();
+      if (res.ok) {
+        setLikeCounts(prev => ({ ...prev, [id]: data.likes }));
+        setLikedIds(prev => {
+          const next = new Set(prev);
+          next.add(id);
+          localStorage.setItem("simad_liked", JSON.stringify([...next]));
+          return next;
+        });
+      }
+    } catch { /* ignore */ }
+  };
 
   // Sync search query from URL parameter if it exists
   useEffect(() => {
@@ -129,7 +161,7 @@ function DirectoryContent() {
           <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
           <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "4rem", paddingBottom: "4rem" }}>
             <h1 style={{ fontSize: "clamp(1.75rem, 3.2vw, 2.5rem)", fontWeight: 900, color: "white", lineHeight: 1.25, maxWidth: "580px", letterSpacing: "-0.02em", textShadow: "0 2px 12px rgba(0,0,0,0.25)", margin: "0 0 1.25rem 0" }}>
-              Direktori Destinasi<br />Lampung Timur
+              Destinasi<br />Lampung Timur
             </h1>
             <p style={{ fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)", color: "#d1fae5", maxWidth: "520px", lineHeight: 1.75, margin: 0 }}>
               Temukan destinasi liburan, hotel penginapan, dan tempat kuliner terbaik di seluruh kecamatan Lampung Timur.
@@ -379,12 +411,19 @@ function DirectoryContent() {
                     <button className="dir-heart-btn" style={{
                       position: "absolute", top: "5%", right: "5%", zIndex: 10,
                       width: "36px", height: "36px", borderRadius: "50%",
-                      background: "rgba(255,255,255,0.92)", border: "none",
+                      background: likedIds.has(item.id) ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.92)", border: "none",
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                      cursor: likedIds.has(item.id) ? "default" : "pointer",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                       backdropFilter: "blur(6px)", transition: "transform 0.2s ease, background 0.2s ease",
-                    }} onClick={e => e.preventDefault()}>
-                      <Heart size={16} style={{ color: "#065f46" }} />
+                      flexDirection: "column", gap: "1px",
+                    }} onClick={e => handleLike(item.id, e)}>
+                      <Heart size={14} fill={likedIds.has(item.id) ? "#ef4444" : "none"} style={{ color: likedIds.has(item.id) ? "#ef4444" : "#065f46" }} />
+                      {(likeCounts[item.id] ?? 0) > 0 && (
+                        <span style={{ fontSize: "0.5rem", fontWeight: 700, color: likedIds.has(item.id) ? "#ef4444" : "#065f46", lineHeight: 1 }}>
+                          {likeCounts[item.id]}
+                        </span>
+                      )}
                     </button>
 
                     {/* ── HOVER STATE: overlay content ── */}
@@ -553,7 +592,7 @@ export default function DirectoryPage() {
   return (
     <Suspense fallback={
       <div className="container" style={{ padding: "4rem 2rem", textAlign: "center" }}>
-        <p>Memuat Direktori Destinasi...</p>
+        <p>Memuat Destinasi...</p>
       </div>
     }>
       <DirectoryContent />

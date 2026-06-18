@@ -49,3 +49,6 @@ __pycache__/
 
 # claude local settings
 .claude/settings.local.json
+
+# local JSON database (contains user credentials)
+src/data/db_store.json

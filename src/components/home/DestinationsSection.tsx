@@ -73,6 +73,38 @@ export default function DestinationsSection() {
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const touchStartX = useRef<number | null>(null);
+  const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
+  const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("simad_liked") || "[]");
+      setLikedIds(new Set(stored));
+    } catch { /* ignore */ }
+    fetch("/api/destinations/likes")
+      .then(r => r.json())
+      .then(d => { if (d.map) setLikeCounts(d.map); })
+      .catch(() => { /* ignore */ });
+  }, []);
+
+  const handleLike = async (destId: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (likedIds.has(destId)) return;
+    try {
+      const res = await fetch(`/api/destinations/${destId}/like`, { method: "POST" });
+      const data = await res.json();
+      if (res.ok) {
+        setLikeCounts(prev => ({ ...prev, [destId]: data.likes }));
+        setLikedIds(prev => {
+          const next = new Set(prev);
+          next.add(destId);
+          localStorage.setItem("simad_liked", JSON.stringify([...next]));
+          return next;
+        });
+      }
+    } catch { /* ignore */ }
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -220,16 +252,27 @@ export default function DestinationsSection() {
                   </div>
 
                   {/* ── HEART ── */}
-                  <button className="dest-heart-btn" style={{
-                    position: "absolute", top: "5%", right: "5%", zIndex: 10,
-                    width: "36px", height: "36px", borderRadius: "50%",
-                    background: "rgba(255,255,255,0.9)", border: "none",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                    backdropFilter: "blur(6px)", transition: "transform 0.2s ease, background 0.2s ease",
-                  }} onClick={e => e.preventDefault()}>
-                    <Heart size={15} style={{ color: "#065f46" }} />
-                  </button>
+                  {(() => {
+                    const destId = item.link.split("?id=")[1] ?? "";
+                    const liked = likedIds.has(destId);
+                    return (
+                      <button className="dest-heart-btn" style={{
+                        position: "absolute", top: "5%", right: "5%", zIndex: 10,
+                        width: "36px", height: "36px", borderRadius: "50%",
+                        background: liked ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.9)", border: "none",
+                        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1px",
+                        cursor: liked ? "default" : "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                        backdropFilter: "blur(6px)", transition: "transform 0.2s ease, background 0.2s ease",
+                      }} onClick={e => handleLike(destId, e)}>
+                        <Heart size={14} fill={liked ? "#ef4444" : "none"} style={{ color: liked ? "#ef4444" : "#065f46" }} />
+                        {(likeCounts[destId] ?? 0) > 0 && (
+                          <span style={{ fontSize: "0.45rem", fontWeight: 700, color: liked ? "#ef4444" : "#065f46", lineHeight: 1 }}>
+                            {likeCounts[destId]}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })()}
 
                   {/* ── NORMAL OVERLAY CONTENT (full image state) ── */}
                   <div style={{
@@ -302,15 +345,26 @@ export default function DestinationsSection() {
                       }}>
                         Jelajahi
                       </Link>
-                      <button className="dest-heart-btn" style={{
-                        width: "38px", height: "38px", borderRadius: "12px",
-                        background: "#f8fafc", border: "1px solid #e2e8f0",
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        cursor: "pointer", flexShrink: 0,
-                        transition: "transform 0.2s ease, background 0.2s ease",
-                      }} onClick={e => e.preventDefault()}>
-                        <Heart size={15} style={{ color: "#065f46" }} />
-                      </button>
+                      {(() => {
+                        const destId = item.link.split("?id=")[1] ?? "";
+                        const liked = likedIds.has(destId);
+                        return (
+                          <button className="dest-heart-btn" style={{
+                            width: "38px", height: "38px", borderRadius: "12px",
+                            background: liked ? "#fff0f0" : "#f8fafc", border: `1px solid ${liked ? "#fca5a5" : "#e2e8f0"}`,
+                            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1px",
+                            cursor: liked ? "default" : "pointer", flexShrink: 0,
+                            transition: "transform 0.2s ease, background 0.2s ease",
+                          }} onClick={e => handleLike(destId, e)}>
+                            <Heart size={14} fill={liked ? "#ef4444" : "none"} style={{ color: liked ? "#ef4444" : "#065f46" }} />
+                            {(likeCounts[destId] ?? 0) > 0 && (
+                              <span style={{ fontSize: "0.45rem", fontWeight: 700, color: liked ? "#ef4444" : "#065f46", lineHeight: 1 }}>
+                                {likeCounts[destId]}
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })()}
                     </div>
                   </div>
                 </div>

@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import {
   Users, UserCheck, MapPin, FileText, Download, Calendar,
-  ChevronDown, Clock, Minus
+  ChevronDown, Clock, Minus, Heart
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useAdmin } from "@/contexts/AdminContext";
@@ -30,6 +30,7 @@ export default function DashboardPage() {
   const [destinations, setDestinations] = useState<TourismItem[]>([]);
   const [posts, setPosts] = useState<NewsPost[]>([]);
   const [visitorStats, setVisitorStats] = useState<VisitorStat[]>([]);
+  const [totalLikes, setTotalLikes] = useState(0);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState<"1 Hari" | "1 Minggu" | "1 Bulan" | "1 Tahun">("1 Bulan");
   const [periodOpen, setPeriodOpen] = useState(false);
@@ -50,10 +51,12 @@ export default function DashboardPage() {
       fetch("/api/destinations").then(r => r.json()),
       fetch("/api/posts").then(r => r.json()),
       fetch("/api/visitor-stats").then(r => r.json()),
-    ]).then(([dest, news, vstats]) => {
+      fetch("/api/destinations/likes").then(r => r.json()).catch(() => ({ total: 0 })),
+    ]).then(([dest, news, vstats, likes]) => {
       if (Array.isArray(dest)) setDestinations(dest);
       if (Array.isArray(news)) setPosts(news);
       if (Array.isArray(vstats)) setVisitorStats(vstats);
+      if (likes?.total !== undefined) setTotalLikes(likes.total);
     }).catch(console.error)
       .finally(() => setLoading(false));
   }, []);
@@ -102,7 +105,7 @@ export default function DashboardPage() {
   // ── KPI Cards ──
   const stats = [
     { label: "Total Wisatawan", value: visitorDisplay, delta: visitorYear, up: null, icon: Users, accent: ACCENT, soft: "var(--dash-primary-bg)", spark: trafficYearly.slice(-10) },
-    { label: "Pengunjung Unik",  value: "125", delta: "0.0%", up: null, icon: UserCheck, accent: C2,     soft: "var(--dash-success-bg)", spark: [8,10,9,12,11,9,13,12,14,12] },
+    { label: "Likes Destinasi",  value: String(totalLikes), delta: "total", up: null, icon: Heart, accent: "#ef4444", soft: "rgba(239,68,68,0.08)", spark: [0,1,2,1,3,4,3,5,6,totalLikes] },
     { label: "Destinasi Aktif",  value: String(activeCount || 12), delta: "0 baru", up: null, icon: MapPin, accent: C3, soft: "var(--dash-warning-bg)", spark: [4,5,5,6,6,7,8,9,10,12] },
     { label: "Berita Terpublikasi", value: String(publishedCount || 43), delta: "0 baru", up: null, icon: FileText, accent: C4, soft: "var(--dash-pink-bg)", spark: [10,12,14,13,18,20,22,28,34,43] },
   ];

@@ -35,6 +35,7 @@ export interface Destination {
   description?: string;
   slug?: string;
   gallery?: string[];
+  likes?: number;
 }
 
 export interface Post {
@@ -285,6 +286,10 @@ class JsonDbEngine {
         if (!this.data.speeches) { this.data.speeches = seedSpeeches(); this.saveData(); }
         if (!this.data.events) { this.data.events = seedEvents(); this.saveData(); }
         if (!this.data.visitorStats) { this.data.visitorStats = seedVisitorStats(); this.saveData(); }
+        if (this.data.destinations.some(d => (d as any).likes === undefined)) {
+          this.data.destinations = this.data.destinations.map(d => ({ ...d, likes: (d as any).likes ?? 0 }));
+          this.saveData();
+        }
       } else {
         this.seedInitialData();
       }
@@ -791,7 +796,17 @@ class JsonDbEngine {
       this.data.destinations = this.data.destinations.filter(d => d.id !== where.id);
       this.saveData();
       return deleted;
-    }
+    },
+    incrementLikes: async ({ where }: { where: { id: string } }) => {
+      const idx = this.data.destinations.findIndex(d => d.id === where.id);
+      if (idx === -1) throw new Error("Destination not found");
+      this.data.destinations[idx].likes = (this.data.destinations[idx].likes ?? 0) + 1;
+      this.saveData();
+      return this.data.destinations[idx];
+    },
+    getLikesMap: async () => {
+      return Object.fromEntries(this.data.destinations.map(d => [d.id, d.likes ?? 0]));
+    },
   };
 
   // POSTS (News CMS)

@@ -145,16 +145,6 @@ export default function Home() {
         <EventsSection />
       </motion.div>
 
-      {/* 8. Ulasan & Testimoni Pengunjung */}
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, margin: "-120px" }}
-        variants={sectionVariants}
-      >
-        <TestimonialsSection />
-      </motion.div>
-
       {/* 9. Partner Logo Marquee Slider */}
       <motion.div
         initial="hidden"
