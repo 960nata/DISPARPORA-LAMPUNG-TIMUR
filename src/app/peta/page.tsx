@@ -179,7 +179,7 @@ function MapPageContent() {
           </div>
 
           {/* Directory lists inside sidebar */}
-          <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
+          <div className="peta-sidebar-list" style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
             {selectedItem ? (
               // Selected Item Detail View
               <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
