@@ -156,7 +156,7 @@ export default function DestinationsSection() {
         </div>
       </div>
 
-      <div className="dest-carousel-wrap" style={{ width: "100%", overflowX: "clip", padding: "1.5rem 0", position: "relative" }}>
+      <div className="dest-carousel-wrap" style={{ width: "100%", overflow: "hidden", padding: "4rem 0", margin: "-2.5rem 0", position: "relative" }}>
         <div
           style={{ width: peekWidth, margin: "0 auto", overflow: "visible" }}
           onTouchStart={handleTouchStart}
