@@ -1093,6 +1093,15 @@ a {
   .page-hero-wrap .page-hero-inner {
     border-radius: 0 !important;
   }
+
+  /* Home hero: no padding, no radius, flush to header */
+  .home-sections > div:first-child {
+    padding: 0 !important;
+    margin-top: 0 !important;
+  }
+  .home-hero-inner {
+    border-radius: 0 !important;
+  }
 }
 
 @media (max-width: 480px) {
