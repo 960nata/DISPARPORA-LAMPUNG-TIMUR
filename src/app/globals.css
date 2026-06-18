@@ -1085,17 +1085,21 @@ a {
     line-height: 1.55 !important;
   }
 
-  /* Hero: 14px side padding, no top/bottom, flush to header on mobile */
+  /* Hero outer: 0 (full bleed image), inner content: 14px kiri kanan */
   .page-hero-wrap {
-    padding: 0 14px !important;
+    padding: 0 !important;
     margin-top: 0 !important;
   }
   .page-hero-wrap .page-hero-inner,
   .page-hero-wrap > div {
     border-radius: 0 !important;
   }
+  .page-hero-wrap .container {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
 
-  /* Home hero: no padding, no radius, flush to header */
+  /* Home hero: full bleed, inner content 14px kiri kanan */
   .home-sections > section:first-child {
     padding: 0 !important;
     margin-top: 0 !important;
@@ -1104,6 +1108,10 @@ a {
     border-radius: 0 !important;
     padding-top: 6rem !important;
     padding-bottom: 5rem !important;
+  }
+  .home-hero-inner .container {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
   }
 }
 
