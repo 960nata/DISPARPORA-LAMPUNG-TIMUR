@@ -2,96 +2,31 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  MapPin,
-  Phone,
-  Mail,
-  Globe,
-  Clock,
-  Send,
-  MessageSquare,
-  Building2,
-  ChevronRight,
-  CheckCircle2,
-  Share2,
-  Video,
-} from "lucide-react";
+import { Send, CheckCircle2, Phone, MapPin, Mail, Share2, Globe, Video } from "lucide-react";
+
+const GREEN  = "#0E9F4F";
+const LIME   = "#BEF26A";
 
 const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 32 },
+  initial: { opacity: 0, y: 28 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-80px" },
-  transition: { duration: 0.6, delay },
+  viewport: { once: true, margin: "-60px" },
+  transition: { duration: 0.55, delay },
 });
 
-const infoCards = [
-  {
-    icon: <MapPin size={24} />,
-    color: "#059669",
-    bg: "#ecfdf5",
-    title: "Alamat Kantor",
-    lines: [
-      "Jl. Lintas Timur, Kompleks Perkantoran",
-      "Pemkab Lampung Timur, Sukadana,",
-      "Lampung Timur, 34394",
-    ],
-  },
-  {
-    icon: <Phone size={24} />,
-    color: "#3b82f6",
-    bg: "#eff6ff",
-    title: "Telepon",
-    lines: ["(0725) 625012"],
-  },
-  {
-    icon: <Mail size={24} />,
-    color: "#ec4899",
-    bg: "#fdf2f8",
-    title: "Email Resmi",
-    lines: ["info@disparpora.lampungtimurkab.go.id"],
-  },
-  {
-    icon: <Globe size={24} />,
-    color: "#8b5cf6",
-    bg: "#f5f3ff",
-    title: "Website",
-    lines: ["disparpora.lampungtimurkab.go.id"],
-  },
-  {
-    icon: <Clock size={24} />,
-    color: "#f59e0b",
-    bg: "#fffbeb",
-    title: "Jam Operasional",
-    lines: ["Senin – Kamis: 07.30 – 15.30 WIB", "Jumat: 07.30 – 15.00 WIB", "Sabtu – Minggu: Tutup"],
-  },
-  {
-    icon: <MessageSquare size={24} />,
-    color: "#10b981",
-    bg: "#f0fdf4",
-    title: "Pengaduan & Layanan",
-    lines: ["Gunakan formulir di bawah atau hubungi langsung via telepon / email resmi."],
-  },
-];
-
-const sosmedLinks = [
-  { label: "Instagram", icon: <Share2 size={18} />, href: "#", color: "#ec4899" },
-  { label: "Facebook", icon: <Globe size={18} />, href: "#", color: "#3b82f6" },
-  { label: "YouTube", icon: <Video size={18} />, href: "#", color: "#ef4444" },
-];
-
 export default function KontakPage() {
-  const [form, setForm]     = useState({ nama: "", email: "", subjek: "", pesan: "" });
-  const [errors, setErrors] = useState<Partial<typeof form>>({});
-  const [sent, setSent]     = useState(false);
+  const [form, setForm]       = useState({ nama: "", email: "", subjek: "", pesan: "" });
+  const [errors, setErrors]   = useState<Partial<typeof form>>({});
+  const [sent, setSent]       = useState(false);
   const [loading, setLoading] = useState(false);
 
   const validate = () => {
     const e: Partial<typeof form> = {};
-    if (!form.nama.trim())                              e.nama    = "Nama wajib diisi.";
-    if (!form.email.trim())                             e.email   = "Email wajib diisi.";
+    if (!form.nama.trim())  e.nama   = "Nama wajib diisi.";
+    if (!form.email.trim()) e.email  = "Email wajib diisi.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Format email tidak valid.";
-    if (!form.subjek.trim())                            e.subjek  = "Subjek wajib diisi.";
-    if (form.pesan.trim().length < 10)                 e.pesan   = "Pesan minimal 10 karakter.";
+    if (!form.subjek.trim()) e.subjek = "Subjek wajib diisi.";
+    if (form.pesan.trim().length < 10) e.pesan = "Pesan minimal 10 karakter.";
     return e;
   };
 
@@ -99,232 +34,174 @@ export default function KontakPage() {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-    setErrors({});
-    setLoading(true);
-    // TODO: replace with real API call, e.g. fetch("/api/contact", { method:"POST", body: JSON.stringify(form) })
+    setErrors({}); setLoading(true);
     setTimeout(() => { setLoading(false); setSent(true); }, 1000);
   };
 
-  const fieldStyle = (err?: string): React.CSSProperties => ({
-    width: "100%",
-    padding: "0.85rem 1rem",
-    borderRadius: "12px",
-    border: `1.5px solid ${err ? "#ef4444" : "var(--border)"}`,
-    fontSize: "0.9rem",
-    color: "var(--text-primary)",
-    backgroundColor: "var(--bg-primary)",
-    outline: "none",
-    boxSizing: "border-box",
-    transition: "border-color 0.2s",
-    fontFamily: "var(--font-main)",
+  const field = (err?: string): React.CSSProperties => ({
+    width: "100%", padding: "0.75rem 0", background: "transparent",
+    border: "none", borderBottom: `1.5px solid ${err ? "#ef4444" : "rgba(14,159,79,0.25)"}`,
+    fontSize: "0.88rem", color: "var(--text-primary)", outline: "none",
+    boxSizing: "border-box", fontFamily: "var(--font-main)", transition: "border-color 0.2s",
   });
 
   return (
-    <div style={{ paddingBottom: "6rem" }}>
+    <div style={{ paddingBottom: "0" }}>
 
-      {/* ─── HERO ─── */}
-      <section style={{ width: "100%", padding: "14px", boxSizing: "border-box", marginBottom: "3rem" }}>
-        <div className="page-hero-inner" style={{
+      {/* ─── HERO — identik profil ─── */}
+      <section className="page-hero-wrap" style={{ width: "100%", padding: "14px", boxSizing: "border-box" }}>
+        <div style={{
           position: "relative",
-          backgroundImage: "linear-gradient(to right, rgba(5, 46, 35, 0.95) 0%, rgba(6, 78, 59, 0.75) 55%, rgba(6, 78, 59, 0.2) 100%), url('/Gallery/hero3.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          display: "flex",
-          alignItems: "center",
-          borderRadius: "24px",
-          overflow: "hidden",
+          backgroundImage: "linear-gradient(to right, rgba(5,46,35,0.95) 0%, rgba(6,78,59,0.75) 55%, rgba(6,78,59,0.2) 100%), url('/Gallery/hero3.avif')",
+          backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat",
+          minHeight: "400px", display: "flex", alignItems: "center",
+          borderRadius: "24px", overflow: "hidden",
         }}>
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-
-        <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "4.5rem", paddingBottom: "4.5rem" }}>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            style={{ fontSize: "clamp(1.75rem, 3.2vw, 2.5rem)", fontWeight: 900, color: "white", lineHeight: 1.25, maxWidth: "580px", letterSpacing: "-0.02em", textShadow: "0 2px 12px rgba(0,0,0,0.25)", margin: "0 0 1.25rem 0" }}
-          >
-            Kontak & Informasi DISPARPORA
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            style={{ fontSize: "1.05rem", color: "#a7f3d0", maxWidth: "520px", lineHeight: 1.7, marginBottom: "2rem" }}
-          >
-            Sampaikan pertanyaan, masukan, atau kebutuhan layanan Anda kepada kami. Tim DISPARPORA Lampung Timur siap membantu.
-          </motion.p>
-
-        </div>
+          <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+          <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "4.5rem", paddingBottom: "4.5rem" }}>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.1 }}
+              style={{ fontSize: "clamp(1.75rem, 3.2vw, 2.5rem)", fontWeight: 900, color: "white", lineHeight: 1.25, maxWidth: "580px", letterSpacing: "-0.02em", textShadow: "0 2px 12px rgba(0,0,0,0.25)", margin: "0 0 1.25rem 0" }}>
+              Kontak &amp; Informasi<br />DISPARPORA
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.65, delay: 0.3 }}
+              style={{ fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)", color: "#d1fae5", maxWidth: "600px", lineHeight: 1.75, margin: 0 }}>
+              Sampaikan pertanyaan, masukan, atau kebutuhan layanan Anda kepada kami. Tim DISPARPORA Lampung Timur siap membantu sepenuh hati.
+            </motion.p>
+          </div>
         </div>
       </section>
 
-      {/* ─── INFO CARDS ─── */}
-      <section className="container" style={{ marginBottom: "5rem" }}>
-        <motion.div {...fadeUp()} style={{ textAlign: "center", marginBottom: "3rem" }}>
-          <span style={{ display: "inline-block", backgroundColor: "#ecfdf5", color: "#059669", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.35rem 1rem", borderRadius: "999px", marginBottom: "1rem" }}>Informasi Kontak</span>
-          <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800 }}>Cara Menghubungi Kami</h2>
-        </motion.div>
+      {/* ─── MAIN: INFO kiri + FORM & MAP kanan ─── */}
+      <section style={{ padding: "5rem 0 0" }}>
+        <div className="container kontak-grid" style={{ display: "grid", gridTemplateColumns: "1fr 420px", gap: "5rem", alignItems: "start" }}>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
-          {infoCards.map((card, i) => (
-            <motion.div
-              key={i}
-              {...fadeUp(i * 0.07)}
-              style={{ backgroundColor: "white", borderRadius: "20px", padding: "1.75rem", border: "1px solid var(--border)", boxShadow: "var(--card-shadow)", display: "flex", flexDirection: "column", gap: "0.75rem" }}
-            >
-              <div style={{ width: "48px", height: "48px", borderRadius: "14px", backgroundColor: card.bg, color: card.color, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                {card.icon}
-              </div>
-              <h4 style={{ fontWeight: 800, fontSize: "0.9rem", color: "var(--text-primary)", margin: 0 }}>{card.title}</h4>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.2rem" }}>
-                {card.lines.map((line, j) => (
-                  <p key={j} style={{ margin: 0, fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>{line}</p>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ─── MAP + FORM ─── */}
-      <section id="form-kontak" style={{ backgroundColor: "#f8fafc", padding: "5rem 0", scrollMarginTop: "90px" }}>
-        <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "3rem", alignItems: "start" }}>
-
-          {/* Map embed */}
+          {/* LEFT */}
           <motion.div {...fadeUp(0.05)}>
-            <h3 style={{ fontWeight: 800, fontSize: "1.2rem", marginBottom: "1.25rem" }}>Lokasi Kantor</h3>
-            <div style={{ borderRadius: "20px", overflow: "hidden", boxShadow: "var(--hover-shadow)", border: "1px solid var(--border)", height: "380px" }}>
-              <iframe
-                src="https://maps.google.com/maps?q=Dinas+Pariwisata+Lampung+Timur+Sukadana&output=embed&z=14"
-                width="100%"
-                height="100%"
-                style={{ border: 0, display: "block" }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Lokasi Kantor DISPARPORA Lampung Timur"
-              />
-            </div>
-            <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-              <p style={{ fontWeight: 700, fontSize: "0.875rem", color: "var(--text-primary)", margin: 0 }}>Ikuti Kami di Media Sosial</p>
-              <div style={{ display: "flex", gap: "0.75rem" }}>
-                {sosmedLinks.map((s, i) => (
-                  <a
-                    key={i}
-                    href={s.href}
-                    style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", padding: "0.5rem 1rem", borderRadius: "999px", border: `1.5px solid ${s.color}33`, backgroundColor: `${s.color}0e`, color: s.color, fontSize: "0.8rem", fontWeight: 700, textDecoration: "none" }}
-                  >
-                    {s.icon} {s.label}
-                  </a>
-                ))}
+            <h2 style={{ fontSize: "clamp(1.5rem, 2.8vw, 2.4rem)", fontWeight: 900, color: "var(--text-primary)", lineHeight: 1.2, letterSpacing: "-0.02em", margin: "0 0 1.25rem 0" }}>
+              Kami selalu siap membantu dan menjawab pertanyaan Anda
+            </h2>
+            <p style={{ fontSize: "0.95rem", color: "var(--text-secondary)", lineHeight: 1.75, marginBottom: "3rem", maxWidth: "440px" }}>
+              Dinas Pariwisata, Kepemudaan, dan Olahraga Kabupaten Lampung Timur terbuka untuk pertanyaan, masukan, dan kerjasama dari seluruh masyarakat dan mitra.
+            </p>
+
+            <div className="kontak-info-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.5rem 3rem" }}>
+              <div>
+                <p style={{ fontSize: "0.73rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: "0.7rem" }}>Pusat Layanan</p>
+                <p style={{ fontWeight: 700, color: "var(--text-primary)", fontSize: "0.9rem", margin: "0 0 0.3rem", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <Phone size={13} color={GREEN} /> (0725) 625012
+                </p>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.83rem", margin: "0 0 0.1rem" }}>Senin–Kamis: 07.30–15.30 WIB</p>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.83rem", margin: 0 }}>Jumat: 07.30–15.00 WIB</p>
+              </div>
+              <div>
+                <p style={{ fontSize: "0.73rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: "0.7rem" }}>Lokasi Kami</p>
+                <p style={{ fontWeight: 700, color: "var(--text-primary)", fontSize: "0.9rem", margin: "0 0 0.3rem", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <MapPin size={13} color={GREEN} /> Sukadana, Lampung Timur
+                </p>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.83rem", margin: "0 0 0.1rem" }}>Jl. Lintas Timur, Kompleks</p>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.83rem", margin: 0 }}>Perkantoran Pemkab, 34194</p>
+              </div>
+              <div>
+                <p style={{ fontSize: "0.73rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: "0.7rem" }}>Email</p>
+                <p style={{ fontWeight: 700, color: "var(--text-primary)", fontSize: "0.85rem", margin: 0, display: "flex", alignItems: "flex-start", gap: "6px", wordBreak: "break-all" }}>
+                  <Mail size={13} color={GREEN} style={{ flexShrink: 0, marginTop: "2px" }} />
+                  info@disparpora.lampungtimurkab.go.id
+                </p>
+              </div>
+              <div>
+                <p style={{ fontSize: "0.73rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: "0.75rem" }}>Media Sosial</p>
+                <div style={{ display: "flex", gap: "0.6rem" }}>
+                  {[
+                    { icon: <Share2 size={15} />, bg: "#e1306c", href: "#" },
+                    { icon: <Globe size={15} />, bg: "#1877f2", href: "#" },
+                    { icon: <Video size={15} />, bg: "#ff0000", href: "#" },
+                  ].map((s, i) => (
+                    <a key={i} href={s.href} style={{ width: "34px", height: "34px", borderRadius: "10px", background: s.bg, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none", flexShrink: 0 }}>
+                      {s.icon}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Contact form */}
-          <motion.div {...fadeUp(0.1)}>
-            <h3 style={{ fontWeight: 800, fontSize: "1.2rem", marginBottom: "1.25rem" }}>Kirim Pesan</h3>
+          {/* RIGHT — form + map */}
+          <motion.div {...fadeUp(0.15)} className="kontak-sticky" style={{ position: "sticky", top: "100px", display: "flex", flexDirection: "column", gap: "20px" }}>
 
-            {sent ? (
-              <div style={{ backgroundColor: "#f0fdf4", border: "2px solid #d1fae5", borderRadius: "20px", padding: "3rem", textAlign: "center" }}>
-                <div style={{ width: "64px", height: "64px", borderRadius: "50%", backgroundColor: "#ecfdf5", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1.25rem" }}>
-                  <CheckCircle2 size={32} style={{ color: "#059669" }} />
-                </div>
-                <h4 style={{ fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.5rem" }}>Pesan Terkirim!</h4>
-                <p style={{ color: "var(--text-secondary)", margin: 0 }}>
-                  Terima kasih. Tim kami akan menghubungi Anda dalam 1–2 hari kerja.
-                </p>
-                <button
-                  onClick={() => { setSent(false); setForm({ nama: "", email: "", subjek: "", pesan: "" }); }}
-                  style={{ marginTop: "1.5rem", padding: "0.65rem 1.5rem", borderRadius: "999px", backgroundColor: "#059669", color: "white", fontWeight: 700, fontSize: "0.875rem", border: "none", cursor: "pointer" }}
-                >
-                  Kirim Pesan Lagi
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} style={{ backgroundColor: "white", borderRadius: "20px", padding: "2rem", border: "1px solid var(--border)", boxShadow: "var(--card-shadow)", display: "flex", flexDirection: "column", gap: "1.1rem" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-                    <label style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text-primary)" }}>Nama Lengkap *</label>
-                    <input
-                      type="text"
-                      placeholder="Nama Anda"
-                      value={form.nama}
-                      onChange={(e) => { setForm({ ...form, nama: e.target.value }); if (errors.nama) setErrors({ ...errors, nama: undefined }); }}
-                      style={fieldStyle(errors.nama)}
-                    />
-                    {errors.nama && <p style={{ color: "#ef4444", fontSize: "0.75rem", margin: 0 }}>{errors.nama}</p>}
+            {/* Form card */}
+            <div style={{ background: "var(--bg-primary)", border: "1px solid rgba(14,159,79,0.2)", borderRadius: "24px", padding: "2rem", boxShadow: "0 24px 60px -20px rgba(12,59,38,0.12)" }}>
+              <h3 style={{ fontWeight: 800, fontSize: "1.1rem", color: "var(--text-primary)", margin: "0 0 0.3rem" }}>Kirim Pesan</h3>
+              <p style={{ fontSize: "0.82rem", color: "var(--text-secondary)", margin: "0 0 1.75rem" }}>Kami akan membalas dalam 1–2 hari kerja.</p>
+
+              {sent ? (
+                <div style={{ textAlign: "center", padding: "1.5rem 0" }}>
+                  <div style={{ width: "52px", height: "52px", borderRadius: "50%", background: "#ecfdf5", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem" }}>
+                    <CheckCircle2 size={26} color={GREEN} />
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-                    <label style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text-primary)" }}>Email *</label>
-                    <input
-                      type="email"
-                      placeholder="email@contoh.com"
-                      value={form.email}
-                      onChange={(e) => { setForm({ ...form, email: e.target.value }); if (errors.email) setErrors({ ...errors, email: undefined }); }}
-                      style={fieldStyle(errors.email)}
-                    />
-                    {errors.email && <p style={{ color: "#ef4444", fontSize: "0.75rem", margin: 0 }}>{errors.email}</p>}
+                  <h4 style={{ fontWeight: 800, margin: "0 0 0.4rem", color: "var(--text-primary)" }}>Pesan Terkirim!</h4>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", margin: "0 0 1.25rem" }}>Terima kasih, tim kami akan segera menghubungi Anda.</p>
+                  <button onClick={() => { setSent(false); setForm({ nama: "", email: "", subjek: "", pesan: "" }); }}
+                    style={{ padding: "0.6rem 1.4rem", borderRadius: "999px", background: GREEN, color: "white", fontWeight: 700, fontSize: "0.85rem", border: "none", cursor: "pointer" }}>
+                    Kirim Lagi
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
+                  {[
+                    { key: "nama",   placeholder: "Nama Lengkap", type: "text" },
+                    { key: "email",  placeholder: "Email",        type: "email" },
+                    { key: "subjek", placeholder: "Subjek",       type: "text" },
+                  ].map(f => (
+                    <div key={f.key}>
+                      <input type={f.type} placeholder={f.placeholder}
+                        value={form[f.key as keyof typeof form]}
+                        onChange={e => { setForm({ ...form, [f.key]: e.target.value }); setErrors({ ...errors, [f.key]: undefined }); }}
+                        style={field(errors[f.key as keyof typeof errors])} />
+                      {errors[f.key as keyof typeof errors] && <p style={{ color: "#ef4444", fontSize: "0.72rem", margin: "4px 0 0" }}>{errors[f.key as keyof typeof errors]}</p>}
+                    </div>
+                  ))}
+                  <div>
+                    <textarea rows={4} placeholder="Pesan"
+                      value={form.pesan}
+                      onChange={e => { setForm({ ...form, pesan: e.target.value }); setErrors({ ...errors, pesan: undefined }); }}
+                      style={{ ...field(errors.pesan), resize: "none" }} />
+                    {errors.pesan && <p style={{ color: "#ef4444", fontSize: "0.72rem", margin: "4px 0 0" }}>{errors.pesan}</p>}
                   </div>
-                </div>
+                  <button type="submit" disabled={loading}
+                    style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", padding: "0.85rem", borderRadius: "12px", background: loading ? "#6ee7b7" : GREEN, color: "white", fontWeight: 800, fontSize: "0.9rem", border: "none", cursor: loading ? "not-allowed" : "pointer", transition: "background 0.2s" }}>
+                    <Send size={16} /> {loading ? "Mengirim..." : "Kirim Pesan"}
+                  </button>
+                </form>
+              )}
+            </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-                  <label style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text-primary)" }}>Subjek *</label>
-                  <input
-                    type="text"
-                    placeholder="Subjek pesan"
-                    value={form.subjek}
-                    onChange={(e) => { setForm({ ...form, subjek: e.target.value }); if (errors.subjek) setErrors({ ...errors, subjek: undefined }); }}
-                    style={fieldStyle(errors.subjek)}
-                  />
-                  {errors.subjek && <p style={{ color: "#ef4444", fontSize: "0.75rem", margin: 0 }}>{errors.subjek}</p>}
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-                  <label style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text-primary)" }}>Pesan *</label>
-                  <textarea
-                    rows={5}
-                    placeholder="Tuliskan pesan Anda di sini..."
-                    value={form.pesan}
-                    onChange={(e) => { setForm({ ...form, pesan: e.target.value }); if (errors.pesan) setErrors({ ...errors, pesan: undefined }); }}
-                    style={{ ...fieldStyle(errors.pesan), resize: "vertical" }}
-                  />
-                  {errors.pesan && <p style={{ color: "#ef4444", fontSize: "0.75rem", margin: 0 }}>{errors.pesan}</p>}
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  style={{
-                    padding: "0.9rem",
-                    borderRadius: "12px",
-                    backgroundColor: loading ? "#6ee7b7" : "#059669",
-                    color: "white",
-                    fontWeight: 800,
-                    fontSize: "0.95rem",
-                    border: "none",
-                    cursor: loading ? "not-allowed" : "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "0.5rem",
-                    transition: "background-color 0.2s",
-                  }}
-                >
-                  <Send size={18} />
-                  {loading ? "Mengirim..." : "Kirim Pesan"}
-                </button>
-
-                <p style={{ fontSize: "0.78rem", color: "var(--text-muted)", textAlign: "center", margin: 0 }}>
-                  Pesan Anda akan dijawab dalam 1–2 hari kerja.
-                </p>
-              </form>
-            )}
           </motion.div>
         </div>
       </section>
+
+      {/* ─── MAP full width ─── */}
+      <section style={{ height: "420px", width: "100%", marginTop: "5rem" }}>
+        <iframe
+          src="https://maps.google.com/maps?q=Dinas+Pariwisata+Kepemudaan+dan+Olahraga+Kabupaten+Lampung+Timur&output=embed&z=15"
+          width="100%" height="100%"
+          style={{ border: 0, display: "block" }}
+          allowFullScreen loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          title="Lokasi DISPARPORA Lampung Timur"
+        />
+      </section>
+
+      <style jsx>{`
+        @media (max-width: 960px) {
+          .kontak-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+          .kontak-sticky { position: static !important; }
+        }
+        @media (max-width: 560px) {
+          .kontak-info-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </div>
   );
 }

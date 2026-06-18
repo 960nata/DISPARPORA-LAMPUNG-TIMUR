@@ -120,9 +120,14 @@ export default function Footer() {
           <p style={{ color: "#64748b" }}>
             © {new Date().getFullYear()} Dinas Pariwisata, Pemuda, dan Olahraga Kabupaten Lampung Timur. Hak Cipta Dilindungi.
           </p>
-          <div style={{ display: "flex", gap: "1.5rem" }}>
-            <a href="#" style={{ color: "#64748b" }}>Kebijakan Privasi</a>
-            <a href="#" style={{ color: "#64748b" }}>Syarat & Ketentuan</a>
+          <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
+            <Link href="/kebijakan-privasi" style={{ color: "#64748b" }} onMouseOver={e => (e.currentTarget.style.color = "white")} onMouseOut={e => (e.currentTarget.style.color = "#64748b")}>Kebijakan Privasi</Link>
+            <Link href="/syarat-ketentuan" style={{ color: "#64748b" }} onMouseOver={e => (e.currentTarget.style.color = "white")} onMouseOut={e => (e.currentTarget.style.color = "#64748b")}>Syarat & Ketentuan</Link>
+            <a href="https://hadinata.dev" target="_blank" rel="noopener noreferrer" style={{ color: "#64748b", textDecoration: "none", display: "flex", alignItems: "center", gap: "4px" }}
+              onMouseOver={e => (e.currentTarget.style.color = "white")}
+              onMouseOut={e => (e.currentTarget.style.color = "#64748b")}>
+              Powered by <strong style={{ color: "var(--primary)", marginLeft: "3px" }}>hadinata.dev</strong>
+            </a>
           </div>
         </div>
       </div>

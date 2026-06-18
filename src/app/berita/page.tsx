@@ -69,8 +69,7 @@ export default function NewsPage() {
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          const published = data.filter((p: Post) => p.status === "published");
-          setPosts(published);
+          setPosts(data);
         }
         setLoading(false);
       })

@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { 
-  Plus, Search, Edit2, Trash2, Eye, FileText, 
-  BookOpen, CheckCircle, Edit 
+import {
+  Plus, Search, Edit2, Trash2, Eye, FileText,
+  BookOpen, CheckCircle, Edit, Globe
 } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 
@@ -20,6 +20,7 @@ export default function BeritaPage() {
   const [search, setSearch] = useState("");
   const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; title: string } | null>(null);
   const [page, setPage] = useState(1);
+  const [publishing, setPublishing] = useState(false);
   const PAGE_SIZE = 10;
 
   useEffect(() => {
@@ -29,6 +30,17 @@ export default function BeritaPage() {
   const filtered = posts.filter(p => p.title.toLowerCase().includes(search.toLowerCase()) || p.tags.toLowerCase().includes(search.toLowerCase()));
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const handlePublishAll = async () => {
+    const draftCount = posts.filter(p => p.status !== "published").length;
+    if (draftCount === 0) return;
+    setPublishing(true);
+    const res = await fetch("/api/posts/publish-all", { method: "POST" });
+    if (res.ok) {
+      setPosts(prev => prev.map(p => ({ ...p, status: "published" })));
+    }
+    setPublishing(false);
+  };
 
   const handleDelete = async () => {
     if (!deleteConfirm) return;
@@ -54,6 +66,11 @@ export default function BeritaPage() {
             <Search size={14} style={{ position: "absolute", left: "10px", top: "50%", transform: "translateY(-50%)", color: "var(--dash-text-muted)" }} />
             <input className="dash-input" type="text" placeholder="Cari artikel..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} style={{ paddingLeft: "32px", width: "200px" }} />
           </div>
+          {posts.filter(p => p.status !== "published").length > 0 && (
+            <button onClick={handlePublishAll} disabled={publishing} className="dash-btn" style={{ padding: "8px 14px", background: "linear-gradient(135deg, var(--dash-success), #059669)" }}>
+              <Globe size={14} /> {publishing ? "Menerbitkan..." : `Terbitkan Semua (${posts.filter(p => p.status !== "published").length})`}
+            </button>
+          )}
           <Link href="/dashboard/berita/buat" className="dash-btn" style={{ padding: "8px 14px", textDecoration: "none" }}>
             <Plus size={14} /> Buat Artikel
           </Link>

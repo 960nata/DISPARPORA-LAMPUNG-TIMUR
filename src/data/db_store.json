@@ -1297,6 +1297,29 @@
       "map_link": "",
       "classification": "Non Bintang",
       "rooms": 10
+    },
+    {
+      "id": "spot_1781718491904",
+      "name": "1",
+      "category": "Wisata Alam",
+      "kecamatan": "Sukadana",
+      "address": "1",
+      "lat": -5.411242,
+      "lng": 105.976353,
+      "active": true,
+      "facilities": "1",
+      "contact": "",
+      "map_link": "",
+      "classification": "1",
+      "rooms": 1,
+      "food_type": "1",
+      "capacity": 1,
+      "imageUrl": "/Gallery/hero-1-1781717329672.avif",
+      "description": "<p>1</p>",
+      "slug": "1",
+      "gallery": [
+        "/Gallery/1.avif"
+      ]
     }
   ],
   "posts": [
@@ -1895,29 +1918,94 @@
     {
       "id": "ev_1",
       "title": "Festival Way Kambas 2026",
-      "date": "24 - 26 Oktober 2026",
+      "date": "24 Oktober 2026",
+      "time": "08.00 WIB",
       "location": "Pusat Latihan Gajah, Way Kambas",
-      "desc": "Perayaan tahunan konservasi gajah Sumatera, pentas seni adat, dan pameran kriya kreatif UMKM.",
+      "desc": "Perayaan tahunan konservasi gajah Sumatera, pentas seni adat, dan pameran kriya kreatif UMKM Lampung Timur.",
       "status": "Mendatang",
-      "image": "https://images.unsplash.com/photo-1589656966895-2f33e7653819?auto=format&fit=crop&w=400&q=80"
+      "image": "/Gallery/Taman Nasional Way Kambas.avif",
+      "guests": "[{\"name\":\"Ela Siti N.\",\"initials\":\"EN\",\"color\":\"#10b981\",\"photoUrl\":\"/leaders/bupati.png\"},{\"name\":\"Azwar Hadi\",\"initials\":\"AH\",\"color\":\"#f59e0b\",\"photoUrl\":\"/leaders/wabup.png\"}]"
     },
     {
       "id": "ev_2",
       "title": "Ritual Melasti Bahari",
       "date": "12 Maret 2026",
+      "time": "06.00 WIB",
       "location": "Pantai Kerang Mas, Labuhan Maringgai",
       "desc": "Upacara keagamaan adat umat Hindu Lampung Timur di pesisir timur yang penuh warna dan khidmat.",
       "status": "Selesai",
-      "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80"
+      "image": "/Gallery/Pantai-Kerang-Mas-Labuhan-Maringgai-Lampung-Timur-desmonjosbur-1602765547466.avif",
+      "guests": "[{\"name\": \"Reza Aulia\", \"initials\": \"RA\", \"color\": \"#6366f1\"}, {\"name\": \"Dita Pratiwi\", \"initials\": \"DP\", \"color\": \"#ec4899\"}, {\"name\": \"Farhan Naufal\", \"initials\": \"FN\", \"color\": \"#f59e0b\"}]"
     },
     {
       "id": "ev_3",
       "title": "Pentas Adat Begawi Desa Wana",
       "date": "15 Agustus 2026",
+      "time": "19.00 WIB",
       "location": "Desa Adat Wana, Melinting",
       "desc": "Gelar ritual adat Begawi Suku Lampung Melinting, menyajikan Tari Melinting klasik dan musik perkusi cetik.",
       "status": "Mendatang",
-      "image": "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=400&q=80"
+      "image": "/Gallery/image.avif",
+      "guests": "[{\"name\": \"Marsan, M.Pd.\", \"initials\": \"MS\", \"color\": \"#8b5cf6\", \"photoUrl\": \"/leaders/kadis.avif\"}, {\"name\": \"Azwar Hadi\", \"initials\": \"AH\", \"color\": \"#0891b2\", \"photoUrl\": \"/leaders/wabup.png\"}]"
+    },
+    {
+      "id": "ev_4",
+      "title": "Festival Seruit Nusantara 2026",
+      "date": "20 September 2026",
+      "time": "10.00 WIB",
+      "location": "Alun-alun Sukadana, Lampung Timur",
+      "desc": "Festival kuliner khas Lampung Timur menampilkan 100 variasi sajian seruit dari seluruh kecamatan.",
+      "status": "Mendatang",
+      "image": "/Gallery/4.avif",
+      "guests": "[{\"name\": \"Marsan, M.Pd.\", \"initials\": \"MS\", \"color\": \"#6366f1\", \"photoUrl\": \"/leaders/kadis.avif\"}, {\"name\": \"Ela Siti N.\", \"initials\": \"EN\", \"color\": \"#10b981\", \"photoUrl\": \"/leaders/bupati.png\"}, {\"name\": \"Azwar Hadi\", \"initials\": \"AH\", \"color\": \"#f59e0b\", \"photoUrl\": \"/leaders/wabup.png\"}]"
+    },
+    {
+      "id": "ev_5",
+      "title": "Kejuaraan Atletik Pelajar Se-Sumatera",
+      "date": "5 Juli 2026",
+      "time": "07.30 WIB",
+      "location": "Stadion Sukadana, Lampung Timur",
+      "desc": "450 atlet muda dari 10 provinsi berlaga di cabang lari sprint, lompat jauh, tolak peluru, dan estafet.",
+      "status": "Selesai",
+      "image": "/Gallery/3.avif",
+      "guests": "[{\"name\": \"Azwar Hadi\", \"initials\": \"AH\", \"color\": \"#f59e0b\", \"photoUrl\": \"/leaders/wabup.png\"}, {\"name\": \"Marsan, M.Pd.\", \"initials\": \"MS\", \"color\": \"#0891b2\", \"photoUrl\": \"/leaders/kadis.avif\"}]"
+    }
+  ],
+  "visitorStats": [
+    {
+      "id": "vs_2022",
+      "year": 2022,
+      "count": 142800,
+      "createdAt": "2026-06-18T04:37:18.523Z",
+      "updatedAt": "2026-06-18T04:37:18.523Z"
+    },
+    {
+      "id": "vs_2023",
+      "year": 2023,
+      "count": 198500,
+      "createdAt": "2026-06-18T04:37:18.523Z",
+      "updatedAt": "2026-06-18T04:37:18.523Z"
+    },
+    {
+      "id": "vs_2024",
+      "year": 2024,
+      "count": 254200,
+      "createdAt": "2026-06-18T04:37:18.523Z",
+      "updatedAt": "2026-06-18T04:37:18.523Z"
+    },
+    {
+      "id": "vs_2025",
+      "year": 2025,
+      "count": 353200,
+      "createdAt": "2026-06-18T04:37:18.523Z",
+      "updatedAt": "2026-06-18T04:37:18.523Z"
+    },
+    {
+      "id": "vs_2026",
+      "year": 2026,
+      "count": 218100,
+      "createdAt": "2026-06-18T04:37:18.523Z",
+      "updatedAt": "2026-06-18T04:37:18.523Z"
     }
   ]
 }

@@ -71,7 +71,7 @@ function PartnerContent() {
       {loading ? (
         <div style={{ textAlign: "center", padding: "3rem", color: "var(--dash-text-muted)" }}>Memuat...</div>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "1rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1rem" }}>
           {items.map(item => (
             <div key={item.id} className="dash-card" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", padding: "1.25rem", textAlign: "center" }}>
               <div style={{ height: "72px", display: "flex", alignItems: "center", justifyContent: "center" }}>

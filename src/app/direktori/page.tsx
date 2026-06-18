@@ -24,6 +24,7 @@ function DirectoryContent() {
   const [selectedKecamatan, setSelectedKecamatan] = useState("Semua");
   const [currentPage, setCurrentPage] = useState(1);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [tappedId, setTappedId]   = useState<string | null>(null);
   const itemsPerPage = 12;
 
   // Sync search query from URL parameter if it exists
@@ -88,6 +89,29 @@ function DirectoryContent() {
         .dir-see-more:hover { background: #f1f5f9 !important; transform: scale(0.98); }
         .dir-see-more:hover > div { transform: translateX(2px); }
         .dir-heart-btn:hover { background: rgba(255,255,255,1) !important; transform: scale(1.1); }
+        @media (max-width: 640px) {
+          .dir-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+          .dir-card { height: 280px !important; border-radius: 16px !important; }
+          .dir-card-desc { display: none !important; }
+          .dir-card-bottom { padding: 10px 12px 12px !important; }
+          .dir-card-title { font-size: 0.78rem !important; margin-bottom: 2px !important; -webkit-line-clamp: 2 !important; display: -webkit-box !important; -webkit-box-orient: vertical !important; overflow: hidden !important; }
+          .dir-card-kec { font-size: 0.65rem !important; margin-bottom: 0 !important; }
+          .dir-card-meta-row { padding-top: 8px !important; margin-top: 4px !important; }
+          .dir-card-meta-val { font-size: 0.63rem !important; }
+          .dir-card-meta-label { font-size: 0.56rem !important; }
+          .dir-card-lihat { padding: 6px 10px !important; font-size: 0.7rem !important; border-radius: 9px !important; gap: 4px !important; }
+          .dir-card-lihat-icon { width: 16px !important; height: 16px !important; }
+          .dir-card-lihat-icon svg { width: 10px !important; height: 10px !important; }
+          .dir-heart-btn { width: 28px !important; height: 28px !important; }
+          .dir-heart-btn svg { width: 12px !important; height: 12px !important; }
+          .dir-hover-wrap { padding: 12px !important; }
+          .dir-hover-badge { font-size: 0.6rem !important; padding: 2px 7px !important; margin-bottom: 5px !important; }
+          .dir-hover-title { font-size: 0.82rem !important; margin-bottom: 2px !important; overflow: hidden !important; display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical !important; }
+          .dir-hover-kec { margin-bottom: 10px !important; }
+          .dir-hover-kec span { font-size: 0.66rem !important; }
+          .dir-hover-btn { padding: 8px 10px !important; border-radius: 10px !important; font-size: 0.72rem !important; }
+          .dir-hover-btn div { width: 20px !important; height: 20px !important; }
+        }
       `}</style>
       {/* ── HERO ── */}
       <section className="page-hero-wrap" style={{ width: "100%", padding: "14px", boxSizing: "border-box", marginBottom: "3rem" }}>
@@ -252,6 +276,7 @@ function DirectoryContent() {
         ) : (
           <motion.div
             layout
+            className="dir-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
@@ -260,7 +285,7 @@ function DirectoryContent() {
           >
             <AnimatePresence mode="popLayout">
               {currentItems.map((item: any, index) => {
-                const isHovered = hoveredId === item.id;
+                const isHovered = hoveredId === item.id || tappedId === item.id;
                 const catColor =
                   item.displayCategory === "Wisata Alam"    ? "#059669" :
                   item.displayCategory === "Wisata Buatan"  ? "#0891b2" :
@@ -281,7 +306,6 @@ function DirectoryContent() {
                     { label: "Kapasitas", val: item.capacity ? `${item.capacity} Kursi` : "-" },
                   ] : [
                     { label: "Kategori", val: item.displayCategory },
-                    { label: "Kecamatan", val: item.kecamatan },
                   ];
 
                 const desc = item.description || `Destinasi ${item.displayCategory.toLowerCase()} yang menarik di Kecamatan ${item.kecamatan}, Kabupaten Lampung Timur.`;
@@ -290,12 +314,19 @@ function DirectoryContent() {
                   <motion.div
                     key={item.id}
                     layout
+                    className="dir-card"
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3, delay: (index % 6) * 0.05 }}
                     onMouseEnter={() => setHoveredId(item.id)}
                     onMouseLeave={() => setHoveredId(null)}
+                    onTouchEnd={(e) => {
+                      const target = e.target as HTMLElement;
+                      if (target.closest("a")) return;
+                      e.preventDefault();
+                      setTappedId(prev => prev === item.id ? null : item.id);
+                    }}
                     style={{
                       position: "relative",
                       borderRadius: "22px",
@@ -357,7 +388,7 @@ function DirectoryContent() {
                     </button>
 
                     {/* ── HOVER STATE: overlay content ── */}
-                    <div style={{
+                    <div className="dir-hover-wrap" style={{
                       position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 5,
                       padding: "20px",
                       opacity: isHovered ? 1 : 0,
@@ -365,23 +396,23 @@ function DirectoryContent() {
                       transition: "all 0.35s ease",
                       pointerEvents: isHovered ? "auto" : "none",
                     }}>
-                      <span style={{
+                      <span className="dir-hover-badge" style={{
                         display: "inline-block", padding: "3px 10px", borderRadius: "99px",
                         background: catBg, color: catColor,
                         fontSize: "0.7rem", fontWeight: 700, marginBottom: "8px",
                         backdropFilter: "blur(4px)",
                         border: `1px solid ${catColor}40`,
                       }}>{item.displayCategory}</span>
-                      <h3 style={{ margin: "0 0 4px", fontSize: "1.15rem", fontWeight: 800, color: "#fff", lineHeight: 1.25 }}>
+                      <h3 className="dir-hover-title" style={{ margin: "0 0 4px", fontSize: "1.15rem", fontWeight: 800, color: "#fff", lineHeight: 1.25 }}>
                         {item.name}
                       </h3>
-                      <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "16px" }}>
+                      <div className="dir-hover-kec" style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "16px" }}>
                         <MapPin size={13} style={{ color: "rgba(255,255,255,0.7)" }} />
                         <span style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.75)" }}>
                           Kec. {item.kecamatan}, Lampung Timur
                         </span>
                       </div>
-                      <Link href={`/destinasi/${item.id}`} className="dir-see-more" style={{
+                      <Link href={`/destinasi/${item.id}`} className="dir-see-more dir-hover-btn" style={{
                         display: "flex", alignItems: "center", justifyContent: "space-between",
                         padding: "11px 16px", borderRadius: "14px",
                         background: "#fff", color: "#0f172a",
@@ -397,7 +428,7 @@ function DirectoryContent() {
                     </div>
 
                     {/* ── NORMAL STATE: white content area ── */}
-                    <div style={{
+                    <div className="dir-card-bottom" style={{
                       position: "absolute", bottom: 0, left: 0, right: 0,
                       height: "43%",
                       background: "#fff",
@@ -410,30 +441,28 @@ function DirectoryContent() {
                       zIndex: 4,
                     }}>
                       <div>
-                        <h3 style={{ margin: "0 0 2px", fontSize: "1rem", fontWeight: 800, color: "#0f172a", lineHeight: 1.3 }}>
+                        <h3 className="dir-card-title" style={{ margin: "0 0 2px", fontSize: "1rem", fontWeight: 800, color: "#0f172a", lineHeight: 1.3 }}>
                           {item.name}
                         </h3>
-                        <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "6px" }}>
+                        <div className="dir-card-kec" style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "6px" }}>
                           <MapPin size={11} style={{ color: "#94a3b8", flexShrink: 0 }} />
                           <span style={{ fontSize: "0.72rem", color: "#94a3b8" }}>Kec. {item.kecamatan}</span>
                         </div>
-                        {/* Deskripsi 3 baris */}
-                        <p style={{
+                        <p className="dir-card-desc" style={{
                           margin: 0, fontSize: "0.76rem", color: "#64748b", lineHeight: 1.55,
                           display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical",
                           overflow: "hidden",
                         }}>{desc}</p>
                       </div>
 
-                      {/* Meta row + See more */}
-                      <div style={{ display: "flex", alignItems: "center", gap: "0", borderTop: "1px solid #f1f5f9", paddingTop: "10px", marginTop: "8px" }}>
+                      <div className="dir-card-meta-row" style={{ display: "flex", alignItems: "center", gap: "0", borderTop: "1px solid #f1f5f9", paddingTop: "10px", marginTop: "8px" }}>
                         {metaItems.map((m, i) => (
                           <div key={i} style={{ flex: 1 }}>
-                            <div style={{ fontSize: "0.68rem", fontWeight: 700, color: "#0f172a" }}>{m.val}</div>
-                            <div style={{ fontSize: "0.62rem", color: "#94a3b8", fontWeight: 500 }}>{m.label}</div>
+                            <div className="dir-card-meta-val" style={{ fontSize: "0.68rem", fontWeight: 700, color: "#0f172a" }}>{m.val}</div>
+                            <div className="dir-card-meta-label" style={{ fontSize: "0.62rem", color: "#94a3b8", fontWeight: 500 }}>{m.label}</div>
                           </div>
                         ))}
-                        <Link href={`/destinasi/${item.id}`} style={{
+                        <Link href={`/destinasi/${item.id}`} className="dir-card-lihat" style={{
                           display: "flex", alignItems: "center", gap: "8px",
                           padding: "8px 14px", borderRadius: "12px",
                           background: catColor, color: "#fff",
@@ -442,7 +471,7 @@ function DirectoryContent() {
                           boxShadow: `0 4px 12px -4px ${catColor}80`,
                         }}>
                           Lihat
-                          <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "rgba(255,255,255,0.25)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <div className="dir-card-lihat-icon" style={{ width: "20px", height: "20px", borderRadius: "50%", background: "rgba(255,255,255,0.25)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                             <ChevronRightIcon size={12} style={{ color: "#fff" }} />
                           </div>
                         </Link>

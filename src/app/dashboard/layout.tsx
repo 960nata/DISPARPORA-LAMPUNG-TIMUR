@@ -6,7 +6,7 @@ import Link from "next/link";
 import {
   LayoutDashboard, MapPin, FileText, Users, LogOut,
   Menu, X, ArrowLeft, Bell, Sun, Moon, Images, User,
-  Building2, Mic2, CalendarDays, Handshake
+  Building2, Mic2, CalendarDays, Handshake, TrendingUp
 } from "lucide-react";
 import { AdminProvider, useAdmin } from "@/contexts/AdminContext";
 import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
@@ -128,6 +128,9 @@ const NAV = [
     { href: "/dashboard/konten/agenda",     label: "Agenda & Event",      icon: CalendarDays, roles: ["superadmin", "admin_dinas"] },
     { href: "/dashboard/konten/partner",    label: "Partner Kami",        icon: Handshake,    roles: ["superadmin", "admin_dinas"] },
   ]},
+  { section: "STATISTIK", items: [
+    { href: "/dashboard/wisatawan", label: "Pertumbuhan Wisatawan", icon: TrendingUp,    roles: ["superadmin","admin_dinas"] },
+  ]},
   { section: "SISTEM", items: [
     { href: "/dashboard/pengguna",  label: "Manajemen Akun",     icon: Users,           roles: ["superadmin"] },
   ]},
@@ -144,6 +147,7 @@ const CRUMBS: Record<string, string> = {
   "/dashboard/konten/sambutan":          "Sambutan Kepala Daerah",
   "/dashboard/konten/agenda":            "Agenda & Event",
   "/dashboard/konten/partner":           "Partner Kami",
+  "/dashboard/wisatawan":                "Pertumbuhan Wisatawan",
   "/dashboard/pengguna":                 "Manajemen Akun",
 };
 

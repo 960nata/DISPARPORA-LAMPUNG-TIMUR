@@ -90,10 +90,20 @@ export interface AppEvent {
   id: string;
   title: string;
   date: string;
+  time?: string;
   location: string;
   desc: string;
   status: "Mendatang" | "Selesai";
   image?: string;
+  guests?: string; // JSON: [{name,initials,color}]
+}
+
+export interface VisitorStat {
+  id: string;
+  year: number;
+  count: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface JsonDatabaseSchema {
@@ -105,6 +115,7 @@ interface JsonDatabaseSchema {
   officials: Official[];
   speeches: Speech[];
   events: AppEvent[];
+  visitorStats: VisitorStat[];
 }
 
 function seedOfficials(): Official[] {
@@ -126,11 +137,82 @@ function seedSpeeches(): Speech[] {
   ];
 }
 
+function seedVisitorStats(): VisitorStat[] {
+  const now = new Date().toISOString();
+  return [
+    { id: "vs_2022", year: 2022, count: 142800, createdAt: now, updatedAt: now },
+    { id: "vs_2023", year: 2023, count: 198500, createdAt: now, updatedAt: now },
+    { id: "vs_2024", year: 2024, count: 254200, createdAt: now, updatedAt: now },
+    { id: "vs_2025", year: 2025, count: 353200, createdAt: now, updatedAt: now },
+    { id: "vs_2026", year: 2026, count: 218100, createdAt: now, updatedAt: now },
+  ];
+}
+
 function seedEvents(): AppEvent[] {
   return [
-    { id: "ev_1", title: "Festival Way Kambas 2026", date: "24 - 26 Oktober 2026", location: "Pusat Latihan Gajah, Way Kambas", desc: "Perayaan tahunan konservasi gajah Sumatera, pentas seni adat, dan pameran kriya kreatif UMKM.", status: "Mendatang", image: "https://images.unsplash.com/photo-1589656966895-2f33e7653819?auto=format&fit=crop&w=400&q=80" },
-    { id: "ev_2", title: "Ritual Melasti Bahari", date: "12 Maret 2026", location: "Pantai Kerang Mas, Labuhan Maringgai", desc: "Upacara keagamaan adat umat Hindu Lampung Timur di pesisir timur yang penuh warna dan khidmat.", status: "Selesai", image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80" },
-    { id: "ev_3", title: "Pentas Adat Begawi Desa Wana", date: "15 Agustus 2026", location: "Desa Adat Wana, Melinting", desc: "Gelar ritual adat Begawi Suku Lampung Melinting, menyajikan Tari Melinting klasik dan musik perkusi cetik.", status: "Mendatang", image: "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=400&q=80" },
+    {
+      id: "ev_1", title: "Festival Way Kambas 2026",
+      date: "24 Oktober 2026", time: "08.00 WIB",
+      location: "Pusat Latihan Gajah, Way Kambas",
+      desc: "Perayaan tahunan konservasi gajah Sumatera, pentas seni adat, dan pameran kriya kreatif UMKM Lampung Timur.",
+      status: "Mendatang",
+      image: "/Gallery/Taman Nasional Way Kambas.avif",
+      guests: JSON.stringify([
+        { name: "Marsan, M.Pd.", initials: "MS", color: "#6366f1", photoUrl: "/leaders/kadis.avif" },
+        { name: "Ela Siti N.", initials: "EN", color: "#10b981", photoUrl: "/leaders/bupati.png" },
+        { name: "Azwar Hadi", initials: "AH", color: "#f59e0b", photoUrl: "/leaders/wabup.png" },
+      ]),
+    },
+    {
+      id: "ev_2", title: "Ritual Melasti Bahari",
+      date: "12 Maret 2026", time: "06.00 WIB",
+      location: "Pantai Kerang Mas, Labuhan Maringgai",
+      desc: "Upacara keagamaan adat umat Hindu Lampung Timur di pesisir timur yang penuh warna dan khidmat.",
+      status: "Selesai",
+      image: "/Gallery/Pantai-Kerang-Mas-Labuhan-Maringgai-Lampung-Timur-desmonjosbur-1602765547466.avif",
+      guests: JSON.stringify([
+        { name: "Reza Aulia", initials: "RA", color: "#6366f1" },
+        { name: "Dita Pratiwi", initials: "DP", color: "#ec4899" },
+        { name: "Farhan Naufal", initials: "FN", color: "#f59e0b" },
+      ]),
+    },
+    {
+      id: "ev_3", title: "Pentas Adat Begawi Desa Wana",
+      date: "15 Agustus 2026", time: "19.00 WIB",
+      location: "Desa Adat Wana, Melinting",
+      desc: "Gelar ritual adat Begawi Suku Lampung Melinting, menyajikan Tari Melinting klasik dan musik perkusi cetik.",
+      status: "Mendatang",
+      image: "/Gallery/image.avif",
+      guests: JSON.stringify([
+        { name: "Marsan, M.Pd.", initials: "MS", color: "#8b5cf6", photoUrl: "/leaders/kadis.avif" },
+        { name: "Azwar Hadi", initials: "AH", color: "#0891b2", photoUrl: "/leaders/wabup.png" },
+      ]),
+    },
+    {
+      id: "ev_4", title: "Festival Seruit Nusantara 2026",
+      date: "20 September 2026", time: "10.00 WIB",
+      location: "Alun-alun Sukadana, Lampung Timur",
+      desc: "Festival kuliner khas Lampung Timur menampilkan 100 variasi sajian seruit dari seluruh kecamatan.",
+      status: "Mendatang",
+      image: "/Gallery/4.avif",
+      guests: JSON.stringify([
+        { name: "Marsan, M.Pd.", initials: "MS", color: "#6366f1", photoUrl: "/leaders/kadis.avif" },
+        { name: "Ela Siti N.", initials: "EN", color: "#10b981", photoUrl: "/leaders/bupati.png" },
+        { name: "Azwar Hadi", initials: "AH", color: "#f59e0b", photoUrl: "/leaders/wabup.png" },
+      ]),
+    },
+    {
+      id: "ev_5", title: "Kejuaraan Atletik Pelajar Se-Sumatera",
+      date: "5 Juli 2026", time: "07.30 WIB",
+      location: "Stadion Sukadana, Lampung Timur",
+      desc: "450 atlet muda dari 10 provinsi berlaga di cabang lari sprint, lompat jauh, tolak peluru, dan estafet.",
+      status: "Selesai",
+      image: "/Gallery/3.avif",
+      guests: JSON.stringify([
+        { name: "Azwar Hadi", initials: "AH", color: "#f59e0b", photoUrl: "/leaders/wabup.png" },
+        { name: "Marsan, M.Pd.", initials: "MS", color: "#0891b2", photoUrl: "/leaders/kadis.avif" },
+      ]),
+    },
   ];
 }
 
@@ -176,7 +258,7 @@ function seedGallery(): GalleryItem[] {
 // Fallback Mock JSON Database Engine
 // ----------------------------------------------------
 class JsonDbEngine {
-  private data: JsonDatabaseSchema = { users: [], destinations: [], posts: [], partners: [], gallery: [], officials: [], speeches: [], events: [] };
+  private data: JsonDatabaseSchema = { users: [], destinations: [], posts: [], partners: [], gallery: [], officials: [], speeches: [], events: [], visitorStats: [] };
 
   constructor() {
     this.loadData();
@@ -201,6 +283,7 @@ class JsonDbEngine {
         if (!this.data.officials) { this.data.officials = seedOfficials(); this.saveData(); }
         if (!this.data.speeches) { this.data.speeches = seedSpeeches(); this.saveData(); }
         if (!this.data.events) { this.data.events = seedEvents(); this.saveData(); }
+        if (!this.data.visitorStats) { this.data.visitorStats = seedVisitorStats(); this.saveData(); }
       } else {
         this.seedInitialData();
       }
@@ -640,7 +723,8 @@ class JsonDbEngine {
       gallery: seedGallery(),
       officials: seedOfficials(),
       speeches: seedSpeeches(),
-      events: seedEvents()
+      events: seedEvents(),
+      visitorStats: seedVisitorStats(),
     };
     this.saveData();
   }
@@ -846,6 +930,35 @@ class JsonDbEngine {
     },
   };
 
+  // VISITOR STATS
+  public visitorStats = {
+    findMany: async () =>
+      [...this.data.visitorStats].sort((a, b) => a.year - b.year),
+    findUnique: async ({ where }: { where: { id: string } }) =>
+      this.data.visitorStats.find(v => v.id === where.id) ?? null,
+    create: async ({ data }: { data: Omit<VisitorStat, "id" | "createdAt" | "updatedAt"> }) => {
+      const now = new Date().toISOString();
+      const item: VisitorStat = { id: `vs_${data.year}`, ...data, createdAt: now, updatedAt: now };
+      this.data.visitorStats = this.data.visitorStats.filter(v => v.year !== data.year);
+      this.data.visitorStats.push(item);
+      this.saveData();
+      return item;
+    },
+    update: async ({ where, data }: { where: { id: string }; data: Partial<VisitorStat> }) => {
+      const idx = this.data.visitorStats.findIndex(v => v.id === where.id);
+      if (idx === -1) throw new Error("VisitorStat not found");
+      this.data.visitorStats[idx] = { ...this.data.visitorStats[idx], ...data, updatedAt: new Date().toISOString() };
+      this.saveData();
+      return this.data.visitorStats[idx];
+    },
+    delete: async ({ where }: { where: { id: string } }) => {
+      const deleted = this.data.visitorStats.find(v => v.id === where.id);
+      this.data.visitorStats = this.data.visitorStats.filter(v => v.id !== where.id);
+      this.saveData();
+      return deleted;
+    },
+  };
+
   // GALLERY
   public gallery = {
     findMany: async () => [...this.data.gallery].sort((a, b) => a.order - b.order),
@@ -890,6 +1003,7 @@ function normalizePrisma(p: any) {
     officials:    p.official,
     speeches:     p.speech,
     events:       p.appEvent,
+    visitorStats: p.visitorStat,
   };
 }
 

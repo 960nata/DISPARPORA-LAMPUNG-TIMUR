@@ -308,10 +308,12 @@ export default function DestinasiForm({ mode, editId }: Props) {
                   <LBL>Klasifikasi</LBL>
                   <input className="dash-input" value={form.classification} onChange={e => upd("classification", e.target.value)} placeholder="Bintang 3, Non Bintang, dll." />
                 </div>
-                <div>
-                  <LBL>Jumlah Kamar</LBL>
-                  <input type="number" min="0" className="dash-input" value={form.rooms} onChange={e => upd("rooms", e.target.value)} placeholder="Khusus hotel/penginapan" />
-                </div>
+                {form.category === "Akomodasi" && (
+                  <div>
+                    <LBL>Jumlah Kamar</LBL>
+                    <input type="number" min="0" className="dash-input" value={form.rooms} onChange={e => upd("rooms", e.target.value)} placeholder="Jumlah kamar tersedia" />
+                  </div>
+                )}
                 <div>
                   <LBL>Jenis Masakan</LBL>
                   <input className="dash-input" value={form.food_type} onChange={e => upd("food_type", e.target.value)} placeholder="Khusus kuliner" />

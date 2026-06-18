@@ -13,6 +13,7 @@ import DashboardChart from "@/components/DashboardChart";
 
 interface TourismItem { id: string; category: string; active: boolean; kecamatan: string; }
 interface NewsPost { id: string; title: string; status: string; createdAt: string; authorName: string; }
+interface VisitorStat { id: string; year: number; month: number; count: number; }
 
 const VisitorMap = dynamic(() => import("@/components/VisitorMap"), {
   ssr: false,
@@ -28,6 +29,7 @@ export default function DashboardPage() {
   const { theme } = useTheme();
   const [destinations, setDestinations] = useState<TourismItem[]>([]);
   const [posts, setPosts] = useState<NewsPost[]>([]);
+  const [visitorStats, setVisitorStats] = useState<VisitorStat[]>([]);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState<"1 Hari" | "1 Minggu" | "1 Bulan" | "1 Tahun">("1 Bulan");
   const [periodOpen, setPeriodOpen] = useState(false);
@@ -47,9 +49,11 @@ export default function DashboardPage() {
     Promise.all([
       fetch("/api/destinations").then(r => r.json()),
       fetch("/api/posts").then(r => r.json()),
-    ]).then(([dest, news]) => {
+      fetch("/api/visitor-stats").then(r => r.json()),
+    ]).then(([dest, news, vstats]) => {
       if (Array.isArray(dest)) setDestinations(dest);
       if (Array.isArray(news)) setPosts(news);
+      if (Array.isArray(vstats)) setVisitorStats(vstats);
     }).catch(console.error)
       .finally(() => setLoading(false));
   }, []);
@@ -78,20 +82,26 @@ export default function DashboardPage() {
   const weekLabels = ["Sen","Sel","Rab","Kam","Jum","Sab","Min"];
   const trafficMonthly = [310,420,380,510,490,620,590,710,680,790,750,873];
   const monthLabels = ["Jul","Ags","Sep","Okt","Nov","Des","Jan","Feb","Mar","Apr","Mei","Jun"];
-  const trafficYearly = [410,430,420,450,470,520,560,600,630,670,700,740];
-  const yearLabels = monthLabels;
+  const sortedStats = [...visitorStats].sort((a, b) => a.year - b.year);
+  const trafficYearly = sortedStats.length > 0 ? sortedStats.map(s => s.count) : [142800,198500,254200,353200,218100];
+  const yearLabels = sortedStats.length > 0 ? sortedStats.map(s => String(s.year)) : ["2022","2023","2024","2025","2026"];
+  const latestStat = sortedStats[sortedStats.length - 1];
   const trafficConfig = useMemo(() => {
     switch (period) {
       case "1 Hari": return { labels: dailyLabels, data: trafficDaily };
       case "1 Minggu": return { labels: weekLabels, data: trafficWeekly };
       case "1 Bulan": return { labels: monthLabels, data: trafficMonthly };
-      case "1 Tahun": return { labels: yearLabels, data: trafficYearly };
+      case "1 Tahun": return { labels: yearLabels.length > 0 ? yearLabels : monthLabels, data: trafficYearly.length > 0 ? trafficYearly : trafficMonthly };
     }
-  }, [period, dailyLabels, trafficDaily, weekLabels, trafficWeekly, monthLabels, trafficMonthly, yearLabels, trafficYearly]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [period, visitorStats]);
+
+  const visitorDisplay = latestStat ? latestStat.count.toLocaleString("id-ID") : "—";
+  const visitorYear = latestStat ? String(latestStat.year) : "";
 
   // ── KPI Cards ──
   const stats = [
-    { label: "Total Pengunjung", value: "873", delta: "0.0%", up: null, icon: Users,     accent: ACCENT, soft: "var(--dash-primary-bg)", spark: [20,24,22,28,26,32,30,36,34,40] },
+    { label: "Total Wisatawan", value: visitorDisplay, delta: visitorYear, up: null, icon: Users, accent: ACCENT, soft: "var(--dash-primary-bg)", spark: trafficYearly.slice(-10) },
     { label: "Pengunjung Unik",  value: "125", delta: "0.0%", up: null, icon: UserCheck, accent: C2,     soft: "var(--dash-success-bg)", spark: [8,10,9,12,11,9,13,12,14,12] },
     { label: "Destinasi Aktif",  value: String(activeCount || 12), delta: "0 baru", up: null, icon: MapPin, accent: C3, soft: "var(--dash-warning-bg)", spark: [4,5,5,6,6,7,8,9,10,12] },
     { label: "Berita Terpublikasi", value: String(publishedCount || 43), delta: "0 baru", up: null, icon: FileText, accent: C4, soft: "var(--dash-pink-bg)", spark: [10,12,14,13,18,20,22,28,34,43] },

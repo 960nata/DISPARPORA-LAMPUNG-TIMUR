@@ -9,8 +9,12 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const data = await request.json();
-    const payload = { data: { title: data.title, date: data.date, location: data.location, desc: data.desc, status: data.status, image: data.image || "" } };
-    try { return NextResponse.json(await db.events.create(payload)); }
-    catch { return NextResponse.json(await jsonDb.events.create(payload)); }
+    const payload = {
+      title: data.title, date: data.date, time: data.time || "",
+      location: data.location, desc: data.desc, status: data.status,
+      image: data.image || "", guests: data.guests || "",
+    };
+    try { return NextResponse.json(await db.events.create({ data: payload }), { status: 201 }); }
+    catch { return NextResponse.json(await jsonDb.events.create({ data: payload }), { status: 201 }); }
   } catch (e: any) { return NextResponse.json({ error: e.message }, { status: 500 }); }
 }

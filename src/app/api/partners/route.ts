@@ -1,19 +1,26 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { db, jsonDb } from "@/lib/db";
 
 export async function GET() {
   try {
-    const list = await db.partners.findMany();
-    return NextResponse.json(list);
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+    return NextResponse.json(await db.partners.findMany());
+  } catch {
+    try {
+      return NextResponse.json(await jsonDb.partners.findMany());
+    } catch (e: any) {
+      return NextResponse.json({ error: e.message }, { status: 500 });
+    }
   }
 }
 
 export async function POST(request: Request) {
   try {
     const data = await request.json();
-    const item = await db.partners.create({ data: { name: data.name, logoUrl: data.logoUrl } });
-    return NextResponse.json(item);
+    const payload = { name: data.name, logoUrl: data.logoUrl };
+    try {
+      return NextResponse.json(await db.partners.create({ data: payload }));
+    } catch {
+      return NextResponse.json(await jsonDb.partners.create({ data: payload }));
+    }
   } catch (e: any) { return NextResponse.json({ error: e.message }, { status: 500 }); }
 }
