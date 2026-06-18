@@ -1,12 +1,16 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db, jsonDb } from "@/lib/db";
+import { requireAuth } from "@/lib/session";
 
 export async function GET() {
   try { return NextResponse.json(await db.officials.findMany()); }
   catch { return NextResponse.json(await jsonDb.officials.findMany()); }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  const auth = requireAuth(request);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const data = await request.json();
     const payload = { data: { name: data.name, title: data.title, role: data.role, photoUrl: data.photoUrl || "", order: data.order ?? 0 } };

@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db, jsonDb } from "@/lib/db";
+import { requireSuperadmin } from "@/lib/session";
 
 async function update(id: string, data: any) {
   try { return await db.users.update({ where: { id }, data }); }
@@ -12,9 +13,12 @@ async function del(id: string) {
 }
 
 export async function PUT(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const auth = requireSuperadmin(request);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const { id } = await params;
     const data = await request.json();
@@ -35,9 +39,12 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const auth = requireSuperadmin(request);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const { id } = await params;
 

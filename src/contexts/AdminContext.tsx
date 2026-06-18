@@ -30,6 +30,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     localStorage.removeItem("admin_session");
+    fetch("/api/logout", { method: "POST" }).catch(() => {});
     setUser(null);
   };
 

@@ -1,7 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db, jsonDb } from "@/lib/db";
+import { requireAuth } from "@/lib/session";
 
-export async function POST() {
+export async function POST(request: NextRequest) {
+  const auth = requireAuth(request);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     let posts: any[];
     let useJsonDb = false;

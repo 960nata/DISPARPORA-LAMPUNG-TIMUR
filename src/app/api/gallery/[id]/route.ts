@@ -1,12 +1,16 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { requireAuth } from "@/lib/session";
 
 export const runtime = "nodejs";
 
 export async function PUT(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const auth = requireAuth(request);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const { id } = await params;
     const data = await request.json();
@@ -25,9 +29,12 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const auth = requireAuth(request);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const { id } = await params;
     // Only remove the DB record. The physical file in /public/Gallery is kept,

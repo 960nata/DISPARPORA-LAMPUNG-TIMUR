@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db, jsonDb } from "@/lib/db";
+import { requireSuperadmin } from "@/lib/session";
 
 async function findMany() {
   try { return await db.users.findMany(); }
@@ -16,7 +17,10 @@ async function create(data: any) {
   catch { return await jsonDb.users.create({ data }); }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const auth = requireSuperadmin(request);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const list = await findMany();
     const safeList = list.map(({ password: _, ...rest }: any) => rest);
@@ -26,18 +30,12 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  const auth = requireSuperadmin(request);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const data = await request.json();
-
-    // Verify caller is superadmin
-    if (!data.requesterId) {
-      return NextResponse.json({ error: "Tidak diizinkan" }, { status: 403 });
-    }
-    const caller = await findUnique({ id: data.requesterId });
-    if (!caller || caller.role !== "superadmin") {
-      return NextResponse.json({ error: "Hanya Super Admin yang dapat membuat akun" }, { status: 403 });
-    }
 
     if (!data.username || !data.password || !data.name || !data.role) {
       return NextResponse.json({ error: "Username, password, name, dan role wajib diisi" }, { status: 400 });

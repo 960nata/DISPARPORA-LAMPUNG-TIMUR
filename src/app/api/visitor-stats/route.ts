@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db, jsonDb } from "@/lib/db";
+import { requireAuth } from "@/lib/session";
 
 export async function GET() {
   try {
@@ -10,6 +11,9 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const auth = requireAuth(req);
+  if (auth instanceof NextResponse) return auth;
+
   const { year, count } = await req.json();
   if (!year || count === undefined) {
     return NextResponse.json({ error: "year dan count wajib diisi" }, { status: 400 });

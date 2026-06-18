@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { MapSkeleton } from "@/components/Skeleton";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 const MapComponent = dynamic(() => import("@/components/MapComponent"), {
   ssr: false,
@@ -182,7 +183,7 @@ export default function DestinasiDetailPage() {
                 <div style={{ padding: "1.5rem", background: "white", borderRadius: "18px", border: "1px solid #f1f5f9", boxShadow: "0 1px 8px rgba(0,0,0,0.04)" }}>
                   <p style={{ margin: "0 0 0.75rem", fontSize: "0.65rem", fontWeight: 800, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em" }}>Tentang Destinasi</p>
                   {dest.description
-                    ? <div style={{ fontSize: "0.93rem", lineHeight: 1.8, color: "#374151" }} dangerouslySetInnerHTML={{ __html: dest.description }} />
+                    ? <div style={{ fontSize: "0.93rem", lineHeight: 1.8, color: "#374151" }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(dest.description) }} />
                     : <p style={{ margin: 0, fontSize: "0.9rem", color: "#cbd5e1", fontStyle: "italic" }}>Deskripsi belum tersedia.</p>
                   }
                 </div>

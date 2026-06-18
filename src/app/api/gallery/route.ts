@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db, jsonDb } from "@/lib/db";
+import { requireAuth } from "@/lib/session";
 import sharp from "sharp";
 import path from "path";
 import fs from "fs/promises";
@@ -21,7 +22,10 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  const auth = requireAuth(request);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const data = await request.json();
     if (!data.title || !data.category) {

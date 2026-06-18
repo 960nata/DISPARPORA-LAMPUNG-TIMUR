@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db, jsonDb } from "@/lib/db";
+import { signSession, SESSION_COOKIE_OPTIONS } from "@/lib/session";
 
 export async function POST(request: Request) {
   try {
@@ -29,7 +30,11 @@ export async function POST(request: Request) {
     }
 
     const { password: _, ...userWithoutPassword } = user;
-    return NextResponse.json(userWithoutPassword);
+    const token = signSession(user.id, user.role);
+
+    const response = NextResponse.json(userWithoutPassword);
+    response.cookies.set("simad_auth", token, SESSION_COOKIE_OPTIONS);
+    return response;
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
