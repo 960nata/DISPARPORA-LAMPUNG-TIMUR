@@ -565,7 +565,8 @@ export default function ProfilDinas() {
         }
         @media (max-width: 640px) {
           .stats-grid { grid-template-columns: 1fr 1fr !important; }
-          .tupoksi-grid { grid-template-columns: 1fr 1fr !important; }
+          .tupoksi-grid { grid-template-columns: 1fr 1fr !important; grid-auto-rows: 1fr !important; align-items: stretch !important; }
+          .tupoksi-grid > * { height: 100% !important; box-sizing: border-box !important; }
         }
       `}</style>
     </div>
