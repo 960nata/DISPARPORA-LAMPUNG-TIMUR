@@ -32,10 +32,11 @@ export default function PartnersSection({ partners: propPartners }: PartnersSect
       .catch(() => { /* keep default */ });
   }, []);
 
-  const activePartners = (partners.length > 0 ? partners : defaultPartners).slice(0, 4);
+  const activePartners = partners.length > 0 ? partners : defaultPartners;
+  const doubledPartners = [...activePartners, ...activePartners];
 
   return (
-    <section style={{ backgroundColor: "white", padding: "4rem 0 3rem 0" }}>
+    <section style={{ backgroundColor: "white", padding: "4rem 0 2rem 0" }}>
       <div className="container" style={{ textAlign: "center", marginBottom: "3rem" }}>
         <span className="section-badge" style={{
           fontSize: "0.875rem",
@@ -61,43 +62,27 @@ export default function PartnersSection({ partners: propPartners }: PartnersSect
         </h2>
       </div>
 
-      <div className="container">
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "2rem",
-          alignItems: "center",
-          justifyItems: "center",
-        }}>
-          {activePartners.map((p) => {
+      <div className="marquee-container">
+        <div className="marquee-content">
+          {doubledPartners.map((p, idx) => {
             const fallbackPng = p.logoUrl.includes(".avif")
               ? p.logoUrl.replace(".avif", ".png")
               : p.logoUrl;
 
-            let logoHeight = "64px";
-            if (p.logoUrl.includes("group_2")) logoHeight = "58px";
-            else if (p.logoUrl.includes("group_5")) logoHeight = "56px";
-            else if (p.logoUrl.includes("group_6")) logoHeight = "72px";
+            let logoHeight = "60px";
+            if (p.logoUrl.includes("group_2")) logoHeight = "54px";
+            else if (p.logoUrl.includes("group_5")) logoHeight = "52px";
+            else if (p.logoUrl.includes("group_6")) logoHeight = "68px";
 
             return (
-              <div key={p.id} style={{
-                display: "flex", alignItems: "center", justifyContent: "center",
-                height: "100px", width: "100%",
-                background: "var(--bg-secondary)", borderRadius: "16px",
-                border: "1px solid var(--border)",
-                padding: "1.25rem",
-                boxSizing: "border-box",
-                transition: "box-shadow 0.2s ease, transform 0.2s ease",
-              }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 24px -6px rgba(0,0,0,0.12)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
-              >
+              <div key={idx} style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "72px" }}>
                 <picture style={{ display: "block", height: logoHeight }}>
                   <source srcSet={p.logoUrl} type="image/avif" />
                   <img
                     src={fallbackPng}
                     alt={p.name}
-                    style={{ height: logoHeight, width: "auto", display: "block", objectFit: "contain" }}
+                    className="partner-logo-item"
+                    style={{ height: logoHeight, width: "auto", display: "block" }}
                   />
                 </picture>
               </div>

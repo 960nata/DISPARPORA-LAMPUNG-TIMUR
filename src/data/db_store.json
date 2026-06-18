@@ -19,10 +19,11 @@
     {
       "id": "usr_admindinas",
       "username": "admindinas",
-      "password": "Dinas@2025!",
+      "password": "Simad@2025!",
       "name": "Admin Bidang Dinas",
       "role": "admin_dinas",
-      "email": "admindinas@disparpora.lampungtimurkab.go.id"
+      "email": "admindinas@disparpora.lampungtimurkab.go.id",
+      "permissions": "{\"dashboard\":{\"access\":true,\"create\":false,\"edit\":false,\"delete\":false},\"destinasi\":{\"access\":true,\"create\":false,\"edit\":false,\"delete\":false},\"berita\":{\"access\":true,\"create\":false,\"edit\":false,\"delete\":false},\"galeri\":{\"access\":true,\"create\":false,\"edit\":false,\"delete\":false},\"organisasi\":{\"access\":true,\"create\":false,\"edit\":false,\"delete\":false},\"sambutan\":{\"access\":true,\"create\":false,\"edit\":false,\"delete\":false},\"agenda\":{\"access\":true,\"create\":false,\"edit\":false,\"delete\":false},\"partner\":{\"access\":true,\"create\":false,\"edit\":false,\"delete\":false},\"wisatawan\":{\"access\":true,\"create\":false,\"edit\":false,\"delete\":false},\"pengguna\":{\"access\":false,\"create\":false,\"edit\":false,\"delete\":false}}"
     },
     {
       "id": "usr_adminpost",

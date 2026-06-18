@@ -29,6 +29,16 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const data = await request.json();
+
+    // Verify caller is superadmin
+    if (!data.requesterId) {
+      return NextResponse.json({ error: "Tidak diizinkan" }, { status: 403 });
+    }
+    const caller = await findUnique({ id: data.requesterId });
+    if (!caller || caller.role !== "superadmin") {
+      return NextResponse.json({ error: "Hanya Super Admin yang dapat membuat akun" }, { status: 403 });
+    }
+
     if (!data.username || !data.password || !data.name || !data.role) {
       return NextResponse.json({ error: "Username, password, name, dan role wajib diisi" }, { status: 400 });
     }

@@ -131,7 +131,7 @@ export default function PenggunaPage() {
     setSaving(true);
     try {
       const body: any = { name: formName.trim(), username: formUsername.trim(), role: formRole, permissions: JSON.stringify(formPerms) };
-      if (!isEditing) body.password = formPassword;
+      if (!isEditing) { body.password = formPassword; body.requesterId = currentUser.id; }
       else if (formPassword.trim()) body.password = formPassword.trim();
 
       const url = isEditing ? `/api/users/${editingId}` : '/api/users';
