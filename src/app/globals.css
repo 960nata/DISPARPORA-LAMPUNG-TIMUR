@@ -1095,12 +1095,14 @@ a {
   }
 
   /* Home hero: no padding, no radius, flush to header */
-  .home-sections > div:first-child {
+  .home-sections > section:first-child {
     padding: 0 !important;
     margin-top: 0 !important;
   }
   .home-hero-inner {
     border-radius: 0 !important;
+    padding-top: 6rem !important;
+    padding-bottom: 5rem !important;
   }
 }
 
