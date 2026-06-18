@@ -198,7 +198,7 @@ export default function BidangDetailPage() {
       <div className="container" style={{ padding: "0 1.5rem" }}>
 
         {/* Deskripsi */}
-        <motion.div {...fadeUp(0)} style={{
+        <motion.div {...fadeUp(0)} className="bidang-detail-dark-box" style={{
           background: "linear-gradient(120deg, #0C3B26, #0F5132)",
           borderRadius: "20px", padding: "2rem 2.5rem", marginBottom: "2.5rem",
           display: "flex", gap: "1.5rem", alignItems: "flex-start",
@@ -264,7 +264,7 @@ export default function BidangDetailPage() {
         </div>
 
         {/* CTA */}
-        <motion.div {...fadeUp(0.2)} style={{ marginTop: "2.5rem", borderRadius: "20px", background: "linear-gradient(120deg, #0C3B26, #0F5132)", padding: "2rem 2.5rem", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1.5rem", flexWrap: "wrap" }}>
+        <motion.div {...fadeUp(0.2)} className="bidang-detail-cta" style={{ marginTop: "2.5rem", borderRadius: "20px", background: "linear-gradient(120deg, #0C3B26, #0F5132)", padding: "2rem 2.5rem", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1.5rem", flexWrap: "wrap" }}>
           <div>
             <h3 style={{ color: "white", margin: "0 0 0.4rem", fontWeight: 800, fontSize: "1.05rem" }}>Ingin Tahu Lebih Lanjut?</h3>
             <p style={{ color: "#d1fae5", margin: 0, fontSize: "0.88rem" }}>Lihat profil lengkap dinas atau hubungi kami langsung.</p>
@@ -283,6 +283,17 @@ export default function BidangDetailPage() {
       <style jsx global>{`
         @media (max-width: 768px) {
           .bidang-detail-grid { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 640px) {
+          .bidang-detail-dark-box {
+            padding: 1.25rem !important;
+            gap: 1rem !important;
+          }
+          .bidang-detail-cta {
+            padding: 1.5rem !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+          }
         }
       `}</style>
     </div>

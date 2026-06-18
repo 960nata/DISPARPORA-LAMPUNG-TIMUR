@@ -84,8 +84,9 @@ export default function PenggunaPage() {
 
   useEffect(() => { fetchUsers(); }, [fetchUsers]);
 
-  // ── Computed ──
-  const filteredUsers = users.filter(u => {
+  // ── Computed ── (superadmin hidden from management view)
+  const visibleUsers = users.filter(u => u.role !== 'superadmin');
+  const filteredUsers = visibleUsers.filter(u => {
     const matchQ = u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       u.username.toLowerCase().includes(searchQuery.toLowerCase());
     const matchR = filterRole === 'all' || u.role === filterRole;
@@ -212,10 +213,9 @@ export default function PenggunaPage() {
         {/* Stats strip */}
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           {[
-            { label: 'Total Akun', value: users.length, color: 'var(--dash-primary)' },
-            { label: 'Super Admin', value: users.filter(u => u.role === 'superadmin').length, color: 'var(--dash-danger)' },
-            { label: 'Admin Dinas', value: users.filter(u => u.role === 'admin_dinas').length, color: 'var(--dash-primary)' },
-            { label: 'Admin Post', value: users.filter(u => u.role === 'admin_post').length, color: 'var(--dash-success)' },
+            { label: 'Total Akun', value: visibleUsers.length, color: 'var(--dash-primary)' },
+            { label: 'Admin Dinas', value: visibleUsers.filter(u => u.role === 'admin_dinas').length, color: 'var(--dash-primary)' },
+            { label: 'Admin Post', value: visibleUsers.filter(u => u.role === 'admin_post').length, color: 'var(--dash-success)' },
           ].map(st => (
             <div key={st.label} style={{ background: 'var(--dash-card)', border: '1px solid var(--dash-border)', borderRadius: '10px', padding: '0.55rem 0.85rem', display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
               <span style={{ fontSize: '1.1rem', fontWeight: 900, color: st.color }}>{st.value}</span>
@@ -229,7 +229,7 @@ export default function PenggunaPage() {
       <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
         <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
           <button onClick={() => setFilterRole('all')} style={S.filterPill(filterRole === 'all')}>Semua</button>
-          {SIMAD_ROLES.map(r => (
+          {SIMAD_ROLES.filter(r => r.value !== 'superadmin').map(r => (
             <button key={r.value} onClick={() => setFilterRole(r.value)} style={S.filterPill(filterRole === r.value)}>{r.label}</button>
           ))}
         </div>
@@ -365,12 +365,10 @@ export default function PenggunaPage() {
                     <div>
                       <label style={S.label}>Peran / Role</label>
                       <select className="dash-input" value={formRole} onChange={e => setFormRole(e.target.value)} style={{ cursor: 'pointer', fontSize: '0.85rem', width: '100%', boxSizing: 'border-box' }}>
-                        {SIMAD_ROLES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
+                        {SIMAD_ROLES.filter(r => r.value !== 'superadmin').map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
                       </select>
-                      <div style={{ marginTop: '0.5rem', padding: '0.6rem 0.75rem', background: formRole === 'superadmin' ? 'var(--dash-danger-bg)' : 'var(--dash-bg)', border: `1px solid ${formRole === 'superadmin' ? 'var(--dash-danger)30' : 'var(--dash-border)'}`, borderRadius: '8px', fontSize: '0.72rem', color: formRole === 'superadmin' ? 'var(--dash-danger)' : 'var(--dash-text-muted)', fontWeight: 600, display: 'flex', alignItems: 'flex-start', gap: '0.4rem' }}>
-                        {formRole === 'superadmin'
-                          ? <><AlertTriangle size={12} style={{ flexShrink: 0, marginTop: '1px' }} /> Super Admin memiliki akses penuh ke semua fitur sistem.</>
-                          : <><Shield size={12} style={{ flexShrink: 0, marginTop: '1px' }} /> Atur izin akses spesifik di kolom sebelah kanan.</>}
+                      <div style={{ marginTop: '0.5rem', padding: '0.6rem 0.75rem', background: 'var(--dash-bg)', border: '1px solid var(--dash-border)', borderRadius: '8px', fontSize: '0.72rem', color: 'var(--dash-text-muted)', fontWeight: 600, display: 'flex', alignItems: 'flex-start', gap: '0.4rem' }}>
+                        <Shield size={12} style={{ flexShrink: 0, marginTop: '1px' }} /> Atur halaman yang dapat diakses pengguna di kolom sebelah kanan.
                       </div>
                     </div>
                   </div>
@@ -382,36 +380,33 @@ export default function PenggunaPage() {
                       <span style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--dash-text)', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Izin Akses Modul</span>
                     </div>
 
-                    {/* Matrix header */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1.6fr repeat(4, 1fr)', gap: '0.5rem', paddingBottom: '0.3rem' }}>
-                      <span style={{ fontSize: '0.62rem', color: 'var(--dash-text-muted)', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Modul</span>
-                      {['Akses', 'Buat', 'Edit', 'Hapus'].map(h => (
-                        <span key={h} style={{ fontSize: '0.62rem', color: 'var(--dash-text-muted)', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.06em', textAlign: 'center' as const }}>{h}</span>
-                      ))}
-                    </div>
-
-                    <div style={S.permMatrix}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                       {SIMAD_MENUS.map(menu => {
                         const p = formPerms[menu.key];
+                        const isOn = p.access;
                         return (
-                          <div key={menu.key} style={S.permRow}>
-                            <button onClick={() => toggleMenuAccess(menu.key)} style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left' as const, padding: 0, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                              <span style={{ fontSize: '0.82rem' }}>{menu.icon}</span>
-                              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: p.access ? 'var(--dash-text)' : 'var(--dash-text-muted)', transition: 'color 0.15s' }}>{menu.label}</span>
-                            </button>
-                            {(['access', 'create', 'edit', 'delete'] as const).map(action => (
-                              <div key={action} style={{ display: 'flex', justifyContent: 'center' }}>
-                                <button onClick={() => togglePerm(menu.key, action)} style={S.permToggle(p[action])}>
-                                  {p[action] && <Check size={11} style={{ color: '#fff', strokeWidth: 3 }} />}
-                                </button>
-                              </div>
-                            ))}
-                          </div>
+                          <button
+                            key={menu.key}
+                            onClick={() => setFormPerms(prev => ({ ...prev, [menu.key]: { ...prev[menu.key], access: !isOn } }))}
+                            style={{
+                              display: 'flex', alignItems: 'center', gap: '0.75rem',
+                              padding: '0.7rem 0.9rem', borderRadius: '10px', cursor: 'pointer',
+                              border: `1.5px solid ${isOn ? 'var(--dash-primary)' : 'var(--dash-border)'}`,
+                              background: isOn ? 'var(--dash-primary-bg)' : 'var(--dash-bg)',
+                              transition: 'all 0.15s', textAlign: 'left' as const,
+                            }}
+                          >
+                            <div style={{ width: '22px', height: '22px', borderRadius: '6px', background: isOn ? 'var(--dash-primary)' : 'var(--dash-surface-hover)', border: `1.5px solid ${isOn ? 'var(--dash-primary)' : 'var(--dash-border-2)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.15s' }}>
+                              {isOn && <Check size={11} style={{ color: '#fff', strokeWidth: 3 }} />}
+                            </div>
+                            <span style={{ fontSize: '0.8rem' }}>{menu.icon}</span>
+                            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: isOn ? 'var(--dash-text)' : 'var(--dash-text-muted)', transition: 'color 0.15s' }}>{menu.label}</span>
+                          </button>
                         );
                       })}
                     </div>
 
-                    <p style={{ margin: 0, fontSize: '0.67rem', color: 'var(--dash-text-muted)', fontWeight: 600 }}>Klik nama modul untuk toggle semua izin sekaligus.</p>
+                    <p style={{ margin: 0, fontSize: '0.67rem', color: 'var(--dash-text-muted)', fontWeight: 600 }}>Centang halaman yang dapat diakses pengguna ini.</p>
                   </div>
                 </div>
               </div>

@@ -10,6 +10,7 @@ export interface User {
   username: string;
   password?: string;
   name: string;
+  email?: string;
   role: string; // "superadmin", "admin_dinas", "admin_post"
   permissions?: string; // JSON serialized UserPermissions
 }
@@ -304,9 +305,10 @@ class JsonDbEngine {
   private seedInitialData() {
     // 1. Seed Users (with mock roles)
     const seedUsers: User[] = [
-      { id: "usr_superadmin", username: "superadmin", password: "password123", name: "Super Admin Dinas", role: "superadmin" },
-      { id: "usr_admindinas", username: "admindinas", password: "password123", name: "Admin Bidang Dinas", role: "admin_dinas" },
-      { id: "usr_adminpost", username: "adminpost", password: "password123", name: "Editor Berita Dinas", role: "admin_post" }
+      { id: "usr_superadmin", username: "superadmin", password: "Simad@2025!", name: "Super Admin", email: "superadmin@disparpora.lampungtimurkab.go.id", role: "superadmin" },
+      { id: "usr_dicky", username: "dicky", password: "Dicky@2025!", name: "Dicky Hadinata", email: "dickyhadinata57@gmail.com", role: "admin_dinas" },
+      { id: "usr_admindinas", username: "admindinas", password: "Dinas@2025!", name: "Admin Bidang Dinas", email: "admindinas@disparpora.lampungtimurkab.go.id", role: "admin_dinas" },
+      { id: "usr_adminpost", username: "adminpost", password: "Post@2025!", name: "Editor Konten", email: "adminpost@disparpora.lampungtimurkab.go.id", role: "admin_post" }
     ];
 
     // 2. Seed Destinations (Load parsed destinations from tourism.json)
@@ -734,9 +736,10 @@ class JsonDbEngine {
   // USERS
   public users = {
     findMany: async () => this.data.users,
-    findUnique: async ({ where }: { where: { username?: string; id?: string } }) => {
-      if (where.username) return this.data.users.find(u => u.username === where.username);
-      if (where.id) return this.data.users.find(u => u.id === where.id);
+    findUnique: async ({ where }: { where: { username?: string; id?: string; email?: string } }) => {
+      if (where.email) return this.data.users.find(u => u.email === where.email) ?? null;
+      if (where.username) return this.data.users.find(u => u.username === where.username) ?? null;
+      if (where.id) return this.data.users.find(u => u.id === where.id) ?? null;
       return null;
     },
     create: async ({ data }: { data: Omit<User, "id"> }) => {

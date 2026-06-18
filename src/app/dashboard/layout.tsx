@@ -13,101 +13,178 @@ import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
 import { ToastProvider } from "@/contexts/ToastContext";
 import ToastStack from "@/components/admin/ToastStack";
 
-/* ─── Clean Login Screen ─── */
+/* ─── Split Login Screen ─── */
 function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [quickLoading, setQuickLoading] = useState("");
 
-  const doLogin = async (u: string, p: string) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setError("");
+    setLoading(true);
     try {
       const res = await fetch("/api/login", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: u, password: p })
+        body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Login gagal");
       localStorage.setItem("admin_session", JSON.stringify(data));
       onLogin(data);
-    } catch (err: any) { setError(err.message); }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); setLoading(true);
-    await doLogin(username, password);
-    setLoading(false);
-  };
-
-  const quickLogin = async (role: string) => {
-    const creds: Record<string, [string,string]> = {
-      superadmin:  ["superadmin",  "password123"],
-      admin_dinas: ["admindinas",  "password123"],
-      admin_post:  ["adminpost",   "password123"],
-    };
-    setQuickLoading(role);
-    await doLogin(...creds[role]);
-    setQuickLoading("");
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div style={{
-      minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center",
-      backgroundColor: "var(--dash-bg)", padding: "24px", fontFamily: "var(--font-main)"
-    }}>
-      <div style={{ width: "100%", maxWidth: "380px" }}>
-        {/* Brand */}
-        <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "52px", height: "52px", borderRadius: "15px", background: "linear-gradient(135deg, var(--dash-primary), var(--dash-success))", marginBottom: "16px", boxShadow: "0 12px 26px -12px var(--dash-primary)" }}>
-            <img src="/logo.avif" alt="Logo" style={{ width: "30px", height: "30px", objectFit: "contain" }} />
+    <div className="login-shell" style={{ minHeight: "100vh", display: "flex", fontFamily: "var(--font-main)" }}>
+
+      {/* ── LEFT: Branding panel ── */}
+      <div className="login-brand-panel" style={{
+        flex: "1 1 55%", position: "relative", overflow: "hidden",
+        backgroundImage: "linear-gradient(160deg, rgba(5,46,35,0.97) 0%, rgba(6,78,59,0.85) 50%, rgba(5,46,35,0.75) 100%), url('/Gallery/hero1.avif')",
+        backgroundSize: "cover", backgroundPosition: "center",
+        display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "40px",
+      }}>
+        {/* Dot grid overlay */}
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+
+        {/* Top logo */}
+        <div style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", gap: "12px" }}>
+          <div style={{ width: "44px", height: "44px", borderRadius: "13px", background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(8px)" }}>
+            <img src="/logo.avif" alt="Logo" style={{ width: "26px", height: "26px", objectFit: "contain" }} />
           </div>
-          <h1 style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--dash-text)", margin: 0, letterSpacing: "-0.02em" }}>DISPARPORA Lampung Timur</h1>
-          <p style={{ color: "var(--dash-text-muted)", fontSize: "0.85rem", marginTop: "4px" }}>
-            Masuk ke Panel Admin
-          </p>
+          <div>
+            <div style={{ fontSize: "0.82rem", fontWeight: 800, color: "white", letterSpacing: "0.02em" }}>DISPARPORA</div>
+            <div style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.6)", fontWeight: 600 }}>Lampung Timur</div>
+          </div>
         </div>
 
-        {/* Form */}
-        <div style={{ backgroundColor: "var(--dash-card)", border: "1px solid var(--dash-border)", borderRadius: "18px", padding: "24px" }}>
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <div>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Username</label>
-              <input className="dash-input" type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Masukkan username" required autoComplete="username" />
+        {/* Bottom content */}
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(190,242,106,0.15)", border: "1px solid rgba(190,242,106,0.35)", borderRadius: "99px", padding: "5px 14px", marginBottom: "20px" }}>
+            <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#BEF26A", display: "inline-block" }} />
+            <span style={{ color: "#BEF26A", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.08em" }}>SISTEM INFORMASI MANAJEMEN</span>
+          </div>
+          <h1 style={{ fontSize: "clamp(1.8rem, 3vw, 2.6rem)", fontWeight: 900, color: "white", lineHeight: 1.15, margin: "0 0 1rem", letterSpacing: "-0.02em" }}>
+            Panel Admin<br />DISPARPORA
+          </h1>
+          <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.9rem", lineHeight: 1.7, margin: "0 0 2rem", maxWidth: "400px" }}>
+            Kelola destinasi wisata, berita, galeri, dan program kerja Dinas Pariwisata, Pemuda, dan Olahraga Kabupaten Lampung Timur.
+          </p>
+          <div style={{ display: "flex", gap: "1.5rem" }}>
+            {[["71+", "Destinasi"], ["500+", "Pelaku Ekraf"], ["2.000+", "Pemuda"]].map(([v, l]) => (
+              <div key={l}>
+                <div style={{ fontSize: "1.25rem", fontWeight: 900, color: "white" }}>{v}</div>
+                <div style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.55)", fontWeight: 600 }}>{l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── RIGHT: Login form panel ── */}
+      <div className="login-form-panel" style={{
+        flex: "0 0 420px", display: "flex", flexDirection: "column", justifyContent: "center",
+        alignItems: "center", padding: "48px 40px",
+        background: "var(--dash-bg)", borderLeft: "1px solid var(--dash-border)",
+      }}>
+        <div style={{ width: "100%", maxWidth: "340px" }}>
+
+          {/* Logo mobile (hidden on desktop) */}
+          <div className="login-mobile-logo" style={{ display: "none", alignItems: "center", gap: "10px", marginBottom: "28px" }}>
+            <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: "linear-gradient(135deg, #0E9F4F, #065f46)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <img src="/logo.avif" alt="Logo" style={{ width: "22px", height: "22px", objectFit: "contain" }} />
             </div>
             <div>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>Password</label>
-              <input className="dash-input" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" required autoComplete="current-password" />
+              <div style={{ fontSize: "0.85rem", fontWeight: 800, color: "var(--dash-text)" }}>DISPARPORA</div>
+              <div style={{ fontSize: "0.68rem", color: "var(--dash-text-muted)" }}>Lampung Timur</div>
             </div>
+          </div>
+
+          <h2 style={{ fontSize: "1.5rem", fontWeight: 900, color: "var(--dash-text)", margin: "0 0 6px", letterSpacing: "-0.02em" }}>Masuk ke Akun</h2>
+          <p style={{ color: "var(--dash-text-muted)", fontSize: "0.85rem", margin: "0 0 32px" }}>
+            Masukkan kredensial Anda untuk mengakses panel admin.
+          </p>
+
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+            <div>
+              <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, color: "var(--dash-text-soft)", marginBottom: "7px", letterSpacing: "0.02em" }}>EMAIL</label>
+              <input
+                className="dash-input"
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="email@domain.com"
+                required
+                autoComplete="email"
+                style={{ fontSize: "0.9rem" }}
+              />
+            </div>
+            <div>
+              <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, color: "var(--dash-text-soft)", marginBottom: "7px", letterSpacing: "0.02em" }}>PASSWORD</label>
+              <div style={{ position: "relative" }}>
+                <input
+                  className="dash-input"
+                  type={showPw ? "text" : "password"}
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  autoComplete="current-password"
+                  style={{ fontSize: "0.9rem", paddingRight: "44px" }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPw(v => !v)}
+                  style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "var(--dash-text-muted)", padding: "4px", display: "flex" }}
+                >
+                  {showPw ? <X size={16} /> : <User size={16} />}
+                </button>
+              </div>
+            </div>
+
             {error && (
-              <div style={{ padding: "8px 12px", borderRadius: "8px", backgroundColor: "var(--dash-danger-bg)", fontSize: "0.8rem", color: "var(--dash-danger)", fontWeight: 500 }}>
-                {error}
+              <div style={{ padding: "10px 14px", borderRadius: "10px", background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", fontSize: "0.82rem", color: "var(--dash-danger)", fontWeight: 600, display: "flex", alignItems: "center", gap: "8px" }}>
+                <span>⚠</span> {error}
               </div>
             )}
-            <button type="submit" disabled={loading} className="dash-btn" style={{ padding: "11px", width: "100%", fontSize: "0.875rem", borderRadius: "11px" }}>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="dash-btn"
+              style={{ padding: "13px", width: "100%", fontSize: "0.9rem", borderRadius: "12px", fontWeight: 700, marginTop: "4px" }}
+            >
               {loading ? "Memproses..." : "Masuk"}
             </button>
           </form>
 
-          <div style={{ borderTop: "1px solid var(--dash-border)", marginTop: "20px", paddingTop: "16px" }}>
-            <p style={{ fontSize: "0.7rem", fontWeight: 600, color: "var(--dash-text-muted)", textAlign: "center", marginBottom: "10px" }}>
-              Quick Access (Dev)
-            </p>
-            <div style={{ display: "flex", gap: "8px" }}>
-              {[["superadmin","Super"],["admin_dinas","Dinas"],["admin_post","Post"]].map(([r, l]) => (
-                <button key={r} onClick={() => quickLogin(r)} disabled={!!quickLoading} className="dash-btn dash-btn-secondary" style={{ flex: 1, fontSize: "0.75rem", padding: "7px", borderRadius: "10px" }}>
-                  {quickLoading === r ? "..." : l}
-                </button>
-              ))}
-            </div>
+          <div style={{ marginTop: "32px", paddingTop: "24px", borderTop: "1px solid var(--dash-border)", textAlign: "center" }}>
+            <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "0.82rem", color: "var(--dash-text-muted)", textDecoration: "none", fontWeight: 600 }}>
+              <ArrowLeft size={14} /> Kembali ke Portal
+            </Link>
           </div>
         </div>
-
-        <Link href="/" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", marginTop: "24px", fontSize: "0.8rem", color: "var(--dash-text-muted)", textDecoration: "none" }}>
-          <ArrowLeft size={14} /> Kembali ke Portal
-        </Link>
       </div>
+
+      <style jsx global>{`
+        @media (max-width: 768px) {
+          .login-brand-panel { display: none !important; }
+          .login-form-panel { flex: 1 1 100% !important; border-left: none !important; padding: 32px 24px !important; }
+          .login-mobile-logo { display: flex !important; }
+        }
+        .login-shell input[type="text"],
+        .login-shell input[type="password"] {
+          width: 100%;
+          box-sizing: border-box;
+        }
+      `}</style>
     </div>
   );
 }
@@ -133,6 +210,7 @@ const NAV = [
   ]},
   { section: "SISTEM", items: [
     { href: "/dashboard/pengguna",  label: "Manajemen Akun",     icon: Users,           roles: ["superadmin"] },
+    { href: "/dashboard/profil",    label: "Profil Saya",        icon: User,            roles: ["superadmin","admin_dinas","admin_post"] },
   ]},
 ];
 
@@ -149,6 +227,7 @@ const CRUMBS: Record<string, string> = {
   "/dashboard/konten/partner":           "Partner Kami",
   "/dashboard/wisatawan":                "Pertumbuhan Wisatawan",
   "/dashboard/pengguna":                 "Manajemen Akun",
+  "/dashboard/profil":                   "Profil Saya",
 };
 
 /* ─── Main Shell Component ─── */
@@ -314,8 +393,8 @@ function DashboardShell({ children }: { children: ReactNode }) {
                 </div>
               </div>
               <div style={{ borderTop: "1px solid var(--dash-border)", margin: "0 2px 6px" }} />
-              <Link href="/profil" onClick={() => setProfileOpen(false)} className="dash-menu-item" style={{ display: "flex", alignItems: "center", gap: "10px", width: "100%", padding: "9px 10px", borderRadius: "10px", textDecoration: "none", color: "var(--dash-text)", fontWeight: 600, fontSize: "0.84rem" }}>
-                <User size={15} style={{ color: "var(--dash-text-muted)" }} /> Lihat Profil
+              <Link href="/dashboard/profil" onClick={() => setProfileOpen(false)} className="dash-menu-item" style={{ display: "flex", alignItems: "center", gap: "10px", width: "100%", padding: "9px 10px", borderRadius: "10px", textDecoration: "none", color: "var(--dash-text)", fontWeight: 600, fontSize: "0.84rem" }}>
+                <User size={15} style={{ color: "var(--dash-text-muted)" }} /> Profil Saya
               </Link>
               <button onClick={() => { setProfileOpen(false); handleLogout(); }} className="dash-menu-item" style={{ display: "flex", alignItems: "center", gap: "10px", width: "100%", padding: "9px 10px", borderRadius: "10px", border: "none", background: "transparent", color: "var(--dash-danger)", fontWeight: 600, fontSize: "0.84rem", cursor: "pointer" }}>
                 <LogOut size={15} /> Keluar

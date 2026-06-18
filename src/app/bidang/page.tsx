@@ -171,9 +171,12 @@ export default function BidangPage() {
           .bidang-page-card {
             grid-template-columns: auto 1fr !important;
             grid-template-rows: auto auto !important;
+            padding: 1.25rem !important;
+            gap: 1rem !important;
           }
           .bidang-page-card > a {
             grid-column: 1 / -1 !important;
+            justify-content: center !important;
           }
         }
       `}</style>

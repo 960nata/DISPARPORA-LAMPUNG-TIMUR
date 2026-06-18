@@ -3,23 +3,34 @@
     {
       "id": "usr_superadmin",
       "username": "superadmin",
-      "password": "password123",
-      "name": "Super Admin Dinas",
-      "role": "superadmin"
+      "password": "Simad@2025!",
+      "name": "Super Admin",
+      "role": "superadmin",
+      "email": "superadmin@disparpora.lampungtimurkab.go.id"
+    },
+    {
+      "id": "usr_dicky",
+      "username": "dicky",
+      "password": "Dicky@2025!",
+      "name": "Dicky Hadinata",
+      "role": "admin_dinas",
+      "email": "dickyhadinata57@gmail.com"
     },
     {
       "id": "usr_admindinas",
       "username": "admindinas",
-      "password": "password123",
+      "password": "Dinas@2025!",
       "name": "Admin Bidang Dinas",
-      "role": "admin_dinas"
+      "role": "admin_dinas",
+      "email": "admindinas@disparpora.lampungtimurkab.go.id"
     },
     {
       "id": "usr_adminpost",
       "username": "adminpost",
-      "password": "password123",
-      "name": "Editor Berita Dinas",
-      "role": "admin_post"
+      "password": "Post@2025!",
+      "name": "Editor Konten",
+      "role": "admin_post",
+      "email": "adminpost@disparpora.lampungtimurkab.go.id"
     }
   ],
   "destinations": [

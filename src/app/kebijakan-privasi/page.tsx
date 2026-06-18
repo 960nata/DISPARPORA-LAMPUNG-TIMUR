@@ -74,6 +74,14 @@ export default function KebijakanPrivasiPage() {
 
   return (
     <div style={{ paddingBottom: "6rem" }}>
+      <style jsx global>{`
+        @media (max-width: 480px) {
+          .kebijakan-intro-box { padding: 1.25rem !important; gap: 0.75rem !important; }
+          .kebijakan-intro-box > svg { width: 28px !important; height: 28px !important; }
+          .accordion-body-content { padding-left: 1.25rem !important; }
+          .kebijakan-cta-box { padding: 1.25rem !important; }
+        }
+      `}</style>
 
       {/* HERO */}
       <section className="page-hero-wrap" style={{ width: "100%", padding: "14px", boxSizing: "border-box", marginBottom: "3.5rem" }}>
@@ -108,7 +116,7 @@ export default function KebijakanPrivasiPage() {
       <div className="container" style={{ padding: "0 1.5rem" }}>
 
         {/* Intro */}
-        <motion.div {...fadeUp(0)} style={{
+        <motion.div {...fadeUp(0)} className="kebijakan-intro-box" style={{
           background: "linear-gradient(120deg, #0C3B26, #0F5132)",
           borderRadius: "20px", padding: "2rem 2.5rem", marginBottom: "2.5rem",
           display: "flex", gap: "1.5rem", alignItems: "flex-start",
@@ -196,7 +204,7 @@ export default function KebijakanPrivasiPage() {
                     transition: "max-height 0.35s ease, opacity 0.3s ease",
                   }}
                 >
-                  <div style={{ padding: "0 1.75rem 1.5rem 1.75rem", paddingLeft: "calc(1.75rem + 42px + 0.75rem)" }}>
+                  <div className="accordion-body-content" style={{ padding: "0 1.75rem 1.5rem 1.75rem", paddingLeft: "calc(1.75rem + 42px + 0.75rem)" }}>
                     <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                       {sec.content.map((item, j) => (
                         <li key={j} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start", fontSize: "0.9rem", color: "#475569", lineHeight: 1.65 }}>
