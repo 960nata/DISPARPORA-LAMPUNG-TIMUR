@@ -30,11 +30,16 @@ const SIMAD_ROLES = [
 ];
 
 const SIMAD_MENUS = [
-  { key: 'dashboard', label: 'Dashboard', icon: '⬟' },
-  { key: 'destinasi', label: 'Destinasi Wisata', icon: '🗺' },
-  { key: 'berita', label: 'Berita & Artikel', icon: '📰' },
-  { key: 'galeri', label: 'Galeri Foto', icon: '🖼' },
-  { key: 'pengguna', label: 'Manajemen Akun', icon: '👥' },
+  { key: 'dashboard',   label: 'Dashboard',              icon: '📊' },
+  { key: 'destinasi',   label: 'Destinasi Wisata',       icon: '🗺️' },
+  { key: 'berita',      label: 'Berita & Artikel',       icon: '📰' },
+  { key: 'galeri',      label: 'Galeri Foto',            icon: '🖼️' },
+  { key: 'organisasi',  label: 'Struktur Organisasi',    icon: '🏛️' },
+  { key: 'sambutan',    label: 'Sambutan Kepala Dinas',  icon: '🎙️' },
+  { key: 'agenda',      label: 'Agenda & Event',         icon: '📅' },
+  { key: 'partner',     label: 'Partner Kami',           icon: '🤝' },
+  { key: 'wisatawan',   label: 'Pertumbuhan Wisatawan',  icon: '📈' },
+  { key: 'pengguna',    label: 'Manajemen Akun',         icon: '👥' },
 ];
 
 const DEFAULT_PERMISSIONS = (): UserPermissions =>
@@ -272,7 +277,7 @@ export default function PenggunaPage() {
                   {filteredUsers.map((u, idx) => {
                     const rm = ROLE_META[u.role] || { label: u.role, color: 'var(--dash-text-soft)' };
                     const perms = parsePermissions(u.permissions);
-                    const accessCount = Object.values(perms).filter(p => p.access).length;
+                    const accessCount = Object.values(perms).filter(p => p?.access).length;
                     const isSelf = u.id === currentUser.id;
                     return (
                       <motion.tr key={u.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ delay: idx * 0.04 }}
@@ -382,7 +387,7 @@ export default function PenggunaPage() {
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                       {SIMAD_MENUS.map(menu => {
-                        const p = formPerms[menu.key];
+                        const p = formPerms[menu.key] ?? { access: false, create: false, edit: false, delete: false };
                         const isOn = p.access;
                         return (
                           <button
