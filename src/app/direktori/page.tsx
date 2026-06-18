@@ -83,7 +83,7 @@ function DirectoryContent() {
   ];
 
   return (
-    <div style={{ paddingBottom: "5rem" }}>
+    <div className="direktori-page" style={{ paddingBottom: "5rem" }}>
       <style>{`
         .dir-see-more:hover { background: #f1f5f9 !important; transform: scale(0.98); }
         .dir-see-more:hover > div { transform: translateX(2px); }

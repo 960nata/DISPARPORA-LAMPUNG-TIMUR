@@ -1118,6 +1118,10 @@ a {
 @media (max-width: 768px) {
   .peta-list-header { display: none !important; }
   .peta-sidebar-list { display: none !important; }
+  .direktori-page .container {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
 }
 
 @media (max-width: 480px) {
