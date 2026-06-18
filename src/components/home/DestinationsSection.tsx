@@ -161,6 +161,7 @@ export default function DestinationsSection() {
           style={{ width: peekWidth, margin: "0 auto", overflow: "visible" }}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
+        >
           <div style={{
             display: "flex", gap: "1.5rem",
             transition: isTransitioning ? "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)" : "none",
