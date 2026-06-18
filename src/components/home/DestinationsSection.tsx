@@ -134,7 +134,7 @@ export default function DestinationsSection() {
   }, [isTransitioning]);
 
   return (
-    <section id="destinasi" style={{ padding: "5rem 0", backgroundColor: "white", overflow: "hidden" }}>
+    <section id="destinasi" style={{ padding: "5rem 0", backgroundColor: "white" }}>
       <style>{`
         .dest-see-btn:hover { background: #1e293b !important; }
         .dest-heart-btn:hover { background: rgba(255,255,255,1) !important; transform: scale(1.1); }
@@ -156,7 +156,7 @@ export default function DestinationsSection() {
         </div>
       </div>
 
-      <div className="dest-carousel-wrap" style={{ width: "100%", overflowX: "hidden", overflowY: "visible", padding: "1rem 0", position: "relative" }}>
+      <div className="dest-carousel-wrap" style={{ width: "100%", overflowX: "clip", padding: "1.5rem 0", position: "relative" }}>
         <div
           style={{ width: peekWidth, margin: "0 auto", overflow: "visible" }}
           onTouchStart={handleTouchStart}
