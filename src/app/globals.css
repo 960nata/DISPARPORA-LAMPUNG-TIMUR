@@ -1085,9 +1085,9 @@ a {
     line-height: 1.55 !important;
   }
 
-  /* Hero: no padding, no radius, flush to header on mobile */
+  /* Hero: 14px side padding, no top/bottom, flush to header on mobile */
   .page-hero-wrap {
-    padding: 0 !important;
+    padding: 0 14px !important;
     margin-top: 0 !important;
   }
   .page-hero-wrap .page-hero-inner,
