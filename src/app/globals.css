@@ -1084,6 +1084,15 @@ a {
     font-size: 0.82rem !important;
     line-height: 1.55 !important;
   }
+
+  /* Hero: no padding, no radius, flush to header on mobile */
+  .page-hero-wrap {
+    padding: 0 !important;
+    margin-top: 0 !important;
+  }
+  .page-hero-wrap .page-hero-inner {
+    border-radius: 0 !important;
+  }
 }
 
 @media (max-width: 480px) {

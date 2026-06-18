@@ -161,7 +161,7 @@ export default function NewsPage() {
   return (
     <div style={{ paddingBottom: "5rem" }}>
       {/* ══════════ HERO (PRESERVED) ══════════ */}
-      <section style={{ width: "100%", padding: "14px", boxSizing: "border-box", marginBottom: "3rem" }}>
+      <section className="page-hero-wrap" style={{ width: "100%", padding: "14px", boxSizing: "border-box", marginBottom: "3rem" }}>
         <div
           className="page-hero-inner"
           style={{

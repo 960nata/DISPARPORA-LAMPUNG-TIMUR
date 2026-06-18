@@ -90,7 +90,7 @@ function DirectoryContent() {
         .dir-heart-btn:hover { background: rgba(255,255,255,1) !important; transform: scale(1.1); }
       `}</style>
       {/* ── HERO ── */}
-      <section style={{ width: "100%", padding: "14px", boxSizing: "border-box", marginBottom: "3rem" }}>
+      <section className="page-hero-wrap" style={{ width: "100%", padding: "14px", boxSizing: "border-box", marginBottom: "3rem" }}>
         <div className="page-hero-inner" style={{
           position: "relative",
           backgroundImage: "linear-gradient(to right, rgba(5, 46, 35, 0.95) 0%, rgba(6, 78, 59, 0.75) 55%, rgba(6, 78, 59, 0.2) 100%), url('/Gallery/hero1.avif')",
