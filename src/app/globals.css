@@ -1090,7 +1090,8 @@ a {
     padding: 0 !important;
     margin-top: 0 !important;
   }
-  .page-hero-wrap .page-hero-inner {
+  .page-hero-wrap .page-hero-inner,
+  .page-hero-wrap > div {
     border-radius: 0 !important;
   }
 
