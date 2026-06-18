@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Star, MapPin, Heart, ChevronRight } from "lucide-react";
 
@@ -71,6 +71,8 @@ export default function DestinationsSection() {
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [isResetting, setIsResetting] = useState(false);
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -85,11 +87,27 @@ export default function DestinationsSection() {
       if (w < 600) setPeekWidth("calc(100% - 1.5rem)");
       else if (w < 1024) setPeekWidth("calc(100% - 7rem)");
       else setPeekWidth("calc(100% - 10rem)");
+
+      setIsMobile(w < 768);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const activeDot = ((currentIndex % N) + N) % N;
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(dx) < 40) return;
+    if (dx < 0) handleNext();
+    else handlePrev();
+  };
 
   const handlePrev = () => { if (!isResetting && isTransitioning) setCurrentIndex(p => p - 1); };
   const handleNext = () => { if (!isResetting && isTransitioning) setCurrentIndex(p => p + 1); };
@@ -139,15 +157,10 @@ export default function DestinationsSection() {
       </div>
 
       <div className="dest-carousel-wrap" style={{ width: "100%", overflow: "hidden", padding: "1rem 0", position: "relative" }}>
-        {/* Mobile arrows */}
-        <button className="dest-arrow-side dest-arrow-side-prev" onClick={handlePrev} aria-label="Sebelumnya">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-        </button>
-        <button className="dest-arrow-side dest-arrow-side-next" onClick={handleNext} aria-label="Berikutnya">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </button>
-
-        <div style={{ width: peekWidth, margin: "0 auto", overflow: "visible" }}>
+        <div
+          style={{ width: peekWidth, margin: "0 auto", overflow: "visible" }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           <div style={{
             display: "flex", gap: "1.5rem",
             transition: isTransitioning ? "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)" : "none",
@@ -304,6 +317,27 @@ export default function DestinationsSection() {
             })}
           </div>
         </div>
+      </div>
+
+      {/* Mobile dot indicators */}
+      <div className="dest-dots" style={{ display: "none", justifyContent: "center", gap: "7px", marginTop: "1.25rem" }}>
+        {defaultHighlights.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => { if (!isResetting) setCurrentIndex(N + i); }}
+            style={{
+              width: activeDot === i ? "22px" : "8px",
+              height: "8px",
+              borderRadius: "4px",
+              border: "none",
+              background: activeDot === i ? "#065f46" : "#cbd5e1",
+              padding: 0,
+              cursor: "pointer",
+              transition: "width 0.25s ease, background 0.25s ease",
+            }}
+            aria-label={`Slide ${i + 1}`}
+          />
+        ))}
       </div>
 
       <div className="container" style={{ marginTop: "2rem" }}>

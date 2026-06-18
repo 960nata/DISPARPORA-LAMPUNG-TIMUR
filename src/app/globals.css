@@ -1057,26 +1057,15 @@ a {
     display: none !important;
   }
 
-  /* Mobile side arrows: show & position on sides of carousel */
+  /* Mobile side arrows: hide on mobile (replaced by dots + swipe) */
   .dest-arrow-side {
-    display: flex !important;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255, 255, 255, 0.92);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: #065f46;
+    display: none !important;
   }
-  .dest-arrow-side-prev { left: 4px; }
-  .dest-arrow-side-next { right: 4px; }
+
+  /* Dot nav: only shown on mobile */
+  .dest-dots {
+    display: flex !important;
+  }
 
   /* Page hero (berita/direktori/kontak) — height & text on mobile */
   .page-hero-inner {
