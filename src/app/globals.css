@@ -1047,9 +1047,9 @@ a {
     justify-content: center !important;
   }
 
-  /* Destination cards a touch shorter on phones */
+  /* Destination cards height on phones */
   .dest-card {
-    min-height: 300px !important;
+    min-height: 340px !important;
   }
 
   /* Desktop bottom arrows: hide on mobile */
