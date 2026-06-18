@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Scale, FileText, Ban, Globe, RefreshCw, AlertTriangle, Mail } from "lucide-react";
+import { Scale, FileText, Ban, Globe, RefreshCw, AlertTriangle, Mail, ChevronDown } from "lucide-react";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
@@ -65,6 +66,12 @@ const sections = [
 ];
 
 export default function SyaratKetentuanPage() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  const toggle = (i: number) => {
+    setOpenIndex((prev) => (prev === i ? null : i));
+  };
+
   return (
     <div style={{ paddingBottom: "6rem" }}>
 
@@ -115,31 +122,94 @@ export default function SyaratKetentuanPage() {
           </div>
         </motion.div>
 
-        {/* Sections */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-          {sections.map((sec, i) => (
-            <motion.div key={i} {...fadeUp(i * 0.07)} style={{
-              background: "white", borderRadius: "20px",
-              border: "1px solid #e2e8f0",
-              boxShadow: "0 2px 12px -4px rgba(0,0,0,0.07)",
-              padding: "2rem 2.5rem",
-            }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.25rem" }}>
-                <div style={{ width: "42px", height: "42px", borderRadius: "12px", background: "linear-gradient(135deg, #0C3B26, #0F5132)", display: "flex", alignItems: "center", justifyContent: "center", color: "#BEF26A", flexShrink: 0 }}>
-                  {sec.icon}
+        {/* Accordion Sections */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+          {sections.map((sec, i) => {
+            const isOpen = openIndex === i;
+            return (
+              <motion.div
+                key={i}
+                {...fadeUp(i * 0.07)}
+                style={{
+                  background: "white",
+                  borderRadius: "16px",
+                  border: isOpen ? "1px solid #0E9F4F" : "1px solid #e2e8f0",
+                  boxShadow: isOpen
+                    ? "0 4px 20px -4px rgba(14,159,79,0.15)"
+                    : "0 2px 12px -4px rgba(0,0,0,0.07)",
+                  overflow: "hidden",
+                  transition: "border-color 0.25s, box-shadow 0.25s",
+                }}
+              >
+                {/* Header (always visible, clickable) */}
+                <button
+                  onClick={() => toggle(i)}
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.75rem",
+                    padding: "1.25rem 1.75rem",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    textAlign: "left",
+                  }}
+                >
+                  <div style={{
+                    width: "42px", height: "42px", borderRadius: "12px",
+                    background: isOpen
+                      ? "linear-gradient(135deg, #0C3B26, #0F5132)"
+                      : "linear-gradient(135deg, #1e293b, #334155)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    color: isOpen ? "#BEF26A" : "#94a3b8",
+                    flexShrink: 0,
+                    transition: "background 0.25s, color 0.25s",
+                  }}>
+                    {sec.icon}
+                  </div>
+                  <h3 style={{
+                    margin: 0, flex: 1,
+                    fontSize: "1.0rem", fontWeight: 800,
+                    color: isOpen ? "#0f172a" : "#334155",
+                    transition: "color 0.25s",
+                  }}>
+                    {sec.title}
+                  </h3>
+                  <ChevronDown
+                    size={20}
+                    style={{
+                      color: isOpen ? "#0E9F4F" : "#94a3b8",
+                      flexShrink: 0,
+                      transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                      transition: "transform 0.3s ease, color 0.25s",
+                    }}
+                  />
+                </button>
+
+                {/* Collapsible body */}
+                <div
+                  style={{
+                    maxHeight: isOpen ? "600px" : "0px",
+                    opacity: isOpen ? 1 : 0,
+                    overflow: "hidden",
+                    transition: "max-height 0.35s ease, opacity 0.3s ease",
+                  }}
+                >
+                  <div style={{ padding: "0 1.75rem 1.5rem 1.75rem", paddingLeft: "calc(1.75rem + 42px + 0.75rem)" }}>
+                    <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                      {sec.content.map((item, j) => (
+                        <li key={j} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start", fontSize: "0.9rem", color: "#475569", lineHeight: 1.65 }}>
+                          <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#0E9F4F", flexShrink: 0, marginTop: "0.55rem" }} />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-                <h3 style={{ margin: 0, fontSize: "1.05rem", fontWeight: 800, color: "#0f172a" }}>{sec.title}</h3>
-              </div>
-              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                {sec.content.map((item, j) => (
-                  <li key={j} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start", fontSize: "0.9rem", color: "#475569", lineHeight: 1.65 }}>
-                    <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#0E9F4F", flexShrink: 0, marginTop: "0.55rem" }} />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* Hukum yang berlaku */}

@@ -22,7 +22,7 @@ const bidangData: BidangCard[] = [
     description: "Menyelenggarakan pelayanan administratif, perencanaan program kerja, pengelolaan administrasi keuangan, kepegawaian, serta urusan rumah tangga dinas secara terpadu.",
     number: "01",
     image: "/bidang_sekretariat.png",
-    link: "/profil#sekretariat"
+    link: "/bidang/sekretariat"
   },
   {
     id: 2,
@@ -31,7 +31,7 @@ const bidangData: BidangCard[] = [
     description: "Membina dan mengembangkan potensi industri kreatif daerah, memfasilitasi sertifikasi pelaku usaha, serta mendorong pemasaran produk kreatif lokal Lampung Timur.",
     number: "02",
     image: "/bidang_ekraf.png",
-    link: "/profil#ekonomi-kreatif"
+    link: "/bidang/ekonomi-kreatif"
   },
   {
     id: 3,
@@ -40,7 +40,7 @@ const bidangData: BidangCard[] = [
     description: "Mengembangkan sarana prasarana destinasi wisata unggulan, meningkatkan kapasitas Pokdarwis, serta mempromosikan keindahan alam dan budaya daerah.",
     number: "03",
     image: "/bidang_pariwisata.png",
-    link: "/profil#pariwisata"
+    link: "/bidang/pariwisata"
   },
   {
     id: 4,
@@ -49,7 +49,7 @@ const bidangData: BidangCard[] = [
     description: "Meningkatkan prestasi olahraga daerah, memfasilitasi kompetisi atlet pemuda, serta memelihara sarana prasarana olahraga di Lampung Timur.",
     number: "04",
     image: "/bidang_olahraga.png",
-    link: "/profil#olahraga"
+    link: "/bidang/olahraga"
   },
   {
     id: 5,
@@ -58,7 +58,7 @@ const bidangData: BidangCard[] = [
     description: "Memberdayakan organisasi kepemudaan, menyelenggarakan pelatihan kepemimpinan dan kewirausahaan pemuda secara berkelanjutan.",
     number: "05",
     image: "/bidang_pemuda.png",
-    link: "/profil#pemuda"
+    link: "/bidang/pemuda"
   }
 ];
 

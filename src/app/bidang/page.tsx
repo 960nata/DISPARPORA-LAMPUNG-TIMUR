@@ -1,230 +1,182 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Briefcase, Sparkles, Palmtree, Award, Users, CheckCircle2 } from "lucide-react";
+import Link from "next/link";
+import { Briefcase, Sparkles, Compass, Award, Users, ChevronRight, ArrowRight } from "lucide-react";
 
-export default function BidangDinas() {
-  const bidangDetails = [
-    {
-      id: "sekretariat",
-      title: "Sekretariat",
-      icon: <Briefcase size={32} />,
-      color: "#3b82f6",
-      tagline: "Pusat Pelayanan Administrasi & Operasional Dinas",
-      tugas: [
-        "Pengelolaan administrasi surat-menyurat dan kearsipan dinas.",
-        "Penyusunan rencana kerja operasional, evaluasi, dan pelaporan kinerja tahunan.",
-        "Pengelolaan keuangan dinas, anggaran belanja, pertanggungjawaban anggaran, dan audit.",
-        "Pembinaan kepegawaian, disiplin kerja, mutasi, promosi, dan pengembangan karir staf.",
-        "Koordinasi hubungan masyarakat (humas) dan dokumentasi kegiatan kedinasan."
-      ],
-      program: [
-        "Penyusunan Rencana Strategis (Renstra) Dinas jangka panjang.",
-        "Program Digitalisasi Arsip & Persuratan Administrasi Kantor.",
-        "Peningkatan Kapasitas SDM Aparatur Pemerintah Daerah."
-      ]
-    },
-    {
-      id: "ekonomi-kreatif",
-      title: "Ekonomi Kreatif",
-      icon: <Sparkles size={32} />,
-      color: "#ec4899",
-      tagline: "Inovasi & Pemberdayaan Industri Kreatif Lokal",
-      tugas: [
-        "Identifikasi, pendataan, dan pemetaan potensi pelaku ekonomi kreatif di Lampung Timur.",
-        "Pembinaan dan fasilitas sertifikasi usaha industri kriya, fashion, kuliner, dan seni.",
-        "Penyelenggaraan pameran produk ekonomi kreatif tingkat kabupaten, provinsi, dan nasional.",
-        "Pelatihan kewirausahaan, manajemen produk, pemasaran digital, dan perlindungan hak cipta (HAKI).",
-        "Pembangunan inkubator bisnis kreatif dan kemitraan dengan jejaring e-commerce."
-      ],
-      program: [
-        "Festival UMKM Kreatif & Gelar Produk Unggulan Lampung Timur.",
-        "Pelatihan Digital Marketing dan E-Commerce untuk Pelaku Kriya & Kuliner.",
-        "Sertifikasi Halal & BPOM Terfasilitasi untuk Industri Rumahan."
-      ]
-    },
-    {
-      id: "pariwisata",
-      title: "Pariwisata",
-      icon: <Palmtree size={32} />,
-      color: "#10b981",
-      tagline: "Pengembangan Destinasi & Pemasaran Wisata Unggulan",
-      tugas: [
-        "Penyusunan rencana induk pengembangan pariwisata daerah (RIPPDA) Lampung Timur.",
-        "Pembangunan sarana prasarana penunjang pariwisata (amenitas, aksesibilitas, rambu wisata).",
-        "Promosi destinasi wisata unggulan melalui media cetak, digital, dan keikutsertaan expo.",
-        "Pembinaan Kelompok Sadar Wisata (Pokdarwis) di desa-desa wisata potensial.",
-        "Pengawasan standar kualitas pelayanan, sertifikasi pemandu wisata, keamanan wisata."
-      ],
-      program: [
-        "Pengembangan Desa Wisata Terpadu (Braja Harjosari, Wana, Labuhan Ratu VII).",
-        "Penyelenggaraan Calendar of Events (Festival Way Kambas, Festival Pantai Kerang Mas).",
-        "Pelatihan Sertifikasi Kompetensi Pramuwisata & Standardisasi Homestay."
-      ]
-    },
-    {
-      id: "olahraga",
-      title: "Olahraga",
-      icon: <Award size={32} />,
-      color: "#f59e0b",
-      tagline: "Pembinaan Atlet Prestasi & Peningkatan Kebugaran Masyarakat",
-      tugas: [
-        "Pembinaan cabang olahraga prestasi di bawah naungan KONI Lampung Timur.",
-        "Penyelenggaraan Pekan Olahraga Kabupaten (PORKAB) dan fasilitasi keikutsertaan PORPROV.",
-        "Pembibitan atlet usia dini berkolaborasi dengan lembaga pendidikan/sekolah olahraga.",
-        "Pengembangan olahraga rekreasi dan olahraga tradisional untuk kebugaran masyarakat luas.",
-        "Pengelolaan, pemeliharaan, serta pembangunan sarana infrastruktur olahraga daerah."
-      ],
-      program: [
-        "Pekan Olahraga Pelajar Kabupaten Lampung Timur.",
-        "Pembangunan & Rehabilitasi Lapangan Olahraga Desa Wisata.",
-        "Pembinaan Atlet Unggulan Daerah Menuju Event Nasional."
-      ]
-    },
-    {
-      id: "pemuda",
-      title: "Pemuda",
-      icon: <Users size={32} />,
-      color: "#8b5cf6",
-      tagline: "Kepemimpinan, Kewirausahaan, & Kemandirian Pemuda",
-      tugas: [
-        "Pemberdayaan organisasi kepemudaan (KNPI, Karang Taruna, Purna Paskibraka, Pramuka).",
-        "Pelatihan kepemimpinan tingkat dasar, madya, dan utama bagi aktivis pemuda.",
-        "Pengembangan wirausaha muda pemula (WMP) melalui bantuan modal simulasi dan pendampingan.",
-        "Pemberian penghargaan bagi pemuda pelopor di bidang pendidikan, teknologi, budaya, dan sosial.",
-        "Pencegahan bahaya kenakalan remaja, edukasi narkoba, serta pembinaan kreativitas pemuda."
-      ],
-      program: [
-        "Pendidikan Kilat Kepemimpinan Pemuda Kader Daerah.",
-        "Pemilihan Pemuda Pelopor Berprestasi Lampung Timur.",
-        "Karang Taruna Wirausaha Mandiri di Tingkat Kecamatan."
-      ]
-    }
-  ];
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 28 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-60px" },
+  transition: { duration: 0.55, delay },
+});
 
+const bidangList = [
+  {
+    id: "sekretariat",
+    title: "Sekretariat",
+    icon: Briefcase,
+    color: "#3b82f6",
+    bg: "rgba(59,130,246,0.08)",
+    tagline: "Pusat Pelayanan Administrasi & Operasional Dinas",
+    desc: "Mengelola administrasi, keuangan, kepegawaian, dan koordinasi operasional seluruh unit dinas secara transparan dan akuntabel.",
+    highlights: ["Manajemen Keuangan & Anggaran", "Pembinaan Kepegawaian ASN", "Digitalisasi Arsip Dinas"],
+  },
+  {
+    id: "ekonomi-kreatif",
+    title: "Ekonomi Kreatif",
+    icon: Sparkles,
+    color: "#ec4899",
+    bg: "rgba(236,72,153,0.08)",
+    tagline: "Inovasi & Pemberdayaan Industri Kreatif Lokal",
+    desc: "Memberdayakan pelaku ekraf lokal — dari kain tapis, kuliner, hingga konten digital — melalui pelatihan, pameran, dan fasilitasi sertifikasi.",
+    highlights: ["Festival UMKM & Gelar Produk", "Pelatihan Digital Marketing", "Sertifikasi Halal & BPOM"],
+  },
+  {
+    id: "pariwisata",
+    title: "Pariwisata",
+    icon: Compass,
+    color: "#10b981",
+    bg: "rgba(16,185,129,0.08)",
+    tagline: "Pengembangan Destinasi & Pemasaran Wisata Unggulan",
+    desc: "Mengembangkan dan mempromosikan 71+ destinasi wisata Lampung Timur — dari Way Kambas hingga pantai pesisir timur — menuju destinasi unggulan nasional.",
+    highlights: ["Pengembangan Desa Wisata", "Calendar of Events Tahunan", "Sertifikasi Pramuwisata"],
+  },
+  {
+    id: "olahraga",
+    title: "Keolahragaan",
+    icon: Award,
+    color: "#f59e0b",
+    bg: "rgba(245,158,11,0.08)",
+    tagline: "Pembinaan Atlet Prestasi & Peningkatan Kebugaran Masyarakat",
+    desc: "Melahirkan atlet berprestasi Lampung Timur melalui pembinaan sistematis, sekaligus menggerakkan budaya hidup sehat di seluruh lapisan masyarakat.",
+    highlights: ["Penyelenggaraan PORKAB", "Program PELATDA Atlet", "Rehab Sarana Olahraga"],
+  },
+  {
+    id: "pemuda",
+    title: "Kepemudaan",
+    icon: Users,
+    color: "#8b5cf6",
+    bg: "rgba(139,92,246,0.08)",
+    tagline: "Kepemimpinan, Kewirausahaan, & Kemandirian Pemuda",
+    desc: "Menumbuhkan generasi muda Lampung Timur yang berkarakter dan mandiri melalui pelatihan kepemimpinan, wirausaha, dan organisasi kepemudaan.",
+    highlights: ["Diklat Kepemimpinan Pemuda", "Pemuda Pelopor Berprestasi", "Karang Taruna Wirausaha"],
+  },
+];
+
+export default function BidangPage() {
   return (
-    <div style={{ padding: "3rem 0" }}>
-      {/* Page Header */}
-      <section className="container" style={{ textAlign: "center", marginBottom: "4rem" }}>
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <span className="badge badge-success" style={{ marginBottom: "1rem" }}>Struktur Organisasi</span>
-        </motion.div>
-        <motion.h2
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          style={{ fontSize: "2.5rem", fontWeight: 800, fontFamily: "var(--font-serif)" }}
-        >
-          Tugas Pokok & Fungsi Bidang
-        </motion.h2>
-        <div style={{ width: "80px", height: "4px", backgroundColor: "var(--primary)", margin: "1rem auto 1.5rem auto", borderRadius: "2px" }} />
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          style={{ maxWidth: "650px", margin: "0 auto" }}
-        >
-          Detail penjelasan tugas pokok, fungsi kerja, dan program prioritas dari masing-masing bidang di lingkungan Dinas Pariwisata, Pemuda, dan Olahraga Lampung Timur.
-        </motion.p>
-      </section>
+    <div style={{ paddingBottom: "6rem" }}>
 
-      {/* Bidang Content Section */}
-      <section className="container" style={{ display: "flex", flexDirection: "column", gap: "4rem" }}>
-        {bidangDetails.map((bidang, index) => {
-          const isEven = index % 2 === 0;
-          return (
-            <motion.div
-              key={bidang.id}
-              id={bidang.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6 }}
-              className="card"
-              style={{
-                display: "flex",
-                flexDirection: isEven ? "row" : "row-reverse",
-                flexWrap: "wrap",
-                gap: "3rem",
-                padding: "3rem",
-                scrollMarginTop: "100px",
-                alignItems: "flex-start"
-              }}
-            >
-              {/* Left Column - Icon & Title block */}
-              <div style={{ flex: "1 1 300px", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-                <div style={{
-                  backgroundColor: `${bidang.color}15`,
-                  color: bidang.color,
-                  width: "80px",
-                  height: "80px",
-                  borderRadius: "24px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}>
-                  {bidang.icon}
-                </div>
-                <div>
-                  <h3 style={{ fontSize: "1.8rem", fontWeight: 800 }}>Bidang {bidang.title}</h3>
-                  <p style={{ color: bidang.color, fontWeight: 700, fontSize: "0.95rem", marginTop: "0.25rem" }}>{bidang.tagline}</p>
-                </div>
-                <div style={{
-                  backgroundColor: "var(--bg-primary)",
-                  borderLeft: `4px solid ${bidang.color}`,
-                  padding: "1.25rem",
-                  borderRadius: "0 12px 12px 0",
-                  marginTop: "1rem"
-                }}>
-                  <h4 style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "0.5rem" }}>Program Kerja Prioritas:</h4>
-                  <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.5rem", padding: 0 }}>
-                    {bidang.program.map((prog, i) => (
-                      <li key={i} style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.85rem", color: "var(--text-secondary)" }}>
-                        <CheckCircle2 size={14} style={{ color: bidang.color, flexShrink: 0 }} />
-                        <span>{prog}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              {/* Right Column - Tasks block */}
-              <div style={{ flex: "2 1 400px", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-                <h4 style={{ fontSize: "1.1rem", fontWeight: 700, borderBottom: "2px solid var(--border)", paddingBottom: "0.5rem" }}>
-                  Tugas Pokok & Fungsi Utama (Tupoksi)
-                </h4>
-                <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "1rem" }}>
-                  {bidang.tugas.map((tugasItem, i) => (
-                    <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
-                      <span style={{
-                        backgroundColor: bidang.color,
-                        color: "white",
-                        width: "22px",
-                        height: "22px",
-                        borderRadius: "50%",
-                        fontSize: "0.75rem",
-                        fontWeight: 700,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                        marginTop: "3px"
-                      }}>
-                        {i + 1}
-                      </span>
-                      <p style={{ margin: 0, fontSize: "0.95rem", color: "var(--text-secondary)", lineHeight: "1.6" }}>{tugasItem}</p>
-                    </li>
-                  ))}
-                </ul>
+      {/* ── HERO ── */}
+      <section className="page-hero-wrap" style={{ width: "100%", padding: "14px", boxSizing: "border-box", marginBottom: "3.5rem" }}>
+        <div style={{
+          position: "relative",
+          backgroundImage: "linear-gradient(to right, rgba(5,46,35,0.95) 0%, rgba(6,78,59,0.75) 55%, rgba(6,78,59,0.2) 100%), url('/Gallery/hero1.avif')",
+          backgroundSize: "cover", backgroundPosition: "center",
+          minHeight: "380px", display: "flex", alignItems: "center",
+          borderRadius: "24px", overflow: "hidden",
+        }}>
+          <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+          <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "4rem", paddingBottom: "4rem" }}>
+            <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(190,242,106,0.15)", border: "1px solid rgba(190,242,106,0.3)", borderRadius: "99px", padding: "5px 14px", marginBottom: "1.25rem" }}>
+                <Briefcase size={13} style={{ color: "#BEF26A" }} />
+                <span style={{ color: "#BEF26A", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase" }}>Struktur Organisasi</span>
               </div>
             </motion.div>
-          );
-        })}
+            <motion.h1 initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 900, color: "white", lineHeight: 1.15, maxWidth: "620px", letterSpacing: "-0.02em", margin: "0 0 1rem" }}>
+              Bidang &amp; Layanan Dinas
+            </motion.h1>
+            <motion.p initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} style={{ fontSize: "clamp(0.88rem, 1.5vw, 1rem)", color: "#d1fae5", maxWidth: "560px", lineHeight: 1.8, margin: 0 }}>
+              DISPARPORA Lampung Timur menaungi lima bidang pelayanan masyarakat — mulai dari pengembangan pariwisata, pemberdayaan ekonomi kreatif, pembinaan kepemudaan, hingga prestasi keolahragaan.
+            </motion.p>
+          </div>
+        </div>
       </section>
+
+      <div className="container" style={{ padding: "0 1.5rem" }}>
+
+        {/* Counter row */}
+        <motion.div {...fadeUp(0)} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "1rem", marginBottom: "3rem" }}>
+          {[
+            { value: "5", label: "Bidang Teknis", sub: "Unit struktural aktif" },
+            { value: "71+", label: "Destinasi Wisata", sub: "Terdaftar & aktif" },
+            { value: "500+", label: "Pelaku Ekraf", sub: "Terbina aktif" },
+            { value: "2.000+", label: "Pemuda Terbina", sub: "Melalui berbagai program" },
+          ].map((s, i) => (
+            <div key={i} style={{ background: "white", borderRadius: "16px", border: "1px solid #e2e8f0", padding: "1.25rem", textAlign: "center", boxShadow: "0 2px 10px -4px rgba(0,0,0,0.07)" }}>
+              <div style={{ fontSize: "1.6rem", fontWeight: 900, color: "#0E9F4F" }}>{s.value}</div>
+              <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a", marginTop: "0.3rem" }}>{s.label}</div>
+              <div style={{ fontSize: "0.72rem", color: "#64748b", marginTop: "0.15rem" }}>{s.sub}</div>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Bidang Cards */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+          {bidangList.map((b, i) => {
+            const Icon = b.icon;
+            return (
+              <motion.div key={b.id} {...fadeUp(i * 0.08)} style={{
+                background: "white", borderRadius: "20px",
+                border: "1px solid #e2e8f0",
+                boxShadow: "0 2px 12px -4px rgba(0,0,0,0.07)",
+                padding: "2rem 2.5rem",
+                display: "grid",
+                gridTemplateColumns: "auto 1fr auto",
+                gap: "1.75rem",
+                alignItems: "center",
+              }} className="bidang-page-card">
+                {/* Icon */}
+                <div style={{ width: "64px", height: "64px", borderRadius: "18px", background: b.bg, display: "flex", alignItems: "center", justifyContent: "center", color: b.color, flexShrink: 0 }}>
+                  <Icon size={28} />
+                </div>
+
+                {/* Content */}
+                <div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.3rem" }}>
+                    <h3 style={{ margin: 0, fontSize: "1.15rem", fontWeight: 800, color: "#0f172a" }}>Bidang {b.title}</h3>
+                    <span style={{ fontSize: "0.68rem", fontWeight: 700, color: b.color, background: b.bg, padding: "2px 10px", borderRadius: "99px", border: `1px solid ${b.color}30` }}>{b.tagline.split(" ").slice(0, 3).join(" ")}</span>
+                  </div>
+                  <p style={{ margin: "0 0 0.85rem", fontSize: "0.88rem", color: "#475569", lineHeight: 1.65 }}>{b.desc}</p>
+                  <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                    {b.highlights.map((h, j) => (
+                      <span key={j} style={{ fontSize: "0.72rem", fontWeight: 600, color: "#475569", background: "#f1f5f9", borderRadius: "99px", padding: "3px 10px", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: "4px" }}>
+                        <ChevronRight size={10} style={{ color: b.color }} /> {h}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* CTA */}
+                <Link href={`/bidang/${b.id}`} style={{
+                  flexShrink: 0, padding: "0.65rem 1.25rem",
+                  borderRadius: "12px", background: b.color,
+                  color: "white", fontWeight: 700, fontSize: "0.85rem",
+                  textDecoration: "none", display: "flex", alignItems: "center",
+                  gap: "6px", whiteSpace: "nowrap",
+                  boxShadow: `0 8px 20px -8px ${b.color}80`,
+                }}>
+                  Selengkapnya <ArrowRight size={14} />
+                </Link>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+
+      <style jsx global>{`
+        @media (max-width: 640px) {
+          .bidang-page-card {
+            grid-template-columns: auto 1fr !important;
+            grid-template-rows: auto auto !important;
+          }
+          .bidang-page-card > a {
+            grid-column: 1 / -1 !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

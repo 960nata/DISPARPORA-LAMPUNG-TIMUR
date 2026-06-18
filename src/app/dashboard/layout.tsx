@@ -291,13 +291,13 @@ function DashboardShell({ children }: { children: ReactNode }) {
           </button>
 
           {/* Bell notification */}
-          <button onClick={() => setNotificationOpen(v => !v)} style={{ position: "relative", width: "40px", height: "40px", borderRadius: "10px", border: "1px solid var(--dash-border)", background: "var(--dash-surface-hover)", color: "var(--dash-text-soft)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }} title="Notifikasi">
+          <button onClick={() => { setNotificationOpen(v => !v); setProfileOpen(false); }} style={{ position: "relative", width: "40px", height: "40px", borderRadius: "10px", border: "1px solid var(--dash-border)", background: "var(--dash-surface-hover)", color: "var(--dash-text-soft)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }} title="Notifikasi">
             <Bell size={17} />
             <span style={{ position: "absolute", top: "7px", right: "8px", width: "7px", height: "7px", borderRadius: "50%", background: "var(--dash-danger)", border: "2px solid var(--dash-surface)" }} />
           </button>
 
           {/* Profile avatar — icon only */}
-          <button onClick={() => setProfileOpen(v => !v)} title={user.name} aria-haspopup="true" aria-expanded={profileOpen} style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, var(--dash-primary), var(--dash-success))", border: "none", color: "#fff", fontWeight: 800, fontSize: "0.85rem", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          <button onClick={() => { setProfileOpen(v => !v); setNotificationOpen(false); }} title={user.name} aria-haspopup="true" aria-expanded={profileOpen} style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, var(--dash-primary), var(--dash-success))", border: "none", color: "#fff", fontWeight: 800, fontSize: "0.85rem", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
             {user.name.charAt(0).toUpperCase()}
           </button>
 
