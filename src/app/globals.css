@@ -1115,6 +1115,10 @@ a {
   }
 }
 
+@media (max-width: 768px) {
+  .peta-list-header { display: none !important; }
+}
+
 @media (max-width: 480px) {
   .container {
     padding: 0 0.75rem;

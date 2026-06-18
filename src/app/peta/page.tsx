@@ -310,7 +310,7 @@ function MapPageContent() {
             ) : (
               // Standard Items List View
               <div style={{ display: "flex", flexDirection: "column" }}>
-                <div style={{ padding: "0.75rem 1.25rem", backgroundColor: "var(--bg-primary)", fontSize: "0.8rem", fontWeight: 700, color: "var(--text-secondary)", display: "flex", justifyContent: "space-between" }}>
+                <div className="peta-list-header" style={{ padding: "0.75rem 1.25rem", backgroundColor: "var(--bg-primary)", fontSize: "0.8rem", fontWeight: 700, color: "var(--text-secondary)", display: "flex", justifyContent: "space-between" }}>
                   <span>MENAMPILKAN DESTINASI</span>
                   <span>{displayItems.length} Lokasi</span>
                 </div>
