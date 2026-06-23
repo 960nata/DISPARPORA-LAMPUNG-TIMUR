@@ -224,7 +224,10 @@ export default function BidangDetailPage() {
           ))}
         </motion.div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }} className="bidang-detail-grid">
+        {/* Athlete Achievements Table - Keolahragaan only */}
+        {id === "olahraga" && <AthleteAchievements />}
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", marginTop: "2.5rem" }} className="bidang-detail-grid">
 
           {/* Tugas & Fungsi */}
           <motion.div {...fadeUp(0.1)} style={{ background: "white", borderRadius: "20px", border: "1px solid #e2e8f0", padding: "2rem", boxShadow: "0 2px 12px -4px rgba(0,0,0,0.07)" }}>
@@ -263,9 +266,6 @@ export default function BidangDetailPage() {
             ))}
           </motion.div>
         </div>
-
-        {/* Athlete Achievements Table - Keolahragaan only */}
-        {id === "olahraga" && <AthleteAchievements />}
 
         {/* CTA */}
         <motion.div {...fadeUp(0.2)} className="bidang-detail-cta" style={{ marginTop: "2.5rem", borderRadius: "20px", background: "linear-gradient(120deg, #0C3B26, #0F5132)", padding: "2rem 2.5rem", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1.5rem", flexWrap: "wrap" }}>
