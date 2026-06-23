@@ -114,3 +114,14 @@ model AppEvent {
 
   @@map("events")
 }
+
+model Athlete {
+  id    String @id @default(cuid())
+  nama  String
+  cabor String
+  juara String
+  event String
+
+  @@map("athletes")
+}
+

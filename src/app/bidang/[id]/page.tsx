@@ -7,6 +7,7 @@ import {
   CheckCircle2, Target, Zap, ArrowLeft, ChevronRight,
 } from "lucide-react";
 import Link from "next/link";
+import AthleteAchievements from "@/components/olahraga/AthleteAchievements";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
@@ -262,6 +263,9 @@ export default function BidangDetailPage() {
             ))}
           </motion.div>
         </div>
+
+        {/* Athlete Achievements Table - Keolahragaan only */}
+        {id === "olahraga" && <AthleteAchievements />}
 
         {/* CTA */}
         <motion.div {...fadeUp(0.2)} className="bidang-detail-cta" style={{ marginTop: "2.5rem", borderRadius: "20px", background: "linear-gradient(120deg, #0C3B26, #0F5132)", padding: "2rem 2.5rem", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1.5rem", flexWrap: "wrap" }}>

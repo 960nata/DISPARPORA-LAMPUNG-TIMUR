@@ -108,6 +108,14 @@ export interface VisitorStat {
   updatedAt: string;
 }
 
+export interface Athlete {
+  id: string;
+  nama: string;
+  cabor: string;
+  juara: string;
+  event: string;
+}
+
 interface JsonDatabaseSchema {
   users: User[];
   destinations: Destination[];
@@ -118,6 +126,7 @@ interface JsonDatabaseSchema {
   speeches: Speech[];
   events: AppEvent[];
   visitorStats: VisitorStat[];
+  athletes: Athlete[];
 }
 
 function seedOfficials(): Official[] {
@@ -218,6 +227,41 @@ function seedEvents(): AppEvent[] {
   ];
 }
 
+function seedAthletes(): Athlete[] {
+  return [
+    { id: "ath_1", nama: "Bagus Prasetyo", cabor: "Pencak Silat", juara: "Emas", event: "PORPROV Lampung 2024" },
+    { id: "ath_2", nama: "Siti Aminah", cabor: "Bulu Tangkis", juara: "Emas", event: "Kejuaraan Provinsi Lampung 2024" },
+    { id: "ath_3", nama: "Rian Hidayat", cabor: "Atletik", juara: "Perak", event: "PORPROV Lampung 2024" },
+    { id: "ath_4", nama: "Dewi Lestari", cabor: "Panahan", juara: "Emas", event: "Piala Gubernur Lampung 2024" },
+    { id: "ath_5", nama: "Ahmad Fauzi", cabor: "Karate", juara: "Perunggu", event: "Kejurnas Karate Piala Panglima TNI 2023" },
+    { id: "ath_6", nama: "Eka Saputra", cabor: "Taekwondo", juara: "Emas", event: "PORPROV Lampung 2024" },
+    { id: "ath_7", nama: "Mega Wijaya", cabor: "Catur", juara: "Emas", event: "Kejurnas Catur Junior 2023" },
+    { id: "ath_8", nama: "Diki Kurniawan", cabor: "Sepak Bola", juara: "Perak", event: "PORPROV Lampung 2024" },
+    { id: "ath_9", nama: "Rina Sulistia", cabor: "Atletik", juara: "Perunggu", event: "Kejurnas Atletik U-20 2023" },
+    { id: "ath_10", nama: "Taufik Hidayatullah", cabor: "Pencak Silat", juara: "Emas", event: "Pencak Silat Championship Jakarta 2024" },
+    { id: "ath_11", nama: "Andika Pratama", cabor: "Tenis Meja", juara: "Perak", event: "Pekan Olahraga Pelajar Daerah (POPDA) 2023" },
+    { id: "ath_12", nama: "Santi Rahayu", cabor: "Bulu Tangkis", juara: "Emas", event: "PORPROV Lampung 2024" },
+    { id: "ath_13", nama: "Doni Saputra", cabor: "Taekwondo", juara: "Perak", event: "Kejuaraan Nasional Taekwondo Bekasi Open 2024" },
+    { id: "ath_14", nama: "Yayan Ruhiyan", cabor: "Pencak Silat", juara: "Emas", event: "Kejuaraan Silat Nusantara 2024" },
+    { id: "ath_15", nama: "Indah Permata", cabor: "Panahan", juara: "Perunggu", event: "Surabaya Archery Open 2023" },
+    { id: "ath_16", nama: "Aris Munandar", cabor: "Atletik", juara: "Emas", event: "Lampung Half Marathon 2024" },
+    { id: "ath_17", nama: "Fitriani", cabor: "Bulu Tangkis", juara: "Perak", event: "BNI Sirkuit Nasional Lampung 2024" },
+    { id: "ath_18", nama: "Guntur Wibowo", cabor: "Tinju", juara: "Emas", event: "Kejuaraan Tinju Amatir Regional Sumatera 2023" },
+    { id: "ath_19", nama: "Hendra Setiawan", cabor: "Catur", juara: "Perak", event: "Turnamen Catur Piala Walikota Metro 2024" },
+    { id: "ath_20", nama: "Lilis Karlina", cabor: "Senam", juara: "Perunggu", event: "PORPROV Lampung 2024" },
+    { id: "ath_21", nama: "Muhammad Ali", cabor: "Karate", juara: "Emas", event: "Kejurda Forki Lampung 2024" },
+    { id: "ath_22", nama: "Nadia Vega", cabor: "Renang", juara: "Emas", event: "POPDA Lampung 2023" },
+    { id: "ath_23", nama: "Oki Setiana", cabor: "Panjat Tebing", juara: "Perak", event: "Kejurnas Panjat Tebing Junior 2024" },
+    { id: "ath_24", nama: "Putra Bangsa", cabor: "Sepak Bola", juara: "Emas", event: "Piala Soeratin U-17 Rayon Lampung 2023" },
+    { id: "ath_25", nama: "Qori Sandioriva", cabor: "Kempo", juara: "Perunggu", event: "PORPROV Lampung 2024" },
+    { id: "ath_26", nama: "Rudi Hartono", cabor: "Bulu Tangkis", juara: "Emas", event: "O2SN Tingkat Provinsi Lampung 2024" },
+    { id: "ath_27", nama: "Siska Yuliana", cabor: "Karate", juara: "Perak", event: "PORPROV Lampung 2024" },
+    { id: "ath_28", nama: "Tri Wahyuni", cabor: "Angkat Besi", juara: "Emas", event: "Kejurnas Angkat Besi Remaja 2023" },
+    { id: "ath_29", nama: "Umar Syarief", cabor: "Karate", juara: "Emas", event: "Kejuaraan Karate Terbuka Lampung 2024" },
+    { id: "ath_30", nama: "Vina Panduwinata", cabor: "Renang", juara: "Perak", event: "PORPROV Lampung 2024" },
+  ];
+}
+
 // Check if we have PostgreSQL configured
 const isPgConfigured = !!process.env.DATABASE_URL;
 
@@ -260,7 +304,7 @@ function seedGallery(): GalleryItem[] {
 // Fallback Mock JSON Database Engine
 // ----------------------------------------------------
 class JsonDbEngine {
-  private data: JsonDatabaseSchema = { users: [], destinations: [], posts: [], partners: [], gallery: [], officials: [], speeches: [], events: [], visitorStats: [] };
+  private data: JsonDatabaseSchema = { users: [], destinations: [], posts: [], partners: [], gallery: [], officials: [], speeches: [], events: [], visitorStats: [], athletes: [] };
 
   constructor() {
     this.loadData();
@@ -286,6 +330,10 @@ class JsonDbEngine {
         if (!this.data.speeches) { this.data.speeches = seedSpeeches(); this.saveData(); }
         if (!this.data.events) { this.data.events = seedEvents(); this.saveData(); }
         if (!this.data.visitorStats) { this.data.visitorStats = seedVisitorStats(); this.saveData(); }
+        if (!this.data.athletes) {
+          this.data.athletes = seedAthletes();
+          this.saveData();
+        }
         if (this.data.destinations.some(d => (d as any).likes === undefined)) {
           this.data.destinations = this.data.destinations.map(d => ({ ...d, likes: (d as any).likes ?? 0 }));
           this.saveData();
@@ -732,6 +780,7 @@ class JsonDbEngine {
       speeches: seedSpeeches(),
       events: seedEvents(),
       visitorStats: seedVisitorStats(),
+      athletes: seedAthletes(),
     };
     this.saveData();
   }
@@ -1005,6 +1054,35 @@ class JsonDbEngine {
       return deleted;
     }
   };
+
+  // ATHLETES
+  public athletes = {
+    findMany: async () => this.data.athletes,
+    findUnique: async ({ where }: { where: { id: string } }) => {
+      return this.data.athletes.find(a => a.id === where.id) ?? null;
+    },
+    create: async ({ data }: { data: Omit<Athlete, "id"> }) => {
+      const newAthlete = { id: `ath_${Date.now()}`, ...data };
+      this.data.athletes.push(newAthlete);
+      this.saveData();
+      return newAthlete;
+    },
+    update: async ({ where, data }: { where: { id: string }; data: Partial<Athlete> }) => {
+      const idx = this.data.athletes.findIndex(a => a.id === where.id);
+      if (idx !== -1) {
+        this.data.athletes[idx] = { ...this.data.athletes[idx], ...data };
+        this.saveData();
+        return this.data.athletes[idx];
+      }
+      throw new Error("Athlete not found");
+    },
+    delete: async ({ where }: { where: { id: string } }) => {
+      const deleted = this.data.athletes.find(a => a.id === where.id);
+      this.data.athletes = this.data.athletes.filter(a => a.id !== where.id);
+      this.saveData();
+      return deleted;
+    }
+  };
 }
 
 // Instantiate Database Engine depending on configuration
@@ -1022,6 +1100,7 @@ function normalizePrisma(p: any) {
     speeches:     p.speech,
     events:       p.appEvent,
     visitorStats: p.visitorStat,
+    athletes:     p.athlete,
   };
 }
 

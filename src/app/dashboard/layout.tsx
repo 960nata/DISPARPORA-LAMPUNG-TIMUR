@@ -6,7 +6,8 @@ import Link from "next/link";
 import {
   LayoutDashboard, MapPin, FileText, Users, LogOut,
   Menu, X, ArrowLeft, Bell, Sun, Moon, Images, User,
-  Building2, Mic2, CalendarDays, Handshake, TrendingUp
+  Building2, Mic2, CalendarDays, Handshake, TrendingUp,
+  Award
 } from "lucide-react";
 import { AdminProvider, useAdmin } from "@/contexts/AdminContext";
 import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
@@ -196,6 +197,7 @@ const NAV = [
   ]},
   { section: "KELOLA", items: [
     { href: "/dashboard/destinasi", label: "Destinasi Wisata",   icon: MapPin,          roles: ["superadmin","admin_dinas"] },
+    { href: "/dashboard/olahraga",  label: "Atlet & Prestasi",   icon: Award,           roles: ["superadmin","admin_dinas"] },
     { href: "/dashboard/berita",    label: "Berita & Artikel",   icon: FileText,        roles: ["superadmin","admin_dinas","admin_post"] },
     { href: "/dashboard/galeri",    label: "Galeri Foto",        icon: Images,          roles: ["superadmin","admin_dinas","admin_post"] },
   ]},
@@ -217,6 +219,7 @@ const NAV = [
 const CRUMBS: Record<string, string> = {
   "/dashboard":                          "Dashboard",
   "/dashboard/destinasi":                "Destinasi Wisata",
+  "/dashboard/olahraga":                 "Manajemen Atlet & Prestasi",
   "/dashboard/berita":                   "Berita & Artikel",
   "/dashboard/berita/buat":              "Tulis Artikel",
   "/dashboard/galeri":                   "Galeri Foto",
