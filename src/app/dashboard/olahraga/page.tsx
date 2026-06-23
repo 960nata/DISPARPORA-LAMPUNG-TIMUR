@@ -315,165 +315,57 @@ export default function OlahragaDashboardPage() {
         `}</style>
       </div>
 
-      {/* ── Tugas Pokok & Fungsi ── */}
-      <div style={{ background: "var(--dash-card)", border: "1px solid var(--dash-border)", borderRadius: "20px", padding: "28px 28px 24px", overflow: "hidden" }}>
-        {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "22px" }}>
-          <div style={{ width: "38px", height: "38px", borderRadius: "11px", background: "var(--dash-primary-bg)", color: "var(--dash-primary)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-            <Award size={18} />
-          </div>
-          <div>
-            <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--dash-text)", letterSpacing: "-0.01em" }}>Tugas Pokok &amp; Fungsi</div>
-            <div style={{ fontSize: "0.76rem", color: "var(--dash-text-muted)", marginTop: "1px" }}>Bidang Pemuda dan Olahraga — DISPARPORA Lampung Timur</div>
-          </div>
-        </div>
-
-        {/* Numbered list grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "10px" }}>
-          {[
-            "Pembinaan cabang olahraga prestasi di bawah koordinasi KONI Kabupaten Lampung Timur.",
-            "Penyelenggaraan Pekan Olahraga Kabupaten (PORKAB) dan fasilitasi keikutsertaan PORPROV Lampung.",
-            "Pembibitan atlet usia dini melalui kerja sama dengan sekolah olahraga dan klub cabor.",
-            "Pengembangan olahraga rekreasi masyarakat dan pelestarian olahraga tradisional daerah.",
-            "Pengelolaan, pemeliharaan, dan pembangunan sarana infrastruktur olahraga daerah.",
-            "Pemantauan dan evaluasi prestasi atlet binaan di event regional dan nasional.",
-          ].map((item, i) => (
-            <div key={i} style={{
-              display: "flex", alignItems: "flex-start", gap: "14px",
-              padding: "14px 16px", borderRadius: "13px",
-              background: "var(--dash-surface-hover)",
-              border: "1px solid var(--dash-border)",
-              transition: "border-color 0.2s",
-            }}>
-              <span style={{
-                flexShrink: 0, width: "28px", height: "28px",
-                borderRadius: "8px",
-                background: "linear-gradient(135deg, var(--dash-primary), #047857)",
-                color: "#fff", fontWeight: 800, fontSize: "0.8rem",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                boxShadow: "0 4px 10px -4px var(--dash-primary)",
-              }}>
-                {i + 1}
-              </span>
-              <p style={{ margin: 0, fontSize: "0.84rem", lineHeight: 1.6, color: "var(--dash-text-soft)", fontWeight: 500 }}>
-                {item}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Program Kerja Prioritas ── */}
-      <div style={{ background: "var(--dash-card)", border: "1px solid var(--dash-border)", borderRadius: "20px", padding: "28px 28px 24px" }}>
-        {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "22px" }}>
-          <div style={{ width: "38px", height: "38px", borderRadius: "11px", background: "rgba(245,158,11,0.1)", color: "#d97706", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-            <Trophy size={18} />
-          </div>
-          <div>
-            <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--dash-text)", letterSpacing: "-0.01em" }}>Program Kerja Prioritas</div>
-            <div style={{ fontSize: "0.76rem", color: "var(--dash-text-muted)", marginTop: "1px" }}>Agenda utama bidang olahraga tahun berjalan</div>
-          </div>
-          <span style={{ marginLeft: "auto", fontSize: "0.64rem", fontWeight: 700, color: "var(--dash-primary)", background: "var(--dash-primary-bg)", padding: "4px 10px", borderRadius: "99px", letterSpacing: "0.06em" }}>3 PROGRAM</span>
-        </div>
-
-        {/* Program cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "14px" }}>
-          {[
-            {
-              num: "01",
-              title: "PORKAB Lampung Timur",
-              desc: "Penyelenggaraan Pekan Olahraga Kabupaten sebagai seleksi atlet menuju PORPROV Lampung.",
-              color: "#059669",
-              bg: "rgba(5,150,105,0.07)",
-              border: "rgba(5,150,105,0.2)",
-              icon: Medal,
-            },
-            {
-              num: "02",
-              title: "Pembinaan Atlet Unggulan",
-              desc: "Program pemusatan latihan daerah (PELATDA) untuk atlet potensial menuju event nasional dan PON.",
-              color: "#3b82f6",
-              bg: "rgba(59,130,246,0.07)",
-              border: "rgba(59,130,246,0.2)",
-              icon: Users2,
-            },
-            {
-              num: "03",
-              title: "Rehab Sarana Olahraga",
-              desc: "Pembangunan dan rehabilitasi lapangan, GOR, dan fasilitas olahraga di tingkat desa dan kecamatan.",
-              color: "#d97706",
-              bg: "rgba(217,119,6,0.07)",
-              border: "rgba(217,119,6,0.2)",
-              icon: Dumbbell,
-            },
-          ].map((prog) => {
-            const Icon = prog.icon;
-            return (
-              <div key={prog.num} style={{
-                borderRadius: "16px", padding: "20px 22px",
-                background: prog.bg,
-                border: `1px solid ${prog.border}`,
-                display: "flex", flexDirection: "column", gap: "12px",
-              }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <span style={{
-                    fontSize: "0.62rem", fontWeight: 800, letterSpacing: "0.1em",
-                    color: prog.color, background: `color-mix(in srgb, ${prog.color} 12%, transparent)`,
-                    padding: "3px 9px", borderRadius: "99px",
-                  }}>PROGRAM {prog.num}</span>
-                  <div style={{ width: "34px", height: "34px", borderRadius: "10px", background: `color-mix(in srgb, ${prog.color} 14%, transparent)`, display: "flex", alignItems: "center", justifyContent: "center", color: prog.color }}>
-                    <Icon size={16} />
-                  </div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--dash-text)", lineHeight: 1.3, marginBottom: "6px" }}>{prog.title}</div>
-                  <p style={{ margin: 0, fontSize: "0.8rem", color: "var(--dash-text-soft)", lineHeight: 1.65, fontWeight: 500 }}>{prog.desc}</p>
-                </div>
-                <div style={{ height: "3px", borderRadius: "99px", background: `color-mix(in srgb, ${prog.color} 20%, transparent)`, overflow: "hidden" }}>
-                  <div style={{ height: "100%", width: "65%", borderRadius: "99px", background: prog.color }} />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
       {/* Quick Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "12px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "14px" }} className="koni-stats-grid">
         {[
-          { label: "Total Atlet Berprestasi", value: athletes.length, color: "var(--dash-primary)", icon: Award },
-          { label: "🥇 Medali Emas", value: totalEmas, color: JUARA_COLORS.Emas, icon: Trophy },
-          { label: "🥈 Medali Perak", value: totalPerak, color: JUARA_COLORS.Perak, icon: Trophy },
-          { label: "🥉 Medali Perunggu", value: totalPerunggu, color: JUARA_COLORS.Perunggu, icon: Trophy },
+          { label: "Total Atlet Berprestasi", value: athletes.length, color: "var(--dash-primary)", bg: "var(--dash-primary-bg)", icon: Award, sub: "tercatat di database" },
+          { label: "Medali Emas", value: totalEmas, color: JUARA_COLORS.Emas, bg: "rgba(217,119,6,0.08)", icon: Trophy, sub: "🥇 prestasi tertinggi" },
+          { label: "Medali Perak", value: totalPerak, color: JUARA_COLORS.Perak, bg: "rgba(71,85,105,0.08)", icon: Trophy, sub: "🥈 peringkat kedua" },
+          { label: "Medali Perunggu", value: totalPerunggu, color: JUARA_COLORS.Perunggu, bg: "rgba(194,65,12,0.08)", icon: Trophy, sub: "🥉 peringkat ketiga" },
         ].map((s, idx) => {
           const Icon = s.icon;
           return (
-            <div key={idx} className="dash-stat-card">
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div>
-                  <span style={{ fontSize: "0.72rem", fontWeight: 600, color: "var(--dash-text-muted)" }}>{s.label}</span>
-                  <h3 style={{ fontSize: "1.5rem", color: "var(--dash-text)", fontWeight: 700, margin: "2px 0 0" }}>{s.value}</h3>
+            <div key={idx} style={{
+              background: "var(--dash-card)", border: "1px solid var(--dash-border)",
+              borderRadius: "18px", padding: "20px 22px",
+              display: "flex", flexDirection: "column", gap: "14px",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: s.bg, color: s.color, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <Icon size={20} />
                 </div>
-                <div style={{ width: "34px", height: "34px", borderRadius: "8px", backgroundColor: `color-mix(in srgb, ${s.color} 10%, transparent)`, display: "flex", alignItems: "center", justifyContent: "center", color: s.color }}>
-                  <Icon size={16} />
-                </div>
+                <span style={{ fontSize: "0.62rem", fontWeight: 700, color: s.color, background: s.bg, padding: "3px 8px", borderRadius: "99px", letterSpacing: "0.04em" }}>
+                  TOTAL
+                </span>
+              </div>
+              <div>
+                <div style={{ fontSize: "2rem", fontWeight: 900, color: "var(--dash-text)", letterSpacing: "-0.03em", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{s.value}</div>
+                <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--dash-text-soft)", marginTop: "4px" }}>{s.label}</div>
+                <div style={{ fontSize: "0.72rem", color: "var(--dash-text-muted)", marginTop: "2px" }}>{s.sub}</div>
+              </div>
+              <div style={{ height: "4px", borderRadius: "99px", background: s.bg, overflow: "hidden" }}>
+                <div style={{ height: "100%", width: `${Math.min(100, (s.value / Math.max(athletes.length, 1)) * 100)}%`, borderRadius: "99px", background: s.color, transition: "width 0.8s ease" }} />
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* ── Data Atlet Header ── */}
-      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-        <div style={{ width: "38px", height: "38px", borderRadius: "11px", background: "var(--dash-primary-bg)", color: "var(--dash-primary)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-          <Users2 size={18} />
-        </div>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--dash-text)" }}>Data Atlet Berprestasi</div>
-          <div style={{ fontSize: "0.76rem", color: "var(--dash-text-muted)", marginTop: "1px" }}>{filtered.length} atlet dari {athletes.length} total — gunakan filter di atas untuk menyaring data</div>
+      {/* ── Tabel Atlet ── */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <div style={{ width: "6px", height: "24px", borderRadius: "3px", background: "var(--dash-primary)" }} />
+          <div>
+            <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--dash-text)" }}>Daftar Atlet Berprestasi</div>
+            <div style={{ fontSize: "0.74rem", color: "var(--dash-text-muted)" }}>{filtered.length} dari {athletes.length} atlet ditampilkan</div>
+          </div>
         </div>
       </div>
+
+      <style jsx global>{`
+        @media (max-width: 900px) { .koni-stats-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+        @media (max-width: 500px) { .koni-stats-grid { grid-template-columns: 1fr !important; } }
+      `}</style>
 
       {/* Table Data */}
       <div className="dash-card" style={{ padding: 0, overflow: "hidden" }}>
