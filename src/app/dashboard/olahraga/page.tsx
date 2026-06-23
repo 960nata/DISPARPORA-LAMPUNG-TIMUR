@@ -309,9 +309,9 @@ export default function OlahragaDashboardPage() {
         </div>
 
         <style jsx global>{`
-          @media (max-width: 640px) {
-            .koni-divider { display: none !important; }
-          }
+          @media (max-width: 640px) { .koni-divider { display: none !important; } }
+          @media (max-width: 900px) { .koni-stats-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+          @media (max-width: 500px) { .koni-stats-grid { grid-template-columns: 1fr !important; } }
         `}</style>
       </div>
 
@@ -362,10 +362,7 @@ export default function OlahragaDashboardPage() {
         </div>
       </div>
 
-      <style jsx global>{`
-        @media (max-width: 900px) { .koni-stats-grid { grid-template-columns: repeat(2, 1fr) !important; } }
-        @media (max-width: 500px) { .koni-stats-grid { grid-template-columns: 1fr !important; } }
-      `}</style>
+
 
       {/* Table Data */}
       <div className="dash-card" style={{ padding: 0, overflow: "hidden" }}>
