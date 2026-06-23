@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import {
   Plus, Search, Edit2, Trash2, X, Award, Trophy,
-  ChevronLeft, ChevronRight, Download, RefreshCw
+  ChevronLeft, ChevronRight, RefreshCw, Dumbbell, Medal, Users2
 } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { useToast } from "@/contexts/ToastContext";
@@ -220,6 +220,225 @@ export default function OlahragaDashboardPage() {
         </div>
       </div>
 
+      {/* ── KONI Hero Banner ── */}
+      <div style={{
+        position: "relative", overflow: "hidden", borderRadius: "20px",
+        background: "linear-gradient(135deg, #064e3b 0%, #065f46 40%, #047857 70%, #059669 100%)",
+        padding: "28px 32px", display: "flex", alignItems: "center", gap: "24px", flexWrap: "wrap",
+        boxShadow: "0 20px 48px -16px rgba(5,150,105,0.45)",
+      }}>
+        {/* Background decoration */}
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 80% 50%, rgba(255,255,255,0.07) 0%, transparent 60%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "-40px", right: "-40px", width: "200px", height: "200px", borderRadius: "50%", background: "rgba(255,255,255,0.04)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "-60px", left: "30%", width: "160px", height: "160px", borderRadius: "50%", background: "rgba(255,255,255,0.03)", pointerEvents: "none" }} />
+
+        {/* Left: Branding */}
+        <div style={{ position: "relative", zIndex: 1, flex: "0 0 auto" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", background: "rgba(190,242,106,0.18)", border: "1px solid rgba(190,242,106,0.35)", borderRadius: "99px", padding: "4px 12px", marginBottom: "10px" }}>
+            <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "#BEF26A", display: "inline-block", flexShrink: 0 }} />
+            <span style={{ color: "#BEF26A", fontSize: "0.66rem", fontWeight: 700, letterSpacing: "0.1em" }}>KONI LAMPUNG TIMUR</span>
+          </div>
+          <div style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)", fontWeight: 900, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.2, maxWidth: "260px" }}>
+            Pembinaan Olahraga<br />Lampung Timur
+          </div>
+          <div style={{ marginTop: "6px", fontSize: "0.78rem", color: "rgba(255,255,255,0.6)", fontWeight: 500 }}>
+            Di bawah pembinaan KONI Kabupaten
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div style={{ position: "relative", zIndex: 1, width: "1px", height: "80px", background: "rgba(255,255,255,0.15)", flexShrink: 0 }} className="koni-divider" />
+
+        {/* Stat Cards */}
+        <div style={{ position: "relative", zIndex: 1, display: "flex", gap: "12px", flex: 1, flexWrap: "wrap", minWidth: 0 }}>
+          {[
+            {
+              icon: Dumbbell,
+              value: "28",
+              label: "Cabang Olahraga",
+              sub: "Di bawah pembinaan KONI",
+              accent: "#6ee7b7",
+            },
+            {
+              icon: Users2,
+              value: "120+",
+              label: "Atlet Binaan",
+              sub: "Aktif berlatih di PELATDA",
+              accent: "#93c5fd",
+            },
+            {
+              icon: Medal,
+              value: "15 Emas",
+              label: "PORPROV 2024",
+              sub: "Medali emas Lampung Timur",
+              accent: "#fde68a",
+            },
+          ].map((stat, i) => {
+            const Icon = stat.icon;
+            return (
+              <div key={i} style={{
+                flex: "1 1 140px", minWidth: "130px",
+                background: "rgba(255,255,255,0.07)",
+                border: "1px solid rgba(255,255,255,0.12)",
+                borderRadius: "16px", padding: "18px 20px",
+                backdropFilter: "blur(8px)",
+                transition: "background 0.2s",
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
+                  <div style={{
+                    width: "32px", height: "32px", borderRadius: "9px",
+                    background: `rgba(${stat.accent === "#6ee7b7" ? "110,231,183" : stat.accent === "#93c5fd" ? "147,197,253" : "253,230,138"},0.15)`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    color: stat.accent, flexShrink: 0,
+                  }}>
+                    <Icon size={16} />
+                  </div>
+                </div>
+                <div style={{ fontSize: "clamp(1.3rem, 2.5vw, 1.8rem)", fontWeight: 900, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
+                  {stat.value}
+                </div>
+                <div style={{ marginTop: "4px", fontSize: "0.8rem", fontWeight: 700, color: "rgba(255,255,255,0.85)" }}>
+                  {stat.label}
+                </div>
+                <div style={{ marginTop: "2px", fontSize: "0.7rem", color: "rgba(255,255,255,0.5)", fontWeight: 500 }}>
+                  {stat.sub}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <style jsx global>{`
+          @media (max-width: 640px) {
+            .koni-divider { display: none !important; }
+          }
+        `}</style>
+      </div>
+
+      {/* ── Tugas Pokok & Fungsi ── */}
+      <div style={{ background: "var(--dash-card)", border: "1px solid var(--dash-border)", borderRadius: "20px", padding: "28px 28px 24px", overflow: "hidden" }}>
+        {/* Header */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "22px" }}>
+          <div style={{ width: "38px", height: "38px", borderRadius: "11px", background: "var(--dash-primary-bg)", color: "var(--dash-primary)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <Award size={18} />
+          </div>
+          <div>
+            <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--dash-text)", letterSpacing: "-0.01em" }}>Tugas Pokok &amp; Fungsi</div>
+            <div style={{ fontSize: "0.76rem", color: "var(--dash-text-muted)", marginTop: "1px" }}>Bidang Pemuda dan Olahraga — DISPARPORA Lampung Timur</div>
+          </div>
+        </div>
+
+        {/* Numbered list grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "10px" }}>
+          {[
+            "Pembinaan cabang olahraga prestasi di bawah koordinasi KONI Kabupaten Lampung Timur.",
+            "Penyelenggaraan Pekan Olahraga Kabupaten (PORKAB) dan fasilitasi keikutsertaan PORPROV Lampung.",
+            "Pembibitan atlet usia dini melalui kerja sama dengan sekolah olahraga dan klub cabor.",
+            "Pengembangan olahraga rekreasi masyarakat dan pelestarian olahraga tradisional daerah.",
+            "Pengelolaan, pemeliharaan, dan pembangunan sarana infrastruktur olahraga daerah.",
+            "Pemantauan dan evaluasi prestasi atlet binaan di event regional dan nasional.",
+          ].map((item, i) => (
+            <div key={i} style={{
+              display: "flex", alignItems: "flex-start", gap: "14px",
+              padding: "14px 16px", borderRadius: "13px",
+              background: "var(--dash-surface-hover)",
+              border: "1px solid var(--dash-border)",
+              transition: "border-color 0.2s",
+            }}>
+              <span style={{
+                flexShrink: 0, width: "28px", height: "28px",
+                borderRadius: "8px",
+                background: "linear-gradient(135deg, var(--dash-primary), #047857)",
+                color: "#fff", fontWeight: 800, fontSize: "0.8rem",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                boxShadow: "0 4px 10px -4px var(--dash-primary)",
+              }}>
+                {i + 1}
+              </span>
+              <p style={{ margin: 0, fontSize: "0.84rem", lineHeight: 1.6, color: "var(--dash-text-soft)", fontWeight: 500 }}>
+                {item}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Program Kerja Prioritas ── */}
+      <div style={{ background: "var(--dash-card)", border: "1px solid var(--dash-border)", borderRadius: "20px", padding: "28px 28px 24px" }}>
+        {/* Header */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "22px" }}>
+          <div style={{ width: "38px", height: "38px", borderRadius: "11px", background: "rgba(245,158,11,0.1)", color: "#d97706", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <Trophy size={18} />
+          </div>
+          <div>
+            <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--dash-text)", letterSpacing: "-0.01em" }}>Program Kerja Prioritas</div>
+            <div style={{ fontSize: "0.76rem", color: "var(--dash-text-muted)", marginTop: "1px" }}>Agenda utama bidang olahraga tahun berjalan</div>
+          </div>
+          <span style={{ marginLeft: "auto", fontSize: "0.64rem", fontWeight: 700, color: "var(--dash-primary)", background: "var(--dash-primary-bg)", padding: "4px 10px", borderRadius: "99px", letterSpacing: "0.06em" }}>3 PROGRAM</span>
+        </div>
+
+        {/* Program cards */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "14px" }}>
+          {[
+            {
+              num: "01",
+              title: "PORKAB Lampung Timur",
+              desc: "Penyelenggaraan Pekan Olahraga Kabupaten sebagai seleksi atlet menuju PORPROV Lampung.",
+              color: "#059669",
+              bg: "rgba(5,150,105,0.07)",
+              border: "rgba(5,150,105,0.2)",
+              icon: Medal,
+            },
+            {
+              num: "02",
+              title: "Pembinaan Atlet Unggulan",
+              desc: "Program pemusatan latihan daerah (PELATDA) untuk atlet potensial menuju event nasional dan PON.",
+              color: "#3b82f6",
+              bg: "rgba(59,130,246,0.07)",
+              border: "rgba(59,130,246,0.2)",
+              icon: Users2,
+            },
+            {
+              num: "03",
+              title: "Rehab Sarana Olahraga",
+              desc: "Pembangunan dan rehabilitasi lapangan, GOR, dan fasilitas olahraga di tingkat desa dan kecamatan.",
+              color: "#d97706",
+              bg: "rgba(217,119,6,0.07)",
+              border: "rgba(217,119,6,0.2)",
+              icon: Dumbbell,
+            },
+          ].map((prog) => {
+            const Icon = prog.icon;
+            return (
+              <div key={prog.num} style={{
+                borderRadius: "16px", padding: "20px 22px",
+                background: prog.bg,
+                border: `1px solid ${prog.border}`,
+                display: "flex", flexDirection: "column", gap: "12px",
+              }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span style={{
+                    fontSize: "0.62rem", fontWeight: 800, letterSpacing: "0.1em",
+                    color: prog.color, background: `color-mix(in srgb, ${prog.color} 12%, transparent)`,
+                    padding: "3px 9px", borderRadius: "99px",
+                  }}>PROGRAM {prog.num}</span>
+                  <div style={{ width: "34px", height: "34px", borderRadius: "10px", background: `color-mix(in srgb, ${prog.color} 14%, transparent)`, display: "flex", alignItems: "center", justifyContent: "center", color: prog.color }}>
+                    <Icon size={16} />
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--dash-text)", lineHeight: 1.3, marginBottom: "6px" }}>{prog.title}</div>
+                  <p style={{ margin: 0, fontSize: "0.8rem", color: "var(--dash-text-soft)", lineHeight: 1.65, fontWeight: 500 }}>{prog.desc}</p>
+                </div>
+                <div style={{ height: "3px", borderRadius: "99px", background: `color-mix(in srgb, ${prog.color} 20%, transparent)`, overflow: "hidden" }}>
+                  <div style={{ height: "100%", width: "65%", borderRadius: "99px", background: prog.color }} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Quick Stats */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "12px" }}>
         {[
@@ -243,6 +462,17 @@ export default function OlahragaDashboardPage() {
             </div>
           );
         })}
+      </div>
+
+      {/* ── Data Atlet Header ── */}
+      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+        <div style={{ width: "38px", height: "38px", borderRadius: "11px", background: "var(--dash-primary-bg)", color: "var(--dash-primary)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          <Users2 size={18} />
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--dash-text)" }}>Data Atlet Berprestasi</div>
+          <div style={{ fontSize: "0.76rem", color: "var(--dash-text-muted)", marginTop: "1px" }}>{filtered.length} atlet dari {athletes.length} total — gunakan filter di atas untuk menyaring data</div>
+        </div>
       </div>
 
       {/* Table Data */}
