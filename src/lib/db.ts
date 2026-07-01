@@ -1233,6 +1233,44 @@ export const jsonDb: any = usingMockDb ? jsonDbEngine : throwingFallback();
 // have no column in the Prisma schema (e.g. destination "likes"), which are stored
 // in the local JSON store as a best-effort side channel regardless of DB config.
 export const jsonStore = jsonDbEngine;
+
+/**
+ * Look up a user for login by email OR username (case-insensitive).
+ *
+ * The Prisma `User` model has no generated `email` field, and the `email`
+ * column was added to the Postgres table out-of-band (SQL), so we can't use
+ * the typed `prismaClient.user.findUnique({ where: { email } })` — it throws.
+ * Instead we query with raw SQL. If the `email` column doesn't exist yet, we
+ * fall back to a username-only lookup so login never hard-fails.
+ */
+export async function findUserByLogin(identifier: string): Promise<any | null> {
+  const id = (identifier || "").trim();
+  if (!id) return null;
+
+  if (isPgConfigured && prismaClient) {
+    try {
+      const rows: any[] = await prismaClient.$queryRawUnsafe(
+        `SELECT * FROM public.users WHERE lower(email) = lower($1) OR lower(username) = lower($1) LIMIT 1`,
+        id
+      );
+      return rows[0] ?? null;
+    } catch {
+      // `email` column may not exist yet — fall back to username only.
+      const rows: any[] = await prismaClient.$queryRawUnsafe(
+        `SELECT * FROM public.users WHERE lower(username) = lower($1) LIMIT 1`,
+        id
+      );
+      return rows[0] ?? null;
+    }
+  }
+
+  const users = await jsonDbEngine.users.findMany();
+  return users.find(
+    (u: any) =>
+      (u.email && u.email.toLowerCase() === id.toLowerCase()) ||
+      u.username.toLowerCase() === id.toLowerCase()
+  ) ?? null;
+}
 export const BupatiSpeechData = {
   name: "M. Dawam Rahardjo",
   title: "Bupati Lampung Timur",

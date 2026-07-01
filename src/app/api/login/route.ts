@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { db, jsonDb } from "@/lib/db";
+import { db, jsonDb, findUserByLogin } from "@/lib/db";
 import { signSession, SESSION_COOKIE_OPTIONS } from "@/lib/session";
 import { checkRateLimit, LOGIN_RATE_LIMIT } from "@/lib/rateLimit";
 
@@ -48,11 +48,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Look up by email OR username (the `email` field isn't on the Prisma
+    // model, so this uses a raw-SQL helper — see findUserByLogin).
     let user: any = null;
     try {
-      user = await db.users.findUnique({ where: { email } });
+      user = await findUserByLogin(email);
     } catch {
-      user = await jsonDb.users.findUnique({ where: { email } });
+      user = await jsonDb.users.findUnique({ where: { username: email } });
     }
 
     if (!user) {
