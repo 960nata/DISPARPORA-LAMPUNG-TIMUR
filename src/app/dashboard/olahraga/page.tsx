@@ -221,7 +221,7 @@ export default function OlahragaDashboardPage() {
       </div>
 
       {/* ── KONI Hero Banner ── */}
-      <div style={{
+      <div className="koni-hero" style={{
         position: "relative", overflow: "hidden", borderRadius: "20px",
         background: "linear-gradient(135deg, #064e3b 0%, #065f46 40%, #047857 70%, #059669 100%)",
         padding: "28px 32px", display: "flex", alignItems: "center", gap: "24px", flexWrap: "wrap",
@@ -233,7 +233,7 @@ export default function OlahragaDashboardPage() {
         <div style={{ position: "absolute", bottom: "-60px", left: "30%", width: "160px", height: "160px", borderRadius: "50%", background: "rgba(255,255,255,0.03)", pointerEvents: "none" }} />
 
         {/* Left: Branding */}
-        <div style={{ position: "relative", zIndex: 1, flex: "0 0 auto" }}>
+        <div className="koni-brand" style={{ position: "relative", zIndex: 1, flex: "0 0 auto" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", background: "rgba(190,242,106,0.18)", border: "1px solid rgba(190,242,106,0.35)", borderRadius: "99px", padding: "4px 12px", marginBottom: "10px" }}>
             <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "#BEF26A", display: "inline-block", flexShrink: 0 }} />
             <span style={{ color: "#BEF26A", fontSize: "0.66rem", fontWeight: 700, letterSpacing: "0.1em" }}>KONI LAMPUNG TIMUR</span>
@@ -250,7 +250,7 @@ export default function OlahragaDashboardPage() {
         <div style={{ position: "relative", zIndex: 1, width: "1px", height: "80px", background: "rgba(255,255,255,0.15)", flexShrink: 0 }} className="koni-divider" />
 
         {/* Stat Cards */}
-        <div style={{ position: "relative", zIndex: 1, display: "flex", gap: "12px", flex: 1, flexWrap: "wrap", minWidth: 0 }}>
+        <div className="koni-stat-row" style={{ position: "relative", zIndex: 1, display: "flex", gap: "12px", flex: 1, flexWrap: "wrap", minWidth: 0 }}>
           {[
             {
               icon: Dumbbell,
@@ -309,7 +309,14 @@ export default function OlahragaDashboardPage() {
         </div>
 
         <style jsx global>{`
-          @media (max-width: 640px) { .koni-divider { display: none !important; } }
+          @media (max-width: 640px) {
+            .koni-divider { display: none !important; }
+            .koni-hero { padding: 20px 18px !important; gap: 18px !important; align-items: stretch !important; }
+            .koni-brand { flex: 1 1 100% !important; }
+            .koni-brand > div:nth-child(2) { max-width: none !important; }
+            .koni-stat-row { flex: 1 1 100% !important; width: 100% !important; }
+            .koni-stat-row > div { flex: 1 1 100% !important; min-width: 0 !important; padding: 14px 16px !important; }
+          }
           @media (max-width: 900px) { .koni-stats-grid { grid-template-columns: repeat(2, 1fr) !important; } }
           @media (max-width: 500px) { .koni-stats-grid { grid-template-columns: 1fr !important; } }
         `}</style>

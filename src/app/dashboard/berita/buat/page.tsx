@@ -9,8 +9,9 @@ import {
   UploadCloud, Folder, Loader2, X, Plus, Hash, ExternalLink
 } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
-import MediaLibrary, { MediaItem } from "@/components/admin/MediaLibrary";
 import { type Block } from "@/components/admin/BlockEditor";
+
+const GalleryPickerModal = dynamic(() => import("@/components/admin/widgets/GalleryPickerModal"), { ssr: false });
 
 const BlockEditor = dynamic(() => import("@/components/admin/BlockEditor"), {
   ssr: false,
@@ -28,9 +29,6 @@ const CATEGORIES = ["Pariwisata", "Event & Festival", "Budaya", "Ekonomi Kreatif
 
 const slugify = (s: string) =>
   s.toLowerCase().replace(/[^a-z0-9\s-]/g, "").trim().replace(/\s+/g, "-").slice(0, 80);
-
-const fileToDataUrl = (file: File) =>
-  new Promise<string>(resolve => { const r = new FileReader(); r.onload = () => resolve(r.result as string); r.readAsDataURL(file); });
 
 export default function BuatBeritaPage() {
   const router = useRouter();
@@ -56,7 +54,6 @@ export default function BuatBeritaPage() {
 
   /* ── ui state ── */
   const [showLib, setShowLib] = useState(false);
-  const [coverDrag, setCoverDrag] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState("");
 
@@ -102,11 +99,6 @@ export default function BuatBeritaPage() {
     if (!t || tags.includes(t)) { setTagInput(""); return; }
     setTags(prev => [...prev, t]);
     setTagInput("");
-  };
-
-  const handleCoverFile = async (file?: File | null) => {
-    if (!file || !file.type.startsWith("image/")) return;
-    setCover(await fileToDataUrl(file));
   };
 
   const handleSave = async (overrideStatus?: "draft" | "published") => {
@@ -199,29 +191,18 @@ export default function BuatBeritaPage() {
                 </div>
               </>
             ) : (
-              <label
-                onDragOver={e => { e.preventDefault(); setCoverDrag(true); }}
-                onDragLeave={() => setCoverDrag(false)}
-                onDrop={e => { e.preventDefault(); setCoverDrag(false); handleCoverFile(e.dataTransfer.files?.[0]); }}
+              <div
+                onClick={() => setShowLib(true)}
                 style={{
                   display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "0.5rem",
                   padding: "2.5rem 1.5rem", cursor: "pointer", textAlign: "center",
-                  background: coverDrag ? "var(--dash-primary-bg)" : "var(--dash-surface-hover)",
-                  border: `2px dashed ${coverDrag ? "var(--dash-primary)" : "var(--dash-border-2)"}`,
+                  background: "var(--dash-surface-hover)",
+                  border: "2px dashed var(--dash-border-2)",
                   transition: "all 0.2s",
                 }}>
                 <UploadCloud size={28} style={{ color: "var(--dash-primary)" }} />
-                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--dash-text)" }}>Seret & lepas foto cover</span>
-                <span style={{ fontSize: "0.72rem", color: "var(--dash-text-muted)" }}>atau klik untuk pilih file</span>
-                <input type="file" accept="image/*" onChange={e => handleCoverFile(e.target.files?.[0])} style={{ display: "none" }} />
-              </label>
-            )}
-            {!cover && (
-              <div style={{ padding: "0.6rem 0.75rem", borderTop: "1px solid var(--dash-border)", display: "flex", gap: "0.5rem" }}>
-                <button onClick={() => setShowLib(true)} className="dash-btn"
-                  style={{ background: "transparent", border: "1px solid var(--dash-border)", color: "var(--dash-text)", boxShadow: "none", fontSize: "0.75rem", display: "flex", alignItems: "center", gap: "0.35rem" }}>
-                  <Folder size={13} /> Pilih dari Perpustakaan Media
-                </button>
+                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--dash-text)" }}>Pilih foto cover</span>
+                <span style={{ fontSize: "0.72rem", color: "var(--dash-text-muted)" }}>dari galeri atau upload baru</span>
               </div>
             )}
           </div>
@@ -370,8 +351,9 @@ export default function BuatBeritaPage() {
       </div>
 
       {showLib && (
-        <MediaLibrary
-          onSelect={(item: MediaItem) => { setCover(item.src); setShowLib(false); }}
+        <GalleryPickerModal
+          multi={false}
+          onSelect={items => { if (items[0]) setCover(items[0].imageUrl); setShowLib(false); }}
           onClose={() => setShowLib(false)}
         />
       )}
