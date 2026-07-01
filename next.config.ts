@@ -23,18 +23,19 @@ const securityHeaders = [
     : []),
   // Content Security Policy
   // - default: self only
-  // - scripts: self + Vercel live feedback + Google Fonts/Maps
+  // - scripts: self + Vercel live feedback + Google Fonts/Maps + blob: (Leaflet marker workers)
   // - styles: self + Google Fonts + inline (needed for JSX-in-JS styles)
-  // - images: self + Supabase Storage + data URIs (for previews)
+  // - images: self + Supabase Storage + OpenStreetMap tiles (MapComponent) + data URIs (previews)
   // - connect: self + Supabase API (DB + Storage)
   {
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://vercel.live",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://maps.googleapis.com https://vercel.live",
+      "worker-src 'self' blob:",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: blob: https://*.supabase.co https://fsmqmuduklyohbecblhc.supabase.co",
+      "img-src 'self' data: blob: https://*.supabase.co https://fsmqmuduklyohbecblhc.supabase.co https://*.tile.openstreetmap.org",
       "media-src 'self'",
       "connect-src 'self' https://*.supabase.co https://fsmqmuduklyohbecblhc.supabase.co",
       "frame-src 'none'",
