@@ -15,4 +15,4 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
 });
 
 /** Bucket name where user-uploaded files are stored. */
-export const STORAGE_BUCKET = "uploads";
+export const STORAGE_BUCKET = "upload";
