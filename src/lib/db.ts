@@ -302,8 +302,12 @@ if (isPgConfigured) {
     const { PrismaClient } = require("@prisma/client");
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { PrismaPg } = require("@prisma/adapter-pg");
-    const adapter = new PrismaPg({ connectionString: process.env.DIRECT_URL ?? process.env.DATABASE_URL });
-    prismaClient = new PrismaClient({ adapter });
+    const globalForPrisma = global as unknown as { prisma: any };
+    if (!globalForPrisma.prisma) {
+      const adapter = new PrismaPg({ connectionString: process.env.DIRECT_URL ?? process.env.DATABASE_URL });
+      globalForPrisma.prisma = new PrismaClient({ adapter });
+    }
+    prismaClient = globalForPrisma.prisma;
   } catch (e: any) {
     prismaInitError = e?.message ? `${e.message}` : String(e);
     console.error("Prisma client init failed — falling back to JSON db.", e);
