@@ -266,6 +266,9 @@ function seedAthletes(): Athlete[] {
 const isPgConfigured = !!process.env.DATABASE_URL;
 
 let prismaClient: any = null;
+// Captured so failures are visible (see /api/health/db) instead of silently
+// degrading to the ephemeral JSON store on serverless hosting.
+export let prismaInitError: string | null = null;
 if (isPgConfigured) {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -274,8 +277,9 @@ if (isPgConfigured) {
     const { PrismaPg } = require("@prisma/adapter-pg");
     const adapter = new PrismaPg({ connectionString: process.env.DIRECT_URL ?? process.env.DATABASE_URL });
     prismaClient = new PrismaClient({ adapter });
-  } catch (e) {
-    console.warn("Prisma client init failed — falling back to JSON db.", e);
+  } catch (e: any) {
+    prismaInitError = e?.message ? `${e.message}` : String(e);
+    console.error("Prisma client init failed — falling back to JSON db.", e);
   }
 }
 
