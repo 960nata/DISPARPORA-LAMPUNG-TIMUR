@@ -27,8 +27,18 @@ const CATEGORIES = ['Alam', 'Bahari', 'Budaya', 'Sejarah', 'Kuliner', 'Event', '
 type UploadStatus = 'pending' | 'uploading' | 'success' | 'error';
 interface QueueFile { file: File; preview: string; status: UploadStatus; }
 
-const fileToBase64 = (file: File): Promise<string> =>
-  new Promise(resolve => { const r = new FileReader(); r.onload = () => resolve(r.result as string); r.readAsDataURL(file); });
+/**
+ * Upload a File to /api/upload → Supabase Storage.
+ * Returns the permanent public URL string.
+ */
+async function uploadToStorage(file: File): Promise<string> {
+  const fd = new FormData();
+  fd.append('file', file);
+  const res = await fetch('/api/upload', { method: 'POST', body: fd });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.error || 'Upload gagal');
+  return json.url as string;
+}
 
 export default function GaleriPage() {
   const { user } = useAdmin();
@@ -146,10 +156,16 @@ export default function GaleriPage() {
       updated[i] = { ...updated[i], status: 'uploading' };
       setMultiUploadFiles([...updated]);
       try {
-        const base64 = await fileToBase64(updated[i].file);
+        // Step 1: upload to Supabase Storage via /api/upload
+        const imageUrl = await uploadToStorage(updated[i].file);
+        // Step 2: save record in DB with the returned URL
         const res = await fetch('/api/gallery', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title: updated[i].file.name.replace(/\.[^.]+$/, ''), category: 'Lainnya', imageData: base64 }),
+          body: JSON.stringify({
+            title: updated[i].file.name.replace(/\.[^.]+$/, ''),
+            category: 'Lainnya',
+            imageUrl,
+          }),
         });
         const data = await res.json();
         updated[i] = { ...updated[i], status: res.ok ? 'success' : 'error' };
@@ -173,10 +189,12 @@ export default function GaleriPage() {
     if (!singleFile || !singleTitle.trim()) { alert('Judul dan gambar wajib diisi.'); return; }
     setUploadingSingle(true);
     try {
-      const base64 = await fileToBase64(singleFile);
+      // Step 1: upload file to Supabase Storage via /api/upload
+      const imageUrl = await uploadToStorage(singleFile);
+      // Step 2: save gallery record with the returned URL
       const res = await fetch('/api/gallery', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: singleTitle.trim(), category: singleCategory, imageData: base64 }),
+        body: JSON.stringify({ title: singleTitle.trim(), category: singleCategory, imageUrl }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Gagal mengunggah');

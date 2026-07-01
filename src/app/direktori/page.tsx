@@ -332,7 +332,6 @@ function DirectoryContent() {
                 const metaItems =
                   item.displayCategory === "Akomodasi" ? [
                     { label: "Klasifikasi", val: item.classification || "-" },
-                    { label: "Kamar", val: item.rooms ? `${item.rooms} Kamar` : "-" },
                   ] : item.displayCategory === "Kuliner" ? [
                     { label: "Jenis", val: item.food_type || "-" },
                     { label: "Kapasitas", val: item.capacity ? `${item.capacity} Kursi` : "-" },

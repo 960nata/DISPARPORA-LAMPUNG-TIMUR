@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 import { db, jsonDb } from "@/lib/db";
 import { requireSuperadmin } from "@/lib/session";
+
+const BCRYPT_ROUNDS = 12;
+const VALID_ROLES = ["superadmin", "admin_dinas", "admin_post"] as const;
+type ValidRole = (typeof VALID_ROLES)[number];
+
+function isValidRole(role: string): role is ValidRole {
+  return VALID_ROLES.includes(role as ValidRole);
+}
 
 async function findMany() {
   try { return await db.users.findMany(); }
@@ -26,7 +35,7 @@ export async function GET(request: NextRequest) {
     const safeList = list.map(({ password: _, ...rest }: any) => rest);
     return NextResponse.json(safeList);
   } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+    return NextResponse.json({ error: "Gagal memuat daftar pengguna." }, { status: 500 });
   }
 }
 
@@ -37,27 +46,59 @@ export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
 
-    if (!data.username || !data.password || !data.name || !data.role) {
-      return NextResponse.json({ error: "Username, password, name, dan role wajib diisi" }, { status: 400 });
+    // ── Input validation ────────────────────────────────
+    const username = String(data.username || "").trim();
+    const password = String(data.password || "");
+    const name = String(data.name || "").trim();
+    const role = String(data.role || "");
+
+    if (!username || !password || !name || !role) {
+      return NextResponse.json(
+        { error: "Username, password, name, dan role wajib diisi." },
+        { status: 400 }
+      );
     }
 
-    const existing = await findUnique({ username: data.username });
-    if (existing) {
-      return NextResponse.json({ error: "Username sudah digunakan" }, { status: 400 });
+    // Role must be one of the allowed values
+    if (!isValidRole(role)) {
+      return NextResponse.json(
+        { error: `Role tidak valid. Gunakan salah satu dari: ${VALID_ROLES.join(", ")}.` },
+        { status: 400 }
+      );
     }
+
+    // Length guards
+    if (username.length > 60) return NextResponse.json({ error: "Username terlalu panjang (maks. 60 karakter)." }, { status: 400 });
+    if (password.length < 8 || password.length > 128) return NextResponse.json({ error: "Password harus antara 8–128 karakter." }, { status: 400 });
+    if (name.length > 120) return NextResponse.json({ error: "Nama terlalu panjang (maks. 120 karakter)." }, { status: 400 });
+
+    const existing = await findUnique({ username });
+    if (existing) {
+      return NextResponse.json({ error: "Username sudah digunakan." }, { status: 409 });
+    }
+
+    // ── Hash password ───────────────────────────────────
+    const hashedPassword = await bcrypt.hash(password, BCRYPT_ROUNDS);
 
     const newUser = await create({
-      username: data.username,
-      password: data.password,
-      name: data.name,
-      role: data.role,
-      ...(data.email ? { email: data.email } : {}),
-      ...(data.permissions !== undefined ? { permissions: typeof data.permissions === "string" ? data.permissions : JSON.stringify(data.permissions) } : {}),
+      username,
+      password: hashedPassword,
+      name,
+      role,
+      ...(data.email ? { email: String(data.email).trim().toLowerCase() } : {}),
+      ...(data.permissions !== undefined
+        ? {
+            permissions:
+              typeof data.permissions === "string"
+                ? data.permissions
+                : JSON.stringify(data.permissions),
+          }
+        : {}),
     });
 
     const { password: _, ...safeUser } = newUser as any;
     return NextResponse.json(safeUser, { status: 201 });
   } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+    return NextResponse.json({ error: "Terjadi kesalahan server." }, { status: 500 });
   }
 }

@@ -21,8 +21,6 @@ type Props = {
   onCaptionChange?: (caption: string) => void;
 };
 
-const fileToBase64 = (file: File): Promise<string> =>
-  new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result as string); fr.readAsDataURL(file); });
 
 export default function GalleryWidget({ selectedIds, onChange, caption = '', onCaptionChange }: Props) {
   const [showPicker, setShowPicker] = useState(false);
@@ -78,13 +76,21 @@ export default function GalleryWidget({ selectedIds, onChange, caption = '', onC
     if (!uploadFile || !uploadTitle.trim()) { alert('Pilih file dan isi judul terlebih dahulu.'); return; }
     setUploading(true);
     try {
-      const base64 = await fileToBase64(uploadFile);
+      // Step 1: upload file to Supabase Storage via /api/upload
+      const fd = new FormData();
+      fd.append('file', uploadFile);
+      const uploadRes = await fetch('/api/upload', { method: 'POST', body: fd });
+      const uploadJson = await uploadRes.json();
+      if (!uploadRes.ok) throw new Error(uploadJson.error || 'Upload gagal');
+      const imageUrl = uploadJson.url as string;
+
+      // Step 2: save gallery record with the returned URL
       const res = await fetch('/api/gallery', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: uploadTitle.trim(), category: uploadCat, imageData: base64 }),
+        body: JSON.stringify({ title: uploadTitle.trim(), category: uploadCat, imageUrl }),
       });
       const json = await res.json();
-      if (!res.ok) throw new Error(json.error || 'Gagal mengunggah');
+      if (!res.ok) throw new Error(json.error || 'Gagal menyimpan ke galeri');
       setItems(prev => [json, ...prev]);
       onChange([...selectedIds, json.id]);
       setUploadStatus('success');

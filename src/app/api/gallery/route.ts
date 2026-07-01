@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db, jsonDb } from "@/lib/db";
 import { requireAuth } from "@/lib/session";
-import sharp from "sharp";
-import path from "path";
-import fs from "fs/promises";
 
 export const runtime = "nodejs";
 
@@ -29,31 +26,26 @@ export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
     if (!data.title || !data.category) {
-      return NextResponse.json({ error: "Judul dan kategori wajib diisi" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Judul dan kategori wajib diisi" },
+        { status: 400 }
+      );
     }
 
-    let imageUrl: string = data.imageUrl || "";
-
-    // Convert base64 → AVIF → save to /public/Gallery
-    if (typeof data.imageData === "string" && data.imageData.startsWith("data:image/")) {
-      const base64 = data.imageData.split(",")[1] || "";
-      const buf = Buffer.from(base64, "base64");
-      const slug = String(data.title).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 40) || "foto";
-      const filename = `${slug}-${Date.now()}.avif`;
-      const dir = path.join(process.cwd(), "public", "Gallery");
-      await fs.mkdir(dir, { recursive: true });
-      await sharp(buf)
-        .resize({ width: 1600, withoutEnlargement: true })
-        .avif({ quality: 55, effort: 4 })
-        .toFile(path.join(dir, filename));
-      imageUrl = `/Gallery/${filename}`;
-    }
+    // imageUrl must already be a fully-formed URL supplied by the client
+    // (uploaded via POST /api/upload → Supabase Storage public URL).
+    const imageUrl: string = data.imageUrl || "";
 
     if (!imageUrl) {
-      return NextResponse.json({ error: "Gambar wajib diunggah atau diisi URL-nya" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Gambar wajib diunggah terlebih dahulu." },
+        { status: 400 }
+      );
     }
 
-    const payload = { data: { title: data.title, category: data.category, imageUrl } };
+    const payload = {
+      data: { title: data.title, category: data.category, imageUrl },
+    };
 
     try {
       const item = await db.gallery.create(payload);

@@ -255,8 +255,8 @@ function MapPageContent() {
 
                   {selectedItem.classification && (
                     <div>
-                      <h4 style={{ fontSize: "0.85rem", fontWeight: 700, marginBottom: "0.25rem" }}>Klasifikasi & Kamar:</h4>
-                      <p style={{ fontSize: "0.85rem" }}>{selectedItem.classification} ({selectedItem.rooms} Kamar)</p>
+                      <h4 style={{ fontSize: "0.85rem", fontWeight: 700, marginBottom: "0.25rem" }}>Klasifikasi:</h4>
+                      <p style={{ fontSize: "0.85rem" }}>{selectedItem.classification}</p>
                     </div>
                   )}
 

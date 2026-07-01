@@ -94,25 +94,47 @@ export function DeleteModal({ open, onClose, onConfirm, label }: { open: boolean
 /* ─── Photo Upload Helper ─── */
 export function PhotoUploadField({ label, value, onChange }: { label: string; value: string; onChange: (val: string) => void }) {
   const fileRef = useRef<HTMLInputElement>(null);
-  const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
+  const [uploading, setUploading] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
+
+  const handleFile = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => onChange(ev.target?.result as string ?? "");
-    reader.readAsDataURL(file);
+    setUploading(true);
+    setErrMsg("");
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Upload gagal");
+      onChange(json.url as string);
+    } catch (err: any) {
+      setErrMsg(err.message || "Upload gagal");
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
   };
   return (
     <div>
       <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "var(--dash-text-soft)", marginBottom: "6px" }}>{label}</label>
       <input className="dash-input" type="text" value={value} onChange={e => onChange(e.target.value)} placeholder="URL foto atau upload di bawah" style={{ marginBottom: "8px" }} />
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <button type="button" onClick={() => fileRef.current?.click()} style={{ display: "flex", alignItems: "center", gap: "6px", padding: "7px 14px", borderRadius: "8px", border: "1px solid var(--dash-border)", background: "var(--dash-bg)", color: "var(--dash-text-muted)", fontSize: "0.8rem", cursor: "pointer", fontWeight: 600 }}>
-          <Upload size={14} /> Upload File
+        <button
+          type="button"
+          onClick={() => fileRef.current?.click()}
+          disabled={uploading}
+          style={{ display: "flex", alignItems: "center", gap: "6px", padding: "7px 14px", borderRadius: "8px", border: "1px solid var(--dash-border)", background: uploading ? "var(--dash-surface-hover)" : "var(--dash-bg)", color: uploading ? "var(--dash-primary)" : "var(--dash-text-muted)", fontSize: "0.8rem", cursor: uploading ? "not-allowed" : "pointer", fontWeight: 600 }}
+        >
+          <Upload size={14} />
+          {uploading ? "Mengunggah..." : "Upload File"}
         </button>
-        {value && (
+        {value && !uploading && (
           <img src={value} alt="preview" style={{ width: "36px", height: "36px", borderRadius: "8px", objectFit: "cover", border: "1px solid var(--dash-border)" }} />
         )}
       </div>
+      {errMsg && <p style={{ margin: "4px 0 0", fontSize: "0.72rem", color: "var(--dash-danger)" }}>{errMsg}</p>}
       <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} style={{ display: "none" }} />
     </div>
   );
