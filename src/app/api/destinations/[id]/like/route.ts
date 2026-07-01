@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { jsonDb } from "@/lib/db";
+import { jsonStore } from "@/lib/db";
 import { checkRateLimit, LIKE_RATE_LIMIT } from "@/lib/rateLimit";
 
 export async function POST(
@@ -31,7 +31,7 @@ export async function POST(
       return NextResponse.json({ error: "ID tidak valid." }, { status: 400 });
     }
 
-    const updated = await jsonDb.destinations.incrementLikes({ where: { id } });
+    const updated = await jsonStore.destinations.incrementLikes({ where: { id } });
     return NextResponse.json({ id, likes: updated.likes ?? 0 });
   } catch (e: any) {
     return NextResponse.json({ error: "Destinasi tidak ditemukan." }, { status: 404 });

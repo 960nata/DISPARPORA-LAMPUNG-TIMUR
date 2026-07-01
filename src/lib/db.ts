@@ -300,6 +300,20 @@ function seedGallery(): GalleryItem[] {
   return items.map((it, i) => ({ id: `gal_${i + 1}`, order: i, createdAt: now, ...it }));
 }
 
+// Merge `patch` onto `base`, ignoring undefined values in `patch`.
+// The API routes intentionally send `undefined` for empty optional fields
+// (imageUrl, description, gallery, ...). Prisma skips undefined on update,
+// but a naive `{ ...base, ...patch }` would OVERWRITE existing values with
+// undefined and wipe them — causing saved images/description to "disappear"
+// after an edit. This keeps JSON-store updates non-destructive, matching Prisma.
+function mergeDefined<T>(base: T, patch: Partial<T>): T {
+  const out = { ...base };
+  for (const k in patch) {
+    if (patch[k] !== undefined) (out as any)[k] = patch[k];
+  }
+  return out;
+}
+
 // ----------------------------------------------------
 // Fallback Mock JSON Database Engine
 // ----------------------------------------------------
@@ -805,7 +819,7 @@ class JsonDbEngine {
     update: async ({ where, data }: { where: { id: string }; data: Partial<User> }) => {
       const idx = this.data.users.findIndex(u => u.id === where.id);
       if (idx !== -1) {
-        this.data.users[idx] = { ...this.data.users[idx], ...data };
+        this.data.users[idx] = mergeDefined(this.data.users[idx], data);
         this.saveData();
         return this.data.users[idx];
       }
@@ -834,7 +848,7 @@ class JsonDbEngine {
     update: async ({ where, data }: { where: { id: string }; data: Partial<Destination> }) => {
       const idx = this.data.destinations.findIndex(d => d.id === where.id);
       if (idx !== -1) {
-        this.data.destinations[idx] = { ...this.data.destinations[idx], ...data };
+        this.data.destinations[idx] = mergeDefined(this.data.destinations[idx], data);
         this.saveData();
         return this.data.destinations[idx];
       }
@@ -887,7 +901,7 @@ class JsonDbEngine {
         if (data.title) {
           slug = data.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
         }
-        this.data.posts[idx] = { ...this.data.posts[idx], ...data, slug };
+        this.data.posts[idx] = { ...mergeDefined(this.data.posts[idx], data), slug };
         this.saveData();
         return this.data.posts[idx];
       }
@@ -913,7 +927,7 @@ class JsonDbEngine {
     update: async ({ where, data }: { where: { id: string }; data: Partial<Partner> }) => {
       const idx = this.data.partners.findIndex(p => p.id === where.id);
       if (idx === -1) throw new Error("Partner not found");
-      this.data.partners[idx] = { ...this.data.partners[idx], ...data };
+      this.data.partners[idx] = mergeDefined(this.data.partners[idx], data);
       this.saveData();
       return this.data.partners[idx];
     },
@@ -937,7 +951,7 @@ class JsonDbEngine {
     update: async ({ where, data }: { where: { id: string }; data: Partial<Official> }) => {
       const idx = this.data.officials.findIndex(o => o.id === where.id);
       if (idx === -1) throw new Error("Official not found");
-      this.data.officials[idx] = { ...this.data.officials[idx], ...data };
+      this.data.officials[idx] = mergeDefined(this.data.officials[idx], data);
       this.saveData();
       return this.data.officials[idx];
     },
@@ -961,7 +975,7 @@ class JsonDbEngine {
     update: async ({ where, data }: { where: { id: string }; data: Partial<Speech> }) => {
       const idx = this.data.speeches.findIndex(s => s.id === where.id);
       if (idx === -1) throw new Error("Speech not found");
-      this.data.speeches[idx] = { ...this.data.speeches[idx], ...data };
+      this.data.speeches[idx] = mergeDefined(this.data.speeches[idx], data);
       this.saveData();
       return this.data.speeches[idx];
     },
@@ -985,7 +999,7 @@ class JsonDbEngine {
     update: async ({ where, data }: { where: { id: string }; data: Partial<AppEvent> }) => {
       const idx = this.data.events.findIndex(e => e.id === where.id);
       if (idx === -1) throw new Error("Event not found");
-      this.data.events[idx] = { ...this.data.events[idx], ...data };
+      this.data.events[idx] = mergeDefined(this.data.events[idx], data);
       this.saveData();
       return this.data.events[idx];
     },
@@ -1014,7 +1028,7 @@ class JsonDbEngine {
     update: async ({ where, data }: { where: { id: string }; data: Partial<VisitorStat> }) => {
       const idx = this.data.visitorStats.findIndex(v => v.id === where.id);
       if (idx === -1) throw new Error("VisitorStat not found");
-      this.data.visitorStats[idx] = { ...this.data.visitorStats[idx], ...data, updatedAt: new Date().toISOString() };
+      this.data.visitorStats[idx] = { ...mergeDefined(this.data.visitorStats[idx], data), updatedAt: new Date().toISOString() };
       this.saveData();
       return this.data.visitorStats[idx];
     },
@@ -1043,7 +1057,7 @@ class JsonDbEngine {
     update: async ({ where, data }: { where: { id: string }; data: Partial<GalleryItem> }) => {
       const idx = this.data.gallery.findIndex(g => g.id === where.id);
       if (idx === -1) throw new Error("Gallery item not found");
-      this.data.gallery[idx] = { ...this.data.gallery[idx], ...data };
+      this.data.gallery[idx] = mergeDefined(this.data.gallery[idx], data);
       this.saveData();
       return this.data.gallery[idx];
     },
@@ -1070,7 +1084,7 @@ class JsonDbEngine {
     update: async ({ where, data }: { where: { id: string }; data: Partial<Athlete> }) => {
       const idx = this.data.athletes.findIndex(a => a.id === where.id);
       if (idx !== -1) {
-        this.data.athletes[idx] = { ...this.data.athletes[idx], ...data };
+        this.data.athletes[idx] = mergeDefined(this.data.athletes[idx], data);
         this.saveData();
         return this.data.athletes[idx];
       }
@@ -1086,7 +1100,7 @@ class JsonDbEngine {
 }
 
 // Instantiate Database Engine depending on configuration
-export const jsonDb = new JsonDbEngine();
+const jsonDbEngine = new JsonDbEngine();
 
 // Normalize Prisma singular model names → plural to match JsonDbEngine API
 function normalizePrisma(p: any) {
@@ -1104,8 +1118,32 @@ function normalizePrisma(p: any) {
   };
 }
 
-export const db = (isPgConfigured && prismaClient) ? normalizePrisma(prismaClient) : jsonDb;
+export const db = (isPgConfigured && prismaClient) ? normalizePrisma(prismaClient) : jsonDbEngine;
 export const usingMockDb = !(isPgConfigured && prismaClient);
+
+// When a real database (Supabase/Postgres) is configured it is the SINGLE source
+// of truth. The JSON store must not act as a silent read/write fallback — doing so
+// splits data across two stores and, on serverless hosting, silently drops writes
+// (the local file is ephemeral). So the `jsonDb` that API routes use in their
+// `catch { ... }` fallback throws a clear error instead, making failures visible
+// rather than corrupting/losing data. Only when NO database is configured
+// (local dev without DATABASE_URL) is `jsonDb` the live engine.
+function throwingFallback(): any {
+  const fail = () => {
+    throw new Error(
+      "Operasi database gagal. Fallback penyimpanan lokal dinonaktifkan karena Supabase adalah sumber data tunggal — silakan coba lagi."
+    );
+  };
+  const table = new Proxy({}, { get: () => fail });
+  return new Proxy({}, { get: () => table });
+}
+
+export const jsonDb: any = usingMockDb ? jsonDbEngine : throwingFallback();
+
+// Direct handle to the JSON engine, always available. Used only for features that
+// have no column in the Prisma schema (e.g. destination "likes"), which are stored
+// in the local JSON store as a best-effort side channel regardless of DB config.
+export const jsonStore = jsonDbEngine;
 export const BupatiSpeechData = {
   name: "M. Dawam Rahardjo",
   title: "Bupati Lampung Timur",

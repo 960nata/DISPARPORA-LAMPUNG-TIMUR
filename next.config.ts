@@ -57,6 +57,11 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Pin the workspace root to this project. Without it Next infers the parent
+  // directory (which also contains a package-lock.json) as root, which can break
+  // the dev server / route resolution.
+  turbopack: { root: __dirname },
+
   serverExternalPackages: ["@prisma/client", "bcryptjs"],
 
   async headers() {
