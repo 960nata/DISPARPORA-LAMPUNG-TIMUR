@@ -19,6 +19,7 @@ export default function KontakPage() {
   const [errors, setErrors]   = useState<Partial<typeof form>>({});
   const [sent, setSent]       = useState(false);
   const [loading, setLoading] = useState(false);
+  const [sendError, setSendError] = useState("");
 
   const validate = () => {
     const e: Partial<typeof form> = {};
@@ -30,12 +31,27 @@ export default function KontakPage() {
     return e;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-    setErrors({}); setLoading(true);
-    setTimeout(() => { setLoading(false); setSent(true); }, 1000);
+    setErrors({}); setSendError(""); setLoading(true);
+    try {
+      const res = await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Gagal mengirim pesan. Coba lagi.");
+      }
+      setSent(true);
+    } catch (err: any) {
+      setSendError(err.message || "Gagal mengirim pesan. Coba lagi.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const field = (err?: string): React.CSSProperties => ({
@@ -142,7 +158,7 @@ export default function KontakPage() {
                   </div>
                   <h4 style={{ fontWeight: 800, margin: "0 0 0.4rem", color: "var(--text-primary)" }}>Pesan Terkirim!</h4>
                   <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", margin: "0 0 1.25rem" }}>Terima kasih, tim kami akan segera menghubungi Anda.</p>
-                  <button onClick={() => { setSent(false); setForm({ nama: "", email: "", subjek: "", pesan: "" }); }}
+                  <button onClick={() => { setSent(false); setSendError(""); setForm({ nama: "", email: "", subjek: "", pesan: "" }); }}
                     style={{ padding: "0.6rem 1.4rem", borderRadius: "999px", background: GREEN, color: "white", fontWeight: 700, fontSize: "0.85rem", border: "none", cursor: "pointer" }}>
                     Kirim Lagi
                   </button>
@@ -169,6 +185,9 @@ export default function KontakPage() {
                       style={{ ...field(errors.pesan), resize: "none" }} />
                     {errors.pesan && <p style={{ color: "#ef4444", fontSize: "0.72rem", margin: "4px 0 0" }}>{errors.pesan}</p>}
                   </div>
+                  {sendError && (
+                    <p style={{ color: "#ef4444", fontSize: "0.78rem", margin: "-0.3rem 0 0", fontWeight: 600 }}>{sendError}</p>
+                  )}
                   <button type="submit" disabled={loading}
                     style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", padding: "0.85rem", borderRadius: "12px", background: loading ? "#6ee7b7" : GREEN, color: "white", fontWeight: 800, fontSize: "0.9rem", border: "none", cursor: loading ? "not-allowed" : "pointer", transition: "background 0.2s" }}>
                     <Send size={16} /> {loading ? "Mengirim..." : "Kirim Pesan"}

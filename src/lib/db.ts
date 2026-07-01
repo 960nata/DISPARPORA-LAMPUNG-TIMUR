@@ -116,6 +116,16 @@ export interface Athlete {
   event: string;
 }
 
+export interface Message {
+  id: string;
+  nama: string;
+  email: string;
+  subjek: string;
+  pesan: string;
+  status: string; // "unread" | "read"
+  createdAt: string;
+}
+
 interface JsonDatabaseSchema {
   users: User[];
   destinations: Destination[];
@@ -127,6 +137,7 @@ interface JsonDatabaseSchema {
   events: AppEvent[];
   visitorStats: VisitorStat[];
   athletes: Athlete[];
+  messages: Message[];
 }
 
 function seedOfficials(): Official[] {
@@ -322,7 +333,7 @@ function mergeDefined<T>(base: T, patch: Partial<T>): T {
 // Fallback Mock JSON Database Engine
 // ----------------------------------------------------
 class JsonDbEngine {
-  private data: JsonDatabaseSchema = { users: [], destinations: [], posts: [], partners: [], gallery: [], officials: [], speeches: [], events: [], visitorStats: [], athletes: [] };
+  private data: JsonDatabaseSchema = { users: [], destinations: [], posts: [], partners: [], gallery: [], officials: [], speeches: [], events: [], visitorStats: [], athletes: [], messages: [] };
 
   constructor() {
     this.loadData();
@@ -352,6 +363,7 @@ class JsonDbEngine {
           this.data.athletes = seedAthletes();
           this.saveData();
         }
+        if (!this.data.messages) { this.data.messages = []; this.saveData(); }
         if (this.data.destinations.some(d => (d as any).likes === undefined)) {
           this.data.destinations = this.data.destinations.map(d => ({ ...d, likes: (d as any).likes ?? 0 }));
           this.saveData();
@@ -799,6 +811,7 @@ class JsonDbEngine {
       events: seedEvents(),
       visitorStats: seedVisitorStats(),
       athletes: seedAthletes(),
+      messages: [],
     };
     this.saveData();
   }
@@ -1101,6 +1114,76 @@ class JsonDbEngine {
       return deleted;
     }
   };
+
+  // CONTACT MESSAGES (Kirim Pesan)
+  public messages = {
+    findMany: async () =>
+      [...this.data.messages].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
+    findUnique: async ({ where }: { where: { id: string } }) =>
+      this.data.messages.find(m => m.id === where.id) ?? null,
+    create: async ({ data }: { data: Omit<Message, "id" | "createdAt" | "status"> & { status?: string } }) => {
+      const item: Message = {
+        id: `msg_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+        createdAt: new Date().toISOString(),
+        status: data.status || "unread",
+        nama: data.nama, email: data.email, subjek: data.subjek, pesan: data.pesan,
+      };
+      this.data.messages.push(item);
+      this.saveData();
+      return item;
+    },
+    update: async ({ where, data }: { where: { id: string }; data: Partial<Message> }) => {
+      const idx = this.data.messages.findIndex(m => m.id === where.id);
+      if (idx === -1) throw new Error("Message not found");
+      this.data.messages[idx] = mergeDefined(this.data.messages[idx], data);
+      this.saveData();
+      return this.data.messages[idx];
+    },
+    delete: async ({ where }: { where: { id: string } }) => {
+      const deleted = this.data.messages.find(m => m.id === where.id);
+      this.data.messages = this.data.messages.filter(m => m.id !== where.id);
+      this.saveData();
+      return deleted;
+    },
+  };
+}
+
+// Raw-SQL messages engine for the Prisma/Postgres path.
+// The `contact_messages` table is created out-of-band (not a Prisma model),
+// because the local Prisma CLI can't regenerate the client on this Node version.
+// Using $queryRawUnsafe keeps it working without a generated model on both
+// local and Vercel. Values are always passed as bound params ($1..) — never
+// interpolated — so this is not SQL-injectable.
+function prismaMessages(p: any) {
+  const T = `public.contact_messages`;
+  return {
+    findMany: async () =>
+      p.$queryRawUnsafe(`SELECT * FROM ${T} ORDER BY "createdAt" DESC`),
+    findUnique: async ({ where }: { where: { id: string } }) => {
+      const rows: any[] = await p.$queryRawUnsafe(`SELECT * FROM ${T} WHERE id = $1 LIMIT 1`, where.id);
+      return rows[0] ?? null;
+    },
+    create: async ({ data }: { data: Omit<Message, "id" | "createdAt" | "status"> & { status?: string } }) => {
+      const id = `msg_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+      const rows: any[] = await p.$queryRawUnsafe(
+        `INSERT INTO ${T} (id, nama, email, subjek, pesan, status) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+        id, data.nama, data.email, data.subjek, data.pesan, data.status || "unread"
+      );
+      return rows[0];
+    },
+    update: async ({ where, data }: { where: { id: string }; data: Partial<Message> }) => {
+      const rows: any[] = await p.$queryRawUnsafe(
+        `UPDATE ${T} SET status = COALESCE($2, status) WHERE id = $1 RETURNING *`,
+        where.id, data.status ?? null
+      );
+      if (!rows[0]) throw new Error("Message not found");
+      return rows[0];
+    },
+    delete: async ({ where }: { where: { id: string } }) => {
+      const rows: any[] = await p.$queryRawUnsafe(`DELETE FROM ${T} WHERE id = $1 RETURNING *`, where.id);
+      return rows[0];
+    },
+  };
 }
 
 // Instantiate Database Engine depending on configuration
@@ -1119,6 +1202,8 @@ function normalizePrisma(p: any) {
     events:       p.appEvent,
     visitorStats: p.visitorStat,
     athletes:     p.athlete,
+    // messages has no generated Prisma model — use the raw-SQL engine instead.
+    messages:     prismaMessages(p),
   };
 }
 
