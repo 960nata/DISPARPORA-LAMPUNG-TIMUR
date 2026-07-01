@@ -165,7 +165,7 @@ export default function DestinasiDetailPage() {
         <div className="dest-detail-grid" style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "2rem", alignItems: "start" }}>
 
           {/* ── LEFT ── */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "1.75rem" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.75rem", minWidth: 0 }}>
 
             {/* Tabs */}
             <div style={{ display: "flex", borderBottom: "2px solid #f1f5f9", gap: "0.25rem" }}>
@@ -183,7 +183,7 @@ export default function DestinasiDetailPage() {
                 <div style={{ padding: "1.5rem", background: "white", borderRadius: "18px", border: "1px solid #f1f5f9", boxShadow: "0 1px 8px rgba(0,0,0,0.04)" }}>
                   <p style={{ margin: "0 0 0.75rem", fontSize: "0.65rem", fontWeight: 800, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em" }}>Tentang Destinasi</p>
                   {dest.description
-                    ? <div style={{ fontSize: "0.93rem", lineHeight: 1.8, color: "#374151" }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(dest.description) }} />
+                    ? <div className="dest-desc" style={{ fontSize: "0.93rem", lineHeight: 1.8, color: "#374151" }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(dest.description) }} />
                     : <p style={{ margin: 0, fontSize: "0.9rem", color: "#cbd5e1", fontStyle: "italic" }}>Deskripsi belum tersedia.</p>
                   }
                 </div>
@@ -398,6 +398,12 @@ export default function DestinasiDetailPage() {
 
       <style jsx global>{`
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .dest-desc { overflow-wrap: break-word; word-break: break-word; }
+        .dest-desc img,
+        .dest-desc video,
+        .dest-desc iframe,
+        .dest-desc table { max-width: 100%; height: auto; }
+        .dest-desc pre { max-width: 100%; overflow-x: auto; white-space: pre-wrap; }
         @media (max-width: 768px) {
           .dest-detail-grid { grid-template-columns: 1fr !important; }
           .dest-detail-aside { position: static !important; }
