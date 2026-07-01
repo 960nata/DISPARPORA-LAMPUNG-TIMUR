@@ -14,5 +14,9 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: { persistSession: false },
 });
 
-/** Bucket name where user-uploaded files are stored. */
-export const STORAGE_BUCKET = "upload";
+/**
+ * Bucket name where user-uploaded files are stored.
+ * Env-driven so it stays consistent across environments; defaults to "upload".
+ * Must match the bucket name in the Supabase project (Storage → Buckets).
+ */
+export const STORAGE_BUCKET = process.env.SUPABASE_STORAGE_BUCKET || "upload";

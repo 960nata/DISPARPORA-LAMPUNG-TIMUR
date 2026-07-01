@@ -1,5 +1,15 @@
 import type { NextConfig } from "next";
 
+// Supabase project origin, derived from env so the CSP never drifts per environment.
+// Falls back to the wildcard-covered value if unset.
+const supabaseOrigin = (() => {
+  try {
+    return new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "").origin;
+  } catch {
+    return "";
+  }
+})();
+
 const securityHeaders = [
   // Prevent MIME-type sniffing
   { key: "X-Content-Type-Options", value: "nosniff" },
@@ -35,9 +45,9 @@ const securityHeaders = [
       "worker-src 'self' blob:",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: blob: https://*.supabase.co https://pgqsytcplbondrqypdjn.supabase.co https://*.tile.openstreetmap.org",
+      `img-src 'self' data: blob: https://*.supabase.co ${supabaseOrigin} https://*.tile.openstreetmap.org https://images.unsplash.com https://disparpora.lampungtimurkab.go.id`,
       "media-src 'self'",
-      "connect-src 'self' https://*.supabase.co https://pgqsytcplbondrqypdjn.supabase.co",
+      `connect-src 'self' https://*.supabase.co ${supabaseOrigin}`,
       "frame-src 'none'",
       "object-src 'none'",
       "base-uri 'self'",

@@ -47,7 +47,7 @@ function detectMimeByMagic(buf: Buffer): string | null {
  *
  * Accepts multipart/form-data with a single `file` field.
  * Validates file type by both MIME header AND magic bytes.
- * Uploads to Supabase Storage bucket "uploads" and returns
+ * Uploads to the Supabase Storage bucket named by STORAGE_BUCKET and returns
  * the public URL: { url: "https://..." }
  *
  * Requires: valid SIMAD session cookie (any authenticated user).
