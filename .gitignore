@@ -50,5 +50,10 @@ __pycache__/
 # claude local settings
 .claude/settings.local.json
 
+# AI agent files — jangan masuk ke git
+CLAUDE.md
+.agents/
+.gemini/
+
 # local JSON database (contains user credentials)
 src/data/db_store.json
