@@ -123,9 +123,10 @@ function DirectoryContent() {
         .dir-heart-btn:hover { background: rgba(255,255,255,1) !important; transform: scale(1.1); }
         @media (max-width: 640px) {
           .dir-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
-          .dir-card { height: 280px !important; border-radius: 16px !important; }
+          .dir-card { border-radius: 16px !important; }
+          .dir-card-img:not(.is-hover) { bottom: calc(100% - 148px) !important; }
           .dir-card-desc { display: none !important; }
-          .dir-card-bottom { padding: 10px 12px 12px !important; }
+          .dir-card-bottom { padding: 10px 12px 12px !important; margin-top: 148px !important; }
           .dir-card-title { font-size: 0.78rem !important; margin-bottom: 2px !important; -webkit-line-clamp: 2 !important; display: -webkit-box !important; -webkit-box-orient: vertical !important; overflow: hidden !important; }
           .dir-card-kec { font-size: 0.65rem !important; margin-bottom: 0 !important; }
           .dir-card-meta-row { padding-top: 8px !important; margin-top: 4px !important; }
@@ -362,7 +363,6 @@ function DirectoryContent() {
                       position: "relative",
                       borderRadius: "22px",
                       overflow: "hidden",
-                      height: "380px",
                       boxShadow: isHovered
                         ? "0 20px 50px -12px rgba(0,0,0,0.35)"
                         : "0 4px 20px -4px rgba(0,0,0,0.12)",
@@ -373,12 +373,16 @@ function DirectoryContent() {
                     }}
                   >
                     {/* ── IMAGE ── */}
-                    <div style={{
+                    {/* Fixed 200px idle height via calc(), not %, so it no longer depends on
+                        the card's total height — .dir-card-bottom below is sized by its own
+                        content now instead of a fixed card height. Keep in sync with the
+                        200px + 8px offset used in dir-card-bottom's marginTop. */}
+                    <div className={`dir-card-img${isHovered ? " is-hover" : ""}`} style={{
                       position: "absolute",
                       left: isHovered ? 0 : "8px",
                       right: isHovered ? 0 : "8px",
                       top: isHovered ? 0 : "8px",
-                      bottom: isHovered ? 0 : "47%",
+                      bottom: isHovered ? 0 : "calc(100% - 208px)",
                       transition: "all 0.45s cubic-bezier(.4,0,.2,1)",
                       borderRadius: isHovered ? "22px" : "16px",
                       overflow: "hidden",
@@ -408,7 +412,7 @@ function DirectoryContent() {
 
                     {/* ── HEART BUTTON ── */}
                     <button className="dir-heart-btn" style={{
-                      position: "absolute", top: "5%", right: "5%", zIndex: 10,
+                      position: "absolute", top: "10px", right: "10px", zIndex: 10,
                       width: "36px", height: "36px", borderRadius: "50%",
                       background: likedIds.has(item.id) ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.92)", border: "none",
                       display: "flex", alignItems: "center", justifyContent: "center",
@@ -466,17 +470,19 @@ function DirectoryContent() {
                     </div>
 
                     {/* ── NORMAL STATE: white content area ── */}
+                    {/* Normal flow now (not absolute/bottom:0), so the card's total height
+                        grows to fit this content instead of forcing the meta row to the
+                        bottom of a fixed-height box. marginTop reserves the space for the
+                        absolutely-positioned image above (must match its 200px + 8px offset). */}
                     <div className="dir-card-bottom" style={{
-                      position: "absolute", bottom: 0, left: 0, right: 0,
-                      height: "43%",
+                      marginTop: "208px",
                       background: "#fff",
                       borderRadius: "0 0 22px 22px",
                       padding: "14px 18px 16px",
-                      display: "flex", flexDirection: "column", justifyContent: "space-between",
+                      display: "flex", flexDirection: "column",
                       opacity: isHovered ? 0 : 1,
                       transition: "opacity 0.2s ease",
                       pointerEvents: isHovered ? "none" : "auto",
-                      zIndex: 4,
                     }}>
                       <div>
                         <h3 className="dir-card-title" style={{ margin: "0 0 2px", fontSize: "1rem", fontWeight: 800, color: "#0f172a", lineHeight: 1.3 }}>

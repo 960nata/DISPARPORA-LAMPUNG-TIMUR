@@ -16,8 +16,15 @@ export interface GalleryItem {
 }
 
 const CATS = ['Alam', 'Bahari', 'Budaya', 'Sejarah', 'Kuliner', 'Event', 'Lainnya'];
-const toBase64 = (f: File): Promise<string> =>
-  new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result as string); fr.readAsDataURL(f); });
+
+async function uploadToStorage(file: File): Promise<string> {
+  const fd = new FormData();
+  fd.append('file', file);
+  const res = await fetch('/api/upload', { method: 'POST', body: fd });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.error || 'Upload gagal');
+  return json.url as string;
+}
 
 type Props = {
   multi?: boolean;                              // true = multi-select, false = single
@@ -86,10 +93,10 @@ export default function GalleryPickerModal({ multi = false, onSelect, onClose, s
     if (!file || !title.trim()) { alert('Pilih file dan isi judul.'); return; }
     setUploading(true);
     try {
-      const b64 = await toBase64(file);
+      const imageUrl = await uploadToStorage(file);
       const res = await fetch('/api/gallery', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: title.trim(), category: upCat, imageData: b64 }),
+        body: JSON.stringify({ title: title.trim(), category: upCat, imageUrl }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Gagal');
