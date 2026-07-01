@@ -126,6 +126,21 @@ export interface Message {
   createdAt: string;
 }
 
+// One row per page visit. Privacy: we store an APPROXIMATE location derived from
+// request geo headers (country/region/city) — never the raw IP address.
+// `session` (per-tab) and `visitor` (per-device) are random anonymous tokens.
+export interface PageView {
+  id: string;
+  path: string;
+  session: string;
+  visitor: string;
+  isNew: boolean;   // first-ever visit from this device?
+  country: string;
+  region: string;
+  city: string;
+  createdAt: string;
+}
+
 interface JsonDatabaseSchema {
   users: User[];
   destinations: Destination[];
@@ -138,6 +153,7 @@ interface JsonDatabaseSchema {
   visitorStats: VisitorStat[];
   athletes: Athlete[];
   messages: Message[];
+  pageViews: PageView[];
 }
 
 function seedOfficials(): Official[] {
@@ -333,7 +349,7 @@ function mergeDefined<T>(base: T, patch: Partial<T>): T {
 // Fallback Mock JSON Database Engine
 // ----------------------------------------------------
 class JsonDbEngine {
-  private data: JsonDatabaseSchema = { users: [], destinations: [], posts: [], partners: [], gallery: [], officials: [], speeches: [], events: [], visitorStats: [], athletes: [], messages: [] };
+  private data: JsonDatabaseSchema = { users: [], destinations: [], posts: [], partners: [], gallery: [], officials: [], speeches: [], events: [], visitorStats: [], athletes: [], messages: [], pageViews: [] };
 
   constructor() {
     this.loadData();
@@ -364,6 +380,7 @@ class JsonDbEngine {
           this.saveData();
         }
         if (!this.data.messages) { this.data.messages = []; this.saveData(); }
+        if (!this.data.pageViews) { this.data.pageViews = []; this.saveData(); }
         if (this.data.destinations.some(d => (d as any).likes === undefined)) {
           this.data.destinations = this.data.destinations.map(d => ({ ...d, likes: (d as any).likes ?? 0 }));
           this.saveData();
@@ -812,6 +829,7 @@ class JsonDbEngine {
       visitorStats: seedVisitorStats(),
       athletes: seedAthletes(),
       messages: [],
+      pageViews: [],
     };
     this.saveData();
   }
@@ -1146,6 +1164,26 @@ class JsonDbEngine {
       return deleted;
     },
   };
+
+  // PAGE VIEWS (traffic analytics)
+  public pageViews = {
+    record: async ({ path, session, visitor, isNew, country, region, city }: Omit<PageView, "id" | "createdAt">) => {
+      const item: PageView = {
+        id: `pv_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+        createdAt: new Date().toISOString(),
+        path, session, visitor, isNew, country, region, city,
+      };
+      this.data.pageViews.push(item);
+      // Cap the local dev file so it can't grow without bound.
+      if (this.data.pageViews.length > 50000) {
+        this.data.pageViews = this.data.pageViews.slice(-50000);
+      }
+      this.saveData();
+      return item;
+    },
+    findSince: async ({ since }: { since: string }) =>
+      this.data.pageViews.filter(v => v.createdAt >= since),
+  };
 }
 
 // Raw-SQL messages engine for the Prisma/Postgres path.
@@ -1186,6 +1224,59 @@ function prismaMessages(p: any) {
   };
 }
 
+// Raw-SQL page-view engine for the Prisma/Postgres path. The `page_views` table
+// is created lazily (CREATE TABLE IF NOT EXISTS) so it works without a Prisma
+// migration — the local Prisma CLI can't regenerate the client on this Node
+// version. No raw IP is ever stored; only approximate geo (country/region/city).
+function prismaPageViews(p: any) {
+  const T = `public.page_views`;
+  let ready: Promise<void> | null = null;
+  const ensure = () => {
+    if (!ready) {
+      ready = p
+        .$executeRawUnsafe(
+          `CREATE TABLE IF NOT EXISTS ${T} (
+             id text PRIMARY KEY,
+             path text NOT NULL,
+             session text NOT NULL DEFAULT '',
+             visitor text NOT NULL DEFAULT '',
+             is_new boolean NOT NULL DEFAULT true,
+             country text NOT NULL DEFAULT '',
+             region text NOT NULL DEFAULT '',
+             city text NOT NULL DEFAULT '',
+             "createdAt" timestamptz NOT NULL DEFAULT now()
+           )`
+        )
+        .then(() =>
+          p.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS page_views_created_idx ON ${T} ("createdAt")`)
+        )
+        .then(() => undefined)
+        .catch((e: any) => { ready = null; throw e; });
+    }
+    return ready;
+  };
+  return {
+    record: async ({ path, session, visitor, isNew, country, region, city }: Omit<PageView, "id" | "createdAt">) => {
+      await ensure();
+      const id = `pv_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+      const rows: any[] = await p.$queryRawUnsafe(
+        `INSERT INTO ${T} (id, path, session, visitor, is_new, country, region, city)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
+        id, path, session, visitor, isNew, country, region, city
+      );
+      return rows[0];
+    },
+    findSince: async ({ since }: { since: string }) => {
+      await ensure();
+      return p.$queryRawUnsafe(
+        `SELECT path, session, visitor, is_new AS "isNew", country, region, city, "createdAt"
+         FROM ${T} WHERE "createdAt" >= $1 ORDER BY "createdAt" ASC`,
+        since
+      );
+    },
+  };
+}
+
 // Instantiate Database Engine depending on configuration
 const jsonDbEngine = new JsonDbEngine();
 
@@ -1204,6 +1295,8 @@ function normalizePrisma(p: any) {
     athletes:     p.athlete,
     // messages has no generated Prisma model — use the raw-SQL engine instead.
     messages:     prismaMessages(p),
+    // page_views likewise has no Prisma model — raw-SQL engine.
+    pageViews:    prismaPageViews(p),
   };
 }
 
