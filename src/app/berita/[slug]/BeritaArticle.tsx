@@ -191,19 +191,19 @@ export default function BeritaArticle({ param }: { param: string }) {
             {related.length > 0 && (
               <div style={{ borderTop: "1px solid var(--border)", paddingTop: "2rem", marginTop: "1rem" }}>
                 <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1.25rem" }}>Artikel Terkait</h3>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "1rem" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gridAutoRows: "1fr", gap: "1rem" }}>
                   {related.map(r => (
-                    <Link key={r.id} href={`/berita/${r.slug || r.id}`} style={{ textDecoration: "none" }}>
-                      <div style={{ borderRadius: "12px", overflow: "hidden", border: "1px solid var(--border)", transition: "box-shadow 0.2s" }}
+                    <Link key={r.id} href={`/berita/${r.slug || r.id}`} style={{ textDecoration: "none", display: "flex" }}>
+                      <div style={{ borderRadius: "12px", overflow: "hidden", border: "1px solid var(--border)", transition: "box-shadow 0.2s", display: "flex", flexDirection: "column", width: "100%", height: "100%" }}
                         onMouseEnter={e => (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 20px rgba(0,0,0,0.1)"}
                         onMouseLeave={e => (e.currentTarget as HTMLElement).style.boxShadow = ""}
                       >
-                        <img src={r.imageUrl} alt={r.title} style={{ width: "100%", height: "120px", objectFit: "cover" }} />
-                        <div style={{ padding: "0.75rem" }}>
-                          <p style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--text-primary)", lineHeight: 1.35, margin: "0 0 0.3rem" }}>
-                            {r.title.length > 60 ? r.title.slice(0, 60) + "…" : r.title}
+                        <img src={r.imageUrl} alt={r.title} style={{ width: "100%", height: "120px", objectFit: "cover", flexShrink: 0 }} />
+                        <div style={{ padding: "0.75rem", display: "flex", flexDirection: "column", justifyContent: "space-between", flex: 1 }}>
+                          <p style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--text-primary)", lineHeight: 1.35, margin: "0 0 0.3rem", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+                            {r.title}
                           </p>
-                          <p style={{ fontSize: "0.7rem", color: "var(--text-secondary)", margin: 0 }}>
+                          <p style={{ fontSize: "0.7rem", color: "var(--text-secondary)", margin: "0.3rem 0 0" }}>
                             {new Date(r.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
                           </p>
                         </div>
