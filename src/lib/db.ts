@@ -306,7 +306,18 @@ if (isPgConfigured) {
     const { PrismaPg } = require("@prisma/adapter-pg");
     const globalForPrisma = global as unknown as { prisma: any };
     if (!globalForPrisma.prisma) {
-      const adapter = new PrismaPg({ connectionString: process.env.DIRECT_URL ?? process.env.DATABASE_URL });
+      // Runtime uses the pooled DATABASE_URL; DIRECT_URL is only a fallback.
+      // Cap the pg pool hard: on serverless every warm instance holds its own
+      // connections, and Supabase's direct connection allows very few clients
+      // ("max clients reached in session mode"). A small max + quick idle
+      // release keeps many instances (plus per-pageview tracking) under the cap.
+      const adapter = new PrismaPg({
+        connectionString: process.env.DATABASE_URL ?? process.env.DIRECT_URL,
+        max: 3,
+        idleTimeoutMillis: 10_000,
+        connectionTimeoutMillis: 20_000,
+        allowExitOnIdle: true,
+      });
       globalForPrisma.prisma = new PrismaClient({ adapter });
     }
     prismaClient = globalForPrisma.prisma;
