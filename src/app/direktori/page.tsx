@@ -27,6 +27,9 @@ function DirectoryContent() {
   const [tappedId, setTappedId]   = useState<string | null>(null);
   const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
   const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
+  // Real slugs live in the DB (the static tourism.json list has none), so map
+  // each destination id -> slug for SEO-friendly detail links.
+  const [slugMap, setSlugMap] = useState<Record<string, string>>({});
   const itemsPerPage = 12;
 
   useEffect(() => {
@@ -37,6 +40,15 @@ function DirectoryContent() {
     fetch("/api/destinations/likes")
       .then(r => r.json())
       .then(d => { if (d.map) setLikeCounts(d.map); })
+      .catch(() => { /* ignore */ });
+    fetch("/api/destinations")
+      .then(r => r.json())
+      .then((list) => {
+        if (!Array.isArray(list)) return;
+        const m: Record<string, string> = {};
+        for (const d of list) if (d?.id && d?.slug) m[d.id] = d.slug;
+        setSlugMap(m);
+      })
       .catch(() => { /* ignore */ });
   }, []);
 
@@ -454,7 +466,7 @@ function DirectoryContent() {
                           Kec. {item.kecamatan}, Lampung Timur
                         </span>
                       </div>
-                      <Link href={`/destinasi/${item.slug || item.id}`} className="dir-see-more dir-hover-btn" style={{
+                      <Link href={`/destinasi/${slugMap[item.id] || item.slug || item.id}`} className="dir-see-more dir-hover-btn" style={{
                         display: "flex", alignItems: "center", justifyContent: "space-between",
                         padding: "11px 16px", borderRadius: "14px",
                         background: "#fff", color: "#0f172a",
@@ -506,7 +518,7 @@ function DirectoryContent() {
                             <div className="dir-card-meta-label" style={{ fontSize: "0.62rem", color: "#94a3b8", fontWeight: 500 }}>{m.label}</div>
                           </div>
                         ))}
-                        <Link href={`/destinasi/${item.slug || item.id}`} className="dir-card-lihat" style={{
+                        <Link href={`/destinasi/${slugMap[item.id] || item.slug || item.id}`} className="dir-card-lihat" style={{
                           display: "flex", alignItems: "center", gap: "8px",
                           padding: "8px 14px", borderRadius: "12px",
                           background: catColor, color: "#fff",

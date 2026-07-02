@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db, jsonDb } from "@/lib/db";
 import { requireAuth } from "@/lib/session";
-import { slugify } from "@/lib/slug";
+import { uniqueSlug } from "@/lib/slug";
 
 export async function GET() {
   try {
@@ -22,6 +22,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Name and coordinates are required" }, { status: 400 });
     }
 
+    // Auto-generate a slug from the name, unique against existing destinations
+    // (adds -2, -3, … on collision). No manual slug entry needed.
+    let existing: any[] = [];
+    try { existing = await db.destinations.findMany(); } catch { existing = []; }
+    const usedSlugs = new Set(existing.map((d: any) => d.slug).filter(Boolean));
+    const slug = uniqueSlug(data.slug || data.name, usedSlugs);
+
     const payload = {
       data: {
         name: data.name,
@@ -40,8 +47,7 @@ export async function POST(request: NextRequest) {
         capacity: data.capacity !== undefined ? Number(data.capacity) : undefined,
         imageUrl: data.imageUrl || undefined,
         description: data.description || undefined,
-        // Auto-generate a slug from the name so every new destination is SEO-friendly.
-        slug: data.slug || slugify(data.name) || undefined,
+        slug,
         gallery: Array.isArray(data.gallery) ? data.gallery : undefined,
       }
     };

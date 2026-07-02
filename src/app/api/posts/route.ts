@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db, jsonDb } from "@/lib/db";
 import { requireAuth } from "@/lib/session";
+import { uniqueSlug } from "@/lib/slug";
 
 export async function GET() {
   try {
@@ -28,11 +29,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Title, content, and author are required" }, { status: 400 });
     }
 
-    // Generate slug from title
-    const slug = data.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
+    // Auto-generate a slug from the title, guaranteed unique against existing
+    // posts (adds -2, -3, … on collision). No manual slug entry needed.
+    let existing: any[] = [];
+    try { existing = await db.posts.findMany(); } catch { existing = []; }
+    const used = new Set(existing.map((p: any) => p.slug).filter(Boolean));
+    const slug = uniqueSlug(data.slug || data.title, used);
 
     const payload = {
       title: data.title, slug, content: data.content,

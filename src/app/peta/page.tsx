@@ -51,6 +51,20 @@ function MapPageContent() {
   const [search, setSearch] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<string[]>(["Wisata Alam", "Wisata Buatan", "Wisata Budaya", "Akomodasi"]); // culinary default off to avoid clutter
   const [selectedItem, setSelectedItem] = useState<MapItem | null>(null);
+  // Real slugs come from the DB (tourism.json has none) — for slug detail links.
+  const [slugMap, setSlugMap] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    fetch("/api/destinations")
+      .then(r => r.json())
+      .then((list) => {
+        if (!Array.isArray(list)) return;
+        const m: Record<string, string> = {};
+        for (const d of list) if (d?.id && d?.slug) m[d.id] = d.slug;
+        setSlugMap(m);
+      })
+      .catch(() => { /* ignore */ });
+  }, []);
 
   // Sync with URL query parameters (?id=xxx)
   useEffect(() => {
@@ -88,7 +102,7 @@ function MapPageContent() {
       item.kecamatan.toLowerCase().includes(search.toLowerCase()) ||
       item.address.toLowerCase().includes(search.toLowerCase());
     return matchesFilter && matchesSearch;
-  }), [allItems, selectedFilters, search]);
+  }).map(item => ({ ...item, slug: slugMap[item.id] })), [allItems, selectedFilters, search, slugMap]);
 
   const categories = [
     { name: "Wisata Alam", color: "#059669", icon: <TreePine size={16} /> },
