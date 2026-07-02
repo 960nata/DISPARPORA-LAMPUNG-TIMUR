@@ -887,8 +887,9 @@ class JsonDbEngine {
 
   // DESTINATIONS
   public destinations = {
-    findMany: async () => this.data.destinations,
+    findMany: async () => { this.loadData(); return this.data.destinations; },
     findUnique: async ({ where }: { where: { id: string } }) => {
+      this.loadData();
       return this.data.destinations.find(d => d.id === where.id) ?? null;
     },
     create: async ({ data }: { data: Omit<Destination, "id"> }) => {
@@ -926,10 +927,11 @@ class JsonDbEngine {
 
   // POSTS (News CMS)
   public posts = {
-    findMany: async () => this.data.posts,
+    findMany: async () => { this.loadData(); return this.data.posts; },
     findUnique: async ({ where }: { where: { id?: string; slug?: string } }) => {
-      if (where.slug) return this.data.posts.find(p => p.slug === where.slug);
-      if (where.id) return this.data.posts.find(p => p.id === where.id);
+      this.loadData();
+      if (where.slug) return this.data.posts.find(p => p.slug === where.slug) ?? null;
+      if (where.id) return this.data.posts.find(p => p.id === where.id) ?? null;
       return null;
     },
     create: async ({ data }: { data: Omit<Post, "id" | "createdAt"> }) => {
