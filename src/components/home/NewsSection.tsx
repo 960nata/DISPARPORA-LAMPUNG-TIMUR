@@ -68,8 +68,9 @@ const defaultNews: Post[] = [
 ];
 
 export default function NewsSection({ posts = [] }: NewsSectionProps) {
-  // Use posts if we have 4 or more, otherwise fallback to defaultNews
-  const activeNews = posts.length >= 4 ? posts : defaultNews;
+  // Merge live posts with defaultNews to ensure we always have 4 slots filled,
+  // showing live posts first.
+  const activeNews = [...posts, ...defaultNews.filter(dn => !posts.some(p => p.id === dn.id || p.slug === dn.slug))].slice(0, 4);
   const featured = activeNews[0];
   const listItems = activeNews.slice(1, 4);
 
