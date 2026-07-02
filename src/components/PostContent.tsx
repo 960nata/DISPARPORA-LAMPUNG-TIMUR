@@ -55,7 +55,12 @@ export default function PostContent({ content }: { content: string }) {
   if (!blocks) {
     const c = content || "";
     if (c.includes("<")) {
-      return <div className="post-rich" dangerouslySetInnerHTML={{ __html: sanitizeHtml(c) }} />;
+      const normalized = c
+        .replace(/\s{2,}/g, " ")
+        .replace(/<p>\s+/g, "<p>")
+        .replace(/\s+<\/p>/g, "</p>")
+        .replace(/<br\s*\/?>\s*<br\s*\/?>/g, "</p><p>");
+      return <div className="post-rich" dangerouslySetInnerHTML={{ __html: sanitizeHtml(normalized) }} />;
     }
     return (
       <div className="post-rich" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
@@ -70,7 +75,11 @@ export default function PostContent({ content }: { content: string }) {
         const d = block.data || {};
         switch (block.type) {
           case "text":
-            return <div key={block.id} dangerouslySetInnerHTML={{ __html: sanitizeHtml(d.html || "") }} />;
+            const normalized = (d.html || "")
+              .replace(/\s{2,}/g, " ")
+              .replace(/<p>\s+/g, "<p>")
+              .replace(/\s+<\/p>/g, "</p>");
+            return <div key={block.id} dangerouslySetInnerHTML={{ __html: sanitizeHtml(normalized) }} />;
 
           case "image":
             if (!d.src) return null;
