@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Calendar, User, ArrowLeft, BookOpen, Clock, Tag, RefreshCw, ChevronRight, Share2, Check } from "lucide-react";
 import { motion } from "framer-motion";
@@ -19,10 +18,8 @@ interface Post {
   tags: string;
 }
 
-export default function ArticleDetailPage() {
-  const params = useParams();
-  const id = params?.id as string;
-
+// `param` is the URL segment — a slug, but we also accept a legacy id for old links.
+export default function BeritaArticle({ param }: { param: string }) {
   const [post, setPost]             = useState<Post | null>(null);
   const [recentPosts, setRecentPosts] = useState<Post[]>([]);
   const [related, setRelated]       = useState<Post[]>([]);
@@ -30,27 +27,27 @@ export default function ArticleDetailPage() {
   const [copied, setCopied]         = useState(false);
 
   useEffect(() => {
-    if (!id) return;
+    if (!param) return;
     fetchWithRetry("/api/posts")
       .then(r => r.json())
       .then((data: Post[]) => {
         if (!Array.isArray(data)) return;
-        const matched = data.find(p => p.id === id);
+        const matched = data.find(p => p.slug === param) || data.find(p => p.id === param);
         if (matched) {
           setPost(matched);
           // Related: share at least one tag
           const myTags = matched.tags.split(",").map(t => t.trim().toLowerCase());
           const rel = data
-            .filter(p => p.status === "published" && p.id !== id)
+            .filter(p => p.status === "published" && p.id !== matched.id)
             .filter(p => p.tags.split(",").some(t => myTags.includes(t.trim().toLowerCase())))
             .slice(0, 3);
           setRelated(rel);
         }
-        setRecentPosts(data.filter(p => p.status === "published" && p.id !== id).slice(0, 4));
+        setRecentPosts(data.filter(p => p.status === "published" && p.id !== matched?.id).slice(0, 4));
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, [id]);
+  }, [param]);
 
   const copyUrl = () => {
     if (typeof window !== "undefined") {
@@ -194,7 +191,7 @@ export default function ArticleDetailPage() {
                 <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1.25rem" }}>Artikel Terkait</h3>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "1rem" }}>
                   {related.map(r => (
-                    <Link key={r.id} href={`/berita/${r.id}`} style={{ textDecoration: "none" }}>
+                    <Link key={r.id} href={`/berita/${r.slug || r.id}`} style={{ textDecoration: "none" }}>
                       <div style={{ borderRadius: "12px", overflow: "hidden", border: "1px solid var(--border)", transition: "box-shadow 0.2s" }}
                         onMouseEnter={e => (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 20px rgba(0,0,0,0.1)"}
                         onMouseLeave={e => (e.currentTarget as HTMLElement).style.boxShadow = ""}
@@ -227,7 +224,7 @@ export default function ArticleDetailPage() {
                 : (
                   <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                     {recentPosts.map(r => (
-                      <Link key={r.id} href={`/berita/${r.id}`} style={{ display: "flex", gap: "0.75rem", textDecoration: "none" }}>
+                      <Link key={r.id} href={`/berita/${r.slug || r.id}`} style={{ display: "flex", gap: "0.75rem", textDecoration: "none" }}>
                         <img src={r.imageUrl} alt={r.title} style={{ width: "68px", height: "56px", objectFit: "cover", borderRadius: "8px", flexShrink: 0 }} />
                         <div style={{ minWidth: 0 }}>
                           <p style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--text-primary)", lineHeight: 1.35, margin: "0 0 0.25rem", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}

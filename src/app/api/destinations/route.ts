@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db, jsonDb } from "@/lib/db";
 import { requireAuth } from "@/lib/session";
+import { slugify } from "@/lib/slug";
 
 export async function GET() {
   try {
@@ -39,7 +40,8 @@ export async function POST(request: NextRequest) {
         capacity: data.capacity !== undefined ? Number(data.capacity) : undefined,
         imageUrl: data.imageUrl || undefined,
         description: data.description || undefined,
-        slug: data.slug || undefined,
+        // Auto-generate a slug from the name so every new destination is SEO-friendly.
+        slug: data.slug || slugify(data.name) || undefined,
         gallery: Array.isArray(data.gallery) ? data.gallery : undefined,
       }
     };

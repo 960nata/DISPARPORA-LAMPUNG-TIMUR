@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { db, jsonDb } from "@/lib/db";
 import { requireAuth } from "@/lib/session";
 
+// Look up a destination by id first, then fall back to slug so both
+// /api/destinations/<id> and /api/destinations/<slug> resolve.
+async function findByIdOrSlug(engine: any, key: string) {
+  const byId = await engine.destinations.findUnique({ where: { id: key } });
+  if (byId) return byId;
+  const all = await engine.destinations.findMany();
+  return all.find((d: any) => d.slug && d.slug === key) ?? null;
+}
+
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -9,11 +18,11 @@ export async function GET(
   try {
     const { id } = await params;
     try {
-      const dest = await db.destinations.findUnique({ where: { id } });
+      const dest = await findByIdOrSlug(db, id);
       if (!dest) return NextResponse.json({ error: "Not found" }, { status: 404 });
       return NextResponse.json(dest);
     } catch {
-      const dest = await jsonDb.destinations.findUnique({ where: { id } });
+      const dest = await findByIdOrSlug(jsonDb, id);
       if (!dest) return NextResponse.json({ error: "Not found" }, { status: 404 });
       return NextResponse.json(dest);
     }

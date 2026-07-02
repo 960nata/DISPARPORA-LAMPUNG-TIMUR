@@ -28,20 +28,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const beritaRoutes: MetadataRoute.Sitemap = posts
     .filter((p) => p.status === "published")
     .map((p) => ({
-      url: `${SITE_URL}/berita/${p.id}`,
+      url: `${SITE_URL}/berita/${p.slug || p.id}`,
       lastModified: p.createdAt ? new Date(p.createdAt) : now,
       changeFrequency: "monthly",
       priority: 0.7,
     }));
 
-  const direktoriRoutes: MetadataRoute.Sitemap = destinations
+  // Detail pages live at /destinasi/{id}; /direktori/{id} only client-redirects
+  // there, so it's a dead end for crawlers — point the sitemap at the real page.
+  const destinasiRoutes: MetadataRoute.Sitemap = destinations
     .filter((d) => d.active)
     .map((d) => ({
-      url: `${SITE_URL}/direktori/${d.id}`,
+      url: `${SITE_URL}/destinasi/${d.slug || d.id}`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
     }));
 
-  return [...staticRoutes, ...beritaRoutes, ...direktoriRoutes];
+  return [...staticRoutes, ...beritaRoutes, ...destinasiRoutes];
 }

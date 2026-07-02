@@ -5,6 +5,7 @@ import type { Map, Marker, Popup } from "leaflet";
 
 interface MapItem {
   id: string;
+  slug?: string;
   name: string;
   kecamatan: string;
   address: string;
@@ -226,7 +227,7 @@ export default function MapComponent({
             <h4 style="font-size:.9rem;font-weight:800;color:#0f172a;margin:0 0 5px;line-height:1.3">${item.name}</h4>
             <p style="font-size:.78rem;color:#475569;margin:0 0 2px">📍 ${item.address || "Kec. " + item.kecamatan}</p>
             ${item.contact ? `<p style="font-size:.78rem;color:#475569;margin:3px 0 0">📞 ${item.contact}</p>` : ""}
-            <a href="/destinasi/${item.id}" style="display:flex;align-items:center;justify-content:center;gap:6px;background:${color};color:white;font-weight:700;font-size:.8rem;padding:8px 12px;border-radius:10px;text-decoration:none;margin-top:10px;border-top:1px solid #e2e8f0;padding-top:10px">Lihat Detail →</a>
+            <a href="/destinasi/${item.slug || item.id}" style="display:flex;align-items:center;justify-content:center;gap:6px;background:${color};color:white;font-weight:700;font-size:.8rem;padding:8px 12px;border-radius:10px;text-decoration:none;margin-top:10px;border-top:1px solid #e2e8f0;padding-top:10px">Lihat Detail →</a>
           </div>
         `;
 

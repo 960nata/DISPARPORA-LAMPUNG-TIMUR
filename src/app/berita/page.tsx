@@ -323,7 +323,7 @@ export default function NewsPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <Link href={`/berita/${featuredPost.id}`} style={{ textDecoration: "none" }}>
+                    <Link href={`/berita/${featuredPost.slug || featuredPost.id}`} style={{ textDecoration: "none" }}>
                       <div className="news-featured-card berita-hero-featured">
                         <img
                           src={featuredPost.imageUrl}
@@ -382,7 +382,7 @@ export default function NewsPage() {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.4, delay: index * 0.08 }}
                         >
-                          <Link href={`/berita/${post.id}`} style={{ textDecoration: "none" }}>
+                          <Link href={`/berita/${post.slug || post.id}`} style={{ textDecoration: "none" }}>
                             <article className="berita-secondary-card">
                               <div style={{ position: "relative", height: "142px", background: "#e8f0ea", overflow: "hidden" }}>
                                 <img
@@ -430,7 +430,7 @@ export default function NewsPage() {
                             exit={{ opacity: 0, y: 20 }}
                             transition={{ duration: 0.4, delay: index * 0.06 }}
                           >
-                            <Link href={`/berita/${post.id}`} style={{ textDecoration: "none" }}>
+                            <Link href={`/berita/${post.slug || post.id}`} style={{ textDecoration: "none" }}>
                               <article className="berita-secondary-card">
                                 <div style={{ position: "relative", height: "142px", background: "#e8f0ea", overflow: "hidden" }}>
                                   <img

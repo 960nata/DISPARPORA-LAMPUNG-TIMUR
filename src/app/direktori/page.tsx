@@ -454,7 +454,7 @@ function DirectoryContent() {
                           Kec. {item.kecamatan}, Lampung Timur
                         </span>
                       </div>
-                      <Link href={`/destinasi/${item.id}`} className="dir-see-more dir-hover-btn" style={{
+                      <Link href={`/destinasi/${item.slug || item.id}`} className="dir-see-more dir-hover-btn" style={{
                         display: "flex", alignItems: "center", justifyContent: "space-between",
                         padding: "11px 16px", borderRadius: "14px",
                         background: "#fff", color: "#0f172a",
@@ -506,7 +506,7 @@ function DirectoryContent() {
                             <div className="dir-card-meta-label" style={{ fontSize: "0.62rem", color: "#94a3b8", fontWeight: 500 }}>{m.label}</div>
                           </div>
                         ))}
-                        <Link href={`/destinasi/${item.id}`} className="dir-card-lihat" style={{
+                        <Link href={`/destinasi/${item.slug || item.id}`} className="dir-card-lihat" style={{
                           display: "flex", alignItems: "center", gap: "8px",
                           padding: "8px 14px", borderRadius: "12px",
                           background: catColor, color: "#fff",

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
   MapPin, Phone, ExternalLink, ChevronRight, CheckCircle2, Map,
@@ -19,7 +18,7 @@ const MapComponent = dynamic(() => import("@/components/MapComponent"), {
 });
 
 interface Destination {
-  id: string; name: string; category: string; kecamatan: string;
+  id: string; name: string; slug?: string; category: string; kecamatan: string;
   address: string; lat: number; lng: number; active: boolean;
   facilities?: string; contact?: string; map_link?: string;
   classification?: string; rooms?: number; food_type?: string; capacity?: number;
@@ -49,10 +48,8 @@ const CAT_GRADIENT: Record<string, string> = {
 
 type Tab = "info" | "fasilitas" | "peta";
 
-export default function DestinasiDetailPage() {
-  const params = useParams();
-  const id     = params?.id as string;
-
+// `param` is the URL segment — a slug, but a legacy id also resolves.
+export default function DestinasiDetail({ param }: { param: string }) {
   const [dest, setDest]         = useState<Destination | null>(null);
   const [related, setRelated]   = useState<Destination[]>([]);
   const [gallery, setGallery]   = useState<GalleryItem[]>([]);
@@ -64,8 +61,8 @@ export default function DestinasiDetailPage() {
   const [copied, setCopied]     = useState(false);
 
   useEffect(() => {
-    if (!id) return;
-    fetch(`/api/destinations/${id}`)
+    if (!param) return;
+    fetch(`/api/destinations/${param}`)
       .then(r => { if (!r.ok) { setNotFound(true); setLoading(false); return null; } return r.json(); })
       .then((data: Destination | null) => {
         if (!data) return;
@@ -74,7 +71,7 @@ export default function DestinasiDetailPage() {
           .then(r => r.json())
           .then((all: Destination[]) => {
             if (!Array.isArray(all)) return;
-            setRelated(all.filter(d => d.category === data.category && d.id !== id && d.active !== false).slice(0, 4));
+            setRelated(all.filter(d => d.category === data.category && d.id !== data.id && d.active !== false).slice(0, 4));
           });
         if (Array.isArray(data.gallery) && data.gallery.length > 0) {
           setGallery(data.gallery.map((url: string, i: number) => ({ id: `own_${i}`, title: data.name, category: data.category, imageUrl: url })));
@@ -90,7 +87,7 @@ export default function DestinasiDetailPage() {
         }
       })
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [param]);
 
   if (loading) return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "70vh", gap: "0.5rem" }}>
@@ -353,7 +350,7 @@ export default function DestinasiDetailPage() {
                 const rc = CAT_COLOR[r.category] ?? color;
                 const rb = CAT_BG[r.category]   ?? bg;
                 return (
-                  <Link key={r.id} href={`/destinasi/${r.id}`} style={{ textDecoration: "none" }}>
+                  <Link key={r.id} href={`/destinasi/${r.slug || r.id}`} style={{ textDecoration: "none" }}>
                     <div style={{ background: "white", borderRadius: "18px", overflow: "hidden", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", border: "1px solid #f1f5f9", transition: "transform 0.2s, box-shadow 0.2s" }}
                       onMouseEnter={e => { const t = e.currentTarget as HTMLElement; t.style.transform = "translateY(-5px)"; t.style.boxShadow = "0 16px 32px rgba(0,0,0,0.1)"; }}
                       onMouseLeave={e => { const t = e.currentTarget as HTMLElement; t.style.transform = ""; t.style.boxShadow = "0 2px 12px rgba(0,0,0,0.06)"; }}>
