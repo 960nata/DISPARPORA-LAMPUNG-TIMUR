@@ -198,9 +198,9 @@ export default function DestinasiForm({ mode, editId }: Props) {
       )}
 
       <form id="dest-form" onSubmit={handleSubmit}>
-        <div className="dest-form-grid" style={{ display: "grid", gridTemplateColumns: "1fr 420px", gap: "20px", alignItems: "start" }}>
+        <div className="dest-form-grid" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
 
-          {/* ── LEFT: Form fields ── */}
+          {/* ── Form fields ── */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
 
             {/* Informasi Dasar */}
@@ -276,6 +276,36 @@ export default function DestinasiForm({ mode, editId }: Props) {
                 placeholder="Tuliskan deskripsi lengkap tentang destinasi ini — sejarah, keunikan, daya tarik, info kunjungan..."
                 minHeight={240}
               />
+            </div>
+
+            {/* Lokasi di Peta */}
+            <div className="dash-card" style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "16px" }}>
+              <SectionHead icon={<MapPin size={15} />} label="Lokasi di Peta" />
+
+              <p style={{ margin: 0, fontSize: "0.75rem", color: "var(--dash-text-muted)", lineHeight: 1.5 }}>
+                Klik pada peta untuk menentukan titik koordinat, atau isi manual di bawah.
+              </p>
+
+              <div style={{ height: "450px", borderRadius: "12px", overflow: "hidden", border: "1px solid var(--dash-border)" }}>
+                <MapComponent
+                  items={[]}
+                  selectedItem={{ id: editId || "new", name: form.name || "Lokasi Baru", kecamatan: form.kecamatan, address: form.address, category: form.category, lat: form.lat, lng: form.lng }}
+                  onSelectItem={() => {}}
+                  isEditMode={true}
+                  onCoordinatesChange={(lat, lng) => { upd("lat", Number(lat.toFixed(6))); upd("lng", Number(lng.toFixed(6))); }}
+                />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                <div>
+                  <LBL>Latitude *</LBL>
+                  <input required type="number" step="any" className="dash-input" value={form.lat} onChange={e => upd("lat", Number(e.target.value))} style={{ fontFamily: "monospace", fontSize: "0.82rem" }} />
+                </div>
+                <div>
+                  <LBL>Longitude *</LBL>
+                  <input required type="number" step="any" className="dash-input" value={form.lng} onChange={e => upd("lng", Number(e.target.value))} style={{ fontFamily: "monospace", fontSize: "0.82rem" }} />
+                </div>
+              </div>
             </div>
 
             {/* Kontak & Link */}
@@ -371,9 +401,6 @@ export default function DestinasiForm({ mode, editId }: Props) {
             </div>
           </div>
 
-          {/* ── RIGHT: Thumbnail + Map ── */}
-          <div className="dest-form-aside" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-
             {/* Thumbnail */}
             <div className="dash-card" style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "14px" }}>
               <SectionHead icon={<ImageIcon size={15} />} label="Foto Sampul" />
@@ -396,41 +423,6 @@ export default function DestinasiForm({ mode, editId }: Props) {
                 </div>
               )}
             </div>
-
-            {/* Map */}
-            <div className="dash-card" style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "16px" }}>
-              <SectionHead icon={<MapPin size={15} />} label="Lokasi di Peta" />
-
-              <p style={{ margin: 0, fontSize: "0.75rem", color: "var(--dash-text-muted)", lineHeight: 1.5 }}>
-                Klik pada peta untuk menentukan titik koordinat, atau isi manual di bawah.
-              </p>
-
-              <div style={{ height: "300px", borderRadius: "12px", overflow: "hidden", border: "1px solid var(--dash-border)" }}>
-                <MapComponent
-                  items={[]}
-                  selectedItem={{ id: editId || "new", name: form.name || "Lokasi Baru", kecamatan: form.kecamatan, address: form.address, category: form.category, lat: form.lat, lng: form.lng }}
-                  onSelectItem={() => {}}
-                  isEditMode={true}
-                  onCoordinatesChange={(lat, lng) => { upd("lat", Number(lat.toFixed(6))); upd("lng", Number(lng.toFixed(6))); }}
-                />
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                <div>
-                  <LBL>Latitude *</LBL>
-                  <input required type="number" step="any" className="dash-input" value={form.lat} onChange={e => upd("lat", Number(e.target.value))} style={{ fontFamily: "monospace", fontSize: "0.82rem" }} />
-                </div>
-                <div>
-                  <LBL>Longitude *</LBL>
-                  <input required type="number" step="any" className="dash-input" value={form.lng} onChange={e => upd("lng", Number(e.target.value))} style={{ fontFamily: "monospace", fontSize: "0.82rem" }} />
-                </div>
-              </div>
-
-              <div style={{ padding: "10px 12px", background: "var(--dash-primary-bg)", borderRadius: "8px", fontSize: "0.72rem", color: "var(--dash-text-muted)", lineHeight: 1.6 }}>
-                <strong style={{ color: "var(--dash-primary)" }}>Tips:</strong> Koordinat Lampung Timur umumnya Lat -5.0 s/d -5.8, Lng 105.2 s/d 105.9
-              </div>
-            </div>
-          </div>
         </div>
       </form>
 
