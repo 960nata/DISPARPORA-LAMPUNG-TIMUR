@@ -34,7 +34,12 @@ const cap: React.CSSProperties = { fontSize: "0.82rem", color: "var(--text-secon
 const imgStyle: React.CSSProperties = { width: "100%", borderRadius: "12px", border: "1px solid var(--border)", display: "block" };
 
 export default function PostContent({ content }: { content: string }) {
-  const blocks = useMemo(() => parseBlocks(content), [content]);
+  const cleanedContent = useMemo(() => {
+    if (!content) return "";
+    return content.replace(/&nbsp;/gi, " ").replace(/\u00a0/g, " ");
+  }, [content]);
+
+  const blocks = useMemo(() => parseBlocks(cleanedContent), [cleanedContent]);
   const [gallery, setGallery] = useState<Record<string, GalleryItem>>({});
 
   const needsGallery = !!blocks?.some(b => b.type === "gallery");
@@ -53,7 +58,7 @@ export default function PostContent({ content }: { content: string }) {
 
   // ── Legacy content (plain text or raw HTML) ──
   if (!blocks) {
-    const c = content || "";
+    const c = cleanedContent || "";
     if (c.includes("<")) {
       const normalized = c
         .replace(/\s{2,}/g, " ")

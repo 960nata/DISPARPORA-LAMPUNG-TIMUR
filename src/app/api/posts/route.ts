@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     const slug = uniqueSlug(data.slug || data.title, used);
 
     const payload = {
-      title: data.title, slug, content: data.content,
+      title: data.title, slug, content: data.content?.replace(/&nbsp;/gi, " ").replace(/\u00a0/g, " "),
       imageUrl: data.imageUrl || "/Gallery/1.avif", authorId: data.authorId,
       status: data.status || "draft", tags: data.tags || "Umum",
       seoTitle: data.seoTitle || "", seoDesc: data.seoDesc || "", publishDate: data.publishDate || ""

@@ -31,7 +31,7 @@ export async function PUT(
       where: { id },
       data: {
         title: data.title,
-        content: data.content,
+        content: data.content?.replace(/&nbsp;/gi, " ").replace(/\u00a0/g, " "),
         imageUrl: data.imageUrl,
         status: data.status,
         tags: data.tags,

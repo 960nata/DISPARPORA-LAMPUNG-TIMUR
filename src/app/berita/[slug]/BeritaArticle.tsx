@@ -81,7 +81,7 @@ export default function BeritaArticle({ param }: { param: string }) {
   }
 
   // Strip block-JSON/HTML to plain text so the reading time is realistic.
-  const plainText   = post.content.replace(/<[^>]*>/g, " ").replace(/[{}\[\]"]/g, " ");
+  const plainText   = post.content.replace(/&nbsp;/gi, " ").replace(/\u00a0/g, " ").replace(/<[^>]*>/g, " ").replace(/[{}\[\]"]/g, " ");
   const wordCount   = plainText.split(/\s+/).filter(Boolean).length;
   const readingTime = Math.max(1, Math.ceil(wordCount / 200));
   const pageUrl     = typeof window !== "undefined" ? window.location.href : "";
