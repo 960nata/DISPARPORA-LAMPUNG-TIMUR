@@ -110,7 +110,7 @@ export default function BeritaArticle({ param }: { param: string }) {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            style={{ flex: "2 1 600px", display: "flex", flexDirection: "column", gap: "1.5rem" }}
+            style={{ flex: "2 1 600px", minWidth: 0, display: "flex", flexDirection: "column", gap: "1.5rem" }}
           >
             {/* Cover Image */}
             <div style={{ borderRadius: "16px", overflow: "hidden", border: "1px solid var(--border)", boxShadow: "var(--card-shadow)", aspectRatio: "16/7" }}>

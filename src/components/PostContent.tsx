@@ -150,7 +150,7 @@ export default function PostContent({ content }: { content: string }) {
           }
 
           case "html":
-            return <div key={block.id} dangerouslySetInnerHTML={{ __html: d.code || d.content || "" }} />;
+            return <div key={block.id} style={{ maxWidth: "100%", overflowX: "auto" }} dangerouslySetInnerHTML={{ __html: d.code || d.content || "" }} />;
 
           default:
             return null;
