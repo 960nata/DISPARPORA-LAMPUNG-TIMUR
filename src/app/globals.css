@@ -1455,7 +1455,7 @@ a {
 }
 .post-rich > p {
   margin-bottom: 1.2rem;
-  text-align: justify;
+  text-align: left;
 }
 .post-rich img,
 .post-rich video,
@@ -1499,6 +1499,27 @@ a {
   font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 .post-rich figure { max-width: 100%; }
+
+/* ═══ MOBILE RESPONSIVE — ARTIKEL TERKAIT ═══ */
+@media (max-width: 640px) {
+  .berita-related-grid {
+    display: flex !important;
+    flexDirection: column !important;
+    gap: 1rem !important;
+  }
+
+  .berita-related-grid > a > div {
+    flexDirection: row !important;
+    height: auto !important;
+  }
+
+  .berita-related-grid img {
+    width: 100px !important;
+    height: 80px !important;
+    flexShrink: 0 !important;
+    borderRadius: "8px 0 0 8px" !important;
+  }
+}
 
 /* ═══ MOBILE RESPONSIVE — DASHBOARD CREATE/EDIT ═══ */
 @media (max-width: 768px) {

@@ -191,7 +191,7 @@ export default function BeritaArticle({ param }: { param: string }) {
             {related.length > 0 && (
               <div style={{ borderTop: "1px solid var(--border)", paddingTop: "2rem", marginTop: "1rem" }}>
                 <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1.25rem" }}>Artikel Terkait</h3>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gridAutoRows: "1fr", gap: "1rem" }}>
+                <div className="berita-related-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gridAutoRows: "1fr", gap: "1rem" }}>
                   {related.map(r => (
                     <Link key={r.id} href={`/berita/${r.slug || r.id}`} style={{ textDecoration: "none", display: "flex" }}>
                       <div style={{ borderRadius: "12px", overflow: "hidden", border: "1px solid var(--border)", transition: "box-shadow 0.2s", display: "flex", flexDirection: "column", width: "100%", height: "100%" }}
