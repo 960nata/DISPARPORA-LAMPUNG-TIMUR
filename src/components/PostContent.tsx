@@ -99,20 +99,34 @@ export default function PostContent({ content }: { content: string }) {
           case "carousel": {
             const slides = (d.slides || []) as { id: string; src: string; title: string; subtitle: string }[];
             if (slides.length === 0) return null;
-            const cols = d.cols || 1;
+            const cols = Math.min(d.cols || 1, 3);
+            const [page, setPage] = useState(0);
+            const numPages = Math.ceil(slides.length / cols);
+            const visibleSlides = slides.slice(page * cols, (page + 1) * cols);
             return (
-              <div key={block.id} style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(cols, 3)}, 1fr)`, gap: "0.75rem" }}>
-                {slides.map(s => (
-                  <figure key={s.id} style={{ margin: 0, position: "relative", borderRadius: "12px", overflow: "hidden", border: "1px solid var(--border)" }}>
-                    <img src={s.src} alt={s.title} style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", display: "block" }} />
-                    {(s.title || s.subtitle) && (
-                      <figcaption style={{ position: "absolute", left: 0, right: 0, bottom: 0, padding: "0.9rem", color: "#fff", background: "linear-gradient(to top, rgba(0,0,0,0.75), transparent)" }}>
-                        {s.title && <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>{s.title}</div>}
-                        {s.subtitle && <div style={{ fontSize: "0.8rem", opacity: 0.9 }}>{s.subtitle}</div>}
-                      </figcaption>
-                    )}
-                  </figure>
-                ))}
+              <div key={block.id} style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                <div style={{ display: "grid", gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: "0.75rem" }}>
+                  {visibleSlides.map(s => (
+                    <figure key={s.id} style={{ margin: 0, position: "relative", borderRadius: "12px", overflow: "hidden", border: "1px solid var(--border)" }}>
+                      <img src={s.src} alt={s.title} style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", display: "block" }} />
+                      {(s.title || s.subtitle) && (
+                        <figcaption style={{ position: "absolute", left: 0, right: 0, bottom: 0, padding: "0.9rem", color: "#fff", background: "linear-gradient(to top, rgba(0,0,0,0.75), transparent)" }}>
+                          {s.title && <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>{s.title}</div>}
+                          {s.subtitle && <div style={{ fontSize: "0.8rem", opacity: 0.9 }}>{s.subtitle}</div>}
+                        </figcaption>
+                      )}
+                    </figure>
+                  ))}
+                </div>
+                {numPages > 1 && (
+                  <div style={{ display: "flex", gap: "0.4rem", justifyContent: "center", alignItems: "center", marginTop: "0.5rem" }}>
+                    <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0} style={{ width: "28px", height: "28px", borderRadius: "50%", border: "1px solid var(--border)", background: page === 0 ? "var(--border)" : "var(--bg-secondary)", color: "var(--text-primary)", cursor: page === 0 ? "default" : "pointer", fontSize: "0.9rem", fontWeight: 700, opacity: page === 0 ? 0.5 : 1 }}>‹</button>
+                    {Array.from({ length: numPages }).map((_, i) => (
+                      <button key={i} onClick={() => setPage(i)} style={{ width: i === page ? "20px" : "8px", height: "8px", borderRadius: "4px", border: "none", background: i === page ? "var(--accent)" : "var(--border)", cursor: "pointer", transition: "all 0.2s" }} />
+                    ))}
+                    <button onClick={() => setPage(p => Math.min(numPages - 1, p + 1))} disabled={page === numPages - 1} style={{ width: "28px", height: "28px", borderRadius: "50%", border: "1px solid var(--border)", background: page === numPages - 1 ? "var(--border)" : "var(--bg-secondary)", color: "var(--text-primary)", cursor: page === numPages - 1 ? "default" : "pointer", fontSize: "0.9rem", fontWeight: 700, opacity: page === numPages - 1 ? 0.5 : 1 }}>›</button>
+                  </div>
+                )}
               </div>
             );
           }
