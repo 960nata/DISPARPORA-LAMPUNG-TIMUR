@@ -149,7 +149,7 @@ export default function BeritaArticle({ param }: { param: string }) {
             </div>
 
             {/* Content */}
-            <div style={{ fontSize: "1.05rem", lineHeight: "1.85", color: "var(--text-primary)" }}>
+            <div style={{ fontSize: "1.05rem", lineHeight: "1.85", color: "var(--text-primary)", minWidth: 0, width: "100%", overflow: "visible" }}>
               <PostContent content={post.content} />
             </div>
 
