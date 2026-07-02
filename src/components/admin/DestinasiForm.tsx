@@ -229,6 +229,29 @@ export default function DestinasiForm({ mode, editId }: Props) {
           {/* ── LEFT: Form fields + Peta ── */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
 
+            {/* Foto Sampul (Moved from sidebar to top left!) */}
+            <div className="dash-card" style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "14px" }}>
+              <SectionHead icon={<ImageIcon size={15} />} label="Foto Sampul" />
+
+              {form.imageUrl ? (
+                <div style={{ position: "relative", borderRadius: "12px", overflow: "hidden", border: "1px solid var(--dash-border)", aspectRatio: "16/9" }}>
+                  <img src={form.imageUrl} alt="thumbnail" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                  <div style={{ position: "absolute", top: "8px", right: "8px", display: "flex", gap: "6px" }}>
+                    <button type="button" onClick={() => setShowPicker(true)} style={{ padding: "5px 10px", borderRadius: "7px", background: "rgba(0,0,0,0.65)", border: "none", color: "#fff", fontSize: "0.72rem", fontWeight: 700, cursor: "pointer", backdropFilter: "blur(4px)" }}>Ganti</button>
+                    <button type="button" onClick={() => upd("imageUrl", "")} style={{ width: "28px", height: "28px", borderRadius: "7px", background: "rgba(220,38,38,0.8)", border: "none", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(4px)" }}><X size={13} /></button>
+                  </div>
+                </div>
+              ) : (
+                <div onClick={() => setShowPicker(true)} style={{ border: "2px dashed var(--dash-border)", borderRadius: "12px", padding: "2.5rem 1rem", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "0.5rem", cursor: "pointer", color: "var(--dash-text-muted)", background: "var(--dash-surface-hover)", transition: "all 0.15s", aspectRatio: "16/9" }}
+                  onMouseOver={e => { const t = e.currentTarget as HTMLElement; t.style.borderColor = "var(--dash-primary)"; t.style.background = "var(--dash-primary-bg)"; t.style.color = "var(--dash-primary)"; }}
+                  onMouseOut={e => { const t = e.currentTarget as HTMLElement; t.style.borderColor = "var(--dash-border)"; t.style.background = "var(--dash-surface-hover)"; t.style.color = "var(--dash-text-muted)"; }}>
+                  <ImageIcon size={28} style={{ opacity: 0.5 }} />
+                  <span style={{ fontSize: "0.82rem", fontWeight: 700 }}>Pilih Foto Sampul</span>
+                  <span style={{ fontSize: "0.7rem", opacity: 0.7 }}>dari Galeri</span>
+                </div>
+              )}
+            </div>
+
             {/* Informasi Dasar */}
             <div className="dash-card" style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "16px" }}>
               <SectionHead icon={<Compass size={15} />} label="Informasi Dasar" />
@@ -427,30 +450,8 @@ export default function DestinasiForm({ mode, editId }: Props) {
             </div>
           </div>
 
-          {/* ── RIGHT: Sidebar (Thumbnail, Tanggal, SEO) ── */}
+          {/* ── RIGHT: Sidebar (Tanggal, SEO) ── */}
           <div className="dest-form-aside" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {/* Foto Sampul */}
-            <div className="dash-card" style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "14px" }}>
-              <SectionHead icon={<ImageIcon size={15} />} label="Foto Sampul" />
-
-              {form.imageUrl ? (
-                <div style={{ position: "relative", borderRadius: "12px", overflow: "hidden", border: "1px solid var(--dash-border)", aspectRatio: "16/9" }}>
-                  <img src={form.imageUrl} alt="thumbnail" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                  <div style={{ position: "absolute", top: "8px", right: "8px", display: "flex", gap: "6px" }}>
-                    <button type="button" onClick={() => setShowPicker(true)} style={{ padding: "5px 10px", borderRadius: "7px", background: "rgba(0,0,0,0.65)", border: "none", color: "#fff", fontSize: "0.72rem", fontWeight: 700, cursor: "pointer", backdropFilter: "blur(4px)" }}>Ganti</button>
-                    <button type="button" onClick={() => upd("imageUrl", "")} style={{ width: "28px", height: "28px", borderRadius: "7px", background: "rgba(220,38,38,0.8)", border: "none", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(4px)" }}><X size={13} /></button>
-                  </div>
-                </div>
-              ) : (
-                <div onClick={() => setShowPicker(true)} style={{ border: "2px dashed var(--dash-border)", borderRadius: "12px", padding: "2.5rem 1rem", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "0.5rem", cursor: "pointer", color: "var(--dash-text-muted)", background: "var(--dash-surface-hover)", transition: "all 0.15s", aspectRatio: "16/9" }}
-                  onMouseOver={e => { const t = e.currentTarget as HTMLElement; t.style.borderColor = "var(--dash-primary)"; t.style.background = "var(--dash-primary-bg)"; t.style.color = "var(--dash-primary)"; }}
-                  onMouseOut={e => { const t = e.currentTarget as HTMLElement; t.style.borderColor = "var(--dash-border)"; t.style.background = "var(--dash-surface-hover)"; t.style.color = "var(--dash-text-muted)"; }}>
-                  <ImageIcon size={28} style={{ opacity: 0.5 }} />
-                  <span style={{ fontSize: "0.82rem", fontWeight: 700 }}>Pilih Foto Sampul</span>
-                  <span style={{ fontSize: "0.7rem", opacity: 0.7 }}>dari Galeri</span>
-                </div>
-              )}
-            </div>
 
             {/* Tanggal Publikasi */}
             <div className="dash-card" style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "12px" }}>

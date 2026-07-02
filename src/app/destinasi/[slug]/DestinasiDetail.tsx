@@ -291,7 +291,7 @@ export default function DestinasiDetail({ param }: { param: string }) {
                       </div>
                     </div>
                     {gallery.length > 1 && (
-                      <div style={{ display: "grid", gridTemplateColumns: `repeat(auto-fill, minmax(60px, 1fr))`, gap: "0.5rem" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: `repeat(${gallery.length}, 1fr)`, gap: "0.5rem" }}>
                         {gallery.map((g, i) => (
                           <button key={g.id} onClick={() => setPhotoIdx(i)} style={{ aspectRatio: "4/3", borderRadius: "10px", overflow: "hidden", border: `2.5px solid ${i === photoIdx ? color : "transparent"}`, padding: 0, cursor: "pointer", background: "none", transition: "border-color 0.15s, opacity 0.15s", opacity: i === photoIdx ? 1 : 0.6, width: "100%" }}>
                             <img src={g.imageUrl} alt={g.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
