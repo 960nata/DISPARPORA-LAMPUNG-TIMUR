@@ -48,7 +48,7 @@ const securityHeaders = [
       `img-src 'self' data: blob: https://*.supabase.co ${supabaseOrigin} https://*.tile.openstreetmap.org https://*.basemaps.cartocdn.com https://images.unsplash.com https://disparpora.lampungtimurkab.go.id https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com`,
       "media-src 'self'",
       `connect-src 'self' https://*.supabase.co ${supabaseOrigin} https://www.google-analytics.com https://*.google-analytics.com`,
-      "frame-src 'none'",
+      "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

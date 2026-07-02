@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Calendar, User, ArrowLeft, BookOpen, Clock, Tag, RefreshCw, ChevronRight, Share2, Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { fetchWithRetry } from "@/lib/api";
+import PostContent from "@/components/PostContent";
 
 interface Post {
   id: string;
@@ -79,9 +80,10 @@ export default function BeritaArticle({ param }: { param: string }) {
     );
   }
 
-  const wordCount   = post.content.split(/\s+/).length;
+  // Strip block-JSON/HTML to plain text so the reading time is realistic.
+  const plainText   = post.content.replace(/<[^>]*>/g, " ").replace(/[{}\[\]"]/g, " ");
+  const wordCount   = plainText.split(/\s+/).filter(Boolean).length;
   const readingTime = Math.max(1, Math.ceil(wordCount / 200));
-  const paragraphs  = post.content.split("\n").filter(p => p.trim());
   const pageUrl     = typeof window !== "undefined" ? window.location.href : "";
   const shareWA     = `https://wa.me/?text=${encodeURIComponent(post.title + "\n" + pageUrl)}`;
   const shareX      = `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(pageUrl)}`;
@@ -147,8 +149,8 @@ export default function BeritaArticle({ param }: { param: string }) {
             </div>
 
             {/* Content */}
-            <div style={{ fontSize: "1.05rem", lineHeight: "1.85", color: "var(--text-primary)", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-              {paragraphs.map((p, i) => <p key={i}>{p}</p>)}
+            <div style={{ fontSize: "1.05rem", lineHeight: "1.85", color: "var(--text-primary)" }}>
+              <PostContent content={post.content} />
             </div>
 
             {/* Share bar */}
