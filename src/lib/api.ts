@@ -14,7 +14,7 @@ export async function fetchWithRetry(
   delay = 1000
 ): Promise<Response> {
   try {
-    const res = await fetch(url, options);
+    const res = await fetch(url, { cache: "no-store", ...options });
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
     }

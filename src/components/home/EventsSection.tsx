@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Calendar, Clock } from "lucide-react";
+import { fetchWithRetry } from "@/lib/api";
 
 interface Guest { name: string; initials: string; color: string; photoUrl?: string; }
 interface AppEvent {
@@ -263,7 +264,7 @@ export default function EventsSection() {
   const [events, setEvents] = useState<AppEvent[]>(defaultEvents);
 
   useEffect(() => {
-    fetch("/api/events")
+    fetchWithRetry("/api/events")
       .then(res => res.json())
       .then(data => { if (Array.isArray(data) && data.length > 0) setEvents(data); })
       .catch(() => {});

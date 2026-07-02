@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { MapPin, Calendar, Clock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { fetchWithRetry } from "@/lib/api";
 
 interface Guest { name: string; initials: string; color: string; photoUrl?: string; }
 interface AppEvent {
@@ -174,7 +175,7 @@ export default function AgendaPage() {
   const [filter, setFilter]   = useState<"Semua" | "Mendatang" | "Selesai">("Semua");
 
   useEffect(() => {
-    fetch("/api/events")
+    fetchWithRetry("/api/events")
       .then(r => r.json())
       .then(d => { setEvents(Array.isArray(d) ? d : []); setLoading(false); })
       .catch(() => setLoading(false));

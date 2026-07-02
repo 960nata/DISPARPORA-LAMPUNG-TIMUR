@@ -6,6 +6,7 @@ import {
   MapPin, Search, TreePine, Milestone, Landmark, Hotel, Utensils,
   Compass, RefreshCw, ArrowRight,
 } from "lucide-react";
+import { fetchWithRetry } from "@/lib/api";
 
 interface Destination {
   id: string; name: string; category: string; kecamatan: string;
@@ -49,7 +50,7 @@ export default function DestinasiPublicPage() {
   const [cat, setCat]         = useState("Semua");
 
   useEffect(() => {
-    fetch("/api/destinations")
+    fetchWithRetry("/api/destinations")
       .then(r => r.json())
       .then(d => { if (Array.isArray(d)) setItems(d); })
       .finally(() => setLoading(false));
