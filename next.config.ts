@@ -41,7 +41,7 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://maps.googleapis.com https://vercel.live https://www.googletagmanager.com",
+      "script-src 'self' blob: https://maps.googleapis.com https://vercel.live https://www.googletagmanager.com https://www.google-analytics.com",
       "worker-src 'self' blob:",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",

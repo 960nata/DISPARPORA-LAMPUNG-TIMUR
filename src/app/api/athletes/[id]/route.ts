@@ -33,13 +33,17 @@ export async function PUT(
     const { id } = await params;
     const data = await request.json();
 
+    if (!data.nama || !data.cabor || !data.juara || !data.event) {
+      return NextResponse.json({ error: "Nama, cabang olahraga, juara, dan event wajib diisi" }, { status: 400 });
+    }
+
     const payload = {
       where: { id },
       data: {
-        nama: data.nama,
-        cabor: data.cabor,
-        juara: data.juara,
-        event: data.event,
+        nama: data.nama.trim(),
+        cabor: data.cabor.trim(),
+        juara: data.juara.trim(),
+        event: data.event.trim(),
       }
     };
 

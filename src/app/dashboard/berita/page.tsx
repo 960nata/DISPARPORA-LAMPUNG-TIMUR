@@ -8,9 +8,9 @@ import {
 } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 
-interface NewsPost { 
-  id: string; title: string; authorName: string; createdAt: string; 
-  status: string; tags: string; imageUrl: string; 
+interface NewsPost {
+  id: string; title: string; authorName: string; createdAt: string;
+  status: string; tags: string; imageUrl: string; slug?: string;
 }
 
 export default function BeritaPage() {
@@ -147,7 +147,7 @@ export default function BeritaPage() {
                   </td>
                   <td style={{ textAlign: "right" }}>
                     <div style={{ display: "inline-flex", gap: "4px" }}>
-                      <Link href={`/berita/${p.id}`} target="_blank" title="Preview" style={{ background: "none", border: "1px solid var(--dash-border)", borderRadius: "6px", color: "var(--dash-text-muted)", padding: "6px", display: "inline-flex", alignItems: "center" }}>
+                      <Link href={`/berita/${p.slug || p.id}`} target="_blank" title="Preview" style={{ background: "none", border: "1px solid var(--dash-border)", borderRadius: "6px", color: "var(--dash-text-muted)", padding: "6px", display: "inline-flex", alignItems: "center" }}>
                         <Eye size={13} />
                       </Link>
                       <Link href={`/dashboard/berita/buat?id=${p.id}`} title="Edit" style={{ background: "none", border: "1px solid var(--dash-border)", borderRadius: "6px", color: "var(--dash-primary)", padding: "6px", display: "inline-flex", alignItems: "center" }}>

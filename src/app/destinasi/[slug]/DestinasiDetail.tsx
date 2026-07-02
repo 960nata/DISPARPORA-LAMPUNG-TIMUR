@@ -216,7 +216,7 @@ export default function DestinasiDetail({ param }: { param: string }) {
                 {/* Gallery carousel */}
                 {gallery.length > 0 && (
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
-                    <p style={{ margin: 0, fontSize: "0.65rem", fontWeight: 800, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em" }}>Galeri Foto</p>
+                    <p style={{ margin: 0, fontSize: "clamp(0.65rem, 1.5vw, 0.75rem)", fontWeight: 800, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em" }}>Galeri Foto</p>
                     <div style={{ borderRadius: "18px", overflow: "hidden", position: "relative", aspectRatio: "16/8", background: "#0f172a", cursor: "zoom-in", boxShadow: "0 4px 24px rgba(0,0,0,0.12)" }} onClick={() => setLightbox(true)}>
                       <img src={gallery[photoIdx]?.imageUrl} alt={gallery[photoIdx]?.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "opacity 0.25s" }} />
                       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 45%)" }} />
@@ -229,7 +229,7 @@ export default function DestinasiDetail({ param }: { param: string }) {
                       </div>
                     </div>
                     {gallery.length > 1 && (
-                      <div style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(gallery.length, 6)}, 1fr)`, gap: "0.5rem" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: `repeat(auto-fill, minmax(60px, 1fr))`, gap: "0.5rem" }}>
                         {gallery.map((g, i) => (
                           <button key={g.id} onClick={() => setPhotoIdx(i)} style={{ aspectRatio: "4/3", borderRadius: "10px", overflow: "hidden", border: `2.5px solid ${i === photoIdx ? color : "transparent"}`, padding: 0, cursor: "pointer", background: "none", transition: "border-color 0.15s, opacity 0.15s", opacity: i === photoIdx ? 1 : 0.6, width: "100%" }}>
                             <img src={g.imageUrl} alt={g.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />

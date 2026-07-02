@@ -176,7 +176,7 @@ export default function DestinationsSection() {
       <div className="container" style={{ marginBottom: "2rem" }}>
         <div className="dest-section-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "2rem" }}>
           <div style={{ flex: "1 1 300px" }}>
-            <h2 className="section-heading" style={{ fontSize: "2.5rem", fontWeight: 800, fontFamily: "var(--font-main)", letterSpacing: "-0.02em" }}>
+            <h2 className="section-heading" style={{ fontSize: "clamp(1.5rem, 4vw, 2.5rem)", fontWeight: 800, fontFamily: "var(--font-main)", letterSpacing: "-0.02em" }}>
               Destinasi Terpopuler
             </h2>
           </div>

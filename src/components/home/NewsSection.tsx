@@ -167,7 +167,7 @@ export default function NewsSection({ posts = [] }: NewsSectionProps) {
               </span>
             </div>
             
-            <Link href={`/berita/${featured.id || featured.slug}`}>
+            <Link href={`/berita/${featured.slug || featured.id}`}>
               <h3 className="news-featured-title" style={{ transition: "color 0.2s" }} onMouseOver={(e) => e.currentTarget.style.color = "#a7f3d0"} onMouseOut={(e) => e.currentTarget.style.color = "white"}>
                 {featured.title}
               </h3>
@@ -209,7 +209,7 @@ export default function NewsSection({ posts = [] }: NewsSectionProps) {
                   </span>
                 </div>
                 
-                <Link href={`/berita/${item.id || item.slug}`}>
+                <Link href={`/berita/${item.slug || item.id}`}>
                   <h4 className="news-side-title" style={{ transition: "color 0.2s" }} onMouseOver={(e) => e.currentTarget.style.color = "var(--primary)"} onMouseOut={(e) => e.currentTarget.style.color = "var(--text-primary)"}>
                     {item.title}
                   </h4>

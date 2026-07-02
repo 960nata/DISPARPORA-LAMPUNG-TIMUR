@@ -33,6 +33,7 @@ interface MapItem {
   rooms?: number;
   food_type?: string;
   capacity?: number;
+  slug?: string;
 }
 
 function MapPageContent() {
@@ -303,7 +304,7 @@ function MapPageContent() {
                 )}
 
                 <Link
-                  href={`/destinasi/${selectedItem.id}`}
+                  href={`/destinasi/${selectedItem.slug || selectedItem.id}`}
                   style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", padding: "0.8rem 1rem", borderRadius: "12px", background: categories.find(c => c.name === selectedItem.category)?.color ?? "#059669", color: "white", fontWeight: 700, fontSize: "0.88rem", textDecoration: "none", marginTop: "0.5rem" }}
                 >
                   Lihat Halaman Destinasi <ChevronRight size={15} />

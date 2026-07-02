@@ -37,7 +37,8 @@ export async function PUT(
         tags: data.tags,
         seoTitle: data.seoTitle,
         seoDesc: data.seoDesc,
-        publishDate: data.publishDate
+        publishDate: data.publishDate,
+        slug: data.slug || undefined
       }
     });
 

@@ -24,10 +24,11 @@ function excerpt(html: string, max = 160): string {
 // body share a single DB read per request.
 const findDest = cache(async (param: string) => {
   try {
-    const byId = await db.destinations.findUnique({ where: { id: param } });
-    if (byId) return byId;
     const all: any[] = await db.destinations.findMany();
-    return all.find((d) => d.slug && d.slug === param) ?? null;
+    const bySlug = all.find((d) => d.slug && d.slug === param);
+    if (bySlug) return bySlug;
+    const byId = await db.destinations.findUnique({ where: { id: param } });
+    return byId ?? null;
   } catch {
     return null;
   }

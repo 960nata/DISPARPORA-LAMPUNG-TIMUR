@@ -350,7 +350,7 @@ export default function ProfilDinas() {
             </motion.div>
 
             {/* Right: 4 items */}
-            <div className="tupoksi-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
+            <div className="tupoksi-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(clamp(150px, 100%, 200px), 1fr))", gap: "1rem" }}>
               {[
                 { icon: <MapPin size={20} />, title: "Kedudukan", body: "Unsur pelaksana otonomi daerah di bawah Bupati, bertanggung jawab atas urusan pariwisata, kepemudaan, dan keolahragaan." },
                 { icon: <Briefcase size={20} />, title: "Tugas Pokok", body: "Melaksanakan urusan pemerintahan berdasarkan asas otonomi dan tugas pembantuan di bidang pariwisata, ekraf, kepemudaan, dan olahraga." },
@@ -361,13 +361,13 @@ export default function ProfilDinas() {
                   key={i}
                   {...fadeUp(0.05 + i * 0.07)}
                   whileHover={{ y: -5 }}
-                  style={{ backgroundColor: "white", border: "1px solid rgba(16,40,28,0.08)", borderRadius: "20px", padding: "1.5rem" }}
+                  style={{ backgroundColor: "white", border: "1px solid rgba(16,40,28,0.08)", borderRadius: "20px", padding: "clamp(1rem, 5vw, 1.5rem)", display: "flex", flexDirection: "column" }}
                 >
-                  <span style={{ width: "42px", height: "42px", borderRadius: "12px", backgroundColor: "rgba(14,159,79,0.1)", color: GREEN, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ width: "42px", height: "42px", borderRadius: "12px", backgroundColor: "rgba(14,159,79,0.1)", color: GREEN, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     {item.icon}
                   </span>
-                  <p style={{ marginTop: "0.875rem", fontWeight: 800, fontSize: "0.94rem" }}>{item.title}</p>
-                  <p style={{ margin: "0.5rem 0 0", fontSize: "0.8rem", lineHeight: 1.6, color: "#5a6960" }}>{item.body}</p>
+                  <p style={{ marginTop: "0.875rem", fontWeight: 800, fontSize: "clamp(0.85rem, 2vw, 0.94rem)" }}>{item.title}</p>
+                  <p style={{ margin: "0.5rem 0 0", fontSize: "clamp(0.75rem, 1.8vw, 0.8rem)", lineHeight: 1.6, color: "#5a6960", flex: 1 }}>{item.body}</p>
                 </motion.div>
               ))}
             </div>

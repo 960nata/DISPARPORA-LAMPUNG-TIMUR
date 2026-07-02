@@ -11,7 +11,7 @@ interface Destination {
   id: string; name: string; category: string; kecamatan: string;
   address: string; active: boolean; facilities?: string;
   contact?: string; classification?: string; rooms?: number;
-  imageUrl?: string; description?: string;
+  imageUrl?: string; description?: string; slug?: string;
 }
 
 function stripHtml(html: string): string {
@@ -144,7 +144,7 @@ export default function DestinasiPublicPage() {
               const icon  = CAT_ICON[d.category];
               const facs  = d.facilities ? d.facilities.split(",").map(f => f.trim()).filter(Boolean) : [];
               return (
-                <Link key={d.id} href={`/destinasi/${d.id}`} style={{ textDecoration: "none" }}>
+                <Link key={d.id} href={`/destinasi/${d.slug || d.id}`} style={{ textDecoration: "none" }}>
                   <div style={{ background: "white", borderRadius: "20px", overflow: "hidden", boxShadow: "var(--card-shadow)", border: "1px solid var(--border)", height: "100%", display: "flex", flexDirection: "column", transition: "transform 0.2s, box-shadow 0.2s" }}
                     onMouseEnter={e => { const t = e.currentTarget as HTMLElement; t.style.transform = "translateY(-5px)"; t.style.boxShadow = "0 20px 40px rgba(0,0,0,0.1)"; }}
                     onMouseLeave={e => { const t = e.currentTarget as HTMLElement; t.style.transform = ""; t.style.boxShadow = "var(--card-shadow)"; }}>

@@ -1444,6 +1444,8 @@ a {
   max-width: 100%;
   overflow-wrap: anywhere;
   word-break: break-word;
+  font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+  line-height: 1.65;
 }
 .post-rich > * { max-width: 100%; }
 .post-rich img,
@@ -1464,6 +1466,7 @@ a {
   overflow-x: auto;
   white-space: pre-wrap;
   word-break: break-word;
+  font-size: clamp(0.8rem, 2vw, 0.95rem);
 }
 .post-rich a { color: var(--accent); word-break: break-word; }
 .post-rich h1, .post-rich h2, .post-rich h3 {
@@ -1471,18 +1474,19 @@ a {
   font-weight: 800;
   margin: 1.2rem 0 0.5rem;
 }
-.post-rich h1 { font-size: 1.7rem; }
-.post-rich h2 { font-size: 1.4rem; }
-.post-rich h3 { font-size: 1.15rem; }
-.post-rich p { margin: 0 0 1rem; }
-.post-rich ul, .post-rich ol { margin: 0 0 1rem; padding-left: 1.5rem; }
-.post-rich li { margin: 0.25rem 0; }
+.post-rich h1 { font-size: clamp(1.5rem, 5vw, 2rem); }
+.post-rich h2 { font-size: clamp(1.2rem, 4vw, 1.6rem); }
+.post-rich h3 { font-size: clamp(1rem, 3vw, 1.3rem); }
+.post-rich p { margin: 0 0 1rem; line-height: 1.65; }
+.post-rich ul, .post-rich ol { margin: 0 0 1rem; padding-left: clamp(1rem, 5vw, 1.5rem); }
+.post-rich li { margin: 0.25rem 0; line-height: 1.65; }
 .post-rich blockquote {
   margin: 1rem 0;
-  padding: 0.5rem 1rem;
+  padding: clamp(0.4rem, 2vw, 0.5rem) clamp(0.8rem, 3vw, 1rem);
   border-left: 3px solid var(--accent);
   color: var(--text-secondary);
   background: var(--bg-secondary);
   border-radius: 0 8px 8px 0;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 .post-rich figure { max-width: 100%; }

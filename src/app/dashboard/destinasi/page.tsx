@@ -11,7 +11,7 @@ import { useAdmin } from "@/contexts/AdminContext";
 interface TourismItem {
   id: string; name: string; category: string; kecamatan: string; address: string;
   lat: number; lng: number; active: boolean; facilities?: string; contact?: string; map_link?: string;
-  classification?: string; rooms?: number;
+  classification?: string; rooms?: number; slug?: string;
 }
 
 const CATEGORIES = ["Wisata Alam", "Wisata Buatan", "Wisata Budaya", "Akomodasi"];
@@ -139,7 +139,7 @@ export default function DestinasiPage() {
                   <td><span className={`dash-badge ${item.active ? "dash-badge-success" : "dash-badge-danger"}`}>{item.active ? "Aktif" : "Non-Aktif"}</span></td>
                   <td style={{ textAlign: "right" }}>
                     <div style={{ display: "inline-flex", gap: "4px" }}>
-                      <button onClick={() => router.push(`/destinasi/${item.id}`)} title="Lihat di publik" style={{ background: "none", border: "1px solid var(--dash-border)", borderRadius: "6px", color: "var(--dash-text-muted)", cursor: "pointer", padding: "6px", display: "flex", alignItems: "center" }}>
+                      <button onClick={() => router.push(`/destinasi/${item.slug || item.id}`)} title="Lihat di publik" style={{ background: "none", border: "1px solid var(--dash-border)", borderRadius: "6px", color: "var(--dash-text-muted)", cursor: "pointer", padding: "6px", display: "flex", alignItems: "center" }}>
                         <Eye size={13} />
                       </button>
                       <button onClick={() => router.push(`/dashboard/destinasi/edit/${item.id}`)} title="Edit" style={{ background: "none", border: "1px solid var(--dash-border)", borderRadius: "6px", color: "var(--dash-primary)", cursor: "pointer", padding: "6px", display: "flex", alignItems: "center" }}>

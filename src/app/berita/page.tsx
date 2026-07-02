@@ -124,6 +124,7 @@ export default function NewsPage() {
       rank: String(i + 1),
       title: p.title.length > 55 ? p.title.substring(0, 55) + "…" : p.title,
       id: p.id,
+      slug: p.slug,
     }));
   }, [posts]);
 
@@ -478,7 +479,7 @@ export default function NewsPage() {
                       trendingPosts.map((t) => (
                         <Link
                           key={t.id}
-                          href={`/berita/${t.id}`}
+                          href={`/berita/${t.slug || t.id}`}
                           style={{ display: "flex", gap: "14px", alignItems: "flex-start", textDecoration: "none" }}
                         >
                           <span className="berita-trending-rank">{t.rank}</span>
