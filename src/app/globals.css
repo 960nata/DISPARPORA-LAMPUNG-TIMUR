@@ -1442,12 +1442,21 @@ a {
 /* Keep authored content inside its column — no more "meluber ke mana-mana". */
 .post-rich {
   max-width: 100%;
-  overflow-wrap: anywhere;
+  width: 100%;
+  overflow-wrap: break-word;
   word-break: break-word;
   font-size: clamp(0.95rem, 2.5vw, 1.05rem);
-  line-height: 1.65;
+  line-height: 1.8;
 }
-.post-rich > * { max-width: 100%; }
+.post-rich > * {
+  max-width: 100%;
+  width: 100%;
+  display: block;
+}
+.post-rich > p {
+  margin-bottom: 1.2rem;
+  text-align: justify;
+}
 .post-rich img,
 .post-rich video,
 .post-rich iframe,
