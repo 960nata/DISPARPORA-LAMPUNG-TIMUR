@@ -22,9 +22,9 @@ const VisitorMap = dynamic(() => import("@/components/VisitorMap"), {
 interface Totals { views: number; sessions: number; newVisits: number; returningVisits: number; avgPerSession: number; }
 interface Series { labels: string[]; data: number[]; }
 interface Popular { path: string; label: string; views: number; }
-interface Location { name: string; views: number; }
+interface VisitorLocation { name: string; views: number; }
 interface MapPoint { name: string; views: number; lat: number | null; lng: number | null; }
-interface Analytics { totals: Totals; series: Series; popular: Popular[]; locations: Location[]; originPoints: MapPoint[]; kecamatanViews: MapPoint[]; }
+interface Analytics { totals: Totals; series: Series; popular: Popular[]; locations: VisitorLocation[]; originPoints: MapPoint[]; kecamatanViews: MapPoint[]; }
 
 const RANGES = [
   { id: "hari-ini", label: "Hari Ini" },
@@ -51,6 +51,7 @@ export default function DashboardPage() {
   const [range, setRange] = useState<string>("bulan");
   const [data, setData] = useState<Analytics>(EMPTY);
   const [loading, setLoading] = useState(true);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -291,15 +292,38 @@ export default function DashboardPage() {
             <div style={{ padding: "34px 0", textAlign: "center", fontSize: "0.82rem", color: "var(--dash-text-muted)" }}>Belum ada data lokasi kunjungan.</div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "13px", marginTop: "18px" }}>
-              {locations.map(l => (
+              {locations.slice(0, 5).map(l => (
                 <div key={l.name} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <span style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--dash-text-soft)", width: "150px", flexShrink: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{l.name}</span>
+                  <span style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--dash-text-soft)", width: "150px", flexShrink: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} title={l.name}>{l.name}</span>
                   <div style={{ flex: 1, height: "8px", borderRadius: "20px", background: "var(--dash-surface-hover)", overflow: "hidden" }}>
                     <div style={{ width: `${Math.round(l.views / maxLoc * 100)}%`, height: "100%", borderRadius: "20px", background: "var(--dash-primary)" }} />
                   </div>
                   <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--dash-text)", width: "44px", textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{l.views}</span>
                 </div>
               ))}
+              {locations.length > 5 && (
+                <button
+                  onClick={() => setIsDrawerOpen(true)}
+                  style={{
+                    alignSelf: "flex-start",
+                    background: "none",
+                    border: "none",
+                    color: "var(--dash-primary)",
+                    fontSize: "0.82rem",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    padding: "4px 0",
+                    marginTop: "4px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    fontFamily: "inherit",
+                  }}
+                  className="dash-link-btn"
+                >
+                  Lainnya ({locations.length - 5} wilayah) →
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -401,6 +425,62 @@ export default function DashboardPage() {
         © {new Date().getFullYear()} DISPARPORA Lampung Timur · Statistik kunjungan {hasTraffic ? "real-time" : "menunggu data"}
       </div>
 
+      {/* Drawer / Side Sheet for All Locations */}
+      <div
+        className={`dash-drawer-overlay ${isDrawerOpen ? "open" : ""}`}
+        onClick={() => setIsDrawerOpen(false)}
+      >
+        <div
+          className="dash-drawer-content"
+          style={{ padding: "24px", display: "flex", flexDirection: "column", overflowY: "auto" }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid var(--dash-border)", paddingBottom: "16px", marginBottom: "20px" }}>
+            <div>
+              <h3 style={{ margin: 0, fontSize: "1.1rem", fontWeight: 800, color: "var(--dash-text)" }}>Semua Asal Pengunjung</h3>
+              <p style={{ margin: "4px 0 0", fontSize: "0.78rem", color: "var(--dash-text-soft)" }}>Daftar lengkap wilayah berdasarkan Kunjungan</p>
+            </div>
+            <button
+              onClick={() => setIsDrawerOpen(false)}
+              style={{
+                background: "var(--dash-surface-hover)",
+                border: "none",
+                borderRadius: "50%",
+                width: "32px",
+                height: "32px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                color: "var(--dash-text)",
+                fontWeight: "bold",
+              }}
+            >
+              ✕
+            </button>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+            {locations.map((l: VisitorLocation, index: number) => (
+              <div key={l.name} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <span style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--dash-text-muted)", width: "24px", fontVariantNumeric: "tabular-nums" }}>
+                  #{index + 1}
+                </span>
+                <span style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--dash-text-soft)", flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} title={l.name}>
+                  {l.name}
+                </span>
+                <div style={{ width: "120px", height: "8px", borderRadius: "20px", background: "var(--dash-surface-hover)", overflow: "hidden" }}>
+                  <div style={{ width: `${Math.round(l.views / maxLoc * 100)}%`, height: "100%", borderRadius: "20px", background: "var(--dash-primary)" }} />
+                </div>
+                <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--dash-text)", width: "44px", textAlign: "right", fontVariantNumeric: "tabular-nums" }}>
+                  {l.views}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Responsive overrides */}
       <style jsx global>{`
         @media (max-width: 1100px) {
@@ -413,6 +493,38 @@ export default function DashboardPage() {
           .dash-grid-kpi { grid-template-columns: 1fr !important; }
           .dash-pop-row { grid-template-columns: 28px 1fr 56px !important; }
           .dash-pop-row .dash-hide-sm { display: none !important; }
+        }
+
+        /* Drawer Overlay */
+        .dash-drawer-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.4);
+          backdrop-filter: blur(4px);
+          z-index: 9999;
+          display: flex;
+          justify-content: flex-end;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .dash-drawer-overlay.open {
+          opacity: 1;
+          visibility: visible;
+        }
+        /* Drawer Content */
+        .dash-drawer-content {
+          width: 100%;
+          max-width: 450px;
+          height: 100%;
+          background: var(--dash-card);
+          border-left: 1px solid var(--dash-border);
+          box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+          transform: translateX(100%);
+          transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .dash-drawer-overlay.open .dash-drawer-content {
+          transform: translateX(0);
         }
       `}</style>
     </div>

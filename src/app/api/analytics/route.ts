@@ -34,6 +34,64 @@ function countryName(code: string) {
   return NEGARA[code] || code || "";
 }
 
+const REGION_MAP: Record<string, string> = {
+  "AC": "Aceh",
+  "BA": "Bali",
+  "BB": "Bangka Belitung",
+  "BT": "Banten",
+  "BE": "Bengkulu",
+  "GO": "Gorontalo",
+  "JK": "DKI Jakarta",
+  "JA": "Jambi",
+  "JB": "Jawa Barat",
+  "JT": "Jawa Tengah",
+  "JI": "Jawa Timur",
+  "KB": "Kalimantan Barat",
+  "KS": "Kalimantan Selatan",
+  "KT": "Kalimantan Tengah",
+  "KI": "Kalimantan Timur",
+  "KU": "Kalimantan Utara",
+  "KR": "Kepulauan Riau",
+  "LA": "Lampung",
+  "MA": "Maluku",
+  "MU": "Maluku Utara",
+  "NB": "Nusa Tenggara Barat",
+  "NT": "Nusa Tenggara Timur",
+  "PA": "Papua",
+  "PB": "Papua Barat",
+  "RI": "Riau",
+  "SR": "Sulawesi Barat",
+  "SN": "Sulawesi Selatan",
+  "ST": "Sulawesi Tengah",
+  "SG": "Sulawesi Tenggara",
+  "SA": "Sulawesi Utara",
+  "SB": "Sumatera Barat",
+  "SS": "Sumatera Selatan",
+  "SU": "Sumatera Utara",
+  "YO": "DI Yogyakarta",
+};
+
+function formatLocation(r: { city?: string; region?: string; country?: string }) {
+  const city = r.city ? r.city.trim() : "";
+  const regCode = r.region ? r.region.trim().toUpperCase() : "";
+  const regionName = regCode ? (REGION_MAP[regCode] || regCode) : "";
+  const country = r.country ? countryName(r.country) : "";
+
+  if (city && regionName) {
+    if (city.toLowerCase() === regionName.toLowerCase()) {
+      return city;
+    }
+    if (regionName.toLowerCase().includes(city.toLowerCase()) || city.toLowerCase().includes(regionName.toLowerCase())) {
+      return regionName.length > city.length ? regionName : city;
+    }
+    return `${city} (${regionName})`;
+  }
+  if (city) return city;
+  if (regionName) return regionName;
+  return country || "Tidak diketahui";
+}
+
+
 const startOfDay = (d: Date) => { const x = new Date(d); x.setHours(0, 0, 0, 0); return x; };
 const hourKey = (d: Date) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}-${d.getHours()}`;
 const dayKey = (d: Date) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
@@ -111,7 +169,11 @@ export async function GET(req: NextRequest) {
 
     // Popular pages
     const byPath = new Map<string, number>();
-    for (const r of rows) byPath.set(r.path, (byPath.get(r.path) || 0) + 1);
+    for (const r of rows) {
+      if (r.path && !r.path.startsWith("/dashboard")) {
+        byPath.set(r.path, (byPath.get(r.path) || 0) + 1);
+      }
+    }
     const popular = [...byPath.entries()]
       .map(([path, v]) => ({ path, label: labelFor(path), views: v }))
       .sort((a, b) => b.views - a.views)
@@ -121,14 +183,14 @@ export async function GET(req: NextRequest) {
     // Never a raw IP; grouped by region/city with representative coordinates.
     const byLoc = new Map<string, { name: string; views: number; lat: number | null; lng: number | null }>();
     for (const r of rows) {
-      const name = r.region || r.city || countryName(r.country) || "Tidak diketahui";
+      const name = formatLocation(r);
       const cur = byLoc.get(name) || { name, views: 0, lat: null, lng: null };
       cur.views++;
       if (cur.lat == null && r.lat != null && r.lng != null) { cur.lat = r.lat; cur.lng = r.lng; }
       byLoc.set(name, cur);
     }
     const locAll = [...byLoc.values()].sort((a, b) => b.views - a.views);
-    const locations = locAll.slice(0, 10).map(({ name, views }) => ({ name, views }));
+    const locations = locAll.map(({ name, views }) => ({ name, views }));
     const originPoints = locAll.filter(l => l.lat != null && l.lng != null);
 
     // Per-kecamatan (Lampung Timur): accumulate destinasi page views by the
