@@ -40,7 +40,6 @@ export default function BuatBeritaPage() {
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [slugEdited, setSlugEdited] = useState(false);
-  const [shortDesc, setShortDesc] = useState("");
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [status, setStatus] = useState<"draft" | "published">("draft");
   const [categories, setCategories] = useState<string[]>(["Pariwisata"]);
@@ -64,7 +63,6 @@ export default function BuatBeritaPage() {
       if (!data.id) return;
       setTitle(data.title || "");
       setSlug(slugify(data.title || ""));
-      setShortDesc(data.shortDesc || "");
       setStatus(data.status || "draft");
       const tagArr = (data.tags || "").split(",").map((t: string) => t.trim()).filter(Boolean);
       const cats = tagArr.filter((t: string) => CATEGORIES.includes(t));
@@ -108,7 +106,6 @@ export default function BuatBeritaPage() {
     const payload = {
       title: title.trim(),
       content: JSON.stringify(blocks),
-      shortDesc,
       imageUrl: cover,
       status: overrideStatus || status,
       tags: allTags,
@@ -135,7 +132,16 @@ export default function BuatBeritaPage() {
   };
 
   const seoTitleVal = metaTitle || title;
-  const seoDescVal = metaDesc || shortDesc.replace(/<[^>]+>/g, "").slice(0, 160);
+  const getExcerptFromBlocks = () => {
+    try {
+      const firstTextBlock = blocks.find(b => b.type === "text");
+      if (firstTextBlock?.data?.html) {
+        return firstTextBlock.data.html.replace(/<[^>]+>/g, "").slice(0, 160);
+      }
+    } catch {}
+    return "";
+  };
+  const seoDescVal = metaDesc || getExcerptFromBlocks();
   const slugUrl = slug || slugify(title);
 
   return (
@@ -222,15 +228,6 @@ export default function BuatBeritaPage() {
                 style={{ flex: 1, border: "none", outline: "none", background: "transparent", color: "var(--dash-text-soft)", fontSize: "0.78rem", fontFamily: "monospace" }}
               />
             </div>
-          </div>
-
-          {/* Short Description (Quill) */}
-          <div className="dash-card" style={{ padding: "1.1rem 1.25rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
-              <FileText size={15} style={{ color: "var(--dash-primary)" }} />
-              <span style={{ fontSize: "0.7rem", fontWeight: 700, color: "var(--dash-text-muted)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Deskripsi / Ringkasan</span>
-            </div>
-            <QuillEditor value={shortDesc} onChange={setShortDesc} placeholder="Tulis ringkasan artikel (tampil di kartu berita)..." minHeight={130} />
           </div>
 
           {/* PageBuilder / Block Canvas */}
