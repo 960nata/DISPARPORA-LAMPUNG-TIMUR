@@ -1507,20 +1507,59 @@ a {
 @media (max-width: 640px) {
   .berita-related-grid {
     display: flex !important;
-    flexDirection: column !important;
-    gap: 1rem !important;
+    flex-direction: column !important;
+    gap: 1.25rem !important;
+  }
+
+  .berita-related-grid > a {
+    width: 100% !important;
+    text-decoration: none !important;
   }
 
   .berita-related-grid > a > div {
-    flexDirection: row !important;
+    flex-direction: row !important;
     height: auto !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    gap: 1rem !important;
+    align-items: flex-start !important;
   }
 
   .berita-related-grid img {
-    width: 100px !important;
-    height: 80px !important;
-    flexShrink: 0 !important;
-    borderRadius: "8px 0 0 8px" !important;
+    width: 80px !important;
+    height: 60px !important;
+    flex-shrink: 0 !important;
+    border-radius: 12px !important;
+    object-fit: cover !important;
+  }
+
+  .berita-related-grid > a > div > div {
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    gap: 0.25rem !important;
+    flex: 1 !important;
+  }
+
+  .berita-related-grid p {
+    margin: 0 !important;
+    line-height: 1.35 !important;
+  }
+
+  .berita-related-grid p:first-of-type {
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    -webkit-line-clamp: 3 !important;
+  }
+
+  .berita-related-grid p:last-of-type {
+    font-size: 0.7rem !important;
+    color: var(--text-secondary) !important;
+    margin-top: 0.15rem !important;
   }
 }
 
@@ -1530,7 +1569,7 @@ a {
   .buat-grid,
   .dest-form-grid {
     display: grid !important;
-    gridTemplateColumns: 1fr !important;
+    grid-template-columns: 1fr !important;
     gap: 1rem !important;
   }
 
@@ -1565,15 +1604,17 @@ a {
   }
 
   /* Grid form fields → single column */
-  [style*="gridTemplateColumns: 1fr 1fr"],
-  [style*="gridTemplateColumns: 2fr 1fr"] {
-    gridTemplateColumns: 1fr !important;
+  [style*="grid-template-columns"],
+  [style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr !important;
   }
 
   /* Title input sizing */
+  input[style*="font-size: 1.75rem"],
   input[style*="fontSize: 1.75rem"],
+  input[style*="font-size: 1.5rem"],
   input[style*="fontSize: 1.5rem"] {
-    fontSize: clamp(1.25rem, 4vw, 1.5rem) !important;
+    font-size: clamp(1.25rem, 4vw, 1.5rem) !important;
   }
 
   /* Remove sticky sidebar */
@@ -1585,6 +1626,6 @@ a {
   article,
   [style*="flex: 2 1 600px"] {
     flex: 1 1 auto !important;
-    minWidth: auto !important;
+    min-width: auto !important;
   }
 }
