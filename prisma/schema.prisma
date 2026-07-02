@@ -1,5 +1,7 @@
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 generator client {
@@ -19,14 +21,14 @@ model User {
 }
 
 model Destination {
-  id             String  @id @default(cuid())
+  id             String    @id @default(cuid())
   name           String
   category       String
   kecamatan      String
   address        String?
   lat            Float
   lng            Float
-  active         Boolean @default(true)
+  active         Boolean   @default(true)
   facilities     String?
   contact        String?
   map_link       String?
@@ -38,6 +40,10 @@ model Destination {
   description    String?
   slug           String?
   gallery        Json?
+  createdAt      DateTime  @default(now())
+  publishDate    String?
+  seoTitle       String?
+  seoDesc        String?
 
   @@map("destinations")
 }

@@ -49,6 +49,9 @@ export async function POST(request: NextRequest) {
         description: data.description || undefined,
         slug,
         gallery: Array.isArray(data.gallery) ? data.gallery : undefined,
+        publishDate: data.publishDate || undefined,
+        seoTitle: data.seoTitle || undefined,
+        seoDesc: data.seoDesc || undefined,
       }
     };
 

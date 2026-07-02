@@ -47,29 +47,40 @@ export async function generateMetadata({
   }
 
   const desc =
+    dest.seoDesc ||
     excerpt(dest.description) ||
     `${dest.name} — destinasi ${dest.category?.toLowerCase() || "wisata"} di Kecamatan ${dest.kecamatan}, Lampung Timur.`;
   const url = `/destinasi/${dest.slug || dest.id}`;
   const image = dest.imageUrl || "/og-image.png";
 
+  const getISOPublishDate = () => {
+    if (dest.publishDate) {
+      try { return new Date(dest.publishDate).toISOString(); } catch {}
+    }
+    if (dest.createdAt) {
+      try { return new Date(dest.createdAt).toISOString(); } catch {}
+    }
+    return undefined;
+  };
+
   return {
     // Root layout's title template appends the brand — keep this just the name.
-    title: dest.name,
+    title: dest.seoTitle || dest.name,
     description: desc,
     alternates: { canonical: url },
     openGraph: {
       type: "article",
-      title: dest.name,
+      title: dest.seoTitle || dest.name,
       description: desc,
       url,
       images: [{ url: image }],
-      publishedTime: "2026-07-02T14:11:13.000Z",
+      publishedTime: getISOPublishDate(),
       authors: ["DISPARPORA Lampung Timur"],
       section: dest.category || undefined,
     },
     twitter: {
       card: "summary_large_image",
-      title: dest.name,
+      title: dest.seoTitle || dest.name,
       description: desc,
       images: [image],
     },

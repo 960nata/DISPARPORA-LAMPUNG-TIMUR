@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import {
   ArrowLeft, Save, MapPin, CheckCircle2, AlertCircle,
   Loader2, Compass, Phone, Tag, ImageIcon, X, FileText,
-  Images, Plus, Link2,
+  Images, Plus, Link2, CalendarDays, Search,
 } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { MapSkeleton } from "@/components/Skeleton";
@@ -31,6 +31,7 @@ interface FormData {
   rooms: string; food_type: string; capacity: string;
   imageUrl: string; description: string;
   slug: string; gallery: string[];
+  publishDate: string; seoTitle: string; seoDesc: string;
 }
 
 const DEFAULT: FormData = {
@@ -40,6 +41,7 @@ const DEFAULT: FormData = {
   rooms: "", food_type: "", capacity: "",
   imageUrl: "", description: "",
   slug: "", gallery: [],
+  publishDate: "", seoTitle: "", seoDesc: "",
 };
 
 function toSlug(text: string): string {
@@ -87,6 +89,9 @@ export default function DestinasiForm({ mode, editId }: Props) {
             imageUrl: data.imageUrl || "", description: data.description || "",
             slug: data.slug || toSlug(data.name || ""),
             gallery: Array.isArray(data.gallery) ? data.gallery : [],
+            publishDate: data.publishDate || "",
+            seoTitle: data.seoTitle || "",
+            seoDesc: data.seoDesc || "",
           });
           if (data.slug) setSlugLocked(true);
         }
@@ -112,6 +117,24 @@ export default function DestinasiForm({ mode, editId }: Props) {
     }
     setSaving(true); setStatus("idle");
     try {
+      // Meta description automation
+      let seoDesc = form.seoDesc.trim();
+      if (!seoDesc && form.description) {
+        seoDesc = form.description
+          .replace(/<[^>]*>/g, " ")
+          .replace(/&nbsp;/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+        if (seoDesc.length > 155) {
+          seoDesc = seoDesc.slice(0, 152) + "...";
+        }
+      }
+
+      let seoTitle = form.seoTitle.trim();
+      if (!seoTitle) {
+        seoTitle = form.name.trim();
+      }
+
       const payload = {
         ...form,
         lat: Number(form.lat), lng: Number(form.lng),
@@ -124,6 +147,9 @@ export default function DestinasiForm({ mode, editId }: Props) {
         description: form.description || undefined,
         slug: form.slug || undefined,
         gallery: form.gallery.length > 0 ? form.gallery : undefined,
+        publishDate: form.publishDate || undefined,
+        seoTitle,
+        seoDesc,
       };
       const url    = mode === "create" ? "/api/destinations" : `/api/destinations/${editId}`;
       const method = mode === "create" ? "POST" : "PUT";
@@ -401,9 +427,9 @@ export default function DestinasiForm({ mode, editId }: Props) {
             </div>
           </div>
 
-          {/* ── RIGHT: Sidebar (Thumbnail) ── */}
+          {/* ── RIGHT: Sidebar (Thumbnail, Tanggal, SEO) ── */}
           <div className="dest-form-aside" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {/* Thumbnail */}
+            {/* Foto Sampul */}
             <div className="dash-card" style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "14px" }}>
               <SectionHead icon={<ImageIcon size={15} />} label="Foto Sampul" />
 
@@ -424,6 +450,43 @@ export default function DestinasiForm({ mode, editId }: Props) {
                   <span style={{ fontSize: "0.7rem", opacity: 0.7 }}>dari Galeri</span>
                 </div>
               )}
+            </div>
+
+            {/* Tanggal Publikasi */}
+            <div className="dash-card" style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "12px" }}>
+              <SectionHead icon={<CalendarDays size={14} />} label="Tanggal Rilis" />
+              <input type="date" className="dash-input" value={form.publishDate} onChange={e => upd("publishDate", e.target.value)} style={{ fontSize: "0.82rem", colorScheme: "light dark" }} />
+              {form.publishDate && (
+                <p style={{ margin: 0, fontSize: "0.72rem", color: "var(--dash-text-muted)", fontWeight: 600 }}>
+                  Rilis: {new Date(form.publishDate).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}
+                </p>
+              )}
+            </div>
+
+            {/* Optimasi SEO */}
+            <div className="dash-card" style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "12px" }}>
+              <SectionHead icon={<Search size={14} />} label="Optimasi SEO" />
+              
+              {/* Google preview */}
+              <div style={{ background: "var(--dash-surface-hover)", borderRadius: "9px", padding: "0.85rem", border: "1px solid var(--dash-border)" }}>
+                <p style={{ margin: "0 0 2px", fontSize: "0.65rem", color: "var(--dash-text-muted)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>disparpora-lamtim.go.id › destinasi › {form.slug || "nama-destinasi"}</p>
+                <p style={{ margin: "0 0 2px", fontSize: "0.88rem", fontWeight: 600, color: "#1a73e8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", lineHeight: 1.3 }}>
+                  {form.seoTitle || form.name || "Judul destinasi akan tampil di sini"}
+                </p>
+                <p style={{ margin: 0, fontSize: "0.72rem", color: "var(--dash-text-soft)", lineHeight: 1.4, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                  {form.seoDesc || (form.description ? form.description.replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ").slice(0, 150) : "") || "Deskripsi ringkas untuk cuplikan hasil pencarian Google."}
+                </p>
+              </div>
+
+              <div>
+                <LBL>Judul SEO (Meta Title)</LBL>
+                <input className="dash-input" value={form.seoTitle} onChange={e => upd("seoTitle", e.target.value)} placeholder="Biarkan kosong untuk default" style={{ fontSize: "0.82rem" }} />
+              </div>
+
+              <div>
+                <LBL>Deskripsi SEO (Meta Description)</LBL>
+                <textarea className="dash-input" value={form.seoDesc} onChange={e => upd("seoDesc", e.target.value)} placeholder="Ringkasan destinasi untuk hasil pencarian Google" style={{ fontSize: "0.82rem", minHeight: "80px", resize: "vertical", padding: "8px 12px" }} />
+              </div>
             </div>
           </div>
         </div>

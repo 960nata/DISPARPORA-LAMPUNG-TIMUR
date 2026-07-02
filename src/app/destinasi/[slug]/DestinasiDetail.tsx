@@ -23,6 +23,7 @@ interface Destination {
   facilities?: string; contact?: string; map_link?: string;
   classification?: string; rooms?: number; food_type?: string; capacity?: number;
   imageUrl?: string; description?: string; gallery?: string[];
+  createdAt?: string; publishDate?: string; seoTitle?: string; seoDesc?: string;
 }
 interface GalleryItem { id: string; title: string; category: string; imageUrl: string; }
 
@@ -139,6 +140,20 @@ export default function DestinasiDetail({ param }: { param: string }) {
   const mapItems = dest.lat && dest.lng ? [mapItem] : [];
   const heroImg  = dest.imageUrl || (gallery[0]?.imageUrl) || "/Gallery/hero1.avif";
 
+  const getPublishDateStr = () => {
+    if (dest.publishDate) {
+      try {
+        return new Date(dest.publishDate).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+      } catch {}
+    }
+    if (dest.createdAt) {
+      try {
+        return new Date(dest.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+      } catch {}
+    }
+    return "02 Juli 2026";
+  };
+
   const pageUrl    = typeof window !== "undefined" ? window.location.href : "";
   const shareWA    = `https://wa.me/?text=${encodeURIComponent(dest.name + " — Destinasi Lampung Timur\n" + pageUrl)}`;
   const shareX     = `https://twitter.com/intent/tweet?text=${encodeURIComponent(dest.name + " — Destinasi Wisata Lampung Timur")}&url=${encodeURIComponent(pageUrl)}`;
@@ -189,7 +204,7 @@ export default function DestinasiDetail({ param }: { param: string }) {
         <div style={{ display: "flex", flexWrap: "wrap", gap: "1.25rem", fontSize: "0.82rem", color: "var(--text-secondary)", borderBottom: "1px solid var(--border)", paddingBottom: "1rem", marginBottom: "1.5rem" }}>
           <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
             <Calendar size={14} style={{ color: "var(--primary)" }} />
-            02 Juli 2026
+            {getPublishDateStr()}
           </span>
           <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
             <User size={14} style={{ color: "var(--primary)" }} />
@@ -233,7 +248,7 @@ export default function DestinasiDetail({ param }: { param: string }) {
                 <div style={{ padding: "1.5rem", background: "white", borderRadius: "18px", border: "1px solid #f1f5f9", boxShadow: "0 1px 8px rgba(0,0,0,0.04)" }}>
                   <p style={{ margin: "0 0 0.75rem", fontSize: "0.65rem", fontWeight: 800, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em" }}>Tentang Destinasi</p>
                   {dest.description
-                    ? <div className="dest-desc" style={{ fontSize: "0.93rem", lineHeight: 1.8, color: "#374151" }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(dest.description) }} />
+                    ? <div className="dest-desc" style={{ fontSize: "0.93rem", lineHeight: 1.8, color: "#374151" }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(dest.description.replace(/&nbsp;/gi, " ").replace(/\u00a0/g, " ")) }} />
                     : <p style={{ margin: 0, fontSize: "0.9rem", color: "#cbd5e1", fontStyle: "italic" }}>Deskripsi belum tersedia.</p>
                   }
                 </div>
