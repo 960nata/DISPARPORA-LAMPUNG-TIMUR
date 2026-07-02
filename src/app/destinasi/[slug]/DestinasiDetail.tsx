@@ -48,6 +48,12 @@ const CAT_GRADIENT: Record<string, string> = {
 
 type Tab = "info" | "fasilitas" | "peta";
 
+// Treats "", "-", whitespace as empty so those info fields stay hidden.
+const clean = (v?: string | null): string => {
+  const t = (v ?? "").trim();
+  return t && t !== "-" ? t : "";
+};
+
 // `param` is the URL segment — a slug, but a legacy id also resolves.
 export default function DestinasiDetail({ param }: { param: string }) {
   const [dest, setDest]         = useState<Destination | null>(null);
@@ -187,12 +193,13 @@ export default function DestinasiDetail({ param }: { param: string }) {
 
                 {/* Info grid */}
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(155px, 1fr))", gap: "0.85rem" }}>
-                  <InfoCard label="Kecamatan"  value={dest.kecamatan}    accent={color} icon={<MapPin size={13} />} />
-                  <InfoCard label="Kategori"   value={dest.category}     accent={color} icon={icon} />
-                  {dest.classification && <InfoCard label="Klasifikasi"  value={dest.classification} accent={color} icon={<Star size={13} />} />}
-                  {dest.food_type      && <InfoCard label="Jenis Masakan" value={dest.food_type}     accent={color} icon={<Utensils size={13} />} />}
-                  {dest.rooms          ? <InfoCard label="Jumlah Kamar"  value={`${dest.rooms} kamar`}  accent={color} icon={<BedDouble size={13} />} /> : null}
-                  {dest.capacity       ? <InfoCard label="Kapasitas"     value={`${dest.capacity} orang`} accent={color} icon={<Users size={13} />} /> : null}
+                  {clean(dest.kecamatan) && <InfoCard label="Kecamatan"  value={clean(dest.kecamatan)} accent={color} icon={<MapPin size={13} />} />}
+                  {clean(dest.category)  && <InfoCard label="Kategori"   value={clean(dest.category)}  accent={color} icon={icon} />}
+                  {clean(dest.classification) && <InfoCard label="Klasifikasi"  value={clean(dest.classification)} accent={color} icon={<Star size={13} />} />}
+                  {clean(dest.food_type)      && <InfoCard label="Jenis Masakan" value={clean(dest.food_type)}     accent={color} icon={<Utensils size={13} />} />}
+                  {/* Rooms only make sense for lodging — hide the bogus default on other categories. */}
+                  {dest.category === "Akomodasi" && dest.rooms ? <InfoCard label="Jumlah Kamar"  value={`${dest.rooms} kamar`}  accent={color} icon={<BedDouble size={13} />} /> : null}
+                  {dest.capacity ? <InfoCard label="Kapasitas"     value={`${dest.capacity} orang`} accent={color} icon={<Users size={13} />} /> : null}
                 </div>
 
                 {/* Address */}
