@@ -6,7 +6,7 @@ import {
   MapPin, Phone, ExternalLink, ChevronRight, CheckCircle2, Map,
   ArrowLeft, Utensils, Hotel, TreePine, Landmark, Milestone, Users,
   BedDouble, Share2, Check, X as XIcon, ChevronLeft, ChevronRight as CR,
-  Images, Info, Star, RefreshCw, Compass,
+  Images, Info, Star, RefreshCw, Compass, Calendar, User, Heart,
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { MapSkeleton } from "@/components/Skeleton";
@@ -65,6 +65,9 @@ export default function DestinasiDetail({ param }: { param: string }) {
   const [photoIdx, setPhotoIdx] = useState(0);
   const [lightbox, setLightbox] = useState(false);
   const [copied, setCopied]     = useState(false);
+  const [likesCount, setLikesCount] = useState(0);
+  const [liked, setLiked]           = useState(false);
+  const [liking, setLiking]         = useState(false);
 
   useEffect(() => {
     if (!param) return;
@@ -90,6 +93,20 @@ export default function DestinasiDetail({ param }: { param: string }) {
               const filtered = gal.filter(g => g.category.toLowerCase().includes(kw.toLowerCase())).slice(0, 6);
               setGallery(filtered.length >= 2 ? filtered : gal.slice(0, 6));
             }).catch(() => {});
+        }
+        // Load likes
+        fetch("/api/destinations/likes")
+          .then(r => r.json())
+          .then(likesData => {
+            if (likesData?.map) {
+              setLikesCount(likesData.map[data.id] || 0);
+            }
+          }).catch(() => {});
+
+        // Check if already liked
+        if (typeof window !== "undefined") {
+          const hasLiked = localStorage.getItem(`liked_${data.id}`);
+          if (hasLiked) setLiked(true);
         }
       })
       .finally(() => setLoading(false));
@@ -131,6 +148,20 @@ export default function DestinasiDetail({ param }: { param: string }) {
     : null;
 
   const copyUrl   = () => { navigator.clipboard.writeText(pageUrl); setCopied(true); setTimeout(() => setCopied(false), 2000); };
+  const handleLike = async () => {
+    if (!dest || liked || liking) return;
+    setLiking(true);
+    try {
+      const res = await fetch(`/api/destinations/${dest.id}/like`, { method: "POST" });
+      const resData = await res.json();
+      if (res.ok) {
+        setLikesCount(resData.likes);
+        setLiked(true);
+        localStorage.setItem(`liked_${dest.id}`, "true");
+      }
+    } catch {}
+    setLiking(false);
+  };
   const prevPhoto = () => setPhotoIdx(i => (i - 1 + gallery.length) % gallery.length);
   const nextPhoto = () => setPhotoIdx(i => (i + 1) % gallery.length);
 
@@ -149,19 +180,35 @@ export default function DestinasiDetail({ param }: { param: string }) {
           <span style={{ color, fontWeight: 600 }}>{dest.name.length > 50 ? dest.name.slice(0, 50) + "…" : dest.name}</span>
         </nav>
 
+        {/* Cover image — full width in container, like berita detail */}
+        <div style={{ borderRadius: "16px", overflow: "hidden", border: "1px solid var(--border)", boxShadow: "var(--card-shadow)", aspectRatio: "16/7", marginBottom: "1.5rem" }}>
+          <img src={heroImg} alt={dest.name} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        </div>
+
+        {/* Meta row, like news detail */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "1.25rem", fontSize: "0.82rem", color: "var(--text-secondary)", borderBottom: "1px solid var(--border)", paddingBottom: "1rem", marginBottom: "1.5rem" }}>
+          <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+            <Calendar size={14} style={{ color: "var(--primary)" }} />
+            02 Juli 2026
+          </span>
+          <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+            <User size={14} style={{ color: "var(--primary)" }} />
+            DISPARPORA Lampung Timur
+          </span>
+          <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+            <MapPin size={14} style={{ color: "var(--primary)" }} />
+            Kecamatan {dest.kecamatan}
+          </span>
+        </div>
+
         {/* Title */}
-        <h1 style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)", fontWeight: 900, color: "var(--text-primary)", lineHeight: 1.15, maxWidth: "860px", letterSpacing: "-0.02em", margin: "0 0 0.9rem" }}>
+        <h1 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.25, margin: "0 0 1rem" }}>
           {dest.name}
         </h1>
 
         {/* Category badge — di bawah judul */}
         <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", background: bg, color, padding: "0.3rem 1rem", borderRadius: "9999px", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.07em", textTransform: "uppercase", marginBottom: "1.75rem" }}>
           {icon} {dest.category}
-        </div>
-
-        {/* Cover image — full width in container, like berita detail */}
-        <div style={{ borderRadius: "20px", overflow: "hidden", border: "1px solid var(--border)", boxShadow: "var(--card-shadow)", aspectRatio: "16/7", marginBottom: "2rem" }}>
-          <img src={heroImg} alt={dest.name} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
         </div>
 
       {/* ── BODY ── */}
@@ -303,6 +350,41 @@ export default function DestinasiDetail({ param }: { param: string }) {
                   </a>
                 )}
               </div>
+            </div>
+
+            {/* Likes card */}
+            <div style={{ background: "white", borderRadius: "18px", padding: "1.1rem 1.25rem", boxShadow: "0 2px 12px rgba(0,0,0,0.05)", border: "1px solid #f1f5f9", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: "0.67rem", fontWeight: 800, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em" }}>Suka Destinasi Ini?</span>
+                <span style={{ fontSize: "0.85rem", fontWeight: 800, color: "#e11d48", display: "flex", alignItems: "center", gap: "0.25rem" }}>
+                  <Heart size={14} fill="#e11d48" style={{ color: "#e11d48" }} /> {likesCount} Suka
+                </span>
+              </div>
+              <button 
+                onClick={handleLike}
+                disabled={liked || liking}
+                style={{ 
+                  width: "100%", 
+                  padding: "0.65rem 1rem", 
+                  background: liked ? "#ffe4e6" : "linear-gradient(135deg, #f43f5e, #e11d48)", 
+                  color: liked ? "#e11d48" : "white", 
+                  fontWeight: 700, 
+                  borderRadius: "10px", 
+                  fontSize: "0.82rem", 
+                  textAlign: "center", 
+                  border: "none",
+                  cursor: liked || liking ? "not-allowed" : "pointer", 
+                  display: "flex", 
+                  alignItems: "center", 
+                  justifyContent: "center", 
+                  gap: "0.4rem",
+                  transition: "all 0.15s",
+                  boxShadow: liked ? "none" : "0 4px 12px rgba(225, 29, 72, 0.25)"
+                }}
+              >
+                <Heart size={14} fill={liked ? "#e11d48" : "none"} stroke={liked ? "none" : "currentColor"} />
+                {liked ? "Telah Disukai" : liking ? "Menyukai..." : "Sukai Destinasi"}
+              </button>
             </div>
 
             {/* Share card */}

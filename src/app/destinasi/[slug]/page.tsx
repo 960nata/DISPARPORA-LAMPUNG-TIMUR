@@ -63,6 +63,9 @@ export async function generateMetadata({
       description: desc,
       url,
       images: [{ url: image }],
+      publishedTime: "2026-07-02T14:11:13.000Z",
+      authors: ["DISPARPORA Lampung Timur"],
+      section: dest.category || undefined,
     },
     twitter: {
       card: "summary_large_image",

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db, jsonDb } from "@/lib/db";
 import { requireAuth } from "@/lib/session";
+import { checkRateLimit } from "@/lib/rateLimit";
 
 // Always reflect the latest inbox state — never cache the admin listing.
 export const dynamic = "force-dynamic";
@@ -24,6 +25,23 @@ export async function GET(request: NextRequest) {
  * Called by the /kontak "Kirim Pesan" form.
  */
 export async function POST(request: NextRequest) {
+  // ── Rate limiting: keyed by IP (max 5 per 15 mins) ──────
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown";
+  const rateResult = checkRateLimit(`message:${ip}`, {
+    maxRequests: 5,
+    windowMs: 15 * 60 * 1000,
+    blockDurationMs: 15 * 60 * 1000,
+  });
+  if (!rateResult.allowed) {
+    return NextResponse.json(
+      { error: `Terlalu banyak mengirim pesan. Coba lagi dalam ${rateResult.retryAfterSeconds} detik.` },
+      { status: 429 }
+    );
+  }
+
   try {
     const data = await request.json();
 
