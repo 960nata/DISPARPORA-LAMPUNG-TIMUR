@@ -1,19 +1,30 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import dynamic from "next/dynamic";
 import {
-  Eye, MousePointerClick, UserPlus, Repeat, Download, MapPin, TrendingUp,
+  Eye, MousePointerClick, UserPlus, Repeat, Download, MapPin, TrendingUp, Map as MapIcon,
 } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { StatCardSkeleton } from "@/components/Skeleton";
 import DashboardChart from "@/components/DashboardChart";
 
+const VisitorMap = dynamic(() => import("@/components/VisitorMap"), {
+  ssr: false,
+  loading: () => (
+    <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--dash-text-muted)", fontSize: "0.8rem" }}>
+      Memuat peta…
+    </div>
+  ),
+});
+
 interface Totals { views: number; sessions: number; newVisits: number; returningVisits: number; avgPerSession: number; }
 interface Series { labels: string[]; data: number[]; }
 interface Popular { path: string; label: string; views: number; }
 interface Location { name: string; views: number; }
-interface Analytics { totals: Totals; series: Series; popular: Popular[]; locations: Location[]; }
+interface MapPoint { name: string; views: number; lat: number | null; lng: number | null; }
+interface Analytics { totals: Totals; series: Series; popular: Popular[]; locations: Location[]; originPoints: MapPoint[]; kecamatanViews: MapPoint[]; }
 
 const RANGES = [
   { id: "hari-ini", label: "Hari Ini" },
@@ -30,6 +41,8 @@ const EMPTY: Analytics = {
   series: { labels: [], data: [] },
   popular: [],
   locations: [],
+  originPoints: [],
+  kecamatanViews: [],
 };
 
 export default function DashboardPage() {
@@ -64,10 +77,11 @@ export default function DashboardPage() {
   const C4 = "var(--dash-pink)";
   const CARD: React.CSSProperties = { background: "var(--dash-card)", border: "1px solid var(--dash-border)", borderRadius: "18px", padding: "22px" };
 
-  const { totals, series, popular, locations } = data;
+  const { totals, series, popular, locations, originPoints, kecamatanViews } = data;
 
+  // "Kunjungan" = accumulated page views across all pages (page-based, not per-user).
   const stats = [
-    { label: "Total Page Views", value: totals.views, hint: "kunjungan halaman", icon: Eye, accent: ACCENT, soft: "var(--dash-primary-bg)" },
+    { label: "Total Kunjungan", value: totals.views, hint: "akumulasi page views", icon: Eye, accent: ACCENT, soft: "var(--dash-primary-bg)" },
     { label: "Sesi", value: totals.sessions, hint: `${totals.avgPerSession} halaman/sesi`, icon: MousePointerClick, accent: C2, soft: "var(--dash-success-bg)" },
     { label: "Pengunjung Baru", value: totals.newVisits, hint: "kunjungan pertama", icon: UserPlus, accent: C3, soft: "var(--dash-warning-bg)" },
     { label: "Pengunjung Kembali", value: totals.returningVisits, hint: "kunjungan ulang", icon: Repeat, accent: C4, soft: "var(--dash-pink-bg)" },
@@ -113,6 +127,7 @@ export default function DashboardPage() {
 
   const maxViews = popular[0]?.views || 1;
   const maxLoc = locations[0]?.views || 1;
+  const maxKec = kecamatanViews[0]?.views || 1;
 
   const handleExport = () => {
     const rows: (string | number)[][] = [
@@ -260,15 +275,15 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Lokasi Pengunjung */}
+        {/* Asal Pengunjung (geo-IP, level provinsi/kota) */}
         <div style={{ ...CARD }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <MapPin size={16} style={{ color: "var(--dash-primary)" }} />
-                <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--dash-text)" }}>Lokasi Pengunjung</div>
+                <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--dash-text)" }}>Asal Pengunjung</div>
               </div>
-              <div style={{ marginTop: "3px", fontSize: "0.78rem", color: "var(--dash-text-soft)" }}>Perkiraan wilayah (tanpa alamat IP)</div>
+              <div style={{ marginTop: "3px", fontSize: "0.78rem", color: "var(--dash-text-soft)" }}>Perkiraan wilayah dari geo-IP (level provinsi/kota, tanpa alamat IP)</div>
             </div>
             <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--dash-primary)", background: "var(--dash-primary-bg)", padding: "5px 11px", borderRadius: "20px" }}>{locations.length} wilayah</span>
           </div>
@@ -287,6 +302,60 @@ export default function DashboardPage() {
               ))}
             </div>
           )}
+        </div>
+      </div>
+
+      {/* ── PETA KUNJUNGAN PER KECAMATAN (Lampung Timur) ── */}
+      <div style={{ ...CARD }}>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}>
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <MapIcon size={16} style={{ color: "var(--dash-primary)" }} />
+              <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--dash-text)" }}>Peta Kunjungan per Kecamatan</div>
+            </div>
+            <div style={{ marginTop: "3px", fontSize: "0.78rem", color: "var(--dash-text-soft)" }}>Akumulasi page views destinasi wisata per kecamatan Lampung Timur</div>
+          </div>
+          <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--dash-primary)", background: "var(--dash-primary-bg)", padding: "5px 11px", borderRadius: "20px" }}>{kecamatanViews.length} kecamatan</span>
+        </div>
+        <div className="grid-charts" style={{ display: "grid", gridTemplateColumns: "minmax(0, 1.5fr) minmax(0, 1fr)", gap: "18px", marginTop: "16px" }}>
+          <div style={{ height: "320px", borderRadius: "14px", overflow: "hidden", border: "1px solid var(--dash-border)" }}>
+            <VisitorMap points={kecamatanViews} center={[-5.05, 105.65]} zoom={9} valueLabel="Views destinasi" />
+          </div>
+          <div>
+            {kecamatanViews.length === 0 ? (
+              <div style={{ padding: "34px 0", textAlign: "center", fontSize: "0.82rem", color: "var(--dash-text-muted)" }}>
+                Belum ada kunjungan halaman destinasi. Data terisi saat pengunjung membuka halaman destinasi.
+              </div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                {kecamatanViews.slice(0, 10).map(k => (
+                  <div key={k.name} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <span style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--dash-text-soft)", width: "130px", flexShrink: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{k.name}</span>
+                    <div style={{ flex: 1, height: "8px", borderRadius: "20px", background: "var(--dash-surface-hover)", overflow: "hidden" }}>
+                      <div style={{ width: `${Math.round(k.views / maxKec * 100)}%`, height: "100%", borderRadius: "20px", background: "var(--dash-primary)" }} />
+                    </div>
+                    <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--dash-text)", width: "44px", textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{k.views}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ── PETA ASAL PENGUNJUNG (geo-IP) ── */}
+      <div style={{ ...CARD }}>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}>
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <MapIcon size={16} style={{ color: "var(--dash-primary)" }} />
+              <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--dash-text)" }}>Peta Asal Pengunjung</div>
+            </div>
+            <div style={{ marginTop: "3px", fontSize: "0.78rem", color: "var(--dash-text-soft)" }}>Lokasi pengunjung dari geo-IP (level kota/provinsi — bukan alamat IP)</div>
+          </div>
+        </div>
+        <div style={{ height: "320px", borderRadius: "14px", overflow: "hidden", border: "1px solid var(--dash-border)", marginTop: "16px" }}>
+          <VisitorMap points={originPoints} center={[-2.0, 118.0]} zoom={4} valueLabel="Kunjungan" />
         </div>
       </div>
 

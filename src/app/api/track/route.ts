@@ -29,6 +29,10 @@ export async function POST(req: NextRequest) {
 
     const h = req.headers;
     const decode = (s: string) => { try { return decodeURIComponent(s); } catch { return s; } };
+    const num = (s: string | null) => {
+      const n = s ? parseFloat(s) : NaN;
+      return Number.isFinite(n) ? n : null;
+    };
 
     await db.pageViews.record({
       path,
@@ -38,6 +42,8 @@ export async function POST(req: NextRequest) {
       country: cap(h.get("x-vercel-ip-country"), 8),
       region: cap(h.get("x-vercel-ip-country-region"), 60),
       city: cap(decode(h.get("x-vercel-ip-city") || ""), 80),
+      lat: num(h.get("x-vercel-ip-latitude")),
+      lng: num(h.get("x-vercel-ip-longitude")),
     });
 
     return NextResponse.json({ ok: true }, { status: 201 });

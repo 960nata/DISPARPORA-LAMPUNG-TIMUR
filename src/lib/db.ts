@@ -138,6 +138,8 @@ export interface PageView {
   country: string;
   region: string;
   city: string;
+  lat: number | null; // approximate coordinates from geo headers (for the map)
+  lng: number | null;
   createdAt: string;
 }
 
@@ -1171,11 +1173,11 @@ class JsonDbEngine {
 
   // PAGE VIEWS (traffic analytics)
   public pageViews = {
-    record: async ({ path, session, visitor, isNew, country, region, city }: Omit<PageView, "id" | "createdAt">) => {
+    record: async ({ path, session, visitor, isNew, country, region, city, lat, lng }: Omit<PageView, "id" | "createdAt">) => {
       const item: PageView = {
         id: `pv_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
         createdAt: new Date().toISOString(),
-        path, session, visitor, isNew, country, region, city,
+        path, session, visitor, isNew, country, region, city, lat, lng,
       };
       this.data.pageViews.push(item);
       // Cap the local dev file so it can't grow without bound.
@@ -1248,9 +1250,14 @@ function prismaPageViews(p: any) {
              country text NOT NULL DEFAULT '',
              region text NOT NULL DEFAULT '',
              city text NOT NULL DEFAULT '',
+             lat double precision,
+             lng double precision,
              "createdAt" timestamptz NOT NULL DEFAULT now()
            )`
         )
+        // Older tables created before lat/lng existed — add the columns if missing.
+        .then(() => p.$executeRawUnsafe(`ALTER TABLE ${T} ADD COLUMN IF NOT EXISTS lat double precision`))
+        .then(() => p.$executeRawUnsafe(`ALTER TABLE ${T} ADD COLUMN IF NOT EXISTS lng double precision`))
         .then(() =>
           p.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS page_views_created_idx ON ${T} ("createdAt")`)
         )
@@ -1260,20 +1267,20 @@ function prismaPageViews(p: any) {
     return ready;
   };
   return {
-    record: async ({ path, session, visitor, isNew, country, region, city }: Omit<PageView, "id" | "createdAt">) => {
+    record: async ({ path, session, visitor, isNew, country, region, city, lat, lng }: Omit<PageView, "id" | "createdAt">) => {
       await ensure();
       const id = `pv_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
       const rows: any[] = await p.$queryRawUnsafe(
-        `INSERT INTO ${T} (id, path, session, visitor, is_new, country, region, city)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
-        id, path, session, visitor, isNew, country, region, city
+        `INSERT INTO ${T} (id, path, session, visitor, is_new, country, region, city, lat, lng)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
+        id, path, session, visitor, isNew, country, region, city, lat, lng
       );
       return rows[0];
     },
     findSince: async ({ since }: { since: string }) => {
       await ensure();
       return p.$queryRawUnsafe(
-        `SELECT path, session, visitor, is_new AS "isNew", country, region, city, "createdAt"
+        `SELECT path, session, visitor, is_new AS "isNew", country, region, city, lat, lng, "createdAt"
          FROM ${T} WHERE "createdAt" >= $1 ORDER BY "createdAt" ASC`,
         since
       );

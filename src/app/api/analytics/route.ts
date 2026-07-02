@@ -117,16 +117,46 @@ export async function GET(req: NextRequest) {
       .sort((a, b) => b.views - a.views)
       .slice(0, 10);
 
-    // Locations (derived from geo headers — never raw IP)
-    const byLoc = new Map<string, number>();
+    // Visitor origin from geo-IP coordinates — accurate only to city/province.
+    // Never a raw IP; grouped by region/city with representative coordinates.
+    const byLoc = new Map<string, { name: string; views: number; lat: number | null; lng: number | null }>();
     for (const r of rows) {
       const name = r.region || r.city || countryName(r.country) || "Tidak diketahui";
-      byLoc.set(name, (byLoc.get(name) || 0) + 1);
+      const cur = byLoc.get(name) || { name, views: 0, lat: null, lng: null };
+      cur.views++;
+      if (cur.lat == null && r.lat != null && r.lng != null) { cur.lat = r.lat; cur.lng = r.lng; }
+      byLoc.set(name, cur);
     }
-    const locations = [...byLoc.entries()]
-      .map(([name, v]) => ({ name, views: v }))
-      .sort((a, b) => b.views - a.views)
-      .slice(0, 8);
+    const locAll = [...byLoc.values()].sort((a, b) => b.views - a.views);
+    const locations = locAll.slice(0, 10).map(({ name, views }) => ({ name, views }));
+    const originPoints = locAll.filter(l => l.lat != null && l.lng != null);
+
+    // Per-kecamatan (Lampung Timur): accumulate destinasi page views by the
+    // kecamatan of the destination that was viewed. Uses real destination
+    // coordinates — accurate, unlike IP-based kecamatan guessing.
+    let destinations: any[] = [];
+    try { destinations = await db.destinations.findMany(); } catch { destinations = []; }
+    const destByKey = new Map<string, any>();
+    for (const d of destinations) {
+      if (d.slug) destByKey.set(d.slug, d);
+      if (d.id) destByKey.set(d.id, d);
+    }
+    const kecMap = new Map<string, { name: string; views: number; latSum: number; lngSum: number; n: number }>();
+    for (const r of rows) {
+      const m = /^\/destinasi\/([^/?#]+)/.exec(r.path || "");
+      if (!m) continue;
+      const dest = destByKey.get(decodeURIComponent(m[1]));
+      if (!dest || !dest.kecamatan) continue;
+      const cur = kecMap.get(dest.kecamatan) || { name: dest.kecamatan, views: 0, latSum: 0, lngSum: 0, n: 0 };
+      cur.views++;
+      if (Number.isFinite(dest.lat) && Number.isFinite(dest.lng)) {
+        cur.latSum += Number(dest.lat); cur.lngSum += Number(dest.lng); cur.n++;
+      }
+      kecMap.set(dest.kecamatan, cur);
+    }
+    const kecamatanViews = [...kecMap.values()]
+      .map(k => ({ name: k.name, views: k.views, lat: k.n ? k.latSum / k.n : null, lng: k.n ? k.lngSum / k.n : null }))
+      .sort((a, b) => b.views - a.views);
 
     return NextResponse.json({
       range,
@@ -134,6 +164,8 @@ export async function GET(req: NextRequest) {
       series,
       popular,
       locations,
+      originPoints,
+      kecamatanViews,
     });
   } catch (e: any) {
     return NextResponse.json({ error: e?.message || "gagal memuat analitik" }, { status: 500 });
