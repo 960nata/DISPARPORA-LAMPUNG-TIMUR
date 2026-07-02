@@ -198,9 +198,9 @@ export default function DestinasiForm({ mode, editId }: Props) {
       )}
 
       <form id="dest-form" onSubmit={handleSubmit}>
-        <div className="dest-form-grid" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <div className="dest-form-grid" style={{ display: "grid", gridTemplateColumns: "1fr 420px", gap: "20px", alignItems: "start" }}>
 
-          {/* ── Form fields ── */}
+          {/* ── LEFT: Form fields + Peta ── */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
 
             {/* Informasi Dasar */}
@@ -401,6 +401,8 @@ export default function DestinasiForm({ mode, editId }: Props) {
             </div>
           </div>
 
+          {/* ── RIGHT: Sidebar (Thumbnail) ── */}
+          <div className="dest-form-aside" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             {/* Thumbnail */}
             <div className="dash-card" style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "14px" }}>
               <SectionHead icon={<ImageIcon size={15} />} label="Foto Sampul" />
@@ -423,6 +425,7 @@ export default function DestinasiForm({ mode, editId }: Props) {
                 </div>
               )}
             </div>
+          </div>
         </div>
       </form>
 
