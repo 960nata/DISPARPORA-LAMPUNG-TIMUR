@@ -212,7 +212,7 @@ export default function BuatBeritaPage() {
             <input
               type="text" value={title} onChange={e => setTitle(e.target.value)}
               placeholder="Tulis judul artikel yang menarik..."
-              style={{ width: "100%", border: "none", outline: "none", background: "transparent", color: "var(--dash-text)", fontSize: "1.75rem", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.25, boxSizing: "border-box" }}
+              style={{ width: "100%", border: "none", outline: "none", background: "transparent", color: "var(--dash-text)", fontSize: "clamp(1.25rem, 4vw, 1.75rem)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.25, boxSizing: "border-box" }}
             />
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", paddingTop: "0.25rem", borderTop: "1px solid var(--dash-border)" }}>
               <ExternalLink size={13} style={{ color: "var(--dash-text-muted)", flexShrink: 0 }} />

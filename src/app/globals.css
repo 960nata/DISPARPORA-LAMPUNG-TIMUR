@@ -1499,3 +1499,68 @@ a {
   font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 .post-rich figure { max-width: 100%; }
+
+/* ═══ MOBILE RESPONSIVE — DASHBOARD CREATE/EDIT ═══ */
+@media (max-width: 768px) {
+  /* Dashboard 2-column grid → stack on mobile */
+  .buat-grid,
+  .dest-form-grid {
+    display: grid !important;
+    gridTemplateColumns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  /* Sidebar → below main content */
+  [style*="flex: 1 1 280px"],
+  [style*="flex: 1 1 320px"] {
+    flex: 1 1 auto !important;
+    position: relative !important;
+    top: auto !important;
+  }
+
+  /* Form cards padding */
+  .dash-card {
+    padding: clamp(0.75rem, 2vw, 1rem) !important;
+  }
+
+  /* Input fields responsive */
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  input[type="date"],
+  textarea,
+  select {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+    padding: clamp(0.5rem, 2vw, 0.75rem) !important;
+  }
+
+  /* Button sizing */
+  .dash-btn {
+    padding: clamp(0.6rem, 2vw, 0.8rem) clamp(0.8rem, 3vw, 1.2rem) !important;
+    font-size: clamp(0.75rem, 2vw, 0.85rem) !important;
+  }
+
+  /* Grid form fields → single column */
+  [style*="gridTemplateColumns: 1fr 1fr"],
+  [style*="gridTemplateColumns: 2fr 1fr"] {
+    gridTemplateColumns: 1fr !important;
+  }
+
+  /* Title input sizing */
+  input[style*="fontSize: 1.75rem"],
+  input[style*="fontSize: 1.5rem"] {
+    fontSize: clamp(1.25rem, 4vw, 1.5rem) !important;
+  }
+
+  /* Remove sticky sidebar */
+  aside {
+    position: static !important;
+  }
+
+  /* Editor/canvas full width */
+  article,
+  [style*="flex: 2 1 600px"] {
+    flex: 1 1 auto !important;
+    minWidth: auto !important;
+  }
+}

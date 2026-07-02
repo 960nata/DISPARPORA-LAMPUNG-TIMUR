@@ -169,7 +169,7 @@ export default function DestinasiForm({ mode, editId }: Props) {
             <p style={{ margin: 0, fontSize: "0.66rem", fontWeight: 700, color: "var(--dash-primary)", textTransform: "uppercase", letterSpacing: "0.12em" }}>
               {mode === "create" ? "Tambah Baru" : "Edit Data"}
             </p>
-            <h1 style={{ margin: "2px 0 0", fontSize: "1.35rem", fontWeight: 800, color: "var(--dash-text)" }}>
+            <h1 style={{ margin: "2px 0 0", fontSize: "clamp(1rem, 3vw, 1.35rem)", fontWeight: 800, color: "var(--dash-text)" }}>
               {mode === "create" ? "Destinasi Baru" : form.name || "Edit Destinasi"}
             </h1>
           </div>
