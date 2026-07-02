@@ -3,6 +3,8 @@ import { db, jsonDb } from "@/lib/db";
 import { requireAuth } from "@/lib/session";
 import { uniqueSlug } from "@/lib/slug";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const list = await db.posts.findMany();

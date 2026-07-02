@@ -4,6 +4,8 @@ import { db } from "@/lib/db";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import DestinasiDetail from "./DestinasiDetail";
 
+export const dynamic = "force-dynamic";
+
 // Absolute URL for JSON-LD / Open Graph (crawlers need fully-qualified URLs).
 function absUrl(path: string): string {
   if (!path) return "";
