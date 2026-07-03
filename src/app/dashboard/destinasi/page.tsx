@@ -39,7 +39,7 @@ export default function DestinasiPage() {
     fetch("/api/destinations").then(r => r.json()).then(data => { if (Array.isArray(data)) setDestinations(data); }).finally(() => setLoading(false));
   }, []);
 
-  if (!["superadmin", "admin_dinas"].includes(user?.role || "")) {
+  if (!["superadmin", "admin_dinas", "admin_post"].includes(user?.role || "")) {
     return <div style={{ textAlign: "center", padding: "4rem", color: "var(--dash-text-muted)" }}><MapPin size={40} style={{ marginBottom: "1rem", opacity: 0.3 }} /><p>Akses ditolak.</p></div>;
   }
 

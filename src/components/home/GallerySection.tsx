@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const row1Items = [
@@ -44,8 +45,45 @@ const imageVariants = {
 };
 
 export default function GallerySection() {
-  const extendedRow1 = [...row1Items, ...row1Items];
-  const extendedRow2 = [...row2Items, ...row2Items];
+  const [dbGallery, setDbGallery] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/api/gallery")
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setDbGallery(data);
+        }
+      })
+      .catch(err => console.error("Error loading gallery:", err));
+  }, []);
+
+  const widths = ["360px", "420px", "300px", "390px", "340px", "370px", "310px", "430px", "400px"];
+
+  let activeRow1 = row1Items;
+  let activeRow2 = row2Items;
+
+  if (dbGallery.length > 0) {
+    const formatted = dbGallery.map((g, idx) => ({
+      title: g.title,
+      category: g.category || "Galeri",
+      image: g.imageUrl,
+      width: widths[idx % widths.length]
+    }));
+
+    activeRow1 = formatted.filter((_, i) => i % 2 === 0);
+    activeRow2 = formatted.filter((_, i) => i % 2 !== 0);
+
+    if (activeRow1.length > 0 && activeRow1.length < 4) {
+      activeRow1 = [...activeRow1, ...activeRow1, ...activeRow1, ...activeRow1];
+    }
+    if (activeRow2.length > 0 && activeRow2.length < 4) {
+      activeRow2 = [...activeRow2, ...activeRow2, ...activeRow2, ...activeRow2];
+    }
+  }
+
+  const extendedRow1 = [...activeRow1, ...activeRow1];
+  const extendedRow2 = [...activeRow2, ...activeRow2];
 
   return (
     <section id="galeri" style={{ padding: "5rem 0", backgroundColor: "white", overflow: "hidden" }}>

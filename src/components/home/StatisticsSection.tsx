@@ -1,84 +1,108 @@
 "use client";
 
+import { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-const years  = ["2021", "2022", "2023", "2024", "2025"];
-const values = [35000, 120000, 195000, 280000, 430000];
+export default function StatisticsSection() {
+  const [stats, setStats] = useState<any[]>([]);
 
-const options: ApexOptions = {
-  chart: {
-    type: "bar",
-    toolbar: { show: false },
-    fontFamily: "var(--font-main)",
-    background: "transparent",
-    animations: {
+  useEffect(() => {
+    fetch("/api/visitor-stats")
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          const sorted = data.sort((a, b) => Number(a.year) - Number(b.year));
+          setStats(sorted);
+        }
+      })
+      .catch(err => console.error("Error loading stats:", err));
+  }, []);
+
+  const activeYears = stats.length > 0 ? stats.map(s => s.year) : ["2021", "2022", "2023", "2024", "2025"];
+  const activeValues = stats.length > 0 ? stats.map(s => s.count) : [35000, 120000, 195000, 280000, 430000];
+
+  const growths = useMemo(() => {
+    return activeValues.map((val, idx) => {
+      if (idx === 0) return null;
+      const prevVal = activeValues[idx - 1];
+      if (!prevVal) return null;
+      const diff = val - prevVal;
+      const pct = (diff / prevVal) * 100;
+      return pct >= 0 ? `+${pct.toFixed(0)}%` : `${pct.toFixed(0)}%`;
+    });
+  }, [activeValues]);
+
+  const options = useMemo<ApexOptions>(() => ({
+    chart: {
+      type: "bar",
+      toolbar: { show: false },
+      fontFamily: "var(--font-main)",
+      background: "transparent",
+      animations: {
+        enabled: true,
+        speed: 700,
+        dynamicAnimation: { enabled: true, speed: 700 },
+      },
+    },
+    plotOptions: {
+      bar: {
+        borderRadius: 10,
+        columnWidth: "50%",
+        distributed: true,
+      },
+    },
+    colors: ["#34d399", "#10b981", "#059669", "#047857", "#065f46", "#34d399", "#10b981", "#059669"].slice(0, activeYears.length),
+    dataLabels: {
       enabled: true,
-      speed: 700,
-      dynamicAnimation: { enabled: true, speed: 700 },
-    },
-  },
-  plotOptions: {
-    bar: {
-      borderRadius: 10,
-      columnWidth: "50%",
-      distributed: true,
-    },
-  },
-  colors: ["#34d399", "#10b981", "#059669", "#047857", "#065f46"],
-  dataLabels: {
-    enabled: true,
-    formatter: (val: number) => {
-      if (val >= 1000) return (val / 1000).toFixed(0) + " rb";
-      return String(val);
-    },
-    style: { fontSize: "0.75rem", fontWeight: "700", colors: ["#ffffff"] },
-    offsetY: -4,
-  },
-  xaxis: {
-    categories: years,
-    labels: {
-      style: { fontSize: "0.85rem", fontWeight: "700", colors: Array(5).fill("#1e293b") },
-    },
-    axisBorder: { show: false },
-    axisTicks: { show: false },
-  },
-  yaxis: {
-    labels: {
-      formatter: (val) => {
+      formatter: (val: number) => {
         if (val >= 1000) return (val / 1000).toFixed(0) + " rb";
         return String(val);
       },
-      style: { fontSize: "0.78rem", colors: ["#64748b"] },
+      style: { fontSize: "0.75rem", fontWeight: "700", colors: ["#ffffff"] },
+      offsetY: -4,
     },
-  },
-  grid: {
-    borderColor: "#e2e8f0",
-    strokeDashArray: 4,
-    yaxis: { lines: { show: true } },
-    xaxis: { lines: { show: false } },
-  },
-  legend: { show: false },
-  tooltip: {
-    custom: ({ series, dataPointIndex }: { series: number[][], dataPointIndex: number }) => {
-      const growths: (string | null)[] = [null, "+243%", "+63%", "+44%", "+54%"];
-      const val = series[0][dataPointIndex];
-      const growth = growths[dataPointIndex];
-      const formatted = val.toLocaleString("id-ID");
-      return `
-        <div style="padding:10px 14px;font-family:'Plus Jakarta Sans',sans-serif;min-width:160px">
-          <div style="font-size:.7rem;font-weight:700;color:#64748b;margin-bottom:4px">${years[dataPointIndex]}</div>
-          <div style="font-size:.95rem;font-weight:800;color:#0f172a">${formatted} wisatawan</div>
-          ${growth ? `<div style="margin-top:6px;display:inline-block;background:#ecfdf5;color:#059669;font-size:.75rem;font-weight:800;padding:2px 10px;border-radius:999px">${growth} vs tahun sebelumnya</div>` : ""}
-        </div>
-      `;
+    xaxis: {
+      categories: activeYears,
+      labels: {
+        style: { fontSize: "0.85rem", fontWeight: "700", colors: Array(activeYears.length).fill("#1e293b") },
+      },
+      axisBorder: { show: false },
+      axisTicks: { show: false },
     },
-  },
-};
-
-export default function StatisticsSection() {
+    yaxis: {
+      labels: {
+        formatter: (val) => {
+          if (val >= 1000) return (val / 1000).toFixed(0) + " rb";
+          return String(val);
+        },
+        style: { fontSize: "0.78rem", colors: ["#64748b"] },
+      },
+    },
+    grid: {
+      borderColor: "#e2e8f0",
+      strokeDashArray: 4,
+      yaxis: { lines: { show: true } },
+      xaxis: { lines: { show: false } },
+    },
+    legend: { show: false },
+    tooltip: {
+      custom: ({ series, dataPointIndex }: { series: number[][], dataPointIndex: number }) => {
+        const val = series[0][dataPointIndex];
+        const growth = growths[dataPointIndex];
+        const formatted = val.toLocaleString("id-ID");
+        return `
+          <div style="padding:10px 14px;font-family:'Plus Jakarta Sans',sans-serif;min-width:160px">
+            <div style="font-size:.7rem;font-weight:700;color:#64748b;margin-bottom:4px">${activeYears[dataPointIndex]}</div>
+            <div style="font-size:.95rem;font-weight:800;color:#0f172a">${formatted} wisatawan</div>
+            ${growth ? `<div style="margin-top:6px;display:inline-block;background:#ecfdf5;color:#059669;font-size:.75rem;font-weight:800;padding:2px 10px;border-radius:999px">${growth} vs tahun sebelumnya</div>` : ""}
+          </div>
+        `;
+      },
+    },
+  }), [activeYears, growths]);
   return (
     <section style={{ padding: "5rem 0", background: "linear-gradient(160deg, #f0fdf4 0%, #ecfdf5 60%, #ffffff 100%)" }}>
       <div className="container">
@@ -152,7 +176,7 @@ export default function StatisticsSection() {
           <Chart
             type="bar"
             height={340}
-            series={[{ name: "Wisatawan", data: values }]}
+            series={[{ name: "Wisatawan", data: activeValues }]}
             options={options}
           />
         </div>

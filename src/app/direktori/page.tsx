@@ -9,16 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 function DirectoryContent() {
   const searchParams = useSearchParams();
-  
-  // Combine all items into a single searchable array
-  const allItems = [
-    ...tourismData.wisata_alam.map(i => ({ ...i, displayCategory: "Wisata Alam" })),
-    ...tourismData.wisata_buatan.map(i => ({ ...i, displayCategory: "Wisata Buatan" })),
-    ...tourismData.wisata_budaya.map(i => ({ ...i, displayCategory: "Wisata Budaya" })),
-    ...tourismData.hotels.map(i => ({ ...i, displayCategory: "Akomodasi" })),
-    ...tourismData.restaurants.map(i => ({ ...i, displayCategory: "Kuliner" }))
-  ];
-
+  const [dbItems, setDbItems] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Semua");
   const [selectedKecamatan, setSelectedKecamatan] = useState("Semua");
@@ -27,10 +18,28 @@ function DirectoryContent() {
   const [tappedId, setTappedId]   = useState<string | null>(null);
   const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
   const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
-  // Real slugs live in the DB (the static tourism.json list has none), so map
-  // each destination id -> slug for SEO-friendly detail links.
   const [slugMap, setSlugMap] = useState<Record<string, string>>({});
   const itemsPerPage = 12;
+
+  const staticItems = [
+    ...tourismData.wisata_alam.map(i => ({ ...i, displayCategory: "Wisata Alam" })),
+    ...tourismData.wisata_buatan.map(i => ({ ...i, displayCategory: "Wisata Buatan" })),
+    ...tourismData.wisata_budaya.map(i => ({ ...i, displayCategory: "Wisata Budaya" })),
+    ...tourismData.hotels.map(i => ({ ...i, displayCategory: "Akomodasi" })),
+    ...tourismData.restaurants.map(i => ({ ...i, displayCategory: "Kuliner" }))
+  ];
+
+  const allItems = dbItems.length > 0
+    ? dbItems.map(i => ({
+        ...i,
+        displayCategory: i.category,
+        image: i.imageUrl || "/Gallery/nuwo_sesat.avif",
+        subTitle: i.classification || i.food_type || i.address || "",
+        rating: "4.8",
+        location: i.kecamatan,
+        link: `/destinasi/${i.slug}`
+      }))
+    : staticItems;
 
   useEffect(() => {
     try {
@@ -45,6 +54,7 @@ function DirectoryContent() {
       .then(r => r.json())
       .then((list) => {
         if (!Array.isArray(list)) return;
+        setDbItems(list);
         const m: Record<string, string> = {};
         for (const d of list) if (d?.id && d?.slug) m[d.id] = d.slug;
         setSlugMap(m);
@@ -88,11 +98,15 @@ function DirectoryContent() {
   const filteredItems = allItems.filter(item => {
     // 1. Search Query Match
     const searchLower = search.toLowerCase();
+    const rawFac = (item as any).facilities;
+    const facilitiesList = Array.isArray(rawFac)
+      ? rawFac
+      : (typeof rawFac === "string" ? rawFac.split(",").map((f: string) => f.trim()) : []);
     const matchesSearch = 
       item.name.toLowerCase().includes(searchLower) ||
-      item.address.toLowerCase().includes(searchLower) ||
+      (item.address && item.address.toLowerCase().includes(searchLower)) ||
       item.kecamatan.toLowerCase().includes(searchLower) ||
-      ((item as any).facilities && (item as any).facilities.some((f: string) => f.toLowerCase().includes(searchLower)));
+      facilitiesList.some((f: string) => f.toLowerCase().includes(searchLower));
       
     // 2. Category Match
     const matchesCategory = 

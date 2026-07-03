@@ -59,7 +59,7 @@ export default function OlahragaDashboardPage() {
       .finally(() => setLoading(false));
   }, [toast]);
 
-  if (!["superadmin", "admin_dinas"].includes(user?.role || "")) {
+  if (!["superadmin", "admin_dinas", "admin_post"].includes(user?.role || "")) {
     return (
       <div style={{ textAlign: "center", padding: "4rem", color: "var(--dash-text-muted)" }}>
         <Award size={40} style={{ marginBottom: "1rem", opacity: 0.3 }} />

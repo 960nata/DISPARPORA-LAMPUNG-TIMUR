@@ -196,11 +196,11 @@ const NAV = [
     { href: "/dashboard",           label: "Dashboard",          icon: LayoutDashboard, roles: ["superadmin","admin_dinas","admin_post"] },
   ]},
   { section: "KELOLA", items: [
-    { href: "/dashboard/destinasi", label: "Destinasi Wisata",   icon: MapPin,          roles: ["superadmin","admin_dinas"] },
-    { href: "/dashboard/olahraga",  label: "Atlet & Prestasi",   icon: Award,           roles: ["superadmin","admin_dinas"] },
+    { href: "/dashboard/destinasi", label: "Destinasi Wisata",   icon: MapPin,          roles: ["superadmin","admin_dinas","admin_post"] },
+    { href: "/dashboard/olahraga",  label: "Atlet & Prestasi",   icon: Award,           roles: ["superadmin","admin_dinas","admin_post"] },
     { href: "/dashboard/berita",    label: "Berita & Artikel",   icon: FileText,        roles: ["superadmin","admin_dinas","admin_post"] },
     { href: "/dashboard/galeri",    label: "Galeri Foto",        icon: Images,          roles: ["superadmin","admin_dinas","admin_post"] },
-    { href: "/dashboard/pesan",     label: "Pesan Masuk",        icon: Mail,            roles: ["superadmin","admin_dinas"] },
+    { href: "/dashboard/pesan",     label: "Pesan Masuk",        icon: Mail,            roles: ["superadmin","admin_dinas","admin_post"] },
   ]},
   { section: "KONTEN", items: [
     { href: "/dashboard/konten/organisasi", label: "Struktur Organisasi", icon: Building2,    roles: ["superadmin", "admin_dinas", "admin_post"] },
@@ -209,7 +209,7 @@ const NAV = [
     { href: "/dashboard/konten/partner",    label: "Partner Kami",        icon: Handshake,    roles: ["superadmin", "admin_dinas", "admin_post"] },
   ]},
   { section: "STATISTIK", items: [
-    { href: "/dashboard/wisatawan", label: "Pertumbuhan Wisatawan", icon: TrendingUp,    roles: ["superadmin","admin_dinas"] },
+    { href: "/dashboard/wisatawan", label: "Pertumbuhan Wisatawan", icon: TrendingUp,    roles: ["superadmin","admin_dinas","admin_post"] },
   ]},
   { section: "SISTEM", items: [
     { href: "/dashboard/pengguna",  label: "Manajemen Akun",     icon: Users,           roles: ["superadmin"] },

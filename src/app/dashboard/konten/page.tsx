@@ -39,12 +39,12 @@ export default function KontenPage() {
   const { user } = useAdmin();
 
   if (!user) return null;
-  const allowed = user.role === "superadmin" || user.role === "admin_dinas";
+  const allowed = user.role === "superadmin" || user.role === "admin_dinas" || user.role === "admin_post";
   if (!allowed) {
     return (
       <div style={{ textAlign: "center", padding: "4rem", color: "var(--dash-text-muted)" }}>
         <p style={{ fontSize: "1rem", fontWeight: 600 }}>Akses Ditolak</p>
-        <p style={{ fontSize: "0.875rem" }}>Halaman ini hanya dapat diakses oleh superadmin dan admin_dinas.</p>
+        <p style={{ fontSize: "0.875rem" }}>Halaman ini hanya dapat diakses oleh admin.</p>
       </div>
     );
   }

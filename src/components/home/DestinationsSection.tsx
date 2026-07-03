@@ -62,10 +62,7 @@ const defaultHighlights = [
 ];
 
 export default function DestinationsSection() {
-  const N = defaultHighlights.length;
-  const extendedHighlights = [...defaultHighlights, ...defaultHighlights, ...defaultHighlights];
-
-  const [currentIndex, setCurrentIndex] = useState(N);
+  const [destinations, setDestinations] = useState<any[]>([]);
   const [visibleCount, setVisibleCount] = useState(3);
   const [peekWidth, setPeekWidth] = useState("calc(100% - 10rem)");
   const [isTransitioning, setIsTransitioning] = useState(true);
@@ -76,6 +73,27 @@ export default function DestinationsSection() {
   const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
   const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
 
+  const displayHighlights = destinations.length > 0
+    ? destinations.map(i => ({
+        name: i.name,
+        category: i.category,
+        image: i.imageUrl || "/Gallery/nuwo_sesat.avif",
+        subTitle: i.classification || i.food_type || i.address || "",
+        rating: "4.8",
+        location: i.kecamatan,
+        link: `/destinasi/${i.slug}`
+      }))
+    : defaultHighlights;
+
+  const N = displayHighlights.length;
+  const extendedHighlights = [...displayHighlights, ...displayHighlights, ...displayHighlights];
+
+  const [currentIndex, setCurrentIndex] = useState(N);
+
+  useEffect(() => {
+    setCurrentIndex(N);
+  }, [N]);
+
   useEffect(() => {
     try {
       const stored = JSON.parse(localStorage.getItem("simad_liked") || "[]");
@@ -85,6 +103,14 @@ export default function DestinationsSection() {
       .then(r => r.json())
       .then(d => { if (d.map) setLikeCounts(d.map); })
       .catch(() => { /* ignore */ });
+    fetch("/api/destinations")
+      .then(r => r.json())
+      .then(list => {
+        if (Array.isArray(list) && list.length > 0) {
+          setDestinations(list.filter(d => d.active !== false));
+        }
+      })
+      .catch(err => console.error("Error loading destinations:", err));
   }, []);
 
   const handleLike = async (destId: string, e: React.MouseEvent) => {
