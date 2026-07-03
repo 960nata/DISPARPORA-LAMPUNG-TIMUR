@@ -99,7 +99,8 @@ export async function POST(request: NextRequest) {
     const { password: _, ...userWithoutPassword } = user;
     const token = signSession(user.id, user.role);
 
-    const isSecure = request.nextUrl.protocol === "https:";
+    const isLocal = request.nextUrl.hostname === "localhost" || request.nextUrl.hostname === "127.0.0.1";
+    const isSecure = !isLocal;
     const response = NextResponse.json(userWithoutPassword);
     response.cookies.set("simad_auth", token, {
       ...SESSION_COOKIE_OPTIONS,
