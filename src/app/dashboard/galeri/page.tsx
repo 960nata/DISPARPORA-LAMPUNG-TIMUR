@@ -264,7 +264,7 @@ export default function GaleriPage() {
     filterBar: { display: 'flex', flexWrap: 'wrap' as const, gap: '1rem', alignItems: 'center', background: 'var(--dash-card)', border: '1px solid var(--dash-border)', padding: '0.85rem 1rem', borderRadius: '14px' } as React.CSSProperties,
     filterPill: (active: boolean): React.CSSProperties => ({ padding: '0.35rem 0.85rem', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer', border: 'none', transition: 'all 0.15s', background: active ? 'var(--dash-text)' : 'var(--dash-surface-hover)', color: active ? '#fff' : 'var(--dash-text-soft)' }),
     tagPill: (active: boolean): React.CSSProperties => ({ display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.3rem 0.7rem', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer', border: `1px solid ${active ? 'var(--dash-primary)' : 'var(--dash-border)'}`, background: active ? 'var(--dash-primary-bg)' : 'var(--dash-card)', color: active ? 'var(--dash-primary)' : 'var(--dash-text-soft)', whiteSpace: 'nowrap' as const, transition: 'all 0.15s' }),
-    searchWrap: { position: 'relative', flex: '1 1 200px', maxWidth: '280px' } as React.CSSProperties,
+    searchWrap: { position: 'relative', flex: '1 1 200px', minWidth: 0 } as React.CSSProperties,
     // card
     card: { position: 'relative', aspectRatio: '1', borderRadius: '14px', overflow: 'hidden', border: '1px solid var(--dash-border)', background: 'var(--dash-card)', cursor: 'pointer', transition: 'border-color 0.15s, box-shadow 0.15s' } as React.CSSProperties,
     // modal overlay
@@ -285,7 +285,7 @@ export default function GaleriPage() {
 
       {/* Header */}
       <div style={S.header}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
+        <div className="dash-page-header">
           <div>
             <h1 style={S.h1}>
               <span style={S.h1Icon}><Images size={22} /></span>
@@ -293,7 +293,7 @@ export default function GaleriPage() {
             </h1>
             <p style={S.subtext}>Upload foto kegiatan, beri judul/kategori, dan pilih untuk tampil di beranda.</p>
           </div>
-          <div style={S.headerActions}>
+          <div className="dash-toolbar" style={{ gap: '0.5rem' }}>
             <button onClick={() => { setMultiUploadFiles([]); setIsMultiUploadOpen(v => !v); }} style={S.btnDark}>
               <UploadCloud size={14} /> Unggah Sekaligus
             </button>

@@ -128,7 +128,7 @@ export default function WisatawanPage() {
       )}
 
       {/* Tambah */}
-      <div className="dash-card" style={{ padding: "16px", display: "flex", gap: "10px", alignItems: "flex-end", flexWrap: "wrap" }}>
+      <div className="dash-card dash-toolbar" style={{ padding: "16px", alignItems: "flex-end" }}>
         <div style={{ flex: "0 0 120px" }}>
           <label style={{ display: "block", fontSize: "0.73rem", fontWeight: 600, color: "var(--dash-text-muted)", marginBottom: "5px" }}>Tahun</label>
           <input className="dash-input" type="number" placeholder="2027" value={newYear} onChange={e => setNewYear(e.target.value)} style={{ width: "100%" }} />
@@ -148,12 +148,13 @@ export default function WisatawanPage() {
         {loading ? (
           <div style={{ padding: "32px", textAlign: "center", color: "var(--dash-text-muted)", fontSize: "0.85rem" }}>Memuat...</div>
         ) : (
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <div style={{ overflowX: "auto" }}>
+          <table className="dash-table">
             <thead>
               <tr style={{ borderBottom: "1px solid var(--dash-border)" }}>
                 <th style={{ padding: "12px 20px", textAlign: "left", fontSize: "0.73rem", fontWeight: 700, color: "var(--dash-text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Tahun</th>
                 <th style={{ padding: "12px 20px", textAlign: "right", fontSize: "0.73rem", fontWeight: 700, color: "var(--dash-text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Jumlah Wisatawan</th>
-                <th style={{ padding: "12px 20px", textAlign: "center", fontSize: "0.73rem", fontWeight: 700, color: "var(--dash-text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Pertumbuhan</th>
+                <th className="dash-col-hide-sm" style={{ padding: "12px 20px", textAlign: "center", fontSize: "0.73rem", fontWeight: 700, color: "var(--dash-text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Pertumbuhan</th>
                 <th style={{ padding: "12px 16px", textAlign: "center", fontSize: "0.73rem", fontWeight: 700, color: "var(--dash-text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Aksi</th>
               </tr>
             </thead>
@@ -174,7 +175,7 @@ export default function WisatawanPage() {
                         ? <input className="dash-input" type="number" value={editCount} onChange={e => setEditCount(e.target.value)} style={{ width: "140px", padding: "6px 10px", fontSize: "0.9rem", fontWeight: 700, textAlign: "right" }} />
                         : <span style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--dash-text)" }}>{s.count.toLocaleString("id-ID")}</span>}
                     </td>
-                    <td style={{ padding: "13px 20px", textAlign: "center" }}>
+                    <td className="dash-col-hide-sm" style={{ padding: "13px 20px", textAlign: "center" }}>
                       {pct === null ? (
                         <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "0.78rem", color: "var(--dash-text-muted)" }}>
                           <Minus size={12} /> —
@@ -204,6 +205,7 @@ export default function WisatawanPage() {
               })}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

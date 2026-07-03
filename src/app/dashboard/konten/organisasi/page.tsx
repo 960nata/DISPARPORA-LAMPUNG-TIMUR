@@ -62,7 +62,7 @@ function OfficialContent() {
 
   return (
     <>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
+      <div className="dash-page-header" style={{ marginBottom: "1.25rem" }}>
         <p style={{ margin: 0, color: "var(--dash-text-muted)", fontSize: "0.875rem" }}>Kelola susunan pejabat Dinas yang ditampilkan di portal.</p>
         <button onClick={openAdd} className="dash-btn" style={{ display: "flex", alignItems: "center", gap: "7px", padding: "9px 16px", fontSize: "0.875rem", borderRadius: "11px" }}>
           <Plus size={16} /> Tambah

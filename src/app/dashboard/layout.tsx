@@ -430,7 +430,7 @@ function DashboardShell({ children }: { children: ReactNode }) {
         </header>
 
         {/* ══ MAIN CONTENT ══ */}
-        <main style={{ flex: 1, overflowY: "auto", padding: "26px", minHeight: 0 }} className="dash-main">
+        <main style={{ flex: 1, overflowY: "auto", padding: "26px", minHeight: 0, overflowX: "hidden" }} className="dash-main">
           {children}
         </main>
       </div>
@@ -455,9 +455,17 @@ function DashboardShell({ children }: { children: ReactNode }) {
           }
           .dash-sidebar.open { transform: translateX(0); box-shadow: 8px 0 32px rgba(0,0,0,0.25); }
           .dash-mob-toggle { display: flex !important; }
-          .dash-main { padding: 14px !important; }
+          .dash-main { padding: 14px 10px !important; overflow-x: hidden !important; }
           .dash-hide-sm { display: none !important; }
-          .dash-popup-panel { width: calc(100vw - 32px) !important; left: 16px !important; right: 16px !important; }
+          .dash-popup-panel {
+            position: fixed !important;
+            width: calc(100vw - 24px) !important;
+            left: 12px !important;
+            right: 12px !important;
+            top: 60px !important;
+            max-height: 70vh;
+            overflow-y: auto;
+          }
           /* Form grids stack on mobile */
           .dest-form-grid { grid-template-columns: 1fr !important; }
           .dest-form-aside { position: static !important; }

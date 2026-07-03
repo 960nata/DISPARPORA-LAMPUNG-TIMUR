@@ -62,7 +62,7 @@ export default function DestinasiPage() {
     <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
       
       {/* Page Header */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
+      <div className="dash-page-header">
         <div>
           <p style={{ margin: 0, fontSize: "0.66rem", fontWeight: 700, color: "var(--dash-primary)", textTransform: "uppercase", letterSpacing: "0.12em" }}>Kelola Data</p>
           <h1 style={{ margin: "2px 0 0", fontSize: "1.4rem", fontWeight: 800, color: "var(--dash-text)" }}>Destinasi Wisata</h1>
@@ -70,12 +70,12 @@ export default function DestinasiPage() {
             {destinations.length} destinasi wisata terdaftar di Lampung Timur.
           </p>
         </div>
-        <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
-          <div style={{ position: "relative" }}>
+        <div className="dash-toolbar">
+          <div className="dash-toolbar-search">
             <Search size={14} style={{ position: "absolute", left: "10px", top: "50%", transform: "translateY(-50%)", color: "var(--dash-text-muted)" }} />
-            <input className="dash-input" type="text" placeholder="Cari proyek..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} style={{ paddingLeft: "32px", width: "180px" }} />
+            <input className="dash-input" type="text" placeholder="Cari proyek..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} style={{ paddingLeft: "32px", width: "100%" }} />
           </div>
-          <select className="dash-input" value={catFilter} onChange={e => { setCatFilter(e.target.value); setPage(1); }} style={{ width: "150px", cursor: "pointer" }}>
+          <select className="dash-input" value={catFilter} onChange={e => { setCatFilter(e.target.value); setPage(1); }} style={{ cursor: "pointer" }}>
             <option value="Semua">Semua Kategori</option>
             {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
@@ -115,9 +115,9 @@ export default function DestinasiPage() {
               <tr>
                 <th>Nama Objek</th>
                 <th>Kategori</th>
-                <th>Kecamatan</th>
-                <th>Koordinat</th>
-                <th>Status</th>
+                <th className="dash-col-hide-sm">Kecamatan</th>
+                <th className="dash-col-hide-sm">Koordinat</th>
+                <th className="dash-col-hide-sm">Status</th>
                 <th style={{ textAlign: "right", width: "80px" }}>Aksi</th>
               </tr>
             </thead>
@@ -134,9 +134,9 @@ export default function DestinasiPage() {
                       {item.category}
                     </span>
                   </td>
-                  <td>{item.kecamatan}</td>
-                  <td><code style={{ fontSize: "0.75rem", color: "var(--dash-text-muted)" }}>{item.lat?.toFixed(5)}, {item.lng?.toFixed(5)}</code></td>
-                  <td><span className={`dash-badge ${item.active ? "dash-badge-success" : "dash-badge-danger"}`}>{item.active ? "Aktif" : "Non-Aktif"}</span></td>
+                  <td className="dash-col-hide-sm">{item.kecamatan}</td>
+                  <td className="dash-col-hide-sm"><code style={{ fontSize: "0.75rem", color: "var(--dash-text-muted)" }}>{item.lat?.toFixed(5)}, {item.lng?.toFixed(5)}</code></td>
+                  <td className="dash-col-hide-sm"><span className={`dash-badge ${item.active ? "dash-badge-success" : "dash-badge-danger"}`}>{item.active ? "Aktif" : "Non-Aktif"}</span></td>
                   <td style={{ textAlign: "right" }}>
                     <div style={{ display: "inline-flex", gap: "4px" }}>
                       <button onClick={() => router.push(`/destinasi/${item.slug || item.id}`)} title="Lihat di publik" style={{ background: "none", border: "1px solid var(--dash-border)", borderRadius: "6px", color: "var(--dash-text-muted)", cursor: "pointer", padding: "6px", display: "flex", alignItems: "center" }}>

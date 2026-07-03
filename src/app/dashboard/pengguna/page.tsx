@@ -267,8 +267,8 @@ export default function PenggunaPage() {
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
-                  {['Pengguna', 'Username', 'Peran', 'Izin Akses', 'Aksi'].map(h => (
-                    <th key={h} style={{ textAlign: 'left', padding: '0.7rem 1rem', fontSize: '0.65rem', fontWeight: 800, color: 'var(--dash-text-muted)', textTransform: 'uppercase' as const, letterSpacing: '0.08em', whiteSpace: 'nowrap', background: 'var(--dash-surface-hover)', borderBottom: '1px solid var(--dash-border)' }}>{h}</th>
+                  {['Pengguna', 'Username', 'Peran', 'Izin Akses', 'Aksi'].map((h, i) => (
+                    <th key={h} className={i === 1 || i === 3 ? 'dash-col-hide-sm' : ''} style={{ textAlign: 'left', padding: '0.7rem 1rem', fontSize: '0.65rem', fontWeight: 800, color: 'var(--dash-text-muted)', textTransform: 'uppercase' as const, letterSpacing: '0.08em', whiteSpace: 'nowrap', background: 'var(--dash-surface-hover)', borderBottom: '1px solid var(--dash-border)' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -293,7 +293,7 @@ export default function PenggunaPage() {
                             </div>
                           </div>
                         </td>
-                        <td style={{ padding: '0.85rem 1rem' }}>
+                        <td className="dash-col-hide-sm" style={{ padding: '0.85rem 1rem' }}>
                           <code style={{ fontSize: '0.78rem', background: 'var(--dash-bg)', padding: '0.2rem 0.55rem', borderRadius: '6px', color: 'var(--dash-text-soft)', border: '1px solid var(--dash-border)', fontFamily: 'monospace' }}>{u.username}</code>
                         </td>
                         <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' as const }}>
@@ -302,7 +302,7 @@ export default function PenggunaPage() {
                             {rm.label}
                           </span>
                         </td>
-                        <td style={{ padding: '0.85rem 1rem' }}>
+                        <td className="dash-col-hide-sm" style={{ padding: '0.85rem 1rem' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                             <div style={{ flex: 1, height: '5px', background: 'var(--dash-border)', borderRadius: '4px', maxWidth: '80px' }}>
                               <div style={{ height: '100%', background: 'var(--dash-primary)', borderRadius: '4px', width: `${(accessCount / SIMAD_MENUS.length) * 100}%`, transition: 'width 0.3s' }} />
@@ -346,7 +346,7 @@ export default function PenggunaPage() {
               </div>
 
               <div style={S.modalBody}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+                <div className="dash-form-2col">
                   {/* Left column — form fields */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div>

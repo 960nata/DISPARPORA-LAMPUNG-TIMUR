@@ -162,7 +162,7 @@ export default function DashboardPage() {
     <div style={{ display: "flex", flexDirection: "column", gap: "18px", fontFamily: "var(--font-main)" }}>
 
       {/* ── Page header ── */}
-      <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "18px", flexWrap: "wrap" }}>
+      <div className="dash-page-header">
         <div>
           <h1 style={{ margin: 0, fontSize: "1.7rem", fontWeight: 800, letterSpacing: "-0.02em", color: "var(--dash-text)" }}>Traffic Kunjungan</h1>
           <p style={{ margin: "6px 0 0", fontSize: "0.88rem", color: "var(--dash-text-soft)" }}>
@@ -402,7 +402,7 @@ export default function DashboardPage() {
         ) : (
           <>
             <div className="dash-pop-row" style={{ display: "grid", gridTemplateColumns: "34px 1fr 130px 64px", gap: "14px", padding: "14px 4px 12px", borderBottom: "1px solid var(--dash-border)", marginTop: "14px", fontSize: "0.66rem", fontWeight: 700, letterSpacing: "0.05em", color: "var(--dash-text-muted)" }}>
-              <span>#</span><span>HALAMAN</span><span className="dash-hide-sm">DISTRIBUSI</span><span style={{ textAlign: "right" }}>VIEWS</span>
+              <span>#</span><span>HALAMAN</span><span className="dash-hide-sm dash-hide-mobile">DISTRIBUSI</span><span style={{ textAlign: "right" }}>VIEWS</span>
             </div>
             {popular.map((p, i) => (
               <div key={p.path} className="dash-pop-row" style={{ display: "grid", gridTemplateColumns: "34px 1fr 130px 64px", gap: "14px", alignItems: "center", padding: "13px 4px", borderBottom: i === popular.length - 1 ? "none" : "1px solid var(--dash-border)" }}>

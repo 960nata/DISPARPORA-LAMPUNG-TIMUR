@@ -164,7 +164,7 @@ export default function OlahragaDashboardPage() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
       {/* Page Header */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
+      <div className="dash-page-header">
         <div>
           <p style={{ margin: 0, fontSize: "0.66rem", fontWeight: 700, color: "var(--dash-primary)", textTransform: "uppercase", letterSpacing: "0.12em" }}>Kelola Data</p>
           <h1 style={{ margin: "2px 0 0", fontSize: "1.4rem", fontWeight: 800, color: "var(--dash-text)" }}>Atlet &amp; Prestasi</h1>
@@ -172,8 +172,8 @@ export default function OlahragaDashboardPage() {
             {athletes.length} atlet berprestasi Lampung Timur tercatat di database.
           </p>
         </div>
-        <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
-          <div style={{ position: "relative" }}>
+        <div className="dash-toolbar">
+          <div className="dash-toolbar-search">
             <Search size={14} style={{ position: "absolute", left: "10px", top: "50%", transform: "translateY(-50%)", color: "var(--dash-text-muted)" }} />
             <input
               className="dash-input"
@@ -181,14 +181,14 @@ export default function OlahragaDashboardPage() {
               placeholder="Cari atlet, event..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-              style={{ paddingLeft: "32px", width: "180px" }}
+              style={{ paddingLeft: "32px", width: "100%" }}
             />
           </div>
           <select
             className="dash-input"
             value={caborFilter}
             onChange={(e) => { setCaborFilter(e.target.value); setPage(1); }}
-            style={{ width: "160px", cursor: "pointer" }}
+            style={{ cursor: "pointer" }}
           >
             <option value="Semua">Semua Cabor</option>
             {cabors.map((c) => (
@@ -199,7 +199,7 @@ export default function OlahragaDashboardPage() {
             className="dash-input"
             value={juaraFilter}
             onChange={(e) => { setJuaraFilter(e.target.value); setPage(1); }}
-            style={{ width: "130px", cursor: "pointer" }}
+            style={{ cursor: "pointer" }}
           >
             <option value="Semua">Semua Medali</option>
             {JUARA_OPTIONS.map((j) => (
@@ -323,7 +323,7 @@ export default function OlahragaDashboardPage() {
       </div>
 
       {/* Quick Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "14px" }} className="koni-stats-grid">
+      <div className="dash-stats-4 koni-stats-grid">
         {[
           { label: "Total Atlet Berprestasi", value: athletes.length, color: "var(--dash-primary)", bg: "var(--dash-primary-bg)", icon: Award, sub: "tercatat di database" },
           { label: "Medali Emas", value: totalEmas, color: JUARA_COLORS.Emas, bg: "rgba(217,119,6,0.08)", icon: Trophy, sub: "🥇 prestasi tertinggi" },
@@ -379,9 +379,9 @@ export default function OlahragaDashboardPage() {
               <tr>
                 <th style={{ width: "50px" }}>No</th>
                 <th>Nama Atlet</th>
-                <th>Cabang Olahraga</th>
+                <th className="dash-col-hide-sm">Cabang Olahraga</th>
                 <th>Prestasi / Medali</th>
-                <th>Kejuaraan / Event</th>
+                <th className="dash-col-hide-sm">Kejuaraan / Event</th>
                 <th style={{ textAlign: "right", width: "80px" }}>Aksi</th>
               </tr>
             </thead>
@@ -396,7 +396,7 @@ export default function OlahragaDashboardPage() {
                   <tr key={item.id}>
                     <td style={{ color: "var(--dash-text-muted)", fontWeight: 600 }}>{no}</td>
                     <td style={{ fontWeight: 600, color: "var(--dash-text)" }}>{item.nama}</td>
-                    <td>
+                    <td className="dash-col-hide-sm">
                       <span className="dash-badge" style={{ backgroundColor: "var(--dash-surface-hover)", color: "var(--dash-text-soft)", border: "1px solid var(--dash-border)" }}>
                         {item.cabor}
                       </span>
@@ -407,7 +407,7 @@ export default function OlahragaDashboardPage() {
                         {item.juara}
                       </span>
                     </td>
-                    <td style={{ color: "var(--dash-text-muted)", fontSize: "0.82rem" }}>{item.event}</td>
+                    <td className="dash-col-hide-sm" style={{ color: "var(--dash-text-muted)", fontSize: "0.82rem" }}>{item.event}</td>
                     <td style={{ textAlign: "right" }}>
                       <div style={{ display: "inline-flex", gap: "4px" }}>
                         <button

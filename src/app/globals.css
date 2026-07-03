@@ -369,6 +369,120 @@ html, body {
   .wp-editor-grid > *:last-child { position: static !important; }
 }
 
+/* ═══════════════════════════════════════════
+   DASHBOARD — Mobile Responsive Utilities
+═══════════════════════════════════════════ */
+
+/* ── Page Header: title left, actions right, stack on mobile ── */
+.dash-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* ── Toolbar: search + filters row, wraps on mobile ── */
+.dash-toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.dash-toolbar-search {
+  position: relative;
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+/* ── Stats grid: 3-4 columns → 2 → 1 on mobile ── */
+.dash-stats-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.dash-stats-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+/* ── Form 2-column layout for modals ── */
+.dash-form-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+/* ── Mobile visibility helpers ── */
+.dash-show-mobile { display: none !important; }
+
+/* ── Responsive overrides ── */
+@media (max-width: 1100px) {
+  .dash-stats-4 { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+@media (max-width: 768px) {
+  /* Page header stacks */
+  .dash-page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .dash-page-header > *:last-child {
+    width: 100%;
+  }
+
+  /* Toolbar items grow */
+  .dash-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .dash-toolbar > * {
+    width: 100% !important;
+    max-width: none !important;
+  }
+  .dash-toolbar-search {
+    flex: 1 1 100%;
+  }
+  .dash-toolbar .dash-input {
+    width: 100% !important;
+  }
+
+  /* Stats grids */
+  .dash-stats-3 { grid-template-columns: 1fr !important; }
+  .dash-stats-4 { grid-template-columns: 1fr !important; }
+
+  /* Form 2col stacks */
+  .dash-form-2col { grid-template-columns: 1fr !important; }
+
+  /* Mobile visibility */
+  .dash-hide-mobile { display: none !important; }
+  .dash-show-mobile { display: flex !important; }
+
+  /* Table column hiding on mobile */
+  .dash-table .dash-col-hide-sm { display: none !important; }
+
+  /* Modal takes full width on mobile */
+  .dash-overlay { padding: 12px !important; }
+  .dash-modal {
+    max-width: 100% !important;
+    border-radius: 14px !important;
+    padding: 18px !important;
+  }
+
+  /* Scrollable tab/pill bars on mobile */
+  .dash-scroll {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .dash-scroll::-webkit-scrollbar { display: none; }
+}
+
+@media (max-width: 480px) {
+  .dash-stats-4 { grid-template-columns: 1fr !important; }
+  .dash-stats-3 { grid-template-columns: 1fr !important; }
+}
+
 /* Base Headings */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
@@ -1317,6 +1431,7 @@ a {
   color: var(--text-primary);
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -1554,6 +1669,7 @@ a {
     font-weight: 700 !important;
     color: var(--text-primary) !important;
     -webkit-line-clamp: 3 !important;
+    line-clamp: 3 !important;
   }
 
   .berita-related-grid p:last-of-type {

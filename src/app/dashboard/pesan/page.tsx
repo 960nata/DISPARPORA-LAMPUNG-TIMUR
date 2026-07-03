@@ -118,7 +118,7 @@ export default function PesanDashboardPage() {
     <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
 
       {/* Header */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
+      <div className="dash-page-header">
         <div>
           <p style={{ margin: 0, fontSize: "0.66rem", fontWeight: 700, color: "var(--dash-primary)", textTransform: "uppercase", letterSpacing: "0.12em" }}>Kotak Masuk</p>
           <h1 style={{ margin: "2px 0 0", fontSize: "1.4rem", fontWeight: 800, color: "var(--dash-text)", display: "flex", alignItems: "center", gap: "10px" }}>
@@ -141,10 +141,10 @@ export default function PesanDashboardPage() {
       </div>
 
       {/* Toolbar */}
-      <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
-        <div style={{ position: "relative", flex: 1, minWidth: "220px" }}>
+      <div className="dash-toolbar">
+        <div className="dash-toolbar-search" style={{ flex: 1, minWidth: "220px" }}>
           <Search size={15} style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "var(--dash-text-muted)" }} />
-          <input className="dash-input" value={search} onChange={e => setSearch(e.target.value)} placeholder="Cari nama, email, subjek, atau isi pesan..." style={{ paddingLeft: "36px" }} />
+          <input className="dash-input" value={search} onChange={e => setSearch(e.target.value)} placeholder="Cari nama, email, subjek, atau isi pesan..." style={{ paddingLeft: "36px", width: "100%" }} />
         </div>
         <div style={{ display: "flex", gap: "4px", background: "var(--dash-surface-hover)", padding: "4px", borderRadius: "10px", border: "1px solid var(--dash-border)" }}>
           {([["all", "Semua"], ["unread", "Belum Dibaca"]] as const).map(([key, label]) => (

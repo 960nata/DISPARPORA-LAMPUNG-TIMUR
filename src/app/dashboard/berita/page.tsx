@@ -53,7 +53,7 @@ export default function BeritaPage() {
     <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
       
       {/* Page Header */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
+      <div className="dash-page-header">
         <div>
           <p style={{ margin: 0, fontSize: "0.66rem", fontWeight: 700, color: "var(--dash-primary)", textTransform: "uppercase", letterSpacing: "0.12em" }}>Kelola Konten</p>
           <h1 style={{ margin: "2px 0 0", fontSize: "1.4rem", fontWeight: 800, color: "var(--dash-text)" }}>Publikasi Berita</h1>
@@ -61,10 +61,10 @@ export default function BeritaPage() {
             Kelola rilis berita, kegiatan, dan promosi wisata daerah.
           </p>
         </div>
-        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-          <div style={{ position: "relative" }}>
+        <div className="dash-toolbar">
+          <div className="dash-toolbar-search">
             <Search size={14} style={{ position: "absolute", left: "10px", top: "50%", transform: "translateY(-50%)", color: "var(--dash-text-muted)" }} />
-            <input className="dash-input" type="text" placeholder="Cari artikel..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} style={{ paddingLeft: "32px", width: "200px" }} />
+            <input className="dash-input" type="text" placeholder="Cari artikel..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} style={{ paddingLeft: "32px", width: "100%" }} />
           </div>
           {posts.filter(p => p.status !== "published").length > 0 && (
             <button onClick={handlePublishAll} disabled={publishing} className="dash-btn" style={{ padding: "8px 14px", background: "linear-gradient(135deg, var(--dash-success), #059669)" }}>
@@ -78,7 +78,7 @@ export default function BeritaPage() {
       </div>
 
       {/* Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px" }} className="grid-charts">
+      <div className="dash-stats-3">
         {[
           { label: "Total Artikel", value: posts.length, color: "var(--dash-primary)", icon: BookOpen },
           { label: "Diterbitkan", value: posts.filter(p => p.status === "published").length, color: "var(--dash-success)", icon: CheckCircle },
@@ -109,8 +109,8 @@ export default function BeritaPage() {
               <tr>
                 <th style={{ width: "48px" }}></th>
                 <th>Judul Artikel</th>
-                <th>Penulis</th>
-                <th>Tanggal</th>
+                <th className="dash-col-hide-sm">Penulis</th>
+                <th className="dash-col-hide-sm">Tanggal</th>
                 <th>Status</th>
                 <th style={{ textAlign: "right", width: "100px" }}>Aksi</th>
               </tr>
@@ -136,8 +136,8 @@ export default function BeritaPage() {
                   <td style={{ fontWeight: 600, color: "var(--dash-text)", maxWidth: "320px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {p.title}
                   </td>
-                  <td>{p.authorName}</td>
-                  <td style={{ fontSize: "0.82rem", color: "var(--dash-text-soft)" }}>
+                  <td className="dash-col-hide-sm">{p.authorName}</td>
+                  <td className="dash-col-hide-sm" style={{ fontSize: "0.82rem", color: "var(--dash-text-soft)" }}>
                     {new Date(p.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
                   </td>
                   <td>
