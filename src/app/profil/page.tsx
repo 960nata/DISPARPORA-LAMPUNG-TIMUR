@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Compass,
@@ -167,8 +167,51 @@ const renstraItems = [
   },
 ];
 
+function getBidangId(role: string = "", title: string = ""): string | undefined {
+  const text = `${role} ${title}`.toLowerCase();
+  if (text.includes("sekret")) return "sekretariat";
+  if (text.includes("pariwisata") || text.includes("wisata")) return "pariwisata";
+  if (text.includes("kreatif") || text.includes("ekraf")) return "ekonomi-kreatif";
+  if (text.includes("pemuda")) return "pemuda";
+  if (text.includes("olahraga")) return "olahraga";
+  return undefined;
+}
+
 export default function ProfilDinas() {
   const [activeBidang, setActiveBidang] = useState(0);
+  const [officials, setOfficials] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/api/officials")
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setOfficials(data);
+        }
+      })
+      .catch(err => console.error("Error loading officials:", err));
+  }, []);
+
+  const activeKadis = officials.find(o => o.title?.toLowerCase().includes("kepala dinas") || o.role?.toLowerCase().includes("kepala dinas")) || officials[0];
+  const hasDbKadis = !!activeKadis;
+
+  const kadisName = hasDbKadis ? activeKadis.name : kepalaDinas.name;
+  const kadisPhoto = hasDbKadis ? (activeKadis.photoUrl || "/leaders/kadis.avif") : kepalaDinas.photo;
+  const kadisUnit = hasDbKadis ? (activeKadis.role || "DISPARPORA Lampung Timur") : kepalaDinas.unit;
+
+  const dbPejabat = officials.filter(o => o.id !== activeKadis?.id).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  const finalPejabatList = dbPejabat.length > 0 ? dbPejabat.map(p => {
+    const bidangId = getBidangId(p.role, p.title) || "";
+    const nameStr = p.role || p.title || "";
+    const letter = nameStr?.[0]?.toUpperCase() || "P";
+    return {
+      letter,
+      name: p.name,
+      role: p.title || "",
+      sub: p.role || "",
+      bidangId
+    };
+  }) : pejabatList;
 
   const gotoBidang = (bidangId: string) => {
     const idx = bidangDetails.findIndex(b => b.id === bidangId);
@@ -395,27 +438,27 @@ export default function ProfilDinas() {
           boxShadow: "0 26px 52px -28px rgba(12,59,38,0.55)",
         }}>
           <div style={{ width: "104px", height: "104px", flexShrink: 0, borderRadius: "18px", overflow: "hidden", border: "3px solid rgba(255,255,255,0.18)" }}>
-            <img src={kepalaDinas.photo} alt={kepalaDinas.name} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
+            <img src={kadisPhoto} alt={kadisName} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
           </div>
           <div>
             <span style={{ display: "inline-block", padding: "0.25rem 0.75rem", borderRadius: "20px", backgroundColor: LIME, color: "#0C3B26", fontSize: "0.68rem", fontWeight: 800, letterSpacing: "0.04em" }}>KEPALA DINAS</span>
-            <p style={{ margin: "0.6rem 0 0", fontSize: "1.3rem", fontWeight: 800, letterSpacing: "-0.01em", color: "white" }}>{kepalaDinas.name}</p>
-            <p style={{ margin: "0.25rem 0 0", fontSize: "0.82rem", color: "rgba(255,255,255,0.72)" }}>{kepalaDinas.unit}</p>
+            <p style={{ margin: "0.6rem 0 0", fontSize: "1.3rem", fontWeight: 800, letterSpacing: "-0.01em", color: "white" }}>{kadisName}</p>
+            <p style={{ margin: "0.25rem 0 0", fontSize: "0.82rem", color: "rgba(255,255,255,0.72)" }}>{kadisUnit}</p>
           </div>
         </motion.div>
 
         {/* Pejabat grid */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: "1rem" }}>
-          {pejabatList.map((p, i) => (
+          {finalPejabatList.map((p, i) => (
             <motion.div
               key={i}
               {...fadeUp(0.06 + i * 0.06)}
               whileHover={{ y: -6 }}
-              onClick={() => gotoBidang(p.bidangId)}
+              onClick={() => p.bidangId && gotoBidang(p.bidangId)}
               role="button"
               tabIndex={0}
               style={{
-                cursor: "pointer",
+                cursor: p.bidangId ? "pointer" : "default",
                 backgroundColor: "white",
                 border: "1px solid rgba(16,40,28,0.08)",
                 borderRadius: "20px",

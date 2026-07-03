@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { useToast } from "@/contexts/ToastContext";
 import { Plus, Edit2, Trash2, Save } from "lucide-react";
-import { Partner, Modal, DeleteModal, Field } from "../_shared";
+import { Partner, Modal, DeleteModal, Field, PhotoUploadField } from "../_shared";
 
 function PartnerContent() {
   const { toast } = useToast();
@@ -96,14 +96,7 @@ function PartnerContent() {
           <Field label="Nama Partner">
             <input className="dash-input" type="text" value={modal.item?.name ?? ""} onChange={e => setField("name", e.target.value)} placeholder="Nama lembaga / mitra" />
           </Field>
-          <Field label="URL Logo">
-            <input className="dash-input" type="text" value={modal.item?.logoUrl ?? ""} onChange={e => setField("logoUrl", e.target.value)} placeholder="/logo.avif atau https://..." />
-          </Field>
-          {modal.item?.logoUrl && (
-            <div style={{ display: "flex", justifyContent: "center", padding: "12px", background: "var(--dash-bg)", borderRadius: "10px", border: "1px solid var(--dash-border)" }}>
-              <img src={modal.item.logoUrl} alt="preview" style={{ maxHeight: "60px", maxWidth: "200px", objectFit: "contain" }} />
-            </div>
-          )}
+          <PhotoUploadField label="Logo Partner" value={modal.item?.logoUrl ?? ""} onChange={url => setField("logoUrl", url)} />
           <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", marginTop: "6px" }}>
             <button onClick={() => setModal({ open: false, item: null })} style={{ padding: "9px 18px", borderRadius: "10px", border: "1px solid var(--dash-border)", background: "transparent", color: "var(--dash-text)", cursor: "pointer", fontWeight: 600, fontSize: "0.875rem" }}>
               Batal
@@ -124,12 +117,12 @@ export default function PartnerPage() {
   const { user } = useAdmin();
 
   if (!user) return null;
-  const allowed = user.role === "superadmin" || user.role === "admin_dinas";
+  const allowed = user.role === "superadmin" || user.role === "admin_dinas" || user.role === "admin_post";
   if (!allowed) {
     return (
       <div style={{ textAlign: "center", padding: "4rem", color: "var(--dash-text-muted)" }}>
         <p style={{ fontSize: "1rem", fontWeight: 600 }}>Akses Ditolak</p>
-        <p style={{ fontSize: "0.875rem" }}>Halaman ini hanya dapat diakses oleh superadmin dan admin_dinas.</p>
+        <p style={{ fontSize: "0.875rem" }}>Halaman ini hanya dapat diakses oleh superadmin, admin_dinas, dan admin_post.</p>
       </div>
     );
   }

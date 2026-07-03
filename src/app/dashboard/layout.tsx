@@ -203,10 +203,10 @@ const NAV = [
     { href: "/dashboard/pesan",     label: "Pesan Masuk",        icon: Mail,            roles: ["superadmin","admin_dinas"] },
   ]},
   { section: "KONTEN", items: [
-    { href: "/dashboard/konten/organisasi", label: "Struktur Organisasi", icon: Building2,    roles: ["superadmin", "admin_dinas"] },
-    { href: "/dashboard/konten/sambutan",   label: "Sambutan",            icon: Mic2,         roles: ["superadmin", "admin_dinas"] },
-    { href: "/dashboard/konten/agenda",     label: "Agenda & Event",      icon: CalendarDays, roles: ["superadmin", "admin_dinas"] },
-    { href: "/dashboard/konten/partner",    label: "Partner Kami",        icon: Handshake,    roles: ["superadmin", "admin_dinas"] },
+    { href: "/dashboard/konten/organisasi", label: "Struktur Organisasi", icon: Building2,    roles: ["superadmin", "admin_dinas", "admin_post"] },
+    { href: "/dashboard/konten/sambutan",   label: "Sambutan",            icon: Mic2,         roles: ["superadmin", "admin_dinas", "admin_post"] },
+    { href: "/dashboard/konten/agenda",     label: "Agenda & Event",      icon: CalendarDays, roles: ["superadmin", "admin_dinas", "admin_post"] },
+    { href: "/dashboard/konten/partner",    label: "Partner Kami",        icon: Handshake,    roles: ["superadmin", "admin_dinas", "admin_post"] },
   ]},
   { section: "STATISTIK", items: [
     { href: "/dashboard/wisatawan", label: "Pertumbuhan Wisatawan", icon: TrendingUp,    roles: ["superadmin","admin_dinas"] },

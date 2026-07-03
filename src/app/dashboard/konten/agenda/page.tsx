@@ -376,11 +376,11 @@ function EventContent() {
 export default function AgendaPage() {
   const { user } = useAdmin();
   if (!user) return null;
-  const allowed = user.role === "superadmin" || user.role === "admin_dinas";
+  const allowed = user.role === "superadmin" || user.role === "admin_dinas" || user.role === "admin_post";
   if (!allowed) return (
     <div style={{ textAlign: "center", padding: "4rem", color: "var(--dash-text-muted)" }}>
       <p style={{ fontWeight: 600 }}>Akses Ditolak</p>
-      <p style={{ fontSize: "0.875rem" }}>Hanya superadmin dan admin_dinas.</p>
+      <p style={{ fontSize: "0.875rem" }}>Hanya superadmin, admin_dinas, dan admin_post.</p>
     </div>
   );
 
