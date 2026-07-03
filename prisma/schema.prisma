@@ -111,13 +111,16 @@ model Speech {
 }
 
 model AppEvent {
-  id       String  @id @default(cuid())
-  title    String
-  date     String
-  location String
-  desc     String
-  status   String
-  image    String?
+  id        String   @id @default(cuid())
+  title     String
+  date      String
+  time      String?  @default("")
+  location  String
+  desc      String
+  status    String
+  image     String?
+  guests    String?  @default("")
+  createdAt DateTime @default(now())
 
   @@map("events")
 }
