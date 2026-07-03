@@ -31,6 +31,7 @@ interface FormData {
   rooms: string; food_type: string; capacity: string;
   imageUrl: string; description: string;
   slug: string; gallery: string[];
+  isPopular: boolean;
   publishDate: string; seoTitle: string; seoDesc: string;
 }
 
@@ -41,6 +42,7 @@ const DEFAULT: FormData = {
   rooms: "", food_type: "", capacity: "",
   imageUrl: "", description: "",
   slug: "", gallery: [],
+  isPopular: false,
   publishDate: "", seoTitle: "", seoDesc: "",
 };
 
@@ -89,6 +91,7 @@ export default function DestinasiForm({ mode, editId }: Props) {
             imageUrl: data.imageUrl || "", description: data.description || "",
             slug: data.slug || toSlug(data.name || ""),
             gallery: Array.isArray(data.gallery) ? data.gallery : [],
+            isPopular: !!data.isPopular,
             publishDate: data.publishDate || "",
             seoTitle: data.seoTitle || "",
             seoDesc: data.seoDesc || "",
@@ -308,11 +311,20 @@ export default function DestinasiForm({ mode, editId }: Props) {
                 <input className="dash-input" value={form.address} onChange={e => upd("address", e.target.value)} placeholder="Nama jalan, desa, dll." />
               </div>
 
-              <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "12px 14px", background: "var(--dash-surface-hover)", borderRadius: "10px", border: "1px solid var(--dash-border)" }}>
-                <input type="checkbox" id="active-toggle" checked={form.active} onChange={e => upd("active", e.target.checked)} style={{ accentColor: "var(--dash-primary)", width: "16px", height: "16px", cursor: "pointer" }} />
-                <label htmlFor="active-toggle" style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--dash-text)", cursor: "pointer" }}>
-                  Destinasi Aktif & Beroperasi
-                </label>
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "12px 14px", background: "var(--dash-surface-hover)", borderRadius: "10px", border: "1px solid var(--dash-border)" }}>
+                  <input type="checkbox" id="active-toggle" checked={form.active} onChange={e => upd("active", e.target.checked)} style={{ accentColor: "var(--dash-primary)", width: "16px", height: "16px", cursor: "pointer" }} />
+                  <label htmlFor="active-toggle" style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--dash-text)", cursor: "pointer" }}>
+                    Destinasi Aktif & Beroperasi
+                  </label>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "12px 14px", background: "var(--dash-surface-hover)", borderRadius: "10px", border: "1px solid var(--dash-border)" }}>
+                  <input type="checkbox" id="popular-toggle" checked={form.isPopular} onChange={e => upd("isPopular", e.target.checked)} style={{ accentColor: "var(--dash-primary)", width: "16px", height: "16px", cursor: "pointer" }} />
+                  <label htmlFor="popular-toggle" style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--dash-text)", cursor: "pointer" }}>
+                    Tampilkan di Destinasi Populer Halaman Utama
+                  </label>
+                </div>
               </div>
             </div>
 

@@ -51,6 +51,7 @@ export async function POST(request: NextRequest) {
         description: data.description || undefined,
         slug,
         gallery: Array.isArray(data.gallery) ? data.gallery : undefined,
+        isPopular: data.isPopular !== undefined ? Boolean(data.isPopular) : false,
         publishDate: data.publishDate || undefined,
         seoTitle: data.seoTitle || undefined,
         seoDesc: data.seoDesc || undefined,

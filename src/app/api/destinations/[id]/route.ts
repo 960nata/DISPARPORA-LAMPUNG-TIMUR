@@ -63,6 +63,7 @@ export async function PUT(
         description: data.description || undefined,
         slug: data.slug || undefined,
         gallery: Array.isArray(data.gallery) ? data.gallery : undefined,
+        isPopular: data.isPopular !== undefined ? Boolean(data.isPopular) : undefined,
         publishDate: data.publishDate || undefined,
         seoTitle: data.seoTitle || undefined,
         seoDesc: data.seoDesc || undefined,

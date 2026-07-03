@@ -15,6 +15,7 @@ model User {
   password    String
   name        String
   role        String
+  email       String?
   permissions String?
   posts       Post[]
 
@@ -41,6 +42,7 @@ model Destination {
   description    String?
   slug           String?
   gallery        Json?
+  isPopular      Boolean   @default(false)
   createdAt      DateTime  @default(now())
   publishDate    String?
   seoTitle       String?
@@ -133,5 +135,21 @@ model Athlete {
   event String
 
   @@map("athletes")
+}
+
+model PageView {
+  id        String   @id
+  path      String
+  session   String   @default("")
+  visitor   String   @default("")
+  is_new    Boolean  @default(true)
+  country   String   @default("")
+  region    String   @default("")
+  city      String   @default("")
+  lat       Float?
+  lng       Float?
+  createdAt DateTime @default(now()) @map("createdAt")
+
+  @@map("page_views")
 }
 

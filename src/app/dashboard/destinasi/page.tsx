@@ -4,14 +4,14 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Plus, Search, Edit2, Trash2, MapPin, X,
-  Compass, Activity, Globe, Layers, Eye
+  Compass, Activity, Globe, Layers, Eye, Star
 } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 
 interface TourismItem {
   id: string; name: string; category: string; kecamatan: string; address: string;
   lat: number; lng: number; active: boolean; facilities?: string; contact?: string; map_link?: string;
-  classification?: string; rooms?: number; slug?: string;
+  classification?: string; rooms?: number; slug?: string; isPopular?: boolean;
 }
 
 const CATEGORIES = ["Wisata Alam", "Wisata Buatan", "Wisata Budaya", "Akomodasi"];
@@ -50,6 +50,26 @@ export default function DestinasiPage() {
   });
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const handleTogglePopular = async (id: string, current: boolean) => {
+    const item = destinations.find(d => d.id === id);
+    if (!item) return;
+    setDestinations(prev => prev.map(d => d.id === id ? { ...d, isPopular: !current } : d));
+    try {
+      const res = await fetch(`/api/destinations/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...item,
+          isPopular: !current
+        })
+      });
+      if (!res.ok) throw new Error();
+    } catch {
+      alert("Gagal mengupdate status populer.");
+      setDestinations(prev => prev.map(d => d.id === id ? { ...d, isPopular: current } : d));
+    }
+  };
 
   const handleDelete = async () => {
     if (!deleteConfirm) return;
@@ -117,15 +137,16 @@ export default function DestinasiPage() {
                 <th>Kategori</th>
                 <th className="dash-col-hide-sm">Kecamatan</th>
                 <th className="dash-col-hide-sm">Koordinat</th>
+                <th className="dash-col-hide-sm" style={{ textAlign: "center" }}>Populer</th>
                 <th className="dash-col-hide-sm">Status</th>
                 <th style={{ textAlign: "right", width: "80px" }}>Aksi</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={6} style={{ textAlign: "center", padding: "48px", color: "var(--dash-text-muted)" }}>Memuat data...</td></tr>
+                <tr><td colSpan={7} style={{ textAlign: "center", padding: "48px", color: "var(--dash-text-muted)" }}>Memuat data...</td></tr>
               ) : paged.length === 0 ? (
-                <tr><td colSpan={6} style={{ textAlign: "center", padding: "48px", color: "var(--dash-text-muted)" }}>Tidak ada proyek ditemukan.</td></tr>
+                <tr><td colSpan={7} style={{ textAlign: "center", padding: "48px", color: "var(--dash-text-muted)" }}>Tidak ada proyek ditemukan.</td></tr>
               ) : paged.map(item => (
                 <tr key={item.id}>
                   <td style={{ fontWeight: 600, color: "var(--dash-text)" }}>{item.name}</td>
@@ -136,6 +157,30 @@ export default function DestinasiPage() {
                   </td>
                   <td className="dash-col-hide-sm">{item.kecamatan}</td>
                   <td className="dash-col-hide-sm"><code style={{ fontSize: "0.75rem", color: "var(--dash-text-muted)" }}>{item.lat?.toFixed(5)}, {item.lng?.toFixed(5)}</code></td>
+                  <td className="dash-col-hide-sm" style={{ textAlign: "center" }}>
+                    <button
+                      onClick={() => handleTogglePopular(item.id, !!item.isPopular)}
+                      title={item.isPopular ? "Hapus dari Destinasi Populer" : "Jadikan Destinasi Populer"}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        padding: "4px",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        transition: "transform 0.15s ease",
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.transform = "scale(1.2)"}
+                      onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+                    >
+                      {item.isPopular ? (
+                        <Star size={16} fill="#eab308" stroke="#eab308" />
+                      ) : (
+                        <Star size={16} stroke="var(--dash-text-muted)" style={{ opacity: 0.4 }} />
+                      )}
+                    </button>
+                  </td>
                   <td className="dash-col-hide-sm"><span className={`dash-badge ${item.active ? "dash-badge-success" : "dash-badge-danger"}`}>{item.active ? "Aktif" : "Non-Aktif"}</span></td>
                   <td style={{ textAlign: "right" }}>
                     <div style={{ display: "inline-flex", gap: "4px" }}>

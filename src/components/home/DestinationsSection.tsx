@@ -107,12 +107,17 @@ export default function DestinationsSection() {
       .then(r => r.json())
       .then(list => {
         if (Array.isArray(list)) {
-          const filtered = list.filter((d: any) => 
+          const generalList = list.filter((d: any) => 
             d.active !== false && 
             d.category !== "Akomodasi" && 
             d.category !== "Kuliner"
           );
-          setDestinations(filtered);
+          const popularList = generalList.filter((d: any) => d.isPopular === true);
+          if (popularList.length > 0) {
+            setDestinations(popularList);
+          } else {
+            setDestinations(generalList.slice(0, 10));
+          }
         }
       })
       .catch(err => console.error("Error loading destinations:", err));
