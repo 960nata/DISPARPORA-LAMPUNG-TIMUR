@@ -73,9 +73,9 @@ export default function DestinasiPage() {
         <div className="dash-toolbar">
           <div className="dash-toolbar-search">
             <Search size={14} style={{ position: "absolute", left: "10px", top: "50%", transform: "translateY(-50%)", color: "var(--dash-text-muted)" }} />
-            <input className="dash-input" type="text" placeholder="Cari proyek..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} style={{ paddingLeft: "32px", width: "100%" }} />
+            <input className="dash-input" type="text" placeholder="Cari proyek..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} style={{ paddingLeft: "32px", width: "180px" }} />
           </div>
-          <select className="dash-input" value={catFilter} onChange={e => { setCatFilter(e.target.value); setPage(1); }} style={{ cursor: "pointer" }}>
+          <select className="dash-input" value={catFilter} onChange={e => { setCatFilter(e.target.value); setPage(1); }} style={{ cursor: "pointer", width: "150px" }}>
             <option value="Semua">Semua Kategori</option>
             {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
           </select>

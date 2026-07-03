@@ -64,7 +64,7 @@ export default function BeritaPage() {
         <div className="dash-toolbar">
           <div className="dash-toolbar-search">
             <Search size={14} style={{ position: "absolute", left: "10px", top: "50%", transform: "translateY(-50%)", color: "var(--dash-text-muted)" }} />
-            <input className="dash-input" type="text" placeholder="Cari artikel..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} style={{ paddingLeft: "32px", width: "100%" }} />
+            <input className="dash-input" type="text" placeholder="Cari artikel..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} style={{ paddingLeft: "32px", width: "200px" }} />
           </div>
           {posts.filter(p => p.status !== "published").length > 0 && (
             <button onClick={handlePublishAll} disabled={publishing} className="dash-btn" style={{ padding: "8px 14px", background: "linear-gradient(135deg, var(--dash-success), #059669)" }}>

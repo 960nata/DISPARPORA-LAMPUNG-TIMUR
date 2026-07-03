@@ -181,14 +181,14 @@ export default function OlahragaDashboardPage() {
               placeholder="Cari atlet, event..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-              style={{ paddingLeft: "32px", width: "100%" }}
+              style={{ paddingLeft: "32px", width: "180px" }}
             />
           </div>
           <select
             className="dash-input"
             value={caborFilter}
             onChange={(e) => { setCaborFilter(e.target.value); setPage(1); }}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", width: "160px" }}
           >
             <option value="Semua">Semua Cabor</option>
             {cabors.map((c) => (
@@ -199,7 +199,7 @@ export default function OlahragaDashboardPage() {
             className="dash-input"
             value={juaraFilter}
             onChange={(e) => { setJuaraFilter(e.target.value); setPage(1); }}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", width: "130px" }}
           >
             <option value="Semua">Semua Medali</option>
             {JUARA_OPTIONS.map((j) => (

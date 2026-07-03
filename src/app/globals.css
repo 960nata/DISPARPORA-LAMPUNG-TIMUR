@@ -391,8 +391,6 @@ html, body {
 }
 .dash-toolbar-search {
   position: relative;
-  flex: 1 1 180px;
-  min-width: 0;
 }
 
 /* ── Stats grid: 3-4 columns → 2 → 1 on mobile ── */
