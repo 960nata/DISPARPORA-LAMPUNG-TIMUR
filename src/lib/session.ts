@@ -81,7 +81,7 @@ export function requireAdminDinas(request: NextRequest): { id: string; role: str
 export const SESSION_COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: "strict" as const,
+  sameSite: "lax" as const,
   path: "/",
   maxAge: TTL_MS / 1000,
 };

@@ -99,8 +99,12 @@ export async function POST(request: NextRequest) {
     const { password: _, ...userWithoutPassword } = user;
     const token = signSession(user.id, user.role);
 
+    const isSecure = request.nextUrl.protocol === "https:";
     const response = NextResponse.json(userWithoutPassword);
-    response.cookies.set("simad_auth", token, SESSION_COOKIE_OPTIONS);
+    response.cookies.set("simad_auth", token, {
+      ...SESSION_COOKIE_OPTIONS,
+      secure: isSecure,
+    });
     return response;
   } catch (e: any) {
     return NextResponse.json({ error: "Terjadi kesalahan server" }, { status: 500 });

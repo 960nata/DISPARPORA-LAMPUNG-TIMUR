@@ -5,6 +5,29 @@ import { requireAuth } from "@/lib/session";
 
 const BCRYPT_ROUNDS = 12;
 
+export async function GET(request: NextRequest) {
+  const auth = requireAuth(request);
+  if (auth instanceof NextResponse) return auth;
+
+  try {
+    let user: any = null;
+    try {
+      user = await db.users.findUnique({ where: { id: auth.id } });
+    } catch {
+      user = await jsonDb.users.findUnique({ where: { id: auth.id } });
+    }
+
+    if (!user) {
+      return NextResponse.json({ error: "Pengguna tidak ditemukan." }, { status: 404 });
+    }
+
+    const { password: _, ...safeUser } = user;
+    return NextResponse.json(safeUser);
+  } catch (e: any) {
+    return NextResponse.json({ error: "Terjadi kesalahan server." }, { status: 500 });
+  }
+}
+
 export async function PUT(request: NextRequest) {
   // ── Auth gate ──────────────────────────────────────────
   const auth = requireAuth(request);
