@@ -264,7 +264,7 @@ export default function GaleriPage() {
     filterBar: { display: 'flex', flexWrap: 'wrap' as const, gap: '1rem', alignItems: 'center', background: 'var(--dash-card)', border: '1px solid var(--dash-border)', padding: '0.85rem 1rem', borderRadius: '14px' } as React.CSSProperties,
     filterPill: (active: boolean): React.CSSProperties => ({ padding: '0.35rem 0.85rem', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer', border: 'none', transition: 'all 0.15s', background: active ? 'var(--dash-text)' : 'var(--dash-surface-hover)', color: active ? '#fff' : 'var(--dash-text-soft)' }),
     tagPill: (active: boolean): React.CSSProperties => ({ display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.3rem 0.7rem', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer', border: `1px solid ${active ? 'var(--dash-primary)' : 'var(--dash-border)'}`, background: active ? 'var(--dash-primary-bg)' : 'var(--dash-card)', color: active ? 'var(--dash-primary)' : 'var(--dash-text-soft)', whiteSpace: 'nowrap' as const, transition: 'all 0.15s' }),
-    searchWrap: { position: 'relative', flex: '1 1 200px', minWidth: 0 } as React.CSSProperties,
+    searchWrap: { position: 'relative', flex: '1 1 200px', maxWidth: '280px' } as React.CSSProperties,
     // card
     card: { position: 'relative', aspectRatio: '1', borderRadius: '14px', overflow: 'hidden', border: '1px solid var(--dash-border)', background: 'var(--dash-card)', cursor: 'pointer', transition: 'border-color 0.15s, box-shadow 0.15s' } as React.CSSProperties,
     // modal overlay
@@ -401,7 +401,7 @@ export default function GaleriPage() {
             </button>
           ))}
         </div>
-        <div style={S.searchWrap}>
+        <div style={S.searchWrap} className="gal-search-wrap">
           <Search size={14} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--dash-text-muted)', pointerEvents: 'none' }} />
           <input className="dash-input" type="text" placeholder="Cari foto media..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} style={{ paddingLeft: '32px', width: '100%', boxSizing: 'border-box', fontSize: '0.82rem' }} />
         </div>

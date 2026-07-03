@@ -474,6 +474,11 @@ html, body {
     scrollbar-width: none;
   }
   .dash-scroll::-webkit-scrollbar { display: none; }
+  
+  .gal-search-wrap {
+    max-width: none !important;
+    width: 100% !important;
+  }
 }
 
 @media (max-width: 480px) {
