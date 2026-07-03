@@ -266,7 +266,16 @@ export default function EventsSection() {
   useEffect(() => {
     fetchWithRetry("/api/events")
       .then(res => res.json())
-      .then(data => { if (Array.isArray(data) && data.length > 0) setEvents(data); })
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          const upcoming = data.filter((e: any) => e.status === "Mendatang");
+          if (upcoming.length > 0) {
+            setEvents(upcoming);
+          } else {
+            setEvents(data);
+          }
+        }
+      })
       .catch(() => {});
   }, []);
 
