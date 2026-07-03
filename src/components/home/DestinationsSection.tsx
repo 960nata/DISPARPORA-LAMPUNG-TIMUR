@@ -106,8 +106,13 @@ export default function DestinationsSection() {
     fetch("/api/destinations")
       .then(r => r.json())
       .then(list => {
-        if (Array.isArray(list) && list.length > 0) {
-          setDestinations(list.filter(d => d.active !== false));
+        if (Array.isArray(list)) {
+          const filtered = list.filter((d: any) => 
+            d.active !== false && 
+            d.category !== "Akomodasi" && 
+            d.category !== "Kuliner"
+          );
+          setDestinations(filtered);
         }
       })
       .catch(err => console.error("Error loading destinations:", err));
