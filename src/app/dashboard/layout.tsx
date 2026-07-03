@@ -451,12 +451,19 @@ function DashboardShell({ children }: { children: ReactNode }) {
           .dash-sidebar {
             position: fixed !important; top: 0; left: 0; bottom: 0;
             z-index: 300; transform: translateX(-110%);
-            width: 264px !important; padding: 22px 18px !important;
-            display: none !important;
+            /* Prevent taking any space in parent flexbox */
+            flex: 0 0 0% !important;
+            width: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            overflow: hidden !important;
+            transition: transform 0.25s cubic-bezier(.4,0,.2,1) !important;
           }
           .dash-sidebar.open {
-            display: flex !important;
             transform: translateX(0);
+            width: 264px !important;
+            padding: 22px 18px !important;
+            border-right: 1px solid var(--dash-border) !important;
             box-shadow: 8px 0 32px rgba(0,0,0,0.25);
           }
           .dash-mob-toggle { display: flex !important; }

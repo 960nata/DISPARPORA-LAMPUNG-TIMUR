@@ -415,6 +415,11 @@ html, body {
 /* ── Mobile visibility helpers ── */
 .dash-show-mobile { display: none !important; }
 
+/* ── Widget grid layout for editor ── */
+.dash-widget-grid {
+  grid-template-columns: repeat(6, 1fr);
+}
+
 /* ── Responsive overrides ── */
 @media (max-width: 1100px) {
   .dash-stats-4 { grid-template-columns: repeat(2, 1fr) !important; }
@@ -449,6 +454,7 @@ html, body {
   /* Stats grids */
   .dash-stats-3 { grid-template-columns: 1fr !important; }
   .dash-stats-4 { grid-template-columns: 1fr !important; }
+  .dash-widget-grid { grid-template-columns: repeat(3, 1fr) !important; }
 
   /* Form 2col stacks */
   .dash-form-2col { grid-template-columns: 1fr !important; }
@@ -484,6 +490,7 @@ html, body {
 @media (max-width: 480px) {
   .dash-stats-4 { grid-template-columns: 1fr !important; }
   .dash-stats-3 { grid-template-columns: 1fr !important; }
+  .dash-widget-grid { grid-template-columns: repeat(2, 1fr) !important; }
 }
 
 /* Base Headings */

@@ -1,5 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 
+if (typeof globalThis.WebSocket === "undefined") {
+  globalThis.WebSocket = class {} as any;
+}
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 // Use service-role key server-side if available, fall back to publishable key
 const supabaseKey =

@@ -18,9 +18,9 @@ import {
 } from "lucide-react";
 import type { GalleryItem } from "./widgets/GalleryPickerModal";
 
-const QuillEditorWidget    = dynamic(() => import("./widgets/QuillEditorWidget"),    { ssr: false });
-const GalleryWidget        = dynamic(() => import("./widgets/GalleryWidget"),        { ssr: false });
-const GalleryPickerModal   = dynamic(() => import("./widgets/GalleryPickerModal"),   { ssr: false });
+const QuillEditorWidget = dynamic(() => import("./widgets/QuillEditorWidget"), { ssr: false });
+const GalleryWidget = dynamic(() => import("./widgets/GalleryWidget"), { ssr: false });
+const GalleryPickerModal = dynamic(() => import("./widgets/GalleryPickerModal"), { ssr: false });
 
 /* ─── Types ─────────────────────────────────── */
 export type BlockType =
@@ -359,9 +359,9 @@ function LegacyIframeBlock({ block, onChange }: { block: Block; onChange: (d: an
       {d.src
         ? <iframe src={d.src} title={d.title || "Embed"} style={{ width: "100%", height: d.height || 400, border: "1px solid var(--dash-border)", borderRadius: "8px", display: "block" }} />
         : <div style={{ border: "2px dashed var(--dash-border)", borderRadius: "8px", padding: "2rem 1rem", textAlign: "center", color: "var(--dash-text-muted)", background: "var(--dash-surface-hover)" }}>
-            <ExternalLink size={26} style={{ marginBottom: "0.5rem", opacity: 0.4 }} />
-            <p style={{ margin: 0, fontSize: "0.85rem" }}>Masukkan URL untuk embed iframe</p>
-          </div>
+          <ExternalLink size={26} style={{ marginBottom: "0.5rem", opacity: 0.4 }} />
+          <p style={{ margin: 0, fontSize: "0.85rem" }}>Masukkan URL untuk embed iframe</p>
+        </div>
       }
     </div>
   );
@@ -369,15 +369,15 @@ function LegacyIframeBlock({ block, onChange }: { block: Block; onChange: (d: an
 
 /* ─── Block metadata ─────────────────────────── */
 const BLOCK_META: Record<string, { label: string; color: string }> = {
-  text:     { label: "Teks Kaya",      color: "var(--dash-primary)" },
-  image:    { label: "Gambar",          color: "#8b5cf6" },
-  video:    { label: "Video",           color: "#ef4444" },
-  gallery:  { label: "Galeri",          color: "#f59e0b" },
-  carousel: { label: "Carousel",        color: "#06b6d4" },
-  grid:     { label: "Grid",            color: "#84cc16" },
-  html:     { label: "HTML / JS / CSS", color: "#ec4899" },
-  youtube:  { label: "Video YouTube",   color: "#ef4444" },
-  iframe:   { label: "iFrame",          color: "#6b7280" },
+  text: { label: "Teks Kaya", color: "var(--dash-primary)" },
+  image: { label: "Gambar", color: "#8b5cf6" },
+  video: { label: "Video", color: "#ef4444" },
+  gallery: { label: "Galeri", color: "#f59e0b" },
+  carousel: { label: "Carousel", color: "#06b6d4" },
+  grid: { label: "Grid", color: "#84cc16" },
+  html: { label: "HTML / JS / CSS", color: "#ec4899" },
+  youtube: { label: "Video YouTube", color: "#ef4444" },
+  iframe: { label: "iFrame", color: "#6b7280" },
 };
 
 /* ─── Sortable Block Wrapper ─────────────────── */
@@ -414,15 +414,15 @@ function SortableBlock({ block, onUpdate, onDelete, onDuplicate, isFirst, isLast
 
         {/* Body */}
         <div style={{ padding: "1rem 1.1rem" }}>
-          {block.type === "text"     && <TextBlock     block={block} onChange={onUpdate} />}
-          {block.type === "image"    && <ImageBlock    block={block} onChange={onUpdate} />}
-          {block.type === "video"    && <VideoBlock    block={block} onChange={onUpdate} />}
-          {block.type === "gallery"  && <GalleryBlock  block={block} onChange={onUpdate} />}
+          {block.type === "text" && <TextBlock block={block} onChange={onUpdate} />}
+          {block.type === "image" && <ImageBlock block={block} onChange={onUpdate} />}
+          {block.type === "video" && <VideoBlock block={block} onChange={onUpdate} />}
+          {block.type === "gallery" && <GalleryBlock block={block} onChange={onUpdate} />}
           {block.type === "carousel" && <CarouselBlock block={block} onChange={onUpdate} />}
-          {block.type === "grid"     && <GridBlock     block={block} onChange={onUpdate} />}
-          {block.type === "html"     && <HTMLBlock     block={block} onChange={onUpdate} />}
-          {block.type === "youtube"  && <LegacyYouTubeBlock block={block} onChange={onUpdate} />}
-          {block.type === "iframe"   && <LegacyIframeBlock  block={block} onChange={onUpdate} />}
+          {block.type === "grid" && <GridBlock block={block} onChange={onUpdate} />}
+          {block.type === "html" && <HTMLBlock block={block} onChange={onUpdate} />}
+          {block.type === "youtube" && <LegacyYouTubeBlock block={block} onChange={onUpdate} />}
+          {block.type === "iframe" && <LegacyIframeBlock block={block} onChange={onUpdate} />}
         </div>
       </div>
     </div>
@@ -431,12 +431,12 @@ function SortableBlock({ block, onUpdate, onDelete, onDuplicate, isFirst, isLast
 
 /* ─── Add Widget Button Bar ──────────────────── */
 const WIDGET_BTN = [
-  { type: "text",     icon: <Type size={20} />,      label: "Teks"     },
-  { type: "gallery",  icon: <Images size={20} />,    label: "Galeri"   },
-  { type: "video",    icon: <Video size={20} />,     label: "Video"    },
-  { type: "carousel", icon: <Sliders size={20} />,   label: "Carousel" },
-  { type: "grid",     icon: <LayoutGrid size={20} />, label: "Grid"    },
-  { type: "html",     icon: <Code2 size={20} />,     label: "HTML"     },
+  { type: "text", icon: <Type size={20} />, label: "Teks" },
+  { type: "gallery", icon: <Images size={20} />, label: "Galeri" },
+  { type: "video", icon: <Video size={20} />, label: "Video" },
+  { type: "carousel", icon: <Sliders size={20} />, label: "Carousel" },
+  { type: "grid", icon: <LayoutGrid size={20} />, label: "Grid" },
+  { type: "html", icon: <Code2 size={20} />, label: "HTML" },
 ] as const;
 
 function AddWidgetBar({ onAdd }: { onAdd: (t: BlockType) => void }) {
