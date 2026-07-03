@@ -449,11 +449,16 @@ function DashboardShell({ children }: { children: ReactNode }) {
 
         @media (max-width: 768px) {
           .dash-sidebar {
-            position: fixed; top: 0; left: 0; bottom: 0;
+            position: fixed !important; top: 0; left: 0; bottom: 0;
             z-index: 300; transform: translateX(-110%);
             width: 264px !important; padding: 22px 18px !important;
+            display: none !important;
           }
-          .dash-sidebar.open { transform: translateX(0); box-shadow: 8px 0 32px rgba(0,0,0,0.25); }
+          .dash-sidebar.open {
+            display: flex !important;
+            transform: translateX(0);
+            box-shadow: 8px 0 32px rgba(0,0,0,0.25);
+          }
           .dash-mob-toggle { display: flex !important; }
           .dash-main { padding: 14px 10px !important; overflow-x: hidden !important; }
           .dash-hide-sm { display: none !important; }
