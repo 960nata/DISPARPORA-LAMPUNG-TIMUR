@@ -4,22 +4,22 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const row1Items = [
-  { title: "Panorama Alam Lampung Timur", category: "Alam & Lingkungan",    image: "/Gallery/hero1.avif",  width: "360px" },
-  { title: "Keindahan Destinasi Wisata",  category: "Destinasi Unggulan",   image: "/Gallery/1.avif",      width: "420px" },
-  { title: "Pesona Wisata Daerah",        category: "Lampung Timur",         image: "/Gallery/2.avif",      width: "300px" },
-  { title: "Pantai Dewi Mandapa",         category: "Wisata Bahari",         image: "/Gallery/Pantai Dewi Mandapa.avif", width: "390px" },
-  { title: "Keasrian Alam Terbuka",       category: "Ekowisata",             image: "/Gallery/3.avif",      width: "340px" },
-  { title: "Air Terjun Way Guruh",        category: "Wisata Alam",           image: "/Gallery/Way Guruh.avif", width: "370px" },
-  { title: "Wisata Budaya Lampung Timur", category: "Budaya & Tradisi",      image: "/Gallery/image.avif",   width: "310px" },
+  { title: "Panorama Alam Lampung Timur", category: "Alam & Lingkungan",    image: "/Gallery/hero1.avif",  width: "300px" },
+  { title: "Keindahan Destinasi Wisata",  category: "Destinasi Unggulan",   image: "/Gallery/1.avif",      width: "340px" },
+  { title: "Pesona Wisata Daerah",        category: "Lampung Timur",         image: "/Gallery/2.avif",      width: "270px" },
+  { title: "Pantai Dewi Mandapa",         category: "Wisata Bahari",         image: "/Gallery/Pantai Dewi Mandapa.avif", width: "320px" },
+  { title: "Keasrian Alam Terbuka",       category: "Ekowisata",             image: "/Gallery/3.avif",      width: "290px" },
+  { title: "Air Terjun Way Guruh",        category: "Wisata Alam",           image: "/Gallery/Way Guruh.avif", width: "310px" },
+  { title: "Wisata Budaya Lampung Timur", category: "Budaya & Tradisi",      image: "/Gallery/image.avif",   width: "280px" },
 ];
 
 const row2Items = [
-  { title: "Pantai Kerang Mas",           category: "Labuhan Maringgai",     image: "/Gallery/Pantai-Kerang-Mas-Labuhan-Maringgai-Lampung-Timur-desmonjosbur-1602765547466.avif", width: "430px" },
-  { title: "Atraksi Budaya Lokal",        category: "Budaya & Seni",         image: "/Gallery/4.avif",       width: "310px" },
-  { title: "Situs Candi Lampung Timur",   category: "Wisata Sejarah",        image: "/Gallery/5.avif",      width: "370px" },
-  { title: "Pesona Alam Liar",            category: "Way Kambas",            image: "/Gallery/hero3.avif",   width: "400px" },
-  { title: "Destinasi Wisata Unggulan",   category: "Lampung Timur",         image: "/Gallery/image copy.avif",   width: "340px" },
-  { title: "Keindahan Alam Daerah",       category: "Pariwisata Daerah",     image: "/Gallery/image copy 2.avif", width: "390px" },
+  { title: "Pantai Kerang Mas",           category: "Labuhan Maringgai",     image: "/Gallery/Pantai-Kerang-Mas-Labuhan-Maringgai-Lampung-Timur-desmonjosbur-1602765547466.avif", width: "340px" },
+  { title: "Atraksi Budaya Lokal",        category: "Budaya & Seni",         image: "/Gallery/4.avif",       width: "280px" },
+  { title: "Situs Candi Lampung Timur",   category: "Wisata Sejarah",        image: "/Gallery/5.avif",      width: "320px" },
+  { title: "Pesona Alam Liar",            category: "Way Kambas",            image: "/Gallery/hero3.avif",   width: "330px" },
+  { title: "Destinasi Wisata Unggulan",   category: "Lampung Timur",         image: "/Gallery/image copy.avif",   width: "290px" },
+  { title: "Keindahan Alam Daerah",       category: "Pariwisata Daerah",     image: "/Gallery/image copy 2.avif", width: "310px" },
 ];
 
 const imageVariants = {
@@ -58,10 +58,20 @@ export default function GallerySection() {
       .catch(err => console.error("Error loading gallery:", err));
   }, []);
 
-  const widths = ["360px", "420px", "300px", "390px", "340px", "370px", "310px", "430px", "400px"];
+  const widths = ["300px", "340px", "270px", "320px", "290px", "310px", "280px", "340px", "330px"];
 
-  let activeRow1 = row1Items;
-  let activeRow2 = row2Items;
+  // Pad helper to make sure the row is long enough for seamless infinite scroll
+  const padRow = (items: any[], minLength = 12) => {
+    if (items.length === 0) return [];
+    let result = [...items];
+    while (result.length < minLength) {
+      result = [...result, ...items];
+    }
+    return result;
+  };
+
+  let activeRow1 = padRow(row1Items, 12);
+  let activeRow2 = padRow(row2Items, 12);
 
   if (dbGallery.length > 0) {
     const formatted = dbGallery.map((g, idx) => ({
@@ -71,19 +81,19 @@ export default function GallerySection() {
       width: widths[idx % widths.length]
     }));
 
-    activeRow1 = formatted.filter((_, i) => i % 2 === 0);
-    activeRow2 = formatted.filter((_, i) => i % 2 !== 0);
+    const r1 = formatted.filter((_, i) => i % 2 === 0);
+    const r2 = formatted.filter((_, i) => i % 2 !== 0);
 
-    if (activeRow1.length > 0 && activeRow1.length < 4) {
-      activeRow1 = [...activeRow1, ...activeRow1, ...activeRow1, ...activeRow1];
-    }
-    if (activeRow2.length > 0 && activeRow2.length < 4) {
-      activeRow2 = [...activeRow2, ...activeRow2, ...activeRow2, ...activeRow2];
-    }
+    activeRow1 = padRow(r1, 12);
+    activeRow2 = padRow(r2, 12);
   }
 
   const extendedRow1 = [...activeRow1, ...activeRow1];
   const extendedRow2 = [...activeRow2, ...activeRow2];
+
+  // Constant speed calculation: e.g. 7.5 seconds per card
+  const duration1 = activeRow1.length * 7.5;
+  const duration2 = activeRow2.length * 7.5;
 
   return (
     <section id="galeri" style={{ padding: "5rem 0", backgroundColor: "white", overflow: "hidden" }}>
@@ -104,7 +114,7 @@ export default function GallerySection() {
       <div className="marquee-container">
         {/* Row 1: Scrolling Left */}
         <div className="marquee-row">
-          <div className="marquee-track-left">
+          <div className="marquee-track-left" style={{ animationDuration: `${duration1}s` }}>
             {extendedRow1.map((item, index) => (
               <motion.div
                 key={`row1-${item.title}-${index}`}
@@ -138,12 +148,33 @@ export default function GallerySection() {
                   color: "white",
                   display: "flex",
                   flexDirection: "column",
-                  gap: "0.25rem"
+                  gap: "0.25rem",
+                  width: "100%",
+                  boxSizing: "border-box"
                 }}>
-                  <span style={{ fontSize: "0.7rem", fontWeight: 700, color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                  <span style={{
+                    fontSize: "0.7rem",
+                    fontWeight: 700,
+                    color: "var(--accent)",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    width: "100%"
+                  }}>
                     {item.category}
                   </span>
-                  <h4 style={{ fontSize: "1rem", fontWeight: 800, color: "white" }}>{item.title}</h4>
+                  <h4 style={{
+                    fontSize: "1rem",
+                    fontWeight: 800,
+                    color: "white",
+                    margin: 0,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    width: "100%"
+                  }}>{item.title}</h4>
                 </div>
               </motion.div>
             ))}
@@ -152,7 +183,7 @@ export default function GallerySection() {
 
         {/* Row 2: Scrolling Right */}
         <div className="marquee-row">
-          <div className="marquee-track-right">
+          <div className="marquee-track-right" style={{ animationDuration: `${duration2}s` }}>
             {extendedRow2.map((item, index) => (
               <motion.div
                 key={`row2-${item.title}-${index}`}
@@ -186,12 +217,33 @@ export default function GallerySection() {
                   color: "white",
                   display: "flex",
                   flexDirection: "column",
-                  gap: "0.25rem"
+                  gap: "0.25rem",
+                  width: "100%",
+                  boxSizing: "border-box"
                 }}>
-                  <span style={{ fontSize: "0.7rem", fontWeight: 700, color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                  <span style={{
+                    fontSize: "0.7rem",
+                    fontWeight: 700,
+                    color: "var(--accent)",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    width: "100%"
+                  }}>
                     {item.category}
                   </span>
-                  <h4 style={{ fontSize: "1rem", fontWeight: 800, color: "white" }}>{item.title}</h4>
+                  <h4 style={{
+                    fontSize: "1rem",
+                    fontWeight: 800,
+                    color: "white",
+                    margin: 0,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    width: "100%"
+                  }}>{item.title}</h4>
                 </div>
               </motion.div>
             ))}
