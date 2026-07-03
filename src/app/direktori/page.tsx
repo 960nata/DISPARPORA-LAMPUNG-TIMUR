@@ -366,7 +366,12 @@ function DirectoryContent() {
                     { label: "Kategori", val: item.displayCategory },
                   ];
 
-                const desc = item.description || `Destinasi ${item.displayCategory.toLowerCase()} yang menarik di Kecamatan ${item.kecamatan}, Kabupaten Lampung Timur.`;
+                const rawDesc = item.description || `Destinasi ${item.displayCategory.toLowerCase()} yang menarik di Kecamatan ${item.kecamatan}, Kabupaten Lampung Timur.`;
+                const desc = rawDesc
+                  .replace(/<[^>]*>/g, " ")
+                  .replace(/&nbsp;/gi, " ")
+                  .replace(/\s+/g, " ")
+                  .trim();
 
                 return (
                   <motion.div
