@@ -361,7 +361,14 @@ export default function EventsSection() {
         onMouseLeave={() => setPaused(false)}
         onTouchStart={() => setPaused(true)}
         onTouchEnd={() => setPaused(false)}
-        style={{ overflow: "hidden", padding: "40px 0 90px", margin: "-40px 0 -90px" }}
+        style={{
+          overflow: "hidden",
+          padding: "40px 16px 90px",
+          margin: "-40px -16px -90px",
+          // Fade halus di tepi kiri-kanan biar bayangan kartu gak keliatan terpotong
+          WebkitMaskImage: "linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%)",
+          maskImage: "linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%)",
+        }}
       >
         <div style={{
           display: "flex",
