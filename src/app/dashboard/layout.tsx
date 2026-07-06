@@ -33,7 +33,7 @@ function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Login gagal");
-      localStorage.setItem("admin_session", JSON.stringify(data));
+      sessionStorage.setItem("admin_session", JSON.stringify(data));
       onLogin(data);
     } catch (err: any) {
       setError(err.message);

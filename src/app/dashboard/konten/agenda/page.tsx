@@ -1,19 +1,14 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 import { useAdmin } from "@/contexts/AdminContext";
 import { useToast } from "@/contexts/ToastContext";
-import { Plus, Edit2, Trash2, Save, Calendar, Clock, MapPin, Users, Image as ImageIcon, Loader2, X } from "lucide-react";
+import { Plus, Edit2, Trash2, Save, Calendar, Clock, MapPin, Users, Image as ImageIcon, X } from "lucide-react";
 import { Modal, DeleteModal, Field } from "../_shared";
+import type { GalleryItem } from "@/components/admin/widgets/GalleryPickerModal";
 
-async function uploadToStorage(file: File): Promise<string> {
-  const fd = new FormData();
-  fd.append("file", file);
-  const res = await fetch("/api/upload", { method: "POST", body: fd });
-  const json = await res.json();
-  if (!res.ok) throw new Error(json.error || "Upload gagal");
-  return json.url as string;
-}
+const GalleryPickerModal = dynamic(() => import("@/components/admin/widgets/GalleryPickerModal"), { ssr: false });
 
 interface Guest { name: string; initials: string; color: string; photoUrl?: string; }
 interface AppEvent {
@@ -152,8 +147,7 @@ function EventContent() {
   const [modal, setModal] = useState<{ open: boolean; item: Partial<AppEvent> | null }>({ open: false, item: null });
   const [del, setDel] = useState<AppEvent | null>(null);
   const [saving, setSaving] = useState(false);
-  const [uploadingImage, setUploadingImage] = useState(false);
-  const imgFileRef = useRef<HTMLInputElement>(null);
+  const [showPicker, setShowPicker] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -202,19 +196,8 @@ function EventContent() {
 
   const setField = (key: keyof AppEvent, val: any) => setModal(m => ({ ...m, item: { ...m.item, [key]: val } }));
 
-  const handleImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    e.target.value = "";
-    if (!file) return;
-    setUploadingImage(true);
-    try {
-      const url = await uploadToStorage(file);
-      setField("image", url);
-    } catch (err: any) {
-      toast({ type: "error", title: "Upload gagal", message: err?.message || "Coba lagi." });
-    } finally {
-      setUploadingImage(false);
-    }
+  const handlePickImage = (items: GalleryItem[]) => {
+    if (items[0]?.imageUrl) setField("image", items[0].imageUrl);
   };
 
   const mendatang = items.filter(i => i.status === "Mendatang");
@@ -317,7 +300,7 @@ function EventContent() {
           </Field>
           <Field label="Foto Event">
             <div
-              onClick={() => imgFileRef.current?.click()}
+              onClick={() => setShowPicker(true)}
               style={{
                 position: "relative", width: "100%", aspectRatio: "16/9",
                 borderRadius: "12px", overflow: "hidden",
@@ -330,23 +313,17 @@ function EventContent() {
                 <>
                   <img src={modal.item.image} alt="preview" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                   <div style={{ position: "absolute", top: 8, right: 8, display: "flex", gap: 6 }}>
-                    <button type="button" onClick={e => { e.stopPropagation(); imgFileRef.current?.click(); }} style={{ padding: "5px 10px", borderRadius: 7, background: "rgba(0,0,0,0.65)", border: "none", color: "#fff", fontSize: "0.72rem", fontWeight: 700, cursor: "pointer" }}>Ganti</button>
+                    <button type="button" onClick={e => { e.stopPropagation(); setShowPicker(true); }} style={{ padding: "5px 10px", borderRadius: 7, background: "rgba(0,0,0,0.65)", border: "none", color: "#fff", fontSize: "0.72rem", fontWeight: 700, cursor: "pointer" }}>Ganti</button>
                     <button type="button" onClick={e => { e.stopPropagation(); setField("image", ""); }} style={{ width: 28, height: 28, borderRadius: 7, background: "rgba(220,38,38,0.8)", border: "none", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}><X size={13} /></button>
                   </div>
                 </>
-              ) : uploadingImage ? (
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, color: "var(--dash-text-muted)" }}>
-                  <Loader2 size={22} style={{ animation: "spin 1s linear infinite" }} />
-                  <span style={{ fontSize: "0.75rem" }}>Mengupload...</span>
-                </div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, color: "var(--dash-text-muted)" }}>
                   <ImageIcon size={26} style={{ opacity: 0.5 }} />
-                  <span style={{ fontSize: "0.8rem", fontWeight: 700 }}>Klik untuk upload foto</span>
+                  <span style={{ fontSize: "0.8rem", fontWeight: 700 }}>Pilih dari galeri / upload foto</span>
                 </div>
               )}
             </div>
-            <input ref={imgFileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handleImageFile} />
           </Field>
           <Field label="Status">
             <select className="dash-input" value={modal.item?.status ?? "Mendatang"} onChange={e => setField("status", e.target.value)}>
@@ -367,6 +344,13 @@ function EventContent() {
           </div>
         </div>
       </Modal>
+
+      {showPicker && (
+        <GalleryPickerModal
+          onSelect={handlePickImage}
+          onClose={() => setShowPicker(false)}
+        />
+      )}
 
       <DeleteModal open={!!del} onClose={() => setDel(null)} onConfirm={confirmDelete} label={del?.title ?? ""} />
     </>

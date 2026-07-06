@@ -76,7 +76,7 @@ export default function ProfilPage() {
 
       // Update local session
       const updatedSession = { ...user, name: data.name, email: data.email };
-      localStorage.setItem("admin_session", JSON.stringify(updatedSession));
+      sessionStorage.setItem("admin_session", JSON.stringify(updatedSession));
       setUser(updatedSession as any);
 
       setOldPassword("");
