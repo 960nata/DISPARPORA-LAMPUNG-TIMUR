@@ -12,7 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, lastModified: now, changeFrequency: "daily", priority: 1 },
     { url: `${SITE_URL}/profil`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${SITE_URL}/direktori`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${SITE_URL}/destinasi`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE_URL}/peta`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/berita`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
     { url: `${SITE_URL}/bidang`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
@@ -34,8 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }));
 
-  // Detail pages live at /destinasi/{id}; /direktori/{id} only client-redirects
-  // there, so it's a dead end for crawlers — point the sitemap at the real page.
+  // Detail pages live at /destinasi/{slug|id}; /direktori/* now 308-redirects there.
   const destinasiRoutes: MetadataRoute.Sitemap = destinations
     .filter((d) => d.active)
     .map((d) => ({

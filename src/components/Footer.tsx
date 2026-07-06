@@ -68,8 +68,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/direktori" style={{ color: "#94a3b8", fontSize: "0.9rem" }} onMouseOver={(e) => e.currentTarget.style.color = "white"} onMouseOut={(e) => e.currentTarget.style.color = "#94a3b8"}>
-                  Direktori Destinasi
+                <Link href="/destinasi" style={{ color: "#94a3b8", fontSize: "0.9rem" }} onMouseOver={(e) => e.currentTarget.style.color = "white"} onMouseOut={(e) => e.currentTarget.style.color = "#94a3b8"}>
+                  Destinasi Wisata
                 </Link>
               </li>
               <li>

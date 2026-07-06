@@ -9,6 +9,8 @@ const HARI = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
 // Friendly names for the "Halaman Populer" list.
 const NAMED: Record<string, string> = {
   "/": "Beranda",
+  "/destinasi": "Destinasi Wisata",
+  // Label lama dipertahankan — data page_views historis masih menyimpan path /direktori.
   "/direktori": "Direktori Wisata",
   "/profil": "Profil Dinas",
   "/peta": "Peta Wisata Interaktif",
@@ -19,6 +21,7 @@ const NAMED: Record<string, string> = {
 };
 function labelFor(path: string): string {
   if (NAMED[path]) return NAMED[path];
+  if (path.startsWith("/destinasi/")) return "Detail Destinasi";
   if (path.startsWith("/direktori/")) return "Detail Destinasi";
   if (path.startsWith("/berita/")) return "Detail Berita";
   if (path.startsWith("/bidang/")) return "Detail Bidang";

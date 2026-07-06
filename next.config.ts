@@ -74,6 +74,14 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  // /direktori digabung ke /destinasi — link lama (internal & eksternal) tetap hidup.
+  async redirects() {
+    return [
+      { source: "/direktori", destination: "/destinasi", permanent: true },
+      { source: "/direktori/:id", destination: "/destinasi/:id", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

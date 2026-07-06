@@ -37,10 +37,10 @@ export default function NotFound() {
             Kembali ke Beranda
           </Link>
           <Link
-            href="/direktori"
+            href="/destinasi"
             style={{ padding: "0.85rem 2rem", backgroundColor: "white", color: "#059669", fontWeight: 700, borderRadius: "12px", border: "1.5px solid #059669", fontSize: "0.95rem", textDecoration: "none", display: "inline-block" }}
           >
-            Lihat Direktori
+            Lihat Destinasi
           </Link>
         </div>
 

@@ -32,7 +32,7 @@ export default function Header() {
     { name: "Profil", path: "/profil" },
     { name: "Peta Wisata", path: "/peta" },
     { name: "Berita", path: "/berita" },
-    { name: "Direktori", path: "/direktori" },
+    { name: "Destinasi", path: "/destinasi" },
     { name: "Kontak", path: "/kontak" },
   ];
 

@@ -667,11 +667,11 @@ export default function NewsPage() {
               Buka Peta Wisata
             </Link>
             <Link
-              href="/direktori"
+              href="/destinasi"
               className="btn cta-btn"
               style={{ padding: "0.85rem 2rem", backgroundColor: "rgba(255,255,255,0.12)", color: "white", fontWeight: 700, borderRadius: "12px", border: "1px solid rgba(255,255,255,0.4)" }}
             >
-              Lihat Direktori
+              Lihat Destinasi
             </Link>
           </div>
         </div>
