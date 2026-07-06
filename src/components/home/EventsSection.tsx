@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Calendar, Clock } from "lucide-react";
 import { fetchWithRetry } from "@/lib/api";
@@ -260,8 +260,14 @@ function EventCard({ event, index }: { event: AppEvent; index: number }) {
   );
 }
 
+const AUTO_SLIDE_MS = 5000;
+
 export default function EventsSection() {
   const [events, setEvents] = useState<AppEvent[]>(defaultEvents);
+  const [perView, setPerView] = useState(3);
+  const [page, setPage] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const pageRef = useRef(0);
 
   useEffect(() => {
     fetchWithRetry("/api/events")
@@ -279,6 +285,43 @@ export default function EventsSection() {
       .catch(() => {});
   }, []);
 
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      setPerView(w < 640 ? 1 : w < 1024 ? 2 : 3);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const totalPages = Math.max(1, Math.ceil(events.length / perView));
+
+  // Jaga page tetap valid saat jumlah event / perView berubah
+  useEffect(() => {
+    if (pageRef.current > totalPages - 1) {
+      pageRef.current = 0;
+      setPage(0);
+    }
+  }, [totalPages]);
+
+  useEffect(() => {
+    if (paused || totalPages <= 1) return;
+    const timer = setInterval(() => {
+      setPage(p => {
+        const next = (p + 1) % totalPages;
+        pageRef.current = next;
+        return next;
+      });
+    }, AUTO_SLIDE_MS);
+    return () => clearInterval(timer);
+  }, [paused, totalPages]);
+
+  const goTo = (i: number) => {
+    pageRef.current = i;
+    setPage(i);
+  };
+
   return (
     <section className="container" id="agenda" style={{ paddingTop: "2rem" }}>
       <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
@@ -289,9 +332,51 @@ export default function EventsSection() {
           Ikuti berbagai keseruan acara kebudayaan, kompetisi olahraga, serta festival pariwisata yang diselenggarakan di Lampung Timur.
         </p>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem" }}>
-        {events.slice(0, 3).map((ev, i) => <EventCard key={ev.id} event={ev} index={i} />)}
+
+      {/* ── CAROUSEL VIEWPORT ── */}
+      <div
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onTouchStart={() => setPaused(true)}
+        onTouchEnd={() => setPaused(false)}
+        style={{ overflow: "hidden", padding: "12px 0 28px", margin: "-12px 0 -28px" }}
+      >
+        <div style={{
+          display: "flex",
+          transform: `translateX(-${page * 100}%)`,
+          transition: "transform 0.65s cubic-bezier(.4,0,.2,1)",
+          margin: "0 -1rem",
+        }}>
+          {events.map((ev, i) => (
+            <div key={ev.id} style={{ flex: `0 0 ${100 / perView}%`, minWidth: 0, padding: "0 1rem", boxSizing: "border-box" }}>
+              <EventCard event={ev} index={i % perView} />
+            </div>
+          ))}
+        </div>
       </div>
+
+      {/* ── DOT NAVIGATION ── */}
+      {totalPages > 1 && (
+        <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "1.75rem" }}>
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              aria-label={`Halaman event ${i + 1}`}
+              style={{
+                width: i === page ? "28px" : "10px",
+                height: "10px",
+                borderRadius: "99px",
+                border: "none",
+                cursor: "pointer",
+                padding: 0,
+                background: i === page ? "var(--accent, #0F5132)" : "rgba(15,81,50,0.25)",
+                transition: "all 0.35s cubic-bezier(.4,0,.2,1)",
+              }}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
