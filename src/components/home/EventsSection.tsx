@@ -274,12 +274,10 @@ export default function EventsSection() {
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
+          // Tampilkan semua event, yang "Mendatang" didahulukan
           const upcoming = data.filter((e: any) => e.status === "Mendatang");
-          if (upcoming.length > 0) {
-            setEvents(upcoming);
-          } else {
-            setEvents(data);
-          }
+          const rest = data.filter((e: any) => e.status !== "Mendatang");
+          setEvents([...upcoming, ...rest]);
         }
       })
       .catch(() => {});
@@ -295,32 +293,56 @@ export default function EventsSection() {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  const totalPages = Math.max(1, Math.ceil(events.length / perView));
+  // Infinite loop: clone kartu awal di ujung track, geser 1 kartu per langkah
+  const canLoop = events.length > perView;
+  const slides = canLoop ? [...events, ...events.slice(0, perView)] : events;
+  const [instant, setInstant] = useState(false);
 
-  // Jaga page tetap valid saat jumlah event / perView berubah
+  // Jaga posisi tetap valid saat jumlah event / perView berubah
   useEffect(() => {
-    if (pageRef.current > totalPages - 1) {
+    if (pageRef.current > events.length) {
       pageRef.current = 0;
+      setInstant(true);
       setPage(0);
     }
-  }, [totalPages]);
+  }, [events.length, perView]);
 
   useEffect(() => {
-    if (paused || totalPages <= 1) return;
+    if (paused || !canLoop) return;
     const timer = setInterval(() => {
       setPage(p => {
-        const next = (p + 1) % totalPages;
+        const next = p >= events.length ? p : p + 1;
         pageRef.current = next;
         return next;
       });
     }, AUTO_SLIDE_MS);
     return () => clearInterval(timer);
-  }, [paused, totalPages]);
+  }, [paused, canLoop, events.length]);
+
+  // Sampai di area clone → snap diam-diam balik ke posisi 0
+  useEffect(() => {
+    if (!canLoop || page !== events.length) return;
+    const t = setTimeout(() => {
+      setInstant(true);
+      pageRef.current = 0;
+      setPage(0);
+    }, 700);
+    return () => clearTimeout(t);
+  }, [page, canLoop, events.length]);
+
+  // Nyalakan lagi transisi setelah snap ter-render
+  useEffect(() => {
+    if (!instant) return;
+    const raf = requestAnimationFrame(() => requestAnimationFrame(() => setInstant(false)));
+    return () => cancelAnimationFrame(raf);
+  }, [instant]);
 
   const goTo = (i: number) => {
     pageRef.current = i;
     setPage(i);
   };
+
+  const activeDot = page % Math.max(1, events.length);
 
   return (
     <section className="container" id="agenda" style={{ paddingTop: "2rem" }}>
@@ -339,16 +361,16 @@ export default function EventsSection() {
         onMouseLeave={() => setPaused(false)}
         onTouchStart={() => setPaused(true)}
         onTouchEnd={() => setPaused(false)}
-        style={{ overflow: "hidden", padding: "12px 0 28px", margin: "-12px 0 -28px" }}
+        style={{ overflow: "hidden", padding: "40px 0 90px", margin: "-40px 0 -90px" }}
       >
         <div style={{
           display: "flex",
-          transform: `translateX(-${page * 100}%)`,
-          transition: "transform 0.65s cubic-bezier(.4,0,.2,1)",
+          transform: `translateX(-${page * (100 / perView)}%)`,
+          transition: instant ? "none" : "transform 0.65s cubic-bezier(.4,0,.2,1)",
           margin: "0 -1rem",
         }}>
-          {events.map((ev, i) => (
-            <div key={ev.id} style={{ flex: `0 0 ${100 / perView}%`, minWidth: 0, padding: "0 1rem", boxSizing: "border-box" }}>
+          {slides.map((ev, i) => (
+            <div key={`${ev.id}-${i}`} style={{ flex: `0 0 ${100 / perView}%`, minWidth: 0, padding: "0 1rem", boxSizing: "border-box" }}>
               <EventCard event={ev} index={i % perView} />
             </div>
           ))}
@@ -356,21 +378,21 @@ export default function EventsSection() {
       </div>
 
       {/* ── DOT NAVIGATION ── */}
-      {totalPages > 1 && (
+      {canLoop && (
         <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "1.75rem" }}>
-          {Array.from({ length: totalPages }).map((_, i) => (
+          {events.map((_, i) => (
             <button
               key={i}
               onClick={() => goTo(i)}
-              aria-label={`Halaman event ${i + 1}`}
+              aria-label={`Event ke-${i + 1}`}
               style={{
-                width: i === page ? "28px" : "10px",
+                width: i === activeDot ? "28px" : "10px",
                 height: "10px",
                 borderRadius: "99px",
                 border: "none",
                 cursor: "pointer",
                 padding: 0,
-                background: i === page ? "var(--accent, #0F5132)" : "rgba(15,81,50,0.25)",
+                background: i === activeDot ? "var(--accent, #0F5132)" : "rgba(15,81,50,0.25)",
                 transition: "all 0.35s cubic-bezier(.4,0,.2,1)",
               }}
             />
