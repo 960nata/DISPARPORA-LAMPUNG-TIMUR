@@ -1754,4 +1754,96 @@ a {
     flex: 1 1 auto !important;
     min-width: auto !important;
   }
+
+  /* Custom column hiding helper */
+  .dash-col-hide-sm {
+    display: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   ATHLETES & SPORTS RESPONSIVE STYLES
+   ═══════════════════════════════════════════ */
+
+/* Public Filter Panel */
+.table-th-sort:hover {
+  background-color: #f1f5f9;
+}
+.table-row-hover:hover {
+  background-color: #f8fafc !important;
+}
+.btn-pagination-nav:hover {
+  border-color: #94a3b8 !important;
+  background-color: #f1f5f9 !important;
+  color: #1e293b !important;
+}
+.search-input:focus {
+  border-color: #0E9F4F !important;
+  box-shadow: 0 0 0 3px rgba(14,159,79,0.1) !important;
+}
+.btn-export:hover {
+  background-color: #0c8c44 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(14,159,79,0.25) !important;
+}
+.btn-reset:hover {
+  background-color: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
+  color: #1e293b !important;
+}
+
+@media (max-width: 900px) {
+  .filter-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .filter-grid > button {
+    grid-column: span 2;
+  }
+  .koni-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .koni-divider {
+    display: none !important;
+  }
+  .koni-hero {
+    padding: 20px 18px !important;
+    gap: 18px !important;
+    align-items: stretch !important;
+  }
+  .koni-brand {
+    flex: 1 1 100% !important;
+  }
+  .koni-brand > div:nth-child(2) {
+    max-width: none !important;
+  }
+  .koni-stat-row {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+  }
+  .koni-stat-row > div {
+    flex: 1 1 100% !important;
+    min-width: 0 !important;
+    padding: 14px 16px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .filter-grid {
+    grid-template-columns: 1fr !important;
+    padding: 1rem !important;
+  }
+  .filter-grid > div,
+  .filter-grid > button {
+    grid-column: span 1 !important;
+    min-width: 100% !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .koni-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
 }

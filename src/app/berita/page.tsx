@@ -50,11 +50,33 @@ function getCatMeta(tag: string) {
 }
 
 /* ── static upcoming events ── */
-const upcomingEvents = [
+const defaultUpcomingEvents = [
   { day: "21", mon: "JUN", title: "Lomba Desa Wisata Tingkat Kabupaten", place: "Aula DISPARPORA" },
   { day: "28", mon: "JUN", title: "Kejuaraan Atletik Pelajar Lampung Timur", place: "Stadion Sukadana" },
   { day: "05", mon: "JUL", title: "Pelatihan Sertifikasi Halal UMKM", place: "Gedung Serbaguna" },
 ];
+
+function parseEventDate(dateStr: string): { day: string; mon: string } {
+  if (!dateStr) return { day: "??", mon: "EVT" };
+  const trimStr = dateStr.trim();
+  const parts = trimStr.split(/\s+/);
+  if (parts.length >= 2) {
+    const dayPart = parts[0];
+    const monthPart = parts[1];
+    if (/^\d+$/.test(dayPart)) {
+      let mon = monthPart.substring(0, 3).toUpperCase();
+      if (mon === "AGO" || mon === "AGU") mon = "AGU";
+      return { day: dayPart, mon };
+    }
+  }
+  const d = new Date(trimStr);
+  if (!isNaN(d.getTime())) {
+    const day = String(d.getDate());
+    const months = ["JAN", "FEB", "MAR", "APR", "MEI", "JUN", "JUL", "AGU", "SEP", "OKT", "NOV", "DES"];
+    return { day, mon: months[d.getMonth()] };
+  }
+  return { day: "??", mon: "EVT" };
+}
 
 export default function NewsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -63,6 +85,36 @@ export default function NewsPage() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
+  const [dbEvents, setDbEvents] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchWithRetry("/api/events")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          // Filter only the "Mendatang" (Upcoming) ones
+          const upcoming = data.filter((e: any) => e.status === "Mendatang");
+          setDbEvents(upcoming.slice(0, 3));
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching events:", err);
+      });
+  }, []);
+
+  const displayEvents = useMemo(() => {
+    const list = dbEvents.length > 0 ? dbEvents : defaultUpcomingEvents;
+    return list.map((e) => {
+      if ("day" in e) return e; // Static fallback
+      const { day, mon } = parseEventDate(e.date);
+      return {
+        day,
+        mon,
+        title: e.title,
+        place: e.location || e.place,
+      };
+    });
+  }, [dbEvents]);
 
   useEffect(() => {
     fetchWithRetry("/api/posts")
@@ -518,7 +570,7 @@ export default function NewsPage() {
                     Event Mendatang
                   </div>
                   <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: "16px", marginTop: "18px" }}>
-                    {upcomingEvents.map((e, i) => (
+                    {displayEvents.map((e, i) => (
                       <div
                         key={i}
                         style={{
@@ -526,7 +578,7 @@ export default function NewsPage() {
                           gap: "14px",
                           alignItems: "center",
                           paddingBottom: "16px",
-                          borderBottom: i < upcomingEvents.length - 1 ? "1px solid rgba(255,255,255,.12)" : "none",
+                          borderBottom: i < displayEvents.length - 1 ? "1px solid rgba(255,255,255,.12)" : "none",
                         }}
                       >
                         <div className="berita-event-date">

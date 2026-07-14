@@ -347,7 +347,7 @@ export default function AthleteAchievements() {
                 <th
                   onClick={() => handleSort("cabor")}
                   style={{ padding: "1.1rem 1.25rem", color: "#475569", fontWeight: 800, cursor: "pointer", userSelect: "none" }}
-                  className="table-th-sort"
+                  className="table-th-sort dash-col-hide-sm"
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                     Cabang Olahraga <ArrowUpDown size={13} style={{ color: sortField === "cabor" ? "#0E9F4F" : "#94a3b8" }} />
@@ -367,7 +367,7 @@ export default function AthleteAchievements() {
                 <th
                   onClick={() => handleSort("event")}
                   style={{ padding: "1.1rem 1.25rem", color: "#475569", fontWeight: 800, cursor: "pointer", userSelect: "none" }}
-                  className="table-th-sort"
+                  className="table-th-sort dash-col-hide-sm"
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                     Kejuaraan / Event <ArrowUpDown size={13} style={{ color: sortField === "event" ? "#0E9F4F" : "#94a3b8" }} />
@@ -425,7 +425,7 @@ export default function AthleteAchievements() {
                         <td style={{ padding: "0.95rem 1.25rem", color: "#0f172a", fontWeight: 800 }}>
                           {a.nama}
                         </td>
-                        <td style={{ padding: "0.95rem 1.25rem", color: "#334155", fontWeight: 600 }}>
+                        <td style={{ padding: "0.95rem 1.25rem", color: "#334155", fontWeight: 600 }} className="dash-col-hide-sm">
                           <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                             <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#0E9F4F" }} />
                             {a.cabor}
@@ -446,7 +446,7 @@ export default function AthleteAchievements() {
                             <span>{a.juara}</span>
                           </span>
                         </td>
-                        <td style={{ padding: "0.95rem 1.25rem", color: "#64748b", fontSize: "0.84rem" }}>
+                        <td style={{ padding: "0.95rem 1.25rem", color: "#64748b", fontSize: "0.84rem" }} className="dash-col-hide-sm">
                           {a.event}
                         </td>
                       </motion.tr>
