@@ -106,8 +106,8 @@ function EventCard({ event, index }: { event: AppEvent; index: number }) {
   const guests = parseGuests(event.guests);
   const hasBg = !!(event.image?.trim());
   const statusColor = event.status === "Mendatang" ? "#10b981" : "#9ca3af";
-  const statusBg    = event.status === "Mendatang" ? "rgba(16,185,129,0.15)" : "rgba(156,163,175,0.15)";
-  const guestNames  = guests.map(g => g.name).join(", ");
+  const statusBg = event.status === "Mendatang" ? "rgba(16,185,129,0.15)" : "rgba(156,163,175,0.15)";
+  const guestNames = guests.map(g => g.name).join(", ");
 
   return (
     <motion.div
@@ -202,7 +202,7 @@ function EventCard({ event, index }: { event: AppEvent; index: number }) {
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <AvatarStack guests={guests} />
                 <span style={{ fontSize: "0.74rem", color: "rgba(255,255,255,0.8)", fontWeight: 600 }}>
-                  {guests.slice(0,2).map(g => g.name).join(", ")}{guests.length > 2 ? ` +${guests.length - 2}` : ""}
+                  {guests.slice(0, 2).map(g => g.name).join(", ")}{guests.length > 2 ? ` +${guests.length - 2}` : ""}
                 </span>
               </div>
             </div>
@@ -249,7 +249,7 @@ function EventCard({ event, index }: { event: AppEvent; index: number }) {
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <AvatarStack guests={guests} />
                 <span style={{ fontSize: "0.74rem", color: "#475569", fontWeight: 600 }}>
-                  {guests.slice(0,2).map(g => g.name).join(", ")}{guests.length > 2 ? ` +${guests.length - 2}` : ""}
+                  {guests.slice(0, 2).map(g => g.name).join(", ")}{guests.length > 2 ? ` +${guests.length - 2}` : ""}
                 </span>
               </div>
             </div>
@@ -280,7 +280,7 @@ export default function EventsSection() {
           setEvents([...upcoming, ...rest]);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   useEffect(() => {
