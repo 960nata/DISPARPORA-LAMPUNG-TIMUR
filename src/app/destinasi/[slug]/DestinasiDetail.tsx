@@ -162,7 +162,43 @@ export default function DestinasiDetail({ param }: { param: string }) {
     ? `https://wa.me/62${dest.contact.replace(/^0/, "")}?text=${encodeURIComponent("Halo, saya ingin mengetahui lebih lanjut tentang " + dest.name + ".")}`
     : null;
 
-  const copyUrl   = () => { navigator.clipboard.writeText(pageUrl); setCopied(true); setTimeout(() => setCopied(false), 2000); };
+  const copyUrl = () => {
+    if (!pageUrl) return;
+    const fallbackCopy = (text: string) => {
+      try {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        const successful = document.execCommand("copy");
+        document.body.removeChild(textArea);
+        if (successful) {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        }
+      } catch (err) {
+        console.error("Fallback copy failed", err);
+      }
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(pageUrl)
+        .then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        })
+        .catch(() => {
+          fallbackCopy(pageUrl);
+        });
+    } else {
+      fallbackCopy(pageUrl);
+    }
+  };
   const handleLike = async () => {
     if (!dest || liked || liking) return;
     setLiking(true);
