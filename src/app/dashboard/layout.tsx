@@ -287,8 +287,8 @@ function DashboardShell({ children }: { children: ReactNode }) {
       }}>
         {/* Brand */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "4px 6px 18px" }}>
-          <div style={{ width: "42px", height: "42px", borderRadius: "13px", background: "linear-gradient(135deg, var(--dash-primary), var(--dash-success))", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 8px 20px -8px var(--dash-primary)" }}>
-            <img src="/logo.avif" alt="" style={{ width: "24px", height: "24px", objectFit: "contain" }} />
+          <div style={{ width: "42px", height: "42px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <img src="/logo-dashboard.png" alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
           </div>
           <div style={{ lineHeight: 1.15 }}>
             <div style={{ fontSize: "0.92rem", fontWeight: 800, color: "var(--dash-text)", letterSpacing: "-0.01em" }}>DISPARPORA Lampung Timur</div>
