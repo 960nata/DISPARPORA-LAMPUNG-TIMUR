@@ -386,7 +386,7 @@ export default function EventsSection() {
 
       {/* ── DOT NAVIGATION ── */}
       {canLoop && (
-        <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "1.75rem" }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "1.75rem", position: "relative", zIndex: 10 }}>
           {events.map((_, i) => (
             <button
               key={i}
