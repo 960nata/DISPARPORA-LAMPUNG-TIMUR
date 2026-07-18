@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Calendar, User, ArrowLeft, BookOpen, Clock, Tag, RefreshCw, ChevronRight, Share2, Check } from "lucide-react";
 import { motion } from "framer-motion";
@@ -26,6 +26,8 @@ export default function BeritaArticle({ param }: { param: string }) {
   const [related, setRelated]       = useState<Post[]>([]);
   const [loading, setLoading]       = useState(true);
   const [copied, setCopied]         = useState(false);
+  const [activeRelatedIndex, setActiveRelatedIndex] = useState(0);
+  const relatedScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!param) return;
@@ -90,6 +92,41 @@ export default function BeritaArticle({ param }: { param: string }) {
     }
   };
 
+  const handleRelatedScroll = () => {
+    const el = relatedScrollRef.current;
+    if (!el) return;
+    const scrollLeft = el.scrollLeft;
+
+    let closestIndex = 0;
+    let minDiff = Infinity;
+
+    Array.from(el.children).forEach((child, i) => {
+      const childOffset = (child as HTMLElement).offsetLeft - el.offsetLeft;
+      const diff = Math.abs(childOffset - scrollLeft);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closestIndex = i;
+      }
+    });
+
+    if (closestIndex !== activeRelatedIndex) {
+      setActiveRelatedIndex(closestIndex);
+    }
+  };
+
+  const scrollToRelated = (index: number) => {
+    const el = relatedScrollRef.current;
+    if (!el) return;
+    const child = el.children[index] as HTMLElement;
+    if (child) {
+      el.scrollTo({
+        left: child.offsetLeft - el.offsetLeft,
+        behavior: "smooth",
+      });
+      setActiveRelatedIndex(index);
+    }
+  };
+
   if (loading) {
     return (
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "70vh", gap: "0.5rem" }}>
@@ -145,8 +182,26 @@ export default function BeritaArticle({ param }: { param: string }) {
             style={{ flex: "2 1 600px", minWidth: 0, display: "flex", flexDirection: "column", gap: "1.5rem" }}
           >
             {/* Cover Image */}
-            <div style={{ borderRadius: "16px", overflow: "hidden", border: "1px solid var(--border)", boxShadow: "var(--card-shadow)", aspectRatio: "16/7" }}>
-              <img src={post.imageUrl} alt={post.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <div style={{
+              borderRadius: "16px",
+              overflow: "hidden",
+              border: "1px solid var(--border)",
+              boxShadow: "var(--card-shadow)",
+              width: "100%",
+              containerType: "inline-size",
+              position: "relative",
+            }}>
+              <img
+                src={post.imageUrl}
+                alt={post.title}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  maxHeight: "min(600px, 100cqw)",
+                  objectFit: "cover",
+                  display: "block",
+                }}
+              />
             </div>
 
             {/* Meta row */}
@@ -223,25 +278,83 @@ export default function BeritaArticle({ param }: { param: string }) {
             {related.length > 0 && (
               <div style={{ borderTop: "1px solid var(--border)", paddingTop: "2rem", marginTop: "1rem" }}>
                 <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1.25rem" }}>Artikel Terkait</h3>
-                <div className="berita-related-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gridAutoRows: "1fr", gap: "1rem" }}>
-                  {related.map(r => (
-                    <Link key={r.id} href={`/berita/${r.slug || r.id}`} style={{ textDecoration: "none", display: "flex" }}>
-                      <div style={{ borderRadius: "12px", overflow: "hidden", border: "1px solid var(--border)", transition: "box-shadow 0.2s", display: "flex", flexDirection: "column", width: "100%", height: "100%" }}
-                        onMouseEnter={e => (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 20px rgba(0,0,0,0.1)"}
-                        onMouseLeave={e => (e.currentTarget as HTMLElement).style.boxShadow = ""}
+                <div style={{ position: "relative", width: "100%" }}>
+                  <div
+                    ref={relatedScrollRef}
+                    onScroll={handleRelatedScroll}
+                    className="berita-related-scroll"
+                    style={{
+                      display: "flex",
+                      overflowX: "auto",
+                      scrollSnapType: "x mandatory",
+                      scrollBehavior: "smooth",
+                      gap: "1rem",
+                      paddingBottom: "0.5rem",
+                    }}
+                  >
+                    {related.map(r => (
+                      <Link
+                        key={r.id}
+                        href={`/berita/${r.slug || r.id}`}
+                        className="berita-related-card"
+                        style={{
+                          textDecoration: "none",
+                          display: "flex",
+                          scrollSnapAlign: "start",
+                          flexShrink: 0,
+                        }}
                       >
-                        <img src={r.imageUrl} alt={r.title} style={{ width: "100%", height: "120px", objectFit: "cover", flexShrink: 0 }} />
-                        <div style={{ padding: "0.75rem", display: "flex", flexDirection: "column", justifyContent: "space-between", flex: 1 }}>
-                          <p style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--text-primary)", lineHeight: 1.35, margin: "0 0 0.3rem", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
-                            {r.title}
-                          </p>
-                          <p style={{ fontSize: "0.7rem", color: "var(--text-secondary)", margin: "0.3rem 0 0" }}>
-                            {new Date(r.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
-                          </p>
+                        <div
+                          style={{
+                            borderRadius: "12px",
+                            overflow: "hidden",
+                            border: "1px solid var(--border)",
+                            transition: "box-shadow 0.2s",
+                            display: "flex",
+                            flexDirection: "column",
+                            width: "100%",
+                            height: "100%",
+                            background: "var(--card-bg, #fff)",
+                          }}
+                          onMouseEnter={e => (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 20px rgba(0,0,0,0.1)"}
+                          onMouseLeave={e => (e.currentTarget as HTMLElement).style.boxShadow = ""}
+                        >
+                          <img src={r.imageUrl} alt={r.title} style={{ width: "100%", height: "120px", objectFit: "cover", flexShrink: 0 }} />
+                          <div style={{ padding: "0.75rem", display: "flex", flexDirection: "column", justifyContent: "space-between", flex: 1 }}>
+                            <p style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--text-primary)", lineHeight: 1.35, margin: "0 0 0.3rem", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+                              {r.title}
+                            </p>
+                            <p style={{ fontSize: "0.7rem", color: "var(--text-secondary)", margin: "0.3rem 0 0" }}>
+                              {new Date(r.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    </Link>
-                  ))}
+                      </Link>
+                    ))}
+                  </div>
+
+                  {/* Dot navigation shown on mobile only */}
+                  {related.length > 1 && (
+                    <div className="berita-related-dots" style={{ display: "none", justifyContent: "center", gap: "0.5rem", marginTop: "1.25rem" }}>
+                      {related.map((_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => scrollToRelated(i)}
+                          style={{
+                            width: activeRelatedIndex === i ? "20px" : "8px",
+                            height: "8px",
+                            borderRadius: "4px",
+                            border: "none",
+                            background: activeRelatedIndex === i ? "var(--primary)" : "var(--border)",
+                            cursor: "pointer",
+                            transition: "all 0.25s ease",
+                            padding: 0,
+                          }}
+                          aria-label={`Slide ${i + 1}`}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
