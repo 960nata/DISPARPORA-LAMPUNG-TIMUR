@@ -14,11 +14,45 @@ function absUrl(path: string): string {
 
 // Strip HTML/block markup down to a plain-text excerpt for meta description.
 function excerpt(content: string, max = 160): string {
-  const text = (content || "")
+  if (!content) return "";
+  let rawText = "";
+
+  const trimmed = content.trim();
+  if (trimmed.startsWith("[")) {
+    try {
+      const blocks = JSON.parse(trimmed);
+      if (Array.isArray(blocks)) {
+        const textParts: string[] = [];
+        for (const block of blocks) {
+          if (!block || typeof block !== "object") continue;
+          const d = block.data || {};
+          if (block.type === "text") {
+            const val = d.html || d.text || "";
+            if (val) textParts.push(val);
+          } else if (block.type === "grid" && Array.isArray(d.columns)) {
+            for (const col of d.columns) {
+              if (col) {
+                const val = col.text || col.title || "";
+                if (val) textParts.push(val);
+              }
+            }
+          }
+        }
+        rawText = textParts.join(" ");
+      }
+    } catch {
+      rawText = content;
+    }
+  } else {
+    rawText = content;
+  }
+
+  const text = rawText
     .replace(/<[^>]*>/g, " ")
     .replace(/&nbsp;/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+
   return text.length > max ? text.slice(0, max - 1).trimEnd() + "…" : text;
 }
 
