@@ -1628,15 +1628,33 @@ a {
 }
 .post-rich figure { max-width: 100%; }
 
+/* ═══ ARTIKEL TERKAIT ═══ */
+.berita-related-scroll {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.berita-related-card {
+  text-decoration: none;
+  display: flex;
+}
+
+.berita-related-dots {
+  display: none;
+}
+
 /* ═══ MOBILE RESPONSIVE — ARTIKEL TERKAIT CAROUSEL ═══ */
 @media (max-width: 768px) {
   .berita-related-scroll {
     display: flex !important;
     overflow-x: auto !important;
     scroll-snap-type: x mandatory !important;
+    scroll-behavior: smooth !important;
     scrollbar-width: none !important; /* Firefox */
     -ms-overflow-style: none !important;  /* IE 10+ */
     gap: 1rem !important;
+    padding-bottom: 0.5rem !important;
     padding-left: 0.25rem !important;
     padding-right: 0.25rem !important;
   }
@@ -1648,6 +1666,7 @@ a {
   .berita-related-card {
     width: 75% !important; /* Shows 1 full item and leaves 25% for the next item to peek */
     scroll-snap-align: start !important;
+    flex-shrink: 0 !important;
   }
 
   .berita-related-dots {

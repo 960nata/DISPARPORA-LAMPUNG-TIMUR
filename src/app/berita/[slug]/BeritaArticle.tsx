@@ -283,26 +283,12 @@ export default function BeritaArticle({ param }: { param: string }) {
                     ref={relatedScrollRef}
                     onScroll={handleRelatedScroll}
                     className="berita-related-scroll"
-                    style={{
-                      display: "flex",
-                      overflowX: "auto",
-                      scrollSnapType: "x mandatory",
-                      scrollBehavior: "smooth",
-                      gap: "1rem",
-                      paddingBottom: "0.5rem",
-                    }}
                   >
                     {related.map(r => (
                       <Link
                         key={r.id}
                         href={`/berita/${r.slug || r.id}`}
                         className="berita-related-card"
-                        style={{
-                          textDecoration: "none",
-                          display: "flex",
-                          scrollSnapAlign: "start",
-                          flexShrink: 0,
-                        }}
                       >
                         <div
                           style={{
