@@ -209,7 +209,8 @@ export default function ProfilDinas() {
       name: p.name,
       role: p.title || "",
       sub: p.role || "",
-      bidangId
+      bidangId,
+      photoUrl: p.photoUrl
     };
   }) : pejabatList;
 
@@ -466,8 +467,38 @@ export default function ProfilDinas() {
                 textAlign: "center",
               }}
             >
-              <div style={{ width: "54px", height: "54px", margin: "0 auto", borderRadius: "16px", backgroundColor: "rgba(14,159,79,0.1)", color: GREEN, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.375rem", fontWeight: 800 }}>
-                {p.letter}
+              <div style={{
+                width: "54px",
+                height: "54px",
+                margin: "0 auto",
+                borderRadius: "16px",
+                overflow: "hidden",
+                border: p.photoUrl ? "1px solid rgba(16,40,28,0.08)" : "none",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}>
+                {p.photoUrl ? (
+                  <img
+                    src={p.photoUrl}
+                    alt={p.name}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }}
+                  />
+                ) : (
+                  <div style={{
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "rgba(14,159,79,0.1)",
+                    color: GREEN,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "1.375rem",
+                    fontWeight: 800
+                  }}>
+                    {p.letter}
+                  </div>
+                )}
               </div>
               <p style={{ marginTop: "0.875rem", fontSize: "0.9rem", fontWeight: 800, color: "#11231A" }}>{p.name}</p>
               <p style={{ marginTop: "0.2rem", fontSize: "0.75rem", color: "#6b7a70", lineHeight: 1.4 }}>{p.sub}</p>
