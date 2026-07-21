@@ -35,7 +35,7 @@ const kepalaDinas = {
   photo: "/leaders/kadis.avif",
 };
 
-const pejabatList = [
+const pejabatList: { letter: string; name: string; role: string; sub: string; bidangId: string; photoUrl?: string }[] = [
   { letter: "S", name: "Sekretariat", role: "Sekretaris Dinas", sub: "Administrasi & Operasional", bidangId: "sekretariat" },
   { letter: "P", name: "Bidang Pariwisata", role: "Kepala Bidang", sub: "Pengembangan Destinasi", bidangId: "pariwisata" },
   { letter: "E", name: "Bidang Ekonomi Kreatif", role: "Kepala Bidang", sub: "Industri & Kriya Kreatif", bidangId: "ekonomi-kreatif" },
