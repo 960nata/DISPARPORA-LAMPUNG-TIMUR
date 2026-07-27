@@ -104,7 +104,7 @@ export default function NewsSection({ posts = [] }: NewsSectionProps) {
         borderBottom: "1px solid #e2e8f0",
         marginBottom: "2rem"
       }}>
-        <h2 className="section-heading" style={{ fontSize: "1.85rem", fontWeight: 700, color: "#1e293b", fontFamily: "var(--font-main)" }}>
+        <h2 className="section-heading" style={{ fontSize: "clamp(1.25rem, 4vw, 1.85rem)", fontWeight: 700, color: "#1e293b", fontFamily: "var(--font-main)" }}>
           Berita & Informasi Terbaru
         </h2>
         <Link 

@@ -1084,10 +1084,33 @@ a {
     grid-template-columns: 1fr !important;
   }
 
-  /* News featured card height reduce on mobile */
-  .news-featured-card {
+  /* News featured card height & spacing optimization on mobile */
+  .news-featured-card,
+  .berita-hero-featured {
     height: 280px !important;
     min-height: 280px !important;
+    border-radius: 16px !important;
+  }
+
+  .news-featured-overlay {
+    background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.4) 55%, transparent 90%) !important;
+  }
+
+  .news-featured-content {
+    padding: 1rem 1.15rem !important;
+    gap: 0.4rem !important;
+  }
+
+  .news-featured-title {
+    font-size: 0.98rem !important;
+    line-height: 1.35 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-height: 2.7em !important;
   }
 
   /* News side image smaller */
@@ -1557,9 +1580,6 @@ a {
   .berita-hero-featured {
     height: 280px !important;
     min-height: 280px !important;
-  }
-  .news-featured-title {
-    font-size: 1.2rem !important;
   }
 }
 

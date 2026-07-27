@@ -221,7 +221,7 @@ export default function BeritaArticle({ param }: { param: string }) {
             </div>
 
             {/* Title */}
-            <h1 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.25 }}>
+            <h1 style={{ fontSize: "clamp(1.25rem, 4vw, 2.2rem)", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.3 }}>
               {post.title}
             </h1>
 

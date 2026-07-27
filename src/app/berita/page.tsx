@@ -244,7 +244,7 @@ export default function NewsPage() {
           >
             <h1
               style={{
-                fontSize: "clamp(1.75rem, 3.2vw, 2.5rem)",
+                fontSize: "clamp(1.35rem, 4vw, 2.3rem)",
                 fontWeight: 900,
                 color: "white",
                 lineHeight: 1.25,
