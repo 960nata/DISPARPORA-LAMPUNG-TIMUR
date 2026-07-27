@@ -156,7 +156,7 @@ export default function BeritaArticle({ param }: { param: string }) {
   const pageUrl     = typeof window !== "undefined" ? window.location.href : "";
   const shareWA     = `https://wa.me/?text=${encodeURIComponent(post.title + "\n" + pageUrl)}`;
   const shareX      = `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(pageUrl)}`;
-  const shareEmail  = `mailto:?subject=${encodeURIComponent(post.title)}&body=${encodeURIComponent(post.title + "\n\n" + pageUrl)}`;
+  const shareEmail  = `mailto:?subject=${encodeURIComponent(post.title)}&body=${encodeURIComponent(pageUrl)}`;
 
   return (
     <div style={{ paddingBottom: "5rem" }}>
