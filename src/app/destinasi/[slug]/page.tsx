@@ -102,12 +102,12 @@ export async function generateMetadata({
   return {
     // Root layout's title template appends the brand — keep this just the name.
     title: dest.seoTitle || dest.name,
-    description: desc,
+    description: "",
     alternates: { canonical: url },
     openGraph: {
       type: "article",
       title: dest.seoTitle || dest.name,
-      description: desc,
+      description: "",
       url,
       images: [{ url: image }],
       publishedTime: getISOPublishDate(),
@@ -117,7 +117,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: dest.seoTitle || dest.name,
-      description: desc,
+      description: "",
       images: [image],
     },
   };

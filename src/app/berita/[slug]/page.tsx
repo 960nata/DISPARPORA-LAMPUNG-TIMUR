@@ -84,12 +84,12 @@ export async function generateMetadata({
 
   return {
     title: post.title,
-    description: desc,
+    description: "",
     alternates: { canonical: url },
     openGraph: {
       type: "article",
       title: post.title,
-      description: desc,
+      description: "",
       url,
       images: [{ url: image }],
       publishedTime: post.createdAt,
@@ -99,7 +99,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: post.title,
-      description: desc,
+      description: "",
       images: [image],
     },
   };
