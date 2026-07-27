@@ -155,8 +155,8 @@ export default function DestinasiDetail({ param }: { param: string }) {
   };
 
   const pageUrl    = typeof window !== "undefined" ? window.location.href : "";
-  const shareWA    = `https://wa.me/?text=${encodeURIComponent(dest.name + " — Destinasi Lampung Timur\n" + pageUrl)}`;
-  const shareX     = `https://twitter.com/intent/tweet?text=${encodeURIComponent(dest.name + " — Destinasi Wisata Lampung Timur")}&url=${encodeURIComponent(pageUrl)}`;
+  const shareWA    = `https://wa.me/?text=${encodeURIComponent(dest.name + "\n" + pageUrl)}`;
+  const shareX     = `https://twitter.com/intent/tweet?text=${encodeURIComponent(dest.name)}&url=${encodeURIComponent(pageUrl)}`;
   const shareEmail = `mailto:?subject=${encodeURIComponent(dest.name)}&body=${encodeURIComponent(dest.name + "\n\n" + pageUrl)}`;
   const waContact  = dest.contact
     ? `https://wa.me/62${dest.contact.replace(/^0/, "")}?text=${encodeURIComponent("Halo, saya ingin mengetahui lebih lanjut tentang " + dest.name + ".")}`
