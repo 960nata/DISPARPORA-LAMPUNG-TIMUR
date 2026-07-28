@@ -84,7 +84,7 @@ export default function NewsPage() {
   const [selectedTag, setSelectedTag] = useState("Semua");
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 15;
+  const itemsPerPage = 13;
   const [dbEvents, setDbEvents] = useState<any[]>([]);
 
   useEffect(() => {
@@ -516,6 +516,65 @@ export default function NewsPage() {
                     </AnimatePresence>
                   </div>
                 )}
+
+                {/* ── PAGINATION (Placed directly below the 12 articles) ── */}
+                {totalPages > 1 && (() => {
+                  const pages: (number | "...")[] = [];
+                  if (totalPages <= 7) {
+                    for (let i = 1; i <= totalPages; i++) pages.push(i);
+                  } else {
+                    pages.push(1);
+                    if (currentPage > 3) pages.push("...");
+                    for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) pages.push(i);
+                    if (currentPage < totalPages - 2) pages.push("...");
+                    pages.push(totalPages);
+                  }
+
+                  const btnBase: React.CSSProperties = {
+                    width: "38px", height: "38px", display: "flex", alignItems: "center", justifyContent: "center",
+                    borderRadius: "8px", border: "1px solid var(--border)", backgroundColor: "var(--bg-secondary)",
+                    color: "var(--text-primary)", fontSize: "0.9rem", fontWeight: 600, cursor: "pointer", transition: "all 0.15s ease",
+                  };
+
+                  return (
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "0.35rem", marginTop: "2.5rem", marginBottom: "2rem" }}>
+                      <button
+                        onClick={() => { setCurrentPage((p) => Math.max(p - 1, 1)); window.scrollTo({ top: 400, behavior: "smooth" }); }}
+                        disabled={currentPage === 1}
+                        style={{ ...btnBase, opacity: currentPage === 1 ? 0.35 : 1, cursor: currentPage === 1 ? "not-allowed" : "pointer" }}
+                      >
+                        <ChevronLeft size={16} />
+                      </button>
+
+                      {pages.map((p, i) =>
+                        p === "..." ? (
+                          <span key={`ellipsis-${i}`} style={{ width: "38px", textAlign: "center", color: "var(--text-muted)", fontSize: "0.9rem" }}>…</span>
+                        ) : (
+                          <button
+                            key={p}
+                            onClick={() => { setCurrentPage(p); window.scrollTo({ top: 400, behavior: "smooth" }); }}
+                            style={{
+                              ...btnBase,
+                              backgroundColor: currentPage === p ? "var(--primary)" : "var(--bg-secondary)",
+                              color: currentPage === p ? "white" : "var(--text-primary)",
+                              border: currentPage === p ? "1px solid transparent" : "1px solid var(--border)",
+                            }}
+                          >
+                            {p}
+                          </button>
+                        )
+                      )}
+
+                      <button
+                        onClick={() => { setCurrentPage((p) => Math.min(p + 1, totalPages)); window.scrollTo({ top: 400, behavior: "smooth" }); }}
+                        disabled={currentPage === totalPages}
+                        style={{ ...btnBase, opacity: currentPage === totalPages ? 0.35 : 1, cursor: currentPage === totalPages ? "not-allowed" : "pointer" }}
+                      >
+                        <ChevronRight size={16} />
+                      </button>
+                    </div>
+                  );
+                })()}
               </div>
 
               {/* ═══ RIGHT SIDEBAR ═══ */}
@@ -627,65 +686,6 @@ export default function NewsPage() {
                 </div>
               </aside>
             </div>
-
-            {/* ── PAGINATION (Direktori style) ── */}
-            {totalPages > 1 && (() => {
-              const pages: (number | "...")[] = [];
-              if (totalPages <= 7) {
-                for (let i = 1; i <= totalPages; i++) pages.push(i);
-              } else {
-                pages.push(1);
-                if (currentPage > 3) pages.push("...");
-                for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) pages.push(i);
-                if (currentPage < totalPages - 2) pages.push("...");
-                pages.push(totalPages);
-              }
-
-              const btnBase: React.CSSProperties = {
-                width: "38px", height: "38px", display: "flex", alignItems: "center", justifyContent: "center",
-                borderRadius: "8px", border: "1px solid var(--border)", backgroundColor: "var(--bg-secondary)",
-                color: "var(--text-primary)", fontSize: "0.9rem", fontWeight: 600, cursor: "pointer", transition: "all 0.15s ease",
-              };
-
-              return (
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "0.35rem", marginTop: "3rem" }}>
-                  <button
-                    onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                    disabled={currentPage === 1}
-                    style={{ ...btnBase, opacity: currentPage === 1 ? 0.35 : 1, cursor: currentPage === 1 ? "not-allowed" : "pointer" }}
-                  >
-                    <ChevronLeft size={16} />
-                  </button>
-
-                  {pages.map((p, i) =>
-                    p === "..." ? (
-                      <span key={`ellipsis-${i}`} style={{ width: "38px", textAlign: "center", color: "var(--text-muted)", fontSize: "0.9rem" }}>…</span>
-                    ) : (
-                      <button
-                        key={p}
-                        onClick={() => setCurrentPage(p)}
-                        style={{
-                          ...btnBase,
-                          backgroundColor: currentPage === p ? "var(--primary)" : "var(--bg-secondary)",
-                          color: currentPage === p ? "white" : "var(--text-primary)",
-                          border: currentPage === p ? "1px solid transparent" : "1px solid var(--border)",
-                        }}
-                      >
-                        {p}
-                      </button>
-                    )
-                  )}
-
-                  <button
-                    onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                    style={{ ...btnBase, opacity: currentPage === totalPages ? 0.35 : 1, cursor: currentPage === totalPages ? "not-allowed" : "pointer" }}
-                  >
-                    <ChevronRight size={16} />
-                  </button>
-                </div>
-              );
-            })()}
           </>
         )}
       </div>
