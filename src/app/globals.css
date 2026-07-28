@@ -1269,6 +1269,11 @@ a {
     padding-left: 14px !important;
     padding-right: 14px !important;
   }
+  /* Statistics stat cards: 2x2 grid on mobile & tablet */
+  .stat-cards-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1280,11 +1285,6 @@ a {
   .destinations-header {
     flex-direction: column !important;
     align-items: flex-start !important;
-  }
-
-  /* Statistics stat cards: 2 columns on mobile */
-  .stat-cards-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 

@@ -121,36 +121,36 @@ export default function StatisticsSection() {
           {[
             {
               value: "5", label: "Bidang Kerja",
-              icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>,
+              icon: <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>,
             },
             {
               value: "24", label: "Kecamatan",
-              icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>,
+              icon: <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>,
             },
             {
               value: "264", label: "Desa & Kelurahan",
-              icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+              icon: <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
             },
             {
               value: "71+", label: "Destinasi Wisata",
-              icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/><path d="M12 2l1.5 3.5L17 6.5l-2.5 2.5.5 3.5L12 11l-3 1.5.5-3.5L7 6.5l3.5-.5z"/></svg>,
+              icon: <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/><path d="M12 2l1.5 3.5L17 6.5l-2.5 2.5.5 3.5L12 11l-3 1.5.5-3.5L7 6.5l3.5-.5z"/></svg>,
             },
           ].map(({ value, label, icon }) => (
-            <div key={label} style={{
+            <div key={label} className="stat-card-item" style={{
               background: "white",
               borderRadius: "20px",
-              padding: "1.5rem",
+              padding: "1.25rem 1rem",
               boxShadow: "var(--card-shadow)",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: "0.75rem",
+              gap: "0.6rem",
               textAlign: "center",
               border: "1px solid #d1fae5",
             }}>
               <div style={{
-                width: "52px", height: "52px",
-                borderRadius: "14px",
+                width: "46px", height: "46px",
+                borderRadius: "12px",
                 background: "linear-gradient(135deg, #059669, #065f46)",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 color: "white",
@@ -159,8 +159,8 @@ export default function StatisticsSection() {
                 {icon}
               </div>
               <div>
-                <p style={{ fontSize: "2rem", fontWeight: 900, color: "#059669", margin: "0 0 2px", letterSpacing: "-0.03em", lineHeight: 1 }}>{value}</p>
-                <p style={{ fontSize: "0.8rem", fontWeight: 600, color: "#475569", margin: 0, lineHeight: 1.3 }}>{label}</p>
+                <p style={{ fontSize: "clamp(1.5rem, 4vw, 2rem)", fontWeight: 900, color: "#059669", margin: "0 0 2px", letterSpacing: "-0.03em", lineHeight: 1 }}>{value}</p>
+                <p style={{ fontSize: "0.78rem", fontWeight: 600, color: "#475569", margin: 0, lineHeight: 1.3 }}>{label}</p>
               </div>
             </div>
           ))}
