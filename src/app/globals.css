@@ -1262,6 +1262,62 @@ a {
   }
 }
 
+/* Statistics stat cards grid */
+.stat-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.stat-card-item {
+  background: white;
+  border-radius: 20px;
+  padding: 1.25rem 1rem;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  text-align: center;
+  border: 1px solid #d1fae5;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--hover-shadow);
+}
+
+.stat-card-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #059669, #065f46);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.stat-card-value {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 900;
+  color: #059669;
+  margin: 0 0 2px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.stat-card-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #475569;
+  margin: 0;
+  line-height: 1.3;
+}
+
 @media (max-width: 768px) {
   .peta-list-header { display: none !important; }
   .peta-sidebar-list { display: none !important; }
@@ -1274,11 +1330,31 @@ a {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 0.75rem !important;
   }
+  .stat-card-item {
+    padding: 1rem 0.65rem !important;
+    border-radius: 16px !important;
+  }
+  .stat-card-icon {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 10px !important;
+  }
+  .stat-card-value {
+    font-size: 1.4rem !important;
+  }
+  .stat-card-label {
+    font-size: 0.73rem !important;
+  }
 }
 
 @media (max-width: 480px) {
   .container {
     padding: 0 0.75rem;
+  }
+
+  .stat-cards-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
   }
 
   /* Destinations header stack */

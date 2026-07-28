@@ -117,7 +117,7 @@ export default function StatisticsSection() {
         </div>
 
         {/* Stat cards */}
-        <div className="stat-cards-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1rem", marginBottom: "2.5rem" }}>
+        <div className="stat-cards-grid">
           {[
             {
               value: "5", label: "Bidang Kerja",
@@ -136,31 +136,13 @@ export default function StatisticsSection() {
               icon: <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/><path d="M12 2l1.5 3.5L17 6.5l-2.5 2.5.5 3.5L12 11l-3 1.5.5-3.5L7 6.5l3.5-.5z"/></svg>,
             },
           ].map(({ value, label, icon }) => (
-            <div key={label} className="stat-card-item" style={{
-              background: "white",
-              borderRadius: "20px",
-              padding: "1.25rem 1rem",
-              boxShadow: "var(--card-shadow)",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "0.6rem",
-              textAlign: "center",
-              border: "1px solid #d1fae5",
-            }}>
-              <div style={{
-                width: "46px", height: "46px",
-                borderRadius: "12px",
-                background: "linear-gradient(135deg, #059669, #065f46)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                color: "white",
-                flexShrink: 0,
-              }}>
+            <div key={label} className="stat-card-item">
+              <div className="stat-card-icon">
                 {icon}
               </div>
               <div>
-                <p style={{ fontSize: "clamp(1.5rem, 4vw, 2rem)", fontWeight: 900, color: "#059669", margin: "0 0 2px", letterSpacing: "-0.03em", lineHeight: 1 }}>{value}</p>
-                <p style={{ fontSize: "0.78rem", fontWeight: 600, color: "#475569", margin: 0, lineHeight: 1.3 }}>{label}</p>
+                <p className="stat-card-value">{value}</p>
+                <p className="stat-card-label">{label}</p>
               </div>
             </div>
           ))}
