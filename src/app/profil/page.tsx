@@ -229,7 +229,7 @@ export default function ProfilDinas() {
       <section className="page-hero-wrap" style={{ width: "100%", padding: "14px", boxSizing: "border-box" }}>
         <div style={{
           position: "relative",
-          backgroundImage: "linear-gradient(to right, rgba(5, 46, 35, 0.95) 0%, rgba(6, 78, 59, 0.75) 55%, rgba(6, 78, 59, 0.2) 100%), url('/hero%20profile.avif')",
+          backgroundImage: "linear-gradient(to right, rgba(5, 46, 35, 0.95) 0%, rgba(6, 78, 59, 0.75) 55%, rgba(6, 78, 59, 0.2) 100%), url('/hero%20about.avif')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
