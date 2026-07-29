@@ -1,14 +1,18 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db, usingMockDb, prismaInitError } from "@/lib/db";
+import { requireSuperadmin } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 /**
  * GET /api/debug/db-status
- * Temporary debug endpoint — remove after diagnosis.
+ * Protected debug endpoint — requires superadmin auth.
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const auth = requireSuperadmin(request);
+  if (auth instanceof NextResponse) return auth;
+
   const hasDatabaseUrl = !!process.env.DATABASE_URL;
   const hasDirectUrl = !!process.env.DIRECT_URL;
 
