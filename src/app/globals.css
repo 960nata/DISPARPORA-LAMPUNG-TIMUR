@@ -867,6 +867,14 @@ a {
   margin-top: 0.25rem;
 }
 
+.news-header-link-desktop {
+  display: flex;
+}
+
+.news-mobile-bottom-cta {
+  display: none;
+}
+
 .news-side-stack {
   display: flex;
   flex-direction: column;
@@ -1122,6 +1130,41 @@ a {
   /* News side title smaller */
   .news-side-title {
     font-size: 0.85rem !important;
+  }
+
+  /* News header link hide on mobile, show bottom CTA button */
+  .news-header-link-desktop {
+    display: none !important;
+  }
+
+  .news-mobile-bottom-cta {
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 1.5rem !important;
+    width: 100% !important;
+  }
+
+  .news-mobile-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
+    max-width: 320px !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 12px !important;
+    background: white !important;
+    border: 1.5px solid var(--primary) !important;
+    color: var(--primary) !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    text-decoration: none !important;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.1) !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .news-mobile-btn:active {
+    background: var(--primary-light) !important;
   }
 
   /* Callout section padding & text */

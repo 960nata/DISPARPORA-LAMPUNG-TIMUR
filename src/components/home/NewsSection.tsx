@@ -109,8 +109,8 @@ export default function NewsSection({ posts = [] }: NewsSectionProps) {
         </h2>
         <Link 
           href="/berita" 
+          className="news-header-link-desktop"
           style={{
-            display: "flex",
             alignItems: "center",
             gap: "0.25rem",
             color: "var(--primary)",
@@ -219,6 +219,16 @@ export default function NewsSection({ posts = [] }: NewsSectionProps) {
             </motion.div>
           ))}
         </div>
+      </div>
+
+      {/* Mobile Bottom CTA Link (Visible on mobile only) */}
+      <div className="news-mobile-bottom-cta">
+        <Link 
+          href="/berita" 
+          className="news-mobile-btn"
+        >
+          Semua Berita <ArrowRight size={16} />
+        </Link>
       </div>
     </section>
   );
