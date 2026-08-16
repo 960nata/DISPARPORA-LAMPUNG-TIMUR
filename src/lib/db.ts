@@ -1392,3 +1392,23 @@ export const BupatiSpeechData = {
   photoUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80",
   welcomeSpeech: "Tabik Pun! Selamat datang di Portal Wisata resmi Kabupaten Lampung Timur. Kami mengundang seluruh wisatawan untuk datang dan menyaksikan sendiri kekayaan alam liar yang mempesona di Taman Nasional Way Kambas, keindahan bahari pantai pesisir timur, serta peninggalan prasejarah yang bernilai tinggi. Lampung Timur terus berinovasi dalam memajukan pemuda, olahraga, dan industri ekonomi kreatif lokal demi mewujudkan masyarakat yang sejahtera dan berbudaya."
 };
+
+/** True when a real Postgres/Supabase database is configured & connected. */
+export const hasSqlDb = isPgConfigured && !!prismaClient;
+
+/**
+ * Run a parameterized SELECT against Postgres and return the rows.
+ * Mirrors the pattern used by `findUserByLogin` and the raw-SQL engines
+ * (messages, page_views) for tables that have no generated Prisma model.
+ * Throws when no SQL DB is configured — callers should catch and fall back.
+ */
+export async function rawQuery<T = any>(sql: string, ...params: any[]): Promise<T[]> {
+  if (!hasSqlDb) throw new Error("No SQL database configured");
+  return (await prismaClient.$queryRawUnsafe(sql, ...params)) as T[];
+}
+
+/** Run a parameterized statement (DDL/INSERT/UPDATE) against Postgres. */
+export async function rawExec(sql: string, ...params: any[]): Promise<void> {
+  if (!hasSqlDb) throw new Error("No SQL database configured");
+  await prismaClient.$executeRawUnsafe(sql, ...params);
+}

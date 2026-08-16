@@ -8,8 +8,9 @@ import FloatingButtons from "./FloatingButtons";
 export default function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isDashboard = pathname?.startsWith("/dashboard");
+  const isMaintenance = pathname === "/maintenance";
 
-  if (isDashboard) {
+  if (isDashboard || isMaintenance) {
     return <>{children}</>;
   }
 
