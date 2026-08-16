@@ -84,6 +84,61 @@ async function isSuspended(request: NextRequest): Promise<boolean> {
   }
 }
 
+// Common scanner / exploit probe patterns. Matching one is a strong signal of an
+// automated attack (recon for secrets, admin panels, known CMS vulns, traversal).
+const SUSPICIOUS: { rule: string; re: RegExp }[] = [
+  { rule: "dotenv-probe", re: /(^|\/)\.env(\.|$|\/)/i },
+  { rule: "git-exposure", re: /(^|\/)\.git(\/|$)/i },
+  { rule: "wordpress-probe", re: /wp-admin|wp-login|xmlrpc\.php|\/wp-content\//i },
+  { rule: "phpmyadmin-probe", re: /phpmyadmin|\/pma\//i },
+  { rule: "credential-file", re: /\/\.(aws|ssh|htpasswd)\b|\/(id_rsa|credentials)\b/i },
+  { rule: "config-probe", re: /\/(config|configuration|settings)\.(php|json|ya?ml|xml|bak)\b/i },
+  { rule: "php-shell", re: /\.php($|\?)|\/(shell|cmd|eval)\b/i },
+  { rule: "path-traversal", re: /\.\.(%2f|%5c|\/|\\)/i },
+  { rule: "sensitive-file", re: /\/etc\/passwd|\/proc\/self\//i },
+  { rule: "sql-injection", re: /\bunion\s+select\b|\bor\s+1=1\b|sleep\(\d+\)/i },
+];
+
+function matchSuspicious(target: string): string | null {
+  for (const { rule, re } of SUSPICIOUS) if (re.test(target)) return rule;
+  return null;
+}
+
+// Report a suspicious request to the internal log endpoint (middleware runs on
+// the edge and cannot write to Postgres directly). Best-effort; never blocks.
+async function reportSuspicious(request: NextRequest, rule: string): Promise<void> {
+  try {
+    const h = request.headers;
+    const decodeCity = (s: string | null) => {
+      if (!s) return null;
+      try { return decodeURIComponent(s); } catch { return s; }
+    };
+    const toNum = (s: string | null) => {
+      const n = s ? parseFloat(s) : NaN;
+      return Number.isFinite(n) ? n : null;
+    };
+    await fetch(new URL("/api/security/log", request.url), {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-sec-key": runtimeSecret() },
+      body: JSON.stringify({
+        type: "suspicious_request",
+        ip: h.get("x-forwarded-for")?.split(",")[0]?.trim() || h.get("x-real-ip") || null,
+        country: h.get("x-vercel-ip-country"),
+        region: h.get("x-vercel-ip-country-region"),
+        city: decodeCity(h.get("x-vercel-ip-city")),
+        lat: toNum(h.get("x-vercel-ip-latitude")),
+        lng: toNum(h.get("x-vercel-ip-longitude")),
+        path: request.nextUrl.pathname,
+        method: request.method,
+        userAgent: h.get("user-agent"),
+        detail: rule,
+      }),
+    });
+  } catch {
+    // Ignore — logging must never break request handling.
+  }
+}
+
 export async function middleware(request: NextRequest) {
   const res = await updateSession(request);
   const { pathname } = request.nextUrl;
@@ -97,6 +152,10 @@ export async function middleware(request: NextRequest) {
   ) {
     return res;
   }
+
+  // Detect & log scanner/hacker probes (recon for secrets, admin panels, etc.).
+  const probe = matchSuspicious(pathname + request.nextUrl.search);
+  if (probe) await reportSuspicious(request, probe);
 
   if (await isSuspended(request)) {
     const session = await verifySessionEdge(request.cookies.get("simad_auth")?.value);

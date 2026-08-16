@@ -96,11 +96,12 @@ function formatLocation(r: { city?: string; region?: string; country?: string })
 
 
 const startOfDay = (d: Date) => { const x = new Date(d); x.setHours(0, 0, 0, 0); return x; };
+const endOfDay = (d: Date) => { const x = new Date(d); x.setHours(23, 59, 59, 999); return x; };
 const hourKey = (d: Date) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}-${d.getHours()}`;
 const dayKey = (d: Date) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
 const monthKey = (d: Date) => `${d.getFullYear()}-${d.getMonth()}`;
 
-type Spec = { buckets: { key: string; label: string }[]; keyFn: (d: Date) => string; since: Date };
+type Spec = { buckets: { key: string; label: string }[]; keyFn: (d: Date) => string; since: Date; until?: Date };
 
 function hourBuckets(now: Date): Spec {
   const base = startOfDay(now);
@@ -139,8 +140,37 @@ function specFor(range: string, now: Date): Spec {
     case "6bulan": return monthBuckets(now, 6);
     case "9bulan": return monthBuckets(now, 9);
     case "tahun": return monthBuckets(now, 12);
+    case "2tahun": return monthBuckets(now, 24);
+    case "3tahun": return monthBuckets(now, 36);
     default: return dayBuckets(now, 30);
   }
+}
+
+/** Custom date range (from..to inclusive). Picks daily granularity for spans
+ *  up to ~3 months, otherwise monthly, so the chart stays readable. */
+function customSpec(from: Date, to: Date): Spec {
+  let start = startOfDay(from);
+  let end = startOfDay(to);
+  if (end < start) { const t = start; start = end; end = t; } // tolerate reversed input
+  const dayspan = Math.round((end.getTime() - start.getTime()) / 86400000) + 1;
+
+  if (dayspan <= 92) {
+    const buckets = [];
+    for (let i = 0; i < dayspan; i++) {
+      const d = new Date(start); d.setDate(start.getDate() + i);
+      buckets.push({ key: dayKey(d), label: `${d.getDate()}/${d.getMonth() + 1}` });
+    }
+    return { buckets, keyFn: dayKey, since: start, until: endOfDay(end) };
+  }
+
+  const buckets = [];
+  let cur = new Date(start.getFullYear(), start.getMonth(), 1);
+  const endMonth = new Date(end.getFullYear(), end.getMonth(), 1);
+  while (cur <= endMonth) {
+    buckets.push({ key: monthKey(cur), label: `${BULAN[cur.getMonth()]} '${String(cur.getFullYear()).slice(2)}` });
+    cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
+  }
+  return { buckets, keyFn: monthKey, since: start, until: endOfDay(end) };
 }
 
 /**
@@ -149,11 +179,34 @@ function specFor(range: string, now: Date): Spec {
  */
 export async function GET(req: NextRequest) {
   try {
-    const range = req.nextUrl.searchParams.get("range") || "bulan";
     const now = new Date();
-    const { buckets, keyFn, since } = specFor(range, now);
+    const params = req.nextUrl.searchParams;
+    const fromParam = params.get("from");
+    const toParam = params.get("to");
 
-    const rows: any[] = await db.pageViews.findSince({ since: since.toISOString() });
+    let range: string;
+    let spec: Spec;
+    if (fromParam && toParam) {
+      const from = new Date(fromParam);
+      const to = new Date(toParam);
+      if (isNaN(from.getTime()) || isNaN(to.getTime())) {
+        range = "bulan";
+        spec = specFor(range, now);
+      } else {
+        range = "custom";
+        spec = customSpec(from, to);
+      }
+    } else {
+      range = params.get("range") || "bulan";
+      spec = specFor(range, now);
+    }
+
+    const { buckets, keyFn, since, until } = spec;
+    const upper = until ?? now;
+
+    const allRows: any[] = await db.pageViews.findSince({ since: since.toISOString() });
+    // Enforce the upper bound (custom ranges can end in the past).
+    const rows = until ? allRows.filter(r => new Date(r.createdAt) <= upper) : allRows;
 
     // Time series
     const counts = new Map(buckets.map(b => [b.key, 0]));
@@ -225,6 +278,8 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       range,
+      periodStart: since.toISOString(),
+      periodEnd: upper.toISOString(),
       totals: { views, sessions, newVisits, returningVisits, avgPerSession },
       series,
       popular,

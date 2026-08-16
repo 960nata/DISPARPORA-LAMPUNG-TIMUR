@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { db, jsonDb, findUserByLogin } from "@/lib/db";
 import { signSession, SESSION_COOKIE_OPTIONS } from "@/lib/session";
 import { checkRateLimit, LOGIN_RATE_LIMIT } from "@/lib/rateLimit";
+import { logSecurityEvent } from "@/lib/security";
 
 const BCRYPT_ROUNDS = 12;
 
@@ -12,8 +13,32 @@ export async function POST(request: NextRequest) {
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     request.headers.get("x-real-ip") ||
     "unknown";
+
+  // Approximate attacker location from edge geo headers (for the security map).
+  const h = request.headers;
+  const decodeCity = (s: string | null) => {
+    if (!s) return null;
+    try { return decodeURIComponent(s); } catch { return s; }
+  };
+  const toNum = (s: string | null) => {
+    const n = s ? parseFloat(s) : NaN;
+    return Number.isFinite(n) ? n : null;
+  };
+  const geo = {
+    ip,
+    country: h.get("x-vercel-ip-country"),
+    region: h.get("x-vercel-ip-country-region"),
+    city: decodeCity(h.get("x-vercel-ip-city")),
+    lat: toNum(h.get("x-vercel-ip-latitude")),
+    lng: toNum(h.get("x-vercel-ip-longitude")),
+    userAgent: h.get("user-agent"),
+    path: "/api/login",
+    method: "POST",
+  };
+
   const rateResult = checkRateLimit(`login:${ip}`, LOGIN_RATE_LIMIT);
   if (!rateResult.allowed) {
+    await logSecurityEvent({ ...geo, type: "login_rate_limited", detail: `IP diblokir (brute-force): ${ip}` });
     return NextResponse.json(
       {
         error: `Terlalu banyak percobaan login. Coba lagi dalam ${rateResult.retryAfterSeconds} detik.`,
@@ -60,6 +85,7 @@ export async function POST(request: NextRequest) {
     if (!user) {
       // Constant-time-ish delay even when user not found to prevent enumeration
       await bcrypt.hash("dummy-prevent-timing-attack", 1);
+      await logSecurityEvent({ ...geo, type: "login_failed", detail: `Akun tidak ada: ${email}` });
       return NextResponse.json(
         { error: "Email atau password salah" },
         { status: 401 }
@@ -90,6 +116,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (!passwordValid) {
+      await logSecurityEvent({ ...geo, type: "login_failed", detail: `Password salah untuk: ${user.username ?? email}` });
       return NextResponse.json(
         { error: "Email atau password salah" },
         { status: 401 }

@@ -7,7 +7,7 @@ import {
   LayoutDashboard, MapPin, FileText, Users, LogOut,
   Menu, X, ArrowLeft, Bell, Sun, Moon, Images, User,
   Building2, Mic2, CalendarDays, Handshake, TrendingUp,
-  Award, Mail, Power
+  Award, Mail, Power, ShieldAlert
 } from "lucide-react";
 import { AdminProvider, useAdmin } from "@/contexts/AdminContext";
 import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
@@ -214,6 +214,7 @@ const NAV = [
   { section: "SISTEM", items: [
     { href: "/dashboard/pengguna",  label: "Manajemen Akun",     icon: Users,           roles: ["superadmin"] },
     { href: "/dashboard/situs",     label: "Status Situs",       icon: Power,           roles: ["superadmin"] },
+    { href: "/dashboard/keamanan",  label: "Keamanan",           icon: ShieldAlert,     roles: ["superadmin"] },
     { href: "/dashboard/profil",    label: "Profil Saya",        icon: User,            roles: ["superadmin","admin_dinas","admin_post"] },
   ]},
 ];
@@ -234,6 +235,7 @@ const CRUMBS: Record<string, string> = {
   "/dashboard/wisatawan":                "Pertumbuhan Wisatawan",
   "/dashboard/pengguna":                 "Manajemen Akun",
   "/dashboard/situs":                    "Status Situs",
+  "/dashboard/keamanan":                 "Monitoring Keamanan",
   "/dashboard/profil":                   "Profil Saya",
 };
 

@@ -28,12 +28,11 @@ interface Analytics { totals: Totals; series: Series; popular: Popular[]; locati
 
 const RANGES = [
   { id: "hari-ini", label: "Hari Ini" },
-  { id: "minggu", label: "Minggu Ini" },
-  { id: "bulan", label: "Bulan Ini" },
-  { id: "3bulan", label: "3 Bulan" },
-  { id: "6bulan", label: "6 Bulan" },
-  { id: "9bulan", label: "9 Bulan" },
+  { id: "minggu", label: "Minggu" },
+  { id: "bulan", label: "Bulan" },
   { id: "tahun", label: "1 Tahun" },
+  { id: "2tahun", label: "2 Tahun" },
+  { id: "3tahun", label: "3 Tahun" },
 ] as const;
 
 const EMPTY: Analytics = {
@@ -49,22 +48,37 @@ export default function DashboardPage() {
   const { user } = useAdmin();
   const { theme } = useTheme();
   const [range, setRange] = useState<string>("bulan");
+  const [mode, setMode] = useState<"preset" | "custom">("preset");
+  const [customFrom, setCustomFrom] = useState<string>("");
+  const [customTo, setCustomTo] = useState<string>("");
+  const [period, setPeriod] = useState<{ start: string; end: string } | null>(null);
   const [data, setData] = useState<Analytics>(EMPTY);
   const [loading, setLoading] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
+    // In custom mode, wait until both endpoints are chosen.
+    if (mode === "custom" && (!customFrom || !customTo)) return;
     let alive = true;
     setLoading(true);
-    fetch(`/api/analytics?range=${range}`)
+    const url = mode === "custom"
+      ? `/api/analytics?from=${customFrom}&to=${customTo}`
+      : `/api/analytics?range=${range}`;
+    fetch(url)
       .then(r => r.json())
-      .then(d => { if (alive && !d.error) setData({ ...EMPTY, ...d }); })
+      .then(d => {
+        if (!alive || d.error) return;
+        setData({ ...EMPTY, ...d });
+        if (d.periodStart && d.periodEnd) setPeriod({ start: d.periodStart, end: d.periodEnd });
+      })
       .catch(console.error)
       .finally(() => { if (alive) setLoading(false); });
     return () => { alive = false; };
-  }, [range]);
+  }, [range, mode, customFrom, customTo]);
 
-  const rangeLabel = RANGES.find(r => r.id === range)?.label ?? "";
+  const rangeLabel = mode === "custom" ? "Rentang Kustom" : (RANGES.find(r => r.id === range)?.label ?? "");
+  const fmtDate = (iso: string) => new Date(iso).toLocaleDateString("id-ID", { day: "2-digit", month: "2-digit", year: "numeric" });
+  const periodText = period ? `${fmtDate(period.start)} – ${fmtDate(period.end)}` : "";
 
   const isDark = theme === "dark";
   const fg = isDark ? "rgba(255,255,255,0.5)" : "rgba(55,53,47,0.5)";
@@ -174,28 +188,64 @@ export default function DashboardPage() {
         </button>
       </div>
 
-      {/* ── Period TABS ── */}
-      <div className="dash-scroll" style={{ display: "flex", gap: "8px", overflowX: "auto", paddingBottom: "2px" }}>
-        {RANGES.map(r => {
-          const active = r.id === range;
-          return (
+      {/* ── Period filter: presets + custom date range ── */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+          <div className="dash-scroll" style={{ display: "flex", gap: "8px", overflowX: "auto", paddingBottom: "2px" }}>
+            {RANGES.map(r => {
+              const active = mode === "preset" && r.id === range;
+              return (
+                <button
+                  key={r.id}
+                  onClick={() => { setMode("preset"); setRange(r.id); }}
+                  style={{
+                    flexShrink: 0, padding: "9px 16px", borderRadius: "11px", cursor: "pointer",
+                    fontFamily: "inherit", fontSize: "0.82rem", fontWeight: 700,
+                    border: active ? "1px solid transparent" : "1px solid var(--dash-border)",
+                    background: active ? "var(--dash-primary)" : "var(--dash-card)",
+                    color: active ? "#fff" : "var(--dash-text-soft)",
+                    boxShadow: active ? "0 10px 22px -14px var(--dash-primary)" : "none",
+                    transition: "all .15s ease",
+                  }}
+                >
+                  {r.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Custom range picker */}
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginLeft: "auto" }}>
+            <input
+              type="date" className="dash-input" value={customFrom} max={customTo || undefined}
+              onChange={e => setCustomFrom(e.target.value)} aria-label="Dari tanggal"
+              style={{ fontSize: "0.8rem", padding: "8px 10px", colorScheme: "light dark" }}
+            />
+            <span style={{ color: "var(--dash-text-muted)", fontSize: "0.85rem" }}>–</span>
+            <input
+              type="date" className="dash-input" value={customTo} min={customFrom || undefined}
+              onChange={e => setCustomTo(e.target.value)} aria-label="Sampai tanggal"
+              style={{ fontSize: "0.8rem", padding: "8px 10px", colorScheme: "light dark" }}
+            />
             <button
-              key={r.id}
-              onClick={() => setRange(r.id)}
-              style={{
-                flexShrink: 0, padding: "9px 16px", borderRadius: "11px", cursor: "pointer",
-                fontFamily: "inherit", fontSize: "0.82rem", fontWeight: 700,
-                border: active ? "1px solid transparent" : "1px solid var(--dash-border)",
-                background: active ? "var(--dash-primary)" : "var(--dash-card)",
-                color: active ? "#fff" : "var(--dash-text-soft)",
-                boxShadow: active ? "0 10px 22px -14px var(--dash-primary)" : "none",
-                transition: "all .15s ease",
-              }}
+              onClick={() => { if (customFrom && customTo) setMode("custom"); }}
+              disabled={!customFrom || !customTo}
+              className="dash-btn"
+              style={{ padding: "8px 14px", fontSize: "0.8rem", borderRadius: "10px", opacity: (!customFrom || !customTo) ? 0.5 : 1 }}
             >
-              {r.label}
+              Terapkan
             </button>
-          );
-        })}
+          </div>
+        </div>
+
+        {periodText && (
+          <div style={{ fontSize: "0.78rem", color: "var(--dash-text-muted)" }}>
+            Periode: <strong style={{ color: "var(--dash-text-soft)" }}>{periodText}</strong>
+            {mode === "custom" && (
+              <> · <button onClick={() => setMode("preset")} style={{ background: "none", border: "none", color: "var(--dash-primary)", cursor: "pointer", fontWeight: 600, fontSize: "0.78rem", padding: 0 }}>reset ke preset</button></>
+            )}
+          </div>
+        )}
       </div>
 
       {/* ── KPI ROW ── */}
