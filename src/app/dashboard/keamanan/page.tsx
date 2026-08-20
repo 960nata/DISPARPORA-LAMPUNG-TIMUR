@@ -170,7 +170,7 @@ export default function KeamananPage() {
   useEffect(() => {
     load();
     loadBlocked();
-    const t = setInterval(() => { load(); loadBlocked(); }, 15000);
+    const t = setInterval(() => { load(); loadBlocked(); }, 5000);
     return () => clearInterval(t);
   }, [load, loadBlocked]);
 
@@ -213,10 +213,14 @@ export default function KeamananPage() {
             <ShieldCheck size={22} style={{ color: "var(--dash-primary)" }} /> Monitoring Keamanan
           </h1>
           <p style={{ margin: 0, color: "var(--dash-text-muted)", fontSize: "0.9rem", lineHeight: 1.6, maxWidth: "640px" }}>
-            Deteksi percobaan serangan: login gagal (brute-force), IP terblokir, akses ditolak, dan probe scanner/hacker — lengkap dengan lokasi. Auto-refresh tiap 15 detik.
+            Deteksi percobaan serangan: login gagal (brute-force), IP terblokir, akses ditolak, dan probe scanner/hacker — lengkap dengan lokasi. Pemantauan realtime, auto-refresh tiap 5 detik.
           </p>
         </div>
-        <div style={{ display: "flex", gap: "8px" }}>
+        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: "7px", padding: "8px 13px", borderRadius: "99px", background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.3)", color: "var(--dash-success)", fontSize: "0.74rem", fontWeight: 800, letterSpacing: "0.06em" }}>
+            <span className="live-dot" style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--dash-success)", display: "inline-block" }} />
+            LIVE
+          </span>
           <button onClick={() => setSound((s) => !s)} title={sound ? "Matikan suara" : "Nyalakan suara alarm"} className="dash-header-btn" style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "9px 12px", borderRadius: "10px", border: "1px solid var(--dash-border)", background: "var(--dash-surface-hover)", color: "var(--dash-text-soft)", cursor: "pointer", fontSize: "0.8rem", fontWeight: 600 }}>
             {sound ? <Volume2 size={15} /> : <VolumeX size={15} />}
           </button>
@@ -404,6 +408,11 @@ export default function KeamananPage() {
         @keyframes atkFlash {
           0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.0); }
           50% { box-shadow: 0 0 22px 0 rgba(239,68,68,0.5); }
+        }
+        .live-dot { animation: liveBlink 1.4s ease-in-out infinite; }
+        @keyframes liveBlink {
+          0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16,185,129,0.6); }
+          50% { opacity: 0.55; box-shadow: 0 0 0 6px rgba(16,185,129,0); }
         }
       `}</style>
     </div>
