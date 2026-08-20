@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { logSecurityEvent } from "@/lib/security";
+import { logSecurityEvent, recentProbeCount, blockIp } from "@/lib/security";
 import type { SecurityEventType } from "@/lib/security";
+
+// Auto-block an IP after this many probes within the recent window.
+const AUTO_BLOCK_THRESHOLD = 5;
+const AUTO_BLOCK_MINUTES = 60;
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -48,6 +52,14 @@ export async function POST(request: NextRequest) {
     lat: body.lat,
     lng: body.lng,
   });
+
+  // Auto-block IPs that keep probing.
+  if (body.type === "suspicious_request" && typeof body.ip === "string" && body.ip) {
+    const count = await recentProbeCount(body.ip, 10);
+    if (count >= AUTO_BLOCK_THRESHOLD) {
+      await blockIp(body.ip, `Auto-block: ${count} probe mencurigakan / 10 menit`, AUTO_BLOCK_MINUTES);
+    }
+  }
 
   return NextResponse.json({ ok: true }, { status: 201 });
 }

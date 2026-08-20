@@ -139,6 +139,38 @@ async function reportSuspicious(request: NextRequest, rule: string): Promise<voi
   }
 }
 
+function clientIp(request: NextRequest): string {
+  return (
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown"
+  );
+}
+
+// Cache the IP blocklist in-module (best-effort) so we don't fetch it on every
+// request. Fails open: if it can't be read, no one is blocked.
+const BLOCK_TTL_MS = 30_000;
+let cachedBlocked = new Set<string>();
+let cachedBlockAt = 0;
+
+async function blockedIps(request: NextRequest): Promise<Set<string>> {
+  const now = Date.now();
+  if (now - cachedBlockAt < BLOCK_TTL_MS) return cachedBlocked;
+  cachedBlockAt = now;
+  try {
+    const res = await fetch(new URL("/api/security/block", request.url), {
+      headers: { "x-sec-key": runtimeSecret() },
+    });
+    if (res.ok) {
+      const data = await res.json();
+      cachedBlocked = new Set(Array.isArray(data.ips) ? data.ips : []);
+    }
+  } catch {
+    // keep the previous cache
+  }
+  return cachedBlocked;
+}
+
 export async function middleware(request: NextRequest) {
   const res = await updateSession(request);
   const { pathname } = request.nextUrl;
@@ -153,9 +185,18 @@ export async function middleware(request: NextRequest) {
     return res;
   }
 
-  // Detect & log scanner/hacker probes (recon for secrets, admin panels, etc.).
+  // Hard-block IPs on the blocklist (manual from dashboard, or auto).
+  const ip = clientIp(request);
+  if (ip !== "unknown" && (await blockedIps(request)).has(ip)) {
+    return new NextResponse("Akses Anda diblokir.", { status: 403 });
+  }
+
+  // Detect scanner/hacker probes → log, then block the request outright.
   const probe = matchSuspicious(pathname + request.nextUrl.search);
-  if (probe) await reportSuspicious(request, probe);
+  if (probe) {
+    await reportSuspicious(request, probe);
+    return new NextResponse("Akses diblokir.", { status: 403 });
+  }
 
   if (await isSuspended(request)) {
     const session = await verifySessionEdge(request.cookies.get("simad_auth")?.value);

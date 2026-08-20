@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import {
   ShieldAlert, ShieldCheck, RefreshCw, MapPin, Globe, Volume2, VolumeX, AlertTriangle,
+  Ban, Trash2, Plus,
 } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 import type { AttackMapEvent } from "@/components/admin/AttackMap";
@@ -46,7 +47,15 @@ const TYPE_META: Record<string, { label: string; color: string; bg: string }> = 
   login_rate_limited: { label: "Diblokir (Brute-force)", color: "var(--dash-danger)",  bg: "rgba(239,68,68,0.12)" },
   unauthorized:       { label: "Akses Ditolak",          color: "var(--dash-danger)",  bg: "rgba(239,68,68,0.12)" },
   suspicious_request: { label: "Probe Mencurigakan",     color: "#a855f7",             bg: "rgba(168,85,247,0.14)" },
+  ip_banned:          { label: "IP Diblokir",            color: "var(--dash-danger)",  bg: "rgba(239,68,68,0.12)" },
 };
+
+interface BlockedIp {
+  ip: string;
+  reason: string;
+  createdAt: string;
+  expiresAt: string | null;
+}
 
 function metaFor(type: string) {
   return TYPE_META[type] ?? { label: type, color: "var(--dash-text-muted)", bg: "var(--dash-surface-hover)" };
@@ -89,6 +98,49 @@ export default function KeamananPage() {
   const [sound, setSound] = useState(false);
   const lastIdRef = useRef<string | null>(null);
   const firstLoadRef = useRef(true);
+  const [blocked, setBlocked] = useState<BlockedIp[]>([]);
+  const [blockIpInput, setBlockIpInput] = useState("");
+  const [blockReason, setBlockReason] = useState("");
+  const [busyIp, setBusyIp] = useState<string | null>(null);
+
+  const loadBlocked = useCallback(async () => {
+    try {
+      const res = await fetch("/api/security/block", { cache: "no-store" });
+      if (!res.ok) return;
+      const data = await res.json();
+      setBlocked(Array.isArray(data.blocked) ? data.blocked : []);
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const doBlock = async (ip: string, reason: string, minutes?: number | null) => {
+    const clean = ip.trim();
+    if (!clean) return;
+    setBusyIp(clean);
+    try {
+      await fetch("/api/security/block", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ip: clean, reason, minutes: minutes ?? null }),
+      });
+      await loadBlocked();
+      setBlockIpInput("");
+      setBlockReason("");
+    } finally {
+      setBusyIp(null);
+    }
+  };
+
+  const doUnblock = async (ip: string) => {
+    setBusyIp(ip);
+    try {
+      await fetch(`/api/security/block?ip=${encodeURIComponent(ip)}`, { method: "DELETE" });
+      await loadBlocked();
+    } finally {
+      setBusyIp(null);
+    }
+  };
 
   const load = useCallback(async () => {
     try {
@@ -117,9 +169,10 @@ export default function KeamananPage() {
 
   useEffect(() => {
     load();
-    const t = setInterval(load, 15000);
+    loadBlocked();
+    const t = setInterval(() => { load(); loadBlocked(); }, 15000);
     return () => clearInterval(t);
-  }, [load]);
+  }, [load, loadBlocked]);
 
   if (user && user.role !== "superadmin") {
     return (
@@ -138,6 +191,7 @@ export default function KeamananPage() {
     .map((e) => ({ id: e.id, lat: e.lat, lng: e.lng, type: metaFor(e.type).label, ip: e.ip, city: e.city, country: e.country, createdAt: e.createdAt }));
 
   const stat = (n: number | undefined) => (typeof n === "number" ? n : 0);
+  const blockedSet = new Set(blocked.map((b) => b.ip));
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
@@ -177,7 +231,7 @@ export default function KeamananPage() {
         {[
           { label: "Kejadian 24 Jam", value: stat(summary?.total24h), color: "var(--dash-primary)" },
           { label: "Login Gagal (24j)", value: stat(summary?.byType24h?.login_failed), color: "var(--dash-warning)" },
-          { label: "Diblokir (24j)", value: stat(summary?.byType24h?.login_rate_limited), color: "var(--dash-danger)" },
+          { label: "IP Diblokir (24j)", value: stat(summary?.byType24h?.login_rate_limited) + stat(summary?.byType24h?.ip_banned), color: "var(--dash-danger)" },
           { label: "Probe Hacker (24j)", value: stat(summary?.byType24h?.suspicious_request), color: "#a855f7" },
         ].map((c) => (
           <div key={c.label} className="dash-card" style={{ padding: "18px 20px" }}>
@@ -212,12 +266,74 @@ export default function KeamananPage() {
           <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", fontSize: "0.85rem", fontWeight: 700, color: "var(--dash-text)" }}>
             <ShieldAlert size={16} /> IP Paling Sering (7 hari)
           </div>
-          {summary?.topIps?.length ? summary.topIps.map((c) => (
-            <div key={c.ip} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", fontSize: "0.85rem", color: "var(--dash-text-soft)", borderBottom: "1px solid var(--dash-border)", fontFamily: "var(--font-geist-mono, monospace)" }}>
-              <span>{c.ip}</span><span style={{ fontWeight: 700 }}>{c.count}</span>
-            </div>
-          )) : <div style={{ fontSize: "0.82rem", color: "var(--dash-text-muted)" }}>Belum ada data.</div>}
+          {summary?.topIps?.length ? summary.topIps.map((c) => {
+            const isBlocked = blockedSet.has(c.ip);
+            return (
+              <div key={c.ip} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px", padding: "6px 0", borderBottom: "1px solid var(--dash-border)" }}>
+                <span style={{ flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", fontFamily: "var(--font-geist-mono, monospace)", fontSize: "0.82rem", color: "var(--dash-text-soft)" }}>{c.ip}</span>
+                <span style={{ fontWeight: 700, fontSize: "0.82rem", color: "var(--dash-text-soft)" }}>{c.count}</span>
+                <button
+                  onClick={() => (isBlocked ? doUnblock(c.ip) : doBlock(c.ip, "Diblokir dari dashboard", null))}
+                  disabled={busyIp === c.ip}
+                  title={isBlocked ? "Buka blokir" : "Blokir IP ini"}
+                  style={{ display: "inline-flex", alignItems: "center", padding: "4px 8px", borderRadius: "7px", border: "1px solid var(--dash-border)", background: isBlocked ? "rgba(239,68,68,0.12)" : "transparent", color: isBlocked ? "var(--dash-danger)" : "var(--dash-text-muted)", cursor: "pointer" }}
+                >
+                  <Ban size={12} />
+                </button>
+              </div>
+            );
+          }) : <div style={{ fontSize: "0.82rem", color: "var(--dash-text-muted)" }}>Belum ada data.</div>}
         </div>
+      </div>
+
+      {/* Blocklist management */}
+      <div className="dash-card" style={{ padding: "18px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", fontSize: "0.9rem", fontWeight: 700, color: "var(--dash-text)" }}>
+          <Ban size={17} style={{ color: "var(--dash-danger)" }} /> Daftar IP Diblokir
+          <span style={{ fontSize: "0.72rem", fontWeight: 600, color: "var(--dash-text-muted)" }}>({blocked.length} aktif)</span>
+        </div>
+
+        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "14px" }}>
+          <input
+            value={blockIpInput} onChange={(e) => setBlockIpInput(e.target.value)}
+            placeholder="Alamat IP (mis. 44.193.39.16)" className="dash-input"
+            style={{ flex: "1 1 180px", fontSize: "0.82rem", padding: "9px 12px", fontFamily: "var(--font-geist-mono, monospace)" }}
+          />
+          <input
+            value={blockReason} onChange={(e) => setBlockReason(e.target.value)}
+            placeholder="Alasan (opsional)" className="dash-input"
+            style={{ flex: "1 1 160px", fontSize: "0.82rem", padding: "9px 12px" }}
+          />
+          <button
+            onClick={() => doBlock(blockIpInput, blockReason || "Diblokir manual", null)}
+            disabled={!blockIpInput.trim() || busyIp === blockIpInput.trim()}
+            className="dash-btn"
+            style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "9px 16px", fontSize: "0.82rem", borderRadius: "10px", background: "linear-gradient(135deg, var(--dash-danger), #b91c1c)", opacity: !blockIpInput.trim() ? 0.5 : 1 }}
+          >
+            <Plus size={15} /> Blokir
+          </button>
+        </div>
+
+        {blocked.length === 0 ? (
+          <div style={{ fontSize: "0.82rem", color: "var(--dash-text-muted)" }}>Belum ada IP yang diblokir.</div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+            {blocked.map((b) => (
+              <div key={b.ip} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "9px 12px", borderRadius: "10px", background: "var(--dash-surface-hover)", border: "1px solid var(--dash-border)", flexWrap: "wrap" }}>
+                <span style={{ fontFamily: "var(--font-geist-mono, monospace)", fontWeight: 700, color: "var(--dash-text)", fontSize: "0.82rem" }}>{b.ip}</span>
+                <span style={{ fontSize: "0.75rem", color: "var(--dash-text-muted)", flex: 1, minWidth: "120px" }}>
+                  {b.reason || "—"} · {b.expiresAt ? `sampai ${new Date(b.expiresAt).toLocaleString("id-ID")}` : "permanen"}
+                </span>
+                <button
+                  onClick={() => doUnblock(b.ip)} disabled={busyIp === b.ip}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "6px 12px", fontSize: "0.76rem", fontWeight: 600, borderRadius: "8px", border: "1px solid var(--dash-border)", background: "transparent", color: "var(--dash-text-soft)", cursor: "pointer" }}
+                >
+                  <Trash2 size={13} /> Buka blokir
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Events table */}
@@ -235,13 +351,14 @@ export default function KeamananPage() {
                 <th style={{ padding: "10px 14px" }}>Lokasi</th>
                 <th style={{ padding: "10px 14px" }}>Path</th>
                 <th style={{ padding: "10px 14px" }}>Detail</th>
+                <th style={{ padding: "10px 14px" }}>Aksi</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={6} style={{ padding: "24px", textAlign: "center", color: "var(--dash-text-muted)" }}>Memuat…</td></tr>
+                <tr><td colSpan={7} style={{ padding: "24px", textAlign: "center", color: "var(--dash-text-muted)" }}>Memuat…</td></tr>
               ) : events.length === 0 ? (
-                <tr><td colSpan={6} style={{ padding: "24px", textAlign: "center", color: "var(--dash-text-muted)" }}>Belum ada aktivitas mencurigakan. 🎉</td></tr>
+                <tr><td colSpan={7} style={{ padding: "24px", textAlign: "center", color: "var(--dash-text-muted)" }}>Belum ada aktivitas mencurigakan. 🎉</td></tr>
               ) : events.map((e) => {
                 const m = metaFor(e.type);
                 const loc = [e.city, e.region, e.country].filter(Boolean).join(", ") || "-";
@@ -255,6 +372,25 @@ export default function KeamananPage() {
                     <td style={{ padding: "10px 14px", color: "var(--dash-text-soft)" }}>{loc}</td>
                     <td style={{ padding: "10px 14px", color: "var(--dash-text-soft)", maxWidth: "200px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={e.path ?? ""}>{e.path ?? "-"}</td>
                     <td style={{ padding: "10px 14px", color: "var(--dash-text-muted)", maxWidth: "240px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={e.detail ?? ""}>{e.detail ?? "-"}</td>
+                    <td style={{ padding: "10px 14px", whiteSpace: "nowrap" }}>
+                      {e.ip && e.ip !== "unknown" ? (
+                        blockedSet.has(e.ip) ? (
+                          <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "0.72rem", fontWeight: 700, color: "var(--dash-danger)" }}>
+                            <Ban size={12} /> Diblokir
+                          </span>
+                        ) : (
+                          <button
+                            onClick={() => doBlock(e.ip as string, `Diblokir dari log (${metaFor(e.type).label})`, null)}
+                            disabled={busyIp === e.ip}
+                            style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "5px 10px", fontSize: "0.72rem", fontWeight: 600, borderRadius: "8px", border: "1px solid var(--dash-border)", background: "transparent", color: "var(--dash-danger)", cursor: "pointer" }}
+                          >
+                            <Ban size={12} /> Blokir
+                          </button>
+                        )
+                      ) : (
+                        <span style={{ color: "var(--dash-text-muted)" }}>-</span>
+                      )}
+                    </td>
                   </tr>
                 );
               })}

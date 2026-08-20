@@ -40,8 +40,19 @@ require("dotenv").config({ path: ".env.local" });
   await c.query(`CREATE INDEX IF NOT EXISTS security_events_created_idx ON public.security_events (created_at DESC)`);
   await c.query(`CREATE INDEX IF NOT EXISTS security_events_type_idx ON public.security_events (type)`);
 
+  // IP blocklist (manual from dashboard, or auto after repeated probes).
+  await c.query(`
+    CREATE TABLE IF NOT EXISTS public.blocked_ips (
+      ip         text PRIMARY KEY,
+      reason     text NOT NULL DEFAULT '',
+      created_at timestamptz NOT NULL DEFAULT now(),
+      expires_at timestamptz
+    )
+  `);
+
   const res = await c.query(`SELECT count(*)::int AS total FROM public.security_events`);
-  console.table(res.rows);
+  const blk = await c.query(`SELECT count(*)::int AS blocked FROM public.blocked_ips`);
+  console.table([{ ...res.rows[0], ...blk.rows[0] }]);
   await c.end();
-  console.log("Migration done. Table public.security_events is ready.");
+  console.log("Migration done. Tables public.security_events + public.blocked_ips are ready.");
 })().catch((e) => { console.error("ERR", e.message); process.exit(1); });

@@ -16,7 +16,8 @@ export type SecurityEventType =
   | "login_failed"
   | "login_rate_limited"
   | "unauthorized"
-  | "suspicious_request";
+  | "suspicious_request"
+  | "ip_banned";
 
 export interface SecurityEventInput {
   type: SecurityEventType;
@@ -253,5 +254,120 @@ export async function getSecuritySummary(): Promise<SecuritySummary> {
     };
   } catch {
     return EMPTY_SUMMARY;
+  }
+}
+
+// ── IP blocklist ────────────────────────────────────────────────────────────
+// Persistent list of blocked IPs (manual from the dashboard, or auto after
+// repeated probes). Enforced by the edge middleware. `expires_at` NULL = permanent.
+
+export interface BlockedIp {
+  ip: string;
+  reason: string;
+  createdAt: string;
+  expiresAt: string | null;
+}
+
+let blockTableEnsured = false;
+
+async function ensureBlockTable(): Promise<void> {
+  if (blockTableEnsured) return;
+  await rawExec(
+    `CREATE TABLE IF NOT EXISTS public.blocked_ips (
+       ip         text PRIMARY KEY,
+       reason     text NOT NULL DEFAULT '',
+       created_at timestamptz NOT NULL DEFAULT now(),
+       expires_at timestamptz
+     )`
+  );
+  blockTableEnsured = true;
+}
+
+/** Block an IP. `minutes` omitted/null = permanent until manually unblocked. */
+export async function blockIp(ip: string, reason: string, minutes?: number | null): Promise<void> {
+  const clean = cap(ip, 64);
+  if (!clean) return;
+  const expiresAt =
+    typeof minutes === "number" && minutes > 0
+      ? new Date(Date.now() + minutes * 60_000).toISOString()
+      : null;
+  try {
+    await ensureBlockTable();
+    await rawExec(
+      `INSERT INTO public.blocked_ips (ip, reason, expires_at)
+         VALUES ($1, $2, $3)
+       ON CONFLICT (ip) DO UPDATE
+         SET reason = EXCLUDED.reason, expires_at = EXCLUDED.expires_at, created_at = now()`,
+      clean,
+      cap(reason, 200) ?? "",
+      expiresAt
+    );
+    // Record the block as a security event so it shows on the dashboard.
+    await logSecurityEvent({ type: "ip_banned", ip: clean, detail: reason || "IP diblokir" });
+  } catch {
+    /* never throw */
+  }
+}
+
+export async function unblockIp(ip: string): Promise<void> {
+  const clean = cap(ip, 64);
+  if (!clean) return;
+  try {
+    await ensureBlockTable();
+    await rawExec(`DELETE FROM public.blocked_ips WHERE ip = $1`, clean);
+  } catch {
+    /* never throw */
+  }
+}
+
+/** Active blocks (not expired), for the dashboard. */
+export async function getBlockedIps(): Promise<BlockedIp[]> {
+  if (!hasSqlDb) return [];
+  try {
+    await ensureBlockTable();
+    await rawExec(`DELETE FROM public.blocked_ips WHERE expires_at IS NOT NULL AND expires_at <= now()`);
+    const rows = await rawQuery<any>(
+      `SELECT ip, reason, created_at, expires_at FROM public.blocked_ips ORDER BY created_at DESC LIMIT 200`
+    );
+    return rows.map((r) => ({
+      ip: r.ip,
+      reason: r.reason ?? "",
+      createdAt: new Date(r.created_at).toISOString(),
+      expiresAt: r.expires_at ? new Date(r.expires_at).toISOString() : null,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+/** Just the active blocked IPs, for the middleware enforcement check. */
+export async function getActiveBlockedIpList(): Promise<string[]> {
+  if (!hasSqlDb) return [];
+  try {
+    await ensureBlockTable();
+    const rows = await rawQuery<any>(
+      `SELECT ip FROM public.blocked_ips WHERE expires_at IS NULL OR expires_at > now()`
+    );
+    return rows.map((r) => r.ip).filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+/** How many probes in the recent window from this IP (for auto-block threshold). */
+export async function recentProbeCount(ip: string, minutes = 10): Promise<number> {
+  if (!hasSqlDb || !ip) return 0;
+  try {
+    await ensureTable();
+    const rows = await rawQuery<any>(
+      `SELECT count(*)::int AS c FROM public.security_events
+         WHERE ip = $1 AND type = 'suspicious_request'
+           AND created_at > now() - ($2 || ' minutes')::interval`,
+      ip,
+      String(Math.max(1, Math.trunc(minutes)))
+    );
+    return rows[0]?.c ?? 0;
+  } catch {
+    return 0;
   }
 }
