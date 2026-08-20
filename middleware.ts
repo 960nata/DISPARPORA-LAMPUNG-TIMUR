@@ -171,6 +171,37 @@ async function blockedIps(request: NextRequest): Promise<Set<string>> {
   return cachedBlocked;
 }
 
+// Friendly 403 page shown to a blocked visitor (edge middleware returns HTML
+// directly — /logo.avif is excluded from the matcher so it still loads).
+const BLOCKED_HTML = `<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Akses Dibatasi</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:linear-gradient(160deg,#f4f8f6,#e6efe9);color:#0f1c17}
+.card{max-width:480px;width:100%;text-align:center;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:24px;padding:44px 32px;box-shadow:0 30px 60px -30px rgba(6,78,59,.35)}
+img{width:56px;height:56px;object-fit:contain;margin:0 auto 18px;display:block}
+.icon{width:72px;height:72px;margin:0 auto 22px;border-radius:20px;background:linear-gradient(135deg,#0E9F4F,#065f46);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 28px -14px rgba(14,159,79,.7)}
+h1{font-size:1.5rem;font-weight:800;margin:0 0 12px;letter-spacing:-.02em}
+p{font-size:.96rem;line-height:1.7;color:#556;margin:0 0 8px}
+.tag{display:inline-flex;align-items:center;gap:8px;margin-top:20px;background:rgba(14,159,79,.1);border:1px solid rgba(14,159,79,.25);border-radius:99px;padding:8px 16px;font-size:.8rem;font-weight:700;color:#0E9F4F}
+.dot{width:8px;height:8px;border-radius:50%;background:#0E9F4F;display:inline-block}
+</style></head>
+<body><div class="card">
+<img src="/logo.avif" alt="">
+<div class="icon"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+<h1>Akses Dibatasi</h1>
+<p>Akses dari jaringan Anda untuk sementara dibatasi oleh pengelola situs.</p>
+<p>Jika Anda merasa ini keliru, silakan hubungi pengelola DISPARPORA Lampung Timur.</p>
+<div class="tag"><span class="dot"></span>DISPARPORA Lampung Timur</div>
+</div></body></html>`;
+
+function blockedResponse(): NextResponse {
+  return new NextResponse(BLOCKED_HTML, {
+    status: 403,
+    headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" },
+  });
+}
+
 export async function middleware(request: NextRequest) {
   const res = await updateSession(request);
   const { pathname } = request.nextUrl;
@@ -188,7 +219,7 @@ export async function middleware(request: NextRequest) {
   // Hard-block IPs on the blocklist (manual from dashboard, or auto).
   const ip = clientIp(request);
   if (ip !== "unknown" && (await blockedIps(request)).has(ip)) {
-    return new NextResponse("Akses Anda diblokir.", { status: 403 });
+    return blockedResponse();
   }
 
   // Detect scanner/hacker probes → log, then block the request outright.
