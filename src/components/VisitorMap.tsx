@@ -57,10 +57,14 @@ export default function VisitorMap({
         center, zoom, zoomControl: false, attributionControl: false,
       });
 
+      // Esri Canvas basemap — tampilan gray/minimal seperti Carto, tapi tanpa API key.
       const tileUrl = isDark
-        ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-        : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
-      L.tileLayer(tileUrl, { maxZoom: 18 }).addTo(localMap);
+        ? "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+        : "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}";
+      L.tileLayer(tileUrl, {
+        maxZoom: 16,
+        attribution: "&copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors",
+      }).addTo(localMap);
       L.control.zoom({ position: "topright" }).addTo(localMap);
 
       const accent = isDark ? "#34d399" : "#059669";
